@@ -15,7 +15,7 @@ module.exports = {
   },
   plugins: [
     plugin(function({ addComponents }) {
-      addComponents(require('./configs/button.config'))
+      // addComponents(require('./configs/button.config'))
       addComponents(require('./configs/input.config'))
     })
   ],

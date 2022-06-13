@@ -13,7 +13,10 @@ const MasterLayout = ({ children }: Props) => {
     <>
       <Header />
       {children}
-      <button className="btn-ghost">button</button>
+      {/* <div className="container p-10 d-flex"> */}
+        <button className="btn-ghost m-5">button</button>
+        <button className="button">button</button>
+      {/* </div> */}
       <br />
       {/* <label htmlFor="currency" className="sr-only"></label> */}
       {/* <input className="input-default" placeholder="test" /> */}
