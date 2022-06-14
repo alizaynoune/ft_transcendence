@@ -32,21 +32,16 @@ a {
   box-sizing: border-box;
 }
 
-/* [class*="error"] {
-  color: #f64e60;
-  border-color: #f64e60;
-} */
-
 /* button style */
 [class*="btn-"] {
-  display: inline-block;
+  display: inline;
   position: relative;
-  padding: 6px 15px;
+  padding: 8px 9px;
+  text-align: center;
   border-radius: 6px;
   border: 1px solid;
   cursor: pointer;
   user-select: none;
-  text-align: center;
   text-decoration: none;
   cursor: pointer;
   transition: padding-right 0.5s ease-out;
@@ -102,13 +97,17 @@ a {
 .loading::after {
   background-color: currentColor;
   content: "";
-  padding: 0.5em;
+  display: inline-block;
+  position: relative;
+  left: 0;
+  bottom: -5px;
+  padding: 10px;
   margin: 0 5px;
   -webkit-mask-repeat: no-repeat;
   mask-repeat: no-repeat;
   -webkit-mask-position: center;
   mask-position: center;
-  mask-size: fill;
+  mask-size: contain;
   clip-path: padding-box inset(0.55em 0);
   animation: spin 0.6s infinite linear, grow 0.3s forwards ease-out;
   mask-image: url('/assets/icons/Progress.svg');
@@ -132,12 +131,13 @@ a {
 [class*="icon-suffix"]::after{
   background-color: currentColor;
   content: "";
-  padding: 0.5em;
-  margin: 0 5px;
+  display: inline;
+  padding: 12px;
+  margin: 6px;
   -webkit-mask-repeat: no-repeat;
   mask-repeat: no-repeat;
   -webkit-mask-position: center;
   mask-position: center;
-  mask-size: fill;
+  mask-size: contain;
   clip-path: padding-box inset(0.55em 0);
 }
