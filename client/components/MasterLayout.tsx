@@ -15,11 +15,11 @@ const MasterLayout = ({ children }: Props) => {
       <Header />
       {children}
       {/* <div className="container p-10 d-flex"> */}
-      <button className="btn-ghost m-5 userInfo loading" disabled type="button">
+      <button className="btn-ghost m-5 userInfo icon-user " disabled type="button">
         button1
       </button>
-      <button className="btn-primary m-5  userInfo loading">button</button>
-     
+      <button className="btn-primary m-5  icon-email loading">button</button>
+      <button className="btn-primary m-5  icon-password loading">button</button>
       <div className="container p-10">
         <div className="form-item">
           <div className="input-error">
