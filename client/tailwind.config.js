@@ -36,13 +36,18 @@ module.exports = {
             'accept', 'addGroup', 'dashboard', 'email',
             'emoji', 'eyeActive', 'eyeDisactive', 'facebook',
             'google', 'message', 'notif', 'out',
-            'password', 'search', 'user', 'userInfo'
+            'password', 'search', 'user', 'userInfo', 'Progress'
           ]
           return icons.map(i => {
             return(
               {
-              [`.icon-${i}`]: {
+              [`.icon-prefix-${i}`]: {
                 '&:before': {
+                  maskImage: `url('/assets/icons/${i}.svg')`,
+                },
+              },
+              [`.icon-suffix-${i}`]: {
+                '&:after': {
                   maskImage: `url('/assets/icons/${i}.svg')`,
                 }
               }
@@ -51,6 +56,11 @@ module.exports = {
           })
         }
       )
+
+      // prefix suffix
+      addComponents({
+        '[class*=icon-Prefix]': {}
+      })
 
       // loading component
       addComponents({

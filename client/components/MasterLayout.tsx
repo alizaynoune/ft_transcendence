@@ -14,22 +14,15 @@ const MasterLayout = ({ children }: Props) => {
     <>
       <Header />
       {children}
-      {/* <div className="container p-10 d-flex"> */}
-      <button className="btn-ghost m-5 userInfo icon-user " disabled type="button">
-        button1
-      </button>
-      <button className="btn-primary m-5  icon-email loading">button</button>
-      <button className="btn-primary m-5  icon-password loading">button</button>
+      <button className="btn-ghost m-5  icon-email danger">button</button>
+      <button className="btn-ghost m-5 icon-prefix-password ">button</button>
+      <br />
+      <button className="btn-primary m-5   loading danger">button</button>
+      <button className="btn-primary m-5  icon-prefix-email loading">button</button>
       <div className="container p-10">
         <div className="form-item">
-          <div className="input-warning">
-            <span className="">
-              <img src="/assets/icons/user.svg" />
-            </span>
-            <input type="password" placeholder="Placeholder2" />
-            <span className="">
-              <img src="/assets/icons/user.svg" />
-            </span>
+          <div className="input-default icon-prefix-password icon-suffix-password">
+            <input type="password" placeholder="Placeholder2" className="icon-prefix-password icon-suffix-password" />
           </div>
           <label className="message-error">message</label>
         </div>
@@ -37,5 +30,4 @@ const MasterLayout = ({ children }: Props) => {
     </>
   );
 };
-// form form-item input message
 export default MasterLayout;

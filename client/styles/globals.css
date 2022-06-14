@@ -98,46 +98,54 @@ a {
   box-shadow: 0px 0px 8px var(--hover-color);
 }
 
-[class*="btn-"].loading{
-  padding-right: 40px;
-}
-
 /*btn on loading */
-[class*="btn-"].loading::after {
-  content: "";
-    position: absolute;
-    border-radius: 100%;
-    padding: 0.5em;
-    right: 0px;
-    top: 50%;
-    width: 0px;
-    height: 0px;
-    margin-top: -2px;
-    border: 2px solid transparent;
-    border-left-color: currentColor;
-    border-top-color: currentColor;
-    animation: spin .6s infinite linear, grow .3s forwards ease-out;
-}
-
-@keyframes spin { 
-  to {
-      transform: rotate(359deg);
-  }
-}
-@keyframes grow { 
-  to {
-      width: 14px;
-      height: 14px;
-      margin-top: -8px;
-      right: 13px;
-  }
-}
-
-[class*='btn'][class*='icon-']::before {
+.loading::after {
   background-color: currentColor;
   content: "";
   padding: 0.5em;
-  margin-right: 5px;
+  margin: 0 5px;
+  -webkit-mask-repeat: no-repeat;
+  mask-repeat: no-repeat;
+  -webkit-mask-position: center;
+  mask-position: center;
+  mask-size: fill;
+  clip-path: padding-box inset(0.55em 0);
+  /* content: url('/assets/icons/Progress.svg'); */
+  /* position: absolute; */
+  /* border-radius: 100%;
+  padding: 0.5em;
+  right: 0px;
+  top: 50%;
+  width: 0px;
+  height: 0px;
+  margin-top: -2px;
+  border: 2px solid transparent; */
+  /* border-left-color: currentColor;
+  border-top-color: currentColor; */
+  animation: spin 0.6s infinite linear, grow 0.3s forwards ease-out;
+  mask-image: url('/assets/icons/Progress.svg');
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(359deg);
+  }
+}
+@keyframes grow {
+  to {
+    width: 14px;
+    height: 14px;
+    margin-top: -8px;
+    right: 13px;
+  }
+}
+
+[class*="icon-prefix"]::before,
+[class*="icon-suffix"]::after{
+  background-color: currentColor;
+  content: "";
+  padding: 0.5em;
+  margin: 0 5px;
   -webkit-mask-repeat: no-repeat;
   mask-repeat: no-repeat;
   -webkit-mask-position: center;
@@ -145,7 +153,3 @@ a {
   mask-size: fill;
   clip-path: padding-box inset(0.55em 0);
 }
-
-/* .icon-user::before{
-  mask-image: url("/assets/icons/user.svg");
-} */
