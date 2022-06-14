@@ -110,18 +110,6 @@ a {
   mask-position: center;
   mask-size: fill;
   clip-path: padding-box inset(0.55em 0);
-  /* content: url('/assets/icons/Progress.svg'); */
-  /* position: absolute; */
-  /* border-radius: 100%;
-  padding: 0.5em;
-  right: 0px;
-  top: 50%;
-  width: 0px;
-  height: 0px;
-  margin-top: -2px;
-  border: 2px solid transparent; */
-  /* border-left-color: currentColor;
-  border-top-color: currentColor; */
   animation: spin 0.6s infinite linear, grow 0.3s forwards ease-out;
   mask-image: url('/assets/icons/Progress.svg');
 }
