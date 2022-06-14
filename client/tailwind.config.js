@@ -18,8 +18,8 @@ module.exports = {
   plugins: [
     plugin(function ({ addComponents }) {
       addComponents(require('./configs/input.config'))
+      // icons components
       addComponents(
-        // add icons to class
         function () {
           const icons = [
             '42', 'ACHIEVEMENTS', 'AddFriend', 'Attachment',
@@ -52,6 +52,29 @@ module.exports = {
         }
       )
 
+      // loading component
+      addComponents({
+        '[class*="error"]': {
+          color: "#F64E60",
+          borderColor: '#F64E60'
+        }
+      })
+
+      // success component
+      addComponents({
+        '[class*="success"]': {
+          color: '#50cd89',
+          borderColor: '#50cd89',
+        }
+      })
+
+      // Warning component
+      addComponents({
+      '[class*="warning"]': {
+        color: '#faad14',
+        borderColor: '#faad14',
+      }
+    })
 
 
     })

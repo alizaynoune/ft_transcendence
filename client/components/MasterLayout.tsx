@@ -22,7 +22,7 @@ const MasterLayout = ({ children }: Props) => {
       <button className="btn-primary m-5  icon-password loading">button</button>
       <div className="container p-10">
         <div className="form-item">
-          <div className="input-error">
+          <div className="input-warning">
             <span className="">
               <img src="/assets/icons/user.svg" />
             </span>

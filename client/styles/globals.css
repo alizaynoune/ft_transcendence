@@ -32,10 +32,10 @@ a {
   box-sizing: border-box;
 }
 
-[class*="error"] {
+/* [class*="error"] {
   color: #f64e60;
   border-color: #f64e60;
-}
+} */
 
 /* button style */
 [class*="btn-"] {
