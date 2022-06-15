@@ -2,31 +2,27 @@ import { NextComponentType, NextPage } from "next";
 import { AppProps } from "next/app";
 
 interface Props {
-  disabled?: boolean,
-  loading?: boolean,
-  type?: "primary" | "ghost",
-  icon?: string,
-  children?: string,
-  danger?: boolean,
+  disabled?: boolean;
+  loading?: boolean;
+  type?: "primary" | "ghost";
+  icon?: string;
+  children?: JSX.Element|JSX.Element[]|string;
+  danger?: boolean;
 }
 
-/**
- * 
- * @param {object} props - {type, icon, loading, disabled, danger}
- * @returns 
- */
-const Button: NextPage<Props> = (props) => {
-  console.log(props.disabled);
-  const { type, icon, loading, disabled, danger} = props;
+const Button: React.FC<Props> = (props) => {
+  const { type, icon, loading, disabled, danger } = props;
 
   return (
     <button
-     disabled={disabled || false}
+      disabled={disabled || false}
       type="button"
-      className={`btn-${type || 'primary'} ${icon && 'icon-prefix-' + icon} ${danger && 'danger'}  m-5`}
+      className={`btn-${type || "primary"} ${icon && "icon-prefix-" + icon} ${
+        danger && "danger"
+      } `}
     >
-        {/* {icon || null} */}
-        {props.children}
+      {/* {icon || null} */}
+      {props.children}
       {loading && (
         <svg
           role="status"

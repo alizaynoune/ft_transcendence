@@ -2,7 +2,7 @@ import { NextComponentType } from "next";
 
 import headerStyle from '../styles/header.module.css'
 
-const Header: NextComponentType = () => {
+const Header: React.FC = () => {
   return (
     <>
       <div className={`${headerStyle.header} `}>

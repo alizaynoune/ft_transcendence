@@ -117,8 +117,9 @@ a {
   display: flexbox;
   position: relative;
   padding: auto;
-  height: 40px;
-  width: 40px;
+  height: 45px;
+  width: 45px;
+  margin: auto;
   border: 1px solid #50cd89;
   -webkit-mask-repeat: no-repeat;
   mask-repeat: no-repeat;
@@ -126,6 +127,7 @@ a {
   mask-position: center;
   mask-size: 25px;
   clip-path: padding-box inset(0.55em 0);
+  
 }
 
 button:disabled,
@@ -151,3 +153,57 @@ button[disabled]:hover {
 .btn-ghost.danger:not(button:disabled) {
   color: var(--error-color);
 }
+
+
+/* Input style */
+
+.input-group{
+  /* height: 100px; */
+  width: 100%;
+}
+
+.input-item{
+  height: 45px;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border: 1px solid;
+  border-left: 6px solid;
+  border-color: var(--primary-color);
+  border-radius: 6px;
+}
+
+.input-item button {
+  border: none;
+  height: 100%;
+  border-radius: 0 6px 6px 0;
+  border-left: 1px solid var(--hover-color);
+}
+
+
+.input{
+  width: 100%;
+  height: 100%;
+  border-radius: 6px;
+  /* padding: 5px; */
+  display: flex;
+  justify-content: space-between;
+  justify-items: center;
+  align-items: center;
+}
+
+.input::after, .input::before {
+  height: 45px;
+  width: 40px;
+  /* mask-size: 10px; */
+}
+
+.input-filed{
+  width: 100%;
+  height: 100%;
+  outline: none;
+}
+
+.input-message{}
+
