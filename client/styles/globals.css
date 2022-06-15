@@ -32,11 +32,20 @@ a {
   box-sizing: border-box;
 }
 
+.bg-primary {
+  background-color: var(--primary-color);
+}
+
 /* button style */
 [class*="btn-"] {
-  display: inline;
+  display: inline-flex;
+  justify-items: center;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
   position: relative;
-  padding: 8px 9px;
+  padding: 0px 10px;
+  height: 45px;
   text-align: center;
   border-radius: 6px;
   border: 1px solid;
@@ -47,7 +56,7 @@ a {
   transition: padding-right 0.5s ease-out;
 }
 
-[class*="btn-"]:not(.loading):after {
+[class*="btn-"]:not(button:disabled):after {
   content: "";
   display: block;
   position: absolute;
@@ -58,13 +67,13 @@ a {
   height: 100%;
   opacity: 0;
   transition: all 0.5s;
-  box-shadow: 0 0 10px 10px var(--light-color);
+  box-shadow: 0 0 10px 15px var(--light-color);
 }
-[class*="btn-"]:active {
+[class*="btn-"]:not(button:disabled):active {
   box-shadow: none;
   top: 1px;
 }
-[class*="btn-"]:not(.loading):active:after {
+[class*="btn-"]:not(button:disabled):active:after {
   box-shadow: 0px 0px 0px var(--primary-color);
   position: absolute;
   left: 0;
@@ -75,12 +84,12 @@ a {
 
 .btn-primary {
   background-color: var(--primary-color);
-  color: var(--light-dar);
+  color: var(--light-color);
   border-color: var(--primary-color);
 }
 
 .btn-primary:hover {
-  box-shadow: 0px 0px 8px var(--hover-color);
+  box-shadow: 0px 0px 10px 4px var(--hover-color);
 }
 
 .btn-ghost {
@@ -93,51 +102,52 @@ a {
   box-shadow: 0px 0px 8px var(--hover-color);
 }
 
-/*btn on loading */
-.loading::after {
-  background-color: currentColor;
-  content: "";
-  display: inline-block;
-  position: relative;
-  left: 0;
-  bottom: -5px;
-  padding: 10px;
-  margin: 0 5px;
-  -webkit-mask-repeat: no-repeat;
-  mask-repeat: no-repeat;
-  -webkit-mask-position: center;
-  mask-position: center;
-  mask-size: contain;
-  clip-path: padding-box inset(0.55em 0);
-  animation: spin 0.6s infinite linear, grow 0.3s forwards ease-out;
-  mask-image: url('/assets/icons/Progress.svg');
+[class*="btn-"].danger:hover:not(button:disabled) {
+  box-shadow: 0px 0px 8px var(--error-color);
 }
 
-@keyframes spin {
-  to {
-    transform: rotate(359deg);
-  }
-}
-@keyframes grow {
-  to {
-    width: 14px;
-    height: 14px;
-    margin-top: -8px;
-    right: 13px;
-  }
+[class*="btn-"].danger:not(button:disabled):active:after {
+  box-shadow: 0px 0px 0px var(--error-color);
 }
 
 [class*="icon-prefix"]::before,
-[class*="icon-suffix"]::after{
+[class*="icon-suffix"]::after {
   background-color: currentColor;
   content: "";
-  display: inline;
-  padding: 12px;
-  margin: 6px;
+  display: flexbox;
+  position: relative;
+  padding: auto;
+  height: 40px;
+  width: 40px;
+  border: 1px solid #50cd89;
   -webkit-mask-repeat: no-repeat;
   mask-repeat: no-repeat;
   -webkit-mask-position: center;
   mask-position: center;
-  mask-size: contain;
+  mask-size: 25px;
   clip-path: padding-box inset(0.55em 0);
+}
+
+button:disabled,
+button[disabled] {
+  border: 1px solid #999999;
+  background-color: #cccccc;
+  color: #666666;
+  cursor: not-allowed;
+  box-shadow: none;
+}
+button:disabled:hover,
+button[disabled]:hover {
+  box-shadow: none;
+}
+
+[class*="btn-"].danger:not(button:disabled) {
+  border-color: var(--error-color);
+}
+
+.btn-primary.danger:not(button:disabled) {
+  background-color: var(--error-color);
+}
+.btn-ghost.danger:not(button:disabled) {
+  color: var(--error-color);
 }

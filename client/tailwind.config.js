@@ -62,7 +62,7 @@ module.exports = {
         '[class*=icon-Prefix]': {}
       })
 
-      // loading component
+      // error component
       addComponents({
         '[class*="error"]': {
           color: "#F64E60",
