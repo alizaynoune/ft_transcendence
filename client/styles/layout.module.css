@@ -9,15 +9,45 @@
 .sectionGameInfo {
     background-color: var(--primary-color);
     display: flex;
-    justify-content: space-between;
+    justify-content: space-around;
+    align-items: center;
+    padding: 20px 0;
 }
 
+.sectionGameInfoTettel {
+    text-align: center;
+    color: var(--light-color) !important;
+}
+
+
 .sectionGameInfoText{
-    
+    width: 60%;
+    color: var(--light-color) !important;
 }
 
 .footer {
     background-color: var(--primary-color) !important;
     display: flex;
     justify-content: space-between;
+}
+
+@media screen and (max-width: 600px) {
+    .sectionGameInfoLogo{
+        display: none;
+    }
+
+    .sectionGameInfoText{
+        width: 100%;
+        padding: 10px;
+    }
+
+    .footer{
+        justify-content: space-around;
+        padding: 10px;
+    }
+
+    .footer span:first-of-type{
+        display: none;
+    }
+
 }

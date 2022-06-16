@@ -1,4 +1,4 @@
-import { NextComponentType } from "next";
+import { NextComponentType} from "next";
 import Image from "next/image";
 import { AppProps } from "next/app";
 import { ReactNode } from "react";
@@ -18,20 +18,24 @@ const MasterLayout = ({ children }: Props) => {
   return (
     <Layout>
       <Header className={layoutStyle.header}>
-        <Image src="/images/Logo.png" height={60} width={100} />
-        <Button>SignIn</Button>
+        <Image src="/images/Logo.png" height={68} width={110} />
+        <Button>Sign in</Button>
       </Header>
-      <Content>{children}</Content>
+      <Content>
+        {children}
+      </Content>
       <div className={layoutStyle.sectionGameInfo}>
-        <Image src="/images/Logo.png" height={60} width={100} />
+        <div className={layoutStyle.sectionGameInfoLogo}>
+          <Image src="/images/Logo.png" height={68} width={110} />
+        </div>
         <div className={layoutStyle.sectionGameInfoText}>
-          <Typography.Title level={4}>
+          <Typography.Title level={3} className={layoutStyle.sectionGameInfoTettel}>
             About game
           </Typography.Title>
-          <Typography.Text >
-          Ping-pong is a game in which two or four players hit a light, hollow ball back and forth across a net stretched across the center of a table. The game is more commonly known as table tennis, reflecting its origin as an indoor modification of the sport of lawn tennis. The term ping-pong is a federally registered trademark for the game first issued to Parker Brothers, Inc., in 1901, and now owned by Escalade Sports, of Evansville, Indiana.
+          <Typography.Text className={layoutStyle.sectionGameInfoText}>
+            Ping-pong is a game in which two or four players hit a light, hollow ball back and forth across a net stretched across the center of a table. The game is more commonly known as table tennis, reflecting its origin as an indoor modification of the sport of lawn tennis. The term ping-pong is a federally registered trademark for the game first issued to Parker Brothers, Inc., in 1901, and now owned by Escalade Sports, of Evansville, Indiana.
 
-          Provide additional interactive capacity of editable and copyable.
+            Provide additional interactive capacity of editable and copyable.
           </Typography.Text>
         </div>
       </div>
