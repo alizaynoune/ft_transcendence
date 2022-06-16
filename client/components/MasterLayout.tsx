@@ -4,7 +4,6 @@ import { ReactNode } from "react";
 import Header from "./Header";
 import Button from './Button'
 import Input from './Input'
-import { Eye, EyeSlash } from '../public/assets/icons/EyeIcon'
 
 type Props = {
   children: ReactNode;
@@ -26,10 +25,10 @@ const MasterLayout = ({ children }: Props) => {
       <Button type="primary" icon="password" loading={false} />
       <Button type="primary"> text </Button>
       <br />
-      <Button type="primary" danger={true} icon="password" loading={true} disabled={true}> text </Button>
-      <Button type="primary" danger={true} icon="addGroup" loading={true}> text </Button>
-      <Button type="primary" danger={true} icon="AddFriend" loading={false} />
-      <Button type="primary" danger={true} icon="password">
+      <Button type="primary" status='error' icon="password" loading={true} disabled={true}> text </Button>
+      <Button type="primary" status='error' icon="addGroup" loading={true}> text </Button>
+      <Button type="primary" status='error' icon="AddFriend" loading={false} />
+      <Button type="primary" status='error' icon="password">
         
       </Button>
       <br />
@@ -38,8 +37,8 @@ const MasterLayout = ({ children }: Props) => {
 
 
 
-        <Input message="test message" type='password'>
-          <Button type="primary" icon="Send" loading={false} />
+        <Input message="test message" type='password' status="error"  prefix="user">
+          <Button type="primary" icon="Send" loading={false} status='error' />
         </Input>
 
       </div>

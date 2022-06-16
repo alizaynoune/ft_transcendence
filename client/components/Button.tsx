@@ -6,20 +6,40 @@ interface Props {
   loading?: boolean;
   type?: "primary" | "ghost";
   icon?: string;
-  children?: JSX.Element|JSX.Element[]|string;
-  danger?: boolean;
+  children?: JSX.Element | JSX.Element[] | string;
+  status?: "error" | "success" | "warning" | "primary";
 }
 
+const statusColor = {
+  error: "--error-color",
+  success: "--success-color",
+  warning: "--warning-color",
+  primary: "--primary-color",
+};
+
 const Button: React.FC<Props> = (props) => {
-  const { type, icon, loading, disabled, danger } = props;
+  const { type, icon, loading, disabled, status } = props;
 
   return (
     <button
       disabled={disabled || false}
       type="button"
-      className={`btn-${type || "primary"} ${icon && "icon-prefix-" + icon} ${
-        danger && "danger"
-      } `}
+      className={`btn-${type || "primary"} ${icon && "icon-prefix-" + icon}
+      `}
+      style={{
+        backgroundColor:
+          type === "primary"
+            ? `var(${statusColor[status || "primary"]})`
+            : "var(--light-color)",
+        color:
+          type === "primary"
+            ? "var(--light-color)"
+            : `var(${statusColor[status || "primary"]})`,
+            borderColor: (
+              `var(${statusColor[status || "primary"]})`
+            ),
+            // boxShadow: ` 0px 0px 0px 1px var(${statusColor[status || 'primary']})`
+      }}
     >
       {/* {icon || null} */}
       {props.children}

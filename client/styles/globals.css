@@ -14,6 +14,7 @@
   --light-color: #ffffff;
   --dark-color: #000000;
   --hover-color: rgba(54, 153, 255, 0.5);
+  --shadwo-color: #999999;
 }
 
 html,
@@ -39,6 +40,8 @@ a {
 /* button style */
 [class*="btn-"] {
   display: inline-flex;
+  justify-self: center;
+  align-self: center;
   justify-items: center;
   justify-content: center;
   align-items: center;
@@ -46,6 +49,7 @@ a {
   position: relative;
   padding: 0px 10px;
   height: 45px;
+  margin: 5px;
   text-align: center;
   border-radius: 6px;
   border: 1px solid;
@@ -54,6 +58,7 @@ a {
   text-decoration: none;
   cursor: pointer;
   transition: padding-right 0.5s ease-out;
+  
 }
 
 [class*="btn-"]:not(button:disabled):after {
@@ -67,19 +72,22 @@ a {
   height: 100%;
   opacity: 0;
   transition: all 0.5s;
-  box-shadow: 0 0 10px 15px var(--light-color);
+  box-shadow: 0 0 10px 15px var(--shadwo-color);
 }
 [class*="btn-"]:not(button:disabled):active {
   box-shadow: none;
   /* top: 1px; */
 }
 [class*="btn-"]:not(button:disabled):active:after {
-  box-shadow: 0px 0px 0px var(--primary-color);
+  box-shadow: 0px 0px 0px  var(--shadwo-color);
   position: absolute;
   left: 0;
   top: 0;
   opacity: 1;
   transition: 0s;
+}
+[class*='btn-']:not(button:disabled):hover{
+  box-shadow: 0 0 10px 2px var(--shadwo-color);
 }
 
 .btn-primary {
@@ -88,26 +96,14 @@ a {
   border-color: var(--primary-color);
 }
 
-.btn-primary:hover {
-  box-shadow: 0px 0px 10px 4px var(--hover-color);
-}
+/* .btn-primary:hover {
+  box-shadow: 0px 0px 10px 4px var(--shadwo-color);
+} */
 
 .btn-ghost {
   background-color: var(--light-color);
   color: var(--primary-color);
   border-color: var(--primary-color);
-}
-
-.btn-ghost:hover {
-  box-shadow: 0px 0px 8px var(--hover-color);
-}
-
-[class*="btn-"].danger:hover:not(button:disabled) {
-  box-shadow: 0px 0px 8px var(--error-color);
-}
-
-[class*="btn-"].danger:not(button:disabled):active:after {
-  box-shadow: 0px 0px 0px var(--error-color);
 }
 
 [class*="icon-prefix"]::before,
@@ -144,6 +140,20 @@ button[disabled]:hover {
   box-shadow: none;
 }
 
+button:disabled::after{
+  content: "";
+  display: block;
+  position: absolute;
+  border-radius: 6px;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  opacity: 0.3;
+  background-color: var(--secondary-color);
+  box-shadow: 0 0 1px 1px var(--shadwo-color);
+}
+
 [class*="btn-"].danger:not(button:disabled) {
   border-color: var(--error-color);
 }
@@ -160,7 +170,8 @@ button[disabled]:hover {
 
 .input-group{
   /* height: 100px; */
-  width: 100%;
+  /* width: 100%; */
+  
 }
 
 .input-item{
@@ -171,8 +182,17 @@ button[disabled]:hover {
   align-items: center;
   border: 1px solid;
   border-left: 6px solid;
-  border-color: var(--primary-color);
+  /* border-color: var(--primary-color); */
   border-radius: 6px;
+  
+}
+
+.input-item:hover{
+  box-shadow: 0px 0px 3px var(--shadwo-color);
+}
+
+.input-item:focus-within{
+  box-shadow: 0px 0px 3px var(--shadwo-color);
 }
 
 .input-item button {
@@ -180,18 +200,22 @@ button[disabled]:hover {
   height: 100%;
   border-radius: 0 6px 6px 0;
   border-left: 1px solid var(--hover-color);
+  margin: 0;
 }
 
 
 .input{
+  padding: 0 0px;
   width: 100%;
   height: 100%;
   border-radius: 6px;
-  /* padding: 5px; */
   display: flex;
   justify-content: space-between;
   justify-items: center;
   align-items: center;
+}
+input::placeholder{
+  padding: 0 10px;
 }
 
 .input::after, .input::before {
@@ -204,6 +228,7 @@ button[disabled]:hover {
   width: 100%;
   height: 100%;
   outline: none;
+  border-radius: 6px;
 }
 
 .input-message{}
