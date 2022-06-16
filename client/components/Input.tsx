@@ -14,7 +14,6 @@ interface Props {
   width?: string;
   disabled?: boolean;
   children?: JSX.Element | JSX.Element[];
-  error?: boolean;
   status?: 'error' | 'success' | 'warning' | 'primary'; 
   type?: string;
   placeholder?: string;
@@ -49,7 +48,7 @@ const Input: React.FC<Props> = (props) => {
         <div className={`input ${prefix && ('icon-prefix-' + prefix)}`}>
           <input
             className="input-filed"
-            placeholder="placeholder"
+            placeholder={placeholder || "placeholder"}
             required={required}
             type={!type || (type == "password" && passwordShow) ? "text" : type}
           />

@@ -17,8 +17,6 @@ module.exports = {
   },
   plugins: [
     plugin(function ({ addComponents }) {
-      // addComponents(require('./configs/input.config'))
-      // icons components
       addComponents(
         function () {
           const icons = [

@@ -1,6 +1,17 @@
 .header{
-    background-color: #3699FF;
+    background-color: var(--primary-color);
     display: flex;
     justify-content: space-between;
-    padding: 20px;
+    align-items: center;
+    padding: 0 20px;
+    height: 80px;
+}
+
+.logo {
+    /* background-color: gold; */
+    margin: auto 0px;
+    position: relative;
+    display: flex;
+    height: 70px;
+    width: 110px;
 }

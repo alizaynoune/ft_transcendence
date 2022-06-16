@@ -14,34 +14,6 @@ const MasterLayout = ({ children }: Props) => {
     <>
       <Header />
       {children}
-
-      <Button type="ghost" icon="addGroup" loading={true} disabled={true}> text </Button>
-      <Button type="ghost" icon="addGroup" loading={true}> text </Button>
-      <Button type="ghost" icon="AddFriend" loading={false} />
-      <Button type="ghost"> text </Button>
-      <br />
-      <Button type="primary" icon="addGroup" loading={true} disabled={true}> text </Button>
-      <Button type="primary" icon="addGroup" loading={true}> text </Button>
-      <Button type="primary" icon="password" loading={false} />
-      <Button type="primary"> text </Button>
-      <br />
-      <Button type="primary" status='error' icon="password" loading={true} disabled={true}> text </Button>
-      <Button type="primary" status='error' icon="addGroup" loading={true}> text </Button>
-      <Button type="primary" status='error' icon="AddFriend" loading={false} />
-      <Button type="primary" status='error' icon="password">
-        
-      </Button>
-      <br />
-
-      <div className="container p-10">
-
-
-
-        <Input message="test message" type='password' status="error"  prefix="user">
-          <Button type="primary" icon="Send" loading={false} status='error' />
-        </Input>
-
-      </div>
     </>
   );
 };
