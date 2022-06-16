@@ -1,0 +1,23 @@
+.header {
+    background-color: var(--primary-color) !important;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+}
+
+.sectionGameInfo {
+    background-color: var(--primary-color);
+    display: flex;
+    justify-content: space-between;
+}
+
+.sectionGameInfoText{
+    
+}
+
+.footer {
+    background-color: var(--primary-color) !important;
+    display: flex;
+    justify-content: space-between;
+}
