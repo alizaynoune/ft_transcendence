@@ -37,4 +37,6 @@ button{
   border-radius: 5px !important;
 }
 
-
+input {
+  /* border-radius: 6px !important; */
+}

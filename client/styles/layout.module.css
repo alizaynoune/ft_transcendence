@@ -23,6 +23,8 @@
 .sectionGameInfoText{
     width: 60%;
     color: var(--light-color) !important;
+    font-size: 14px;
+    font-weight: bold;
 }
 
 .footer {
