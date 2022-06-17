@@ -1,10 +1,23 @@
+import { NextComponentType } from 'next';
 import Image from 'next/image'
+import { Card } from 'antd';
 
 
-const OurTeamCard = () => {
+import style from './ourTeamCard.module.css'
+
+
+const OurTeamCard : NextComponentType = () => {
     return (
-        <div>
-            <Image src='/images/team.png' layout='fill' />
+        <div className={style.container}>
+            <Card className={style.cardInfo}
+            actions={[
+                'git',
+                'email',
+                'linkedin'
+            ]}
+            >
+
+            </Card>
         </div>
     )
 }

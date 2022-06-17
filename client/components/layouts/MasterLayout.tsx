@@ -1,3 +1,4 @@
+import { NextComponentType, NextPage } from "next";
 import Image from "next/image";
 import { ReactNode } from "react";
 import { Layout, Button, Typography } from "antd";
@@ -11,7 +12,8 @@ type Props = {
   children: ReactNode;
 };
 
-const MasterLayout = ({ children }: Props) => {
+const MasterLayout: NextPage<Props>  = (props) => {
+  const {children} = props
   return (
     <Layout className={layoutStyle.layout}>
       <Header className={layoutStyle.header}>

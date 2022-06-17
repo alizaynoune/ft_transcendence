@@ -1,22 +1,51 @@
 .container {
     width: 100%;
     height: 400px;
+    position: relative;
 }
 
 .heroSection {
     /* background-color: aqua; */
     width:  100%;
     height: 100%;
-    position: relative;
+    /* position: relative; */
+    display: inline;
     object-fit: contain;
     border-radius: 6px;
     overflow: hidden;
     box-shadow: 0 0 8px 1px var(--shadwo-color);
 }
 
+.heroTextContainer{
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    background: none;
+    top: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 5px;
 
+}
 
+.heroText{
+    background-color: rgba(0, 0, 0, 0.75);
+    width: 60%;
+    padding: 5px;
+    border-radius: 6px;
+    box-shadow: 0 0 8px 1px var(--dark-color);
+    font-size: 13px;
+}
 
+.heroText > * {
+    color: var(--light-color);
+}
+
+.heroText li {
+    list-style-type: circle;
+    list-style: inside;
+}
 
 
 
@@ -27,7 +56,11 @@
 
 @media screen and (max-width: 600px) {
     .container{
-        height: 200px;
+        height: 300px;
+    }
+    .heroText {
+        width: 100%;
+        font-size: 10px;
     }
 }
 
