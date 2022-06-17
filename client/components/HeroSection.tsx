@@ -1,25 +1,26 @@
-import { Input } from 'antd'
-import { AudioOutlined } from '@ant-design/icons';
-import Image from 'next/image'
-
-const { Search } = Input
+import { Input } from "antd";
+import { AudioOutlined } from "@ant-design/icons";
+import Image from "next/image";
+import heroStyle from '../styles/heroSection.module.css'
+const { Search } = Input;
 
 const suffix = (
-    <AudioOutlined
-      style={{
-        fontSize: 16,
-        color: '#1890ff',
-      }}
-    />
-  );
+  <AudioOutlined
+    style={{
+      fontSize: 16,
+      color: "#1890ff",
+    }}
+  />
+);
 
 const HeroSection = () => {
+  return (
+    <div className={heroStyle.container}>
+      <div className={heroStyle.heroSection}>
+        <Image src="/images/hero.png" layout="fill"   />
+      </div>
+    </div>
+  );
+};
 
-    return (
-        <>
-            <Image src='/images/hero.png' width={1000} height={200} />
-        </>
-    )
-}
-
-export default HeroSection
+export default HeroSection;

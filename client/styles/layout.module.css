@@ -1,9 +1,17 @@
+.layout {
+    background-color: var(--background-color) !important;
+}
+
 .header {
     background-color: var(--primary-color) !important;
     display: flex;
     align-items: center;
     justify-content: space-between;
 
+}
+
+.contentContainer {
+    /* padding: 20px; */
 }
 
 .sectionGameInfo {

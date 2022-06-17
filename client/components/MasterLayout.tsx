@@ -16,12 +16,12 @@ type Props = {
 
 const MasterLayout = ({ children }: Props) => {
   return (
-    <Layout>
+    <Layout className={layoutStyle.layout}>
       <Header className={layoutStyle.header}>
         <Image src="/images/Logo.png" height={68} width={110} />
         <Button>Sign in</Button>
       </Header>
-      <Content>
+      <Content className={layoutStyle.contentContainer}>
         {children}
       </Content>
       <div className={layoutStyle.sectionGameInfo}>
