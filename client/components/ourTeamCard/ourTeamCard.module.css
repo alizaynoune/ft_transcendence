@@ -1,10 +1,42 @@
 .container {
-    padding: 0 10px;
+    /* padding: 0 10px; */
+    /* position: relative; */
+    /* height: 200px; */
+    /* width: 200px; */
+    width: 350px;
+    height: 310px;
+    position: relative;
+    /* padding: 5px; */
 }
+
 
 
 .cardImage {
-
+    height: 200px;
+    width: 90%;
+    object-fit: cover;
+    position: absolute;
+    background-color: antiquewhite;
+    top: 0;
+    left: 5%;
+    border-radius: 6px;
+    overflow: hidden;
+    box-shadow: 0 0 8px 1px var(--shadwo-color);
 }
 
-.cardInfo {}
+.cardInfo {
+    width: 100%;
+    margin: auto;
+    position: absolute;
+    bottom: 0;
+    box-shadow: 0 0 8px 1px var(--shadwo-color);
+    border-radius: 6px;
+}
+
+.cardMemberInfo{
+    /* width: 100%; */
+    background-color: aqua;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}

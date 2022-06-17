@@ -4,7 +4,14 @@ import TeamCard from '../components/ourTeamCard/OurTeamCard'
 const OurTeam: NextComponentType = () => {
     return (
         <div>
-            <TeamCard />
+            <TeamCard
+            name="amal"
+            job="zwina"
+            image="/images/team.png"
+            linkedin='linkedin'
+            email='email'
+            github='github'
+            />
         </div>
     )
 }
