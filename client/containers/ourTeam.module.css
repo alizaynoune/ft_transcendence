@@ -1,0 +1,15 @@
+.container {
+  padding: 20px;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  justify-content: space-around;
+  justify-items:center;
+  justify-self: center;
+  gap: 20px 0;
+}
+
+@media screen and (min-width: 1530px) {
+    .container{
+        grid-template-columns: repeat(5, minmax(300px, 1fr));
+    }
+}

@@ -1,12 +1,10 @@
 .container {
-    /* padding: 0 10px; */
-    /* position: relative; */
-    /* height: 200px; */
-    /* width: 200px; */
-    width: 350px;
+    /* width: 350px; */
+    /* width: 100%; */
+    width: 300px;
+    /* min-width: 300px; */
     height: 310px;
     position: relative;
-    /* padding: 5px; */
 }
 
 

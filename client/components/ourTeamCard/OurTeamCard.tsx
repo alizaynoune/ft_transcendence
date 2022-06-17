@@ -1,6 +1,7 @@
 import style from "./ourTeamCard.module.css";
 import { NextPage } from "next";
 import Image from "next/image";
+import Link from "next/link";
 import { Card, Button, Typography } from "antd";
 import Icon, {
   GithubOutlined,
@@ -27,16 +28,16 @@ const EmailIcon = () => (
 );
 
 interface Props {
-    name: string;
-    job: string;
-    linkedin: string;
-    email: string;
-    github: string;
-    image: string;
+  name: string;
+  job: string;
+  linkedin: string;
+  email: string;
+  github: string;
+  image: string;
 }
 
 const OurTeamCard: NextPage<Props> = (props) => {
-    const {name, job, linkedin, email, github, image} = props;
+  const { name, job, linkedin, email, github, image } = props;
   return (
     <div className={style.container}>
       <Card
@@ -63,20 +64,24 @@ const OurTeamCard: NextPage<Props> = (props) => {
             shape="circle"
             icon={<LinkedinOutlined />}
             size="large"
+            href={linkedin}
+            target="_black"
           />,
           <Button
-          type="primary"
-          shape="circle"
-          icon={<Icon component={EmailIcon} />}
-          size="large"
-        />,
+            type="primary"
+            shape="circle"
+            icon={<Icon component={EmailIcon} />}
+            size="large"
+            href={`mailto: ${email}`}
+          />,
           <Button
             type="primary"
             shape="circle"
             icon={<GithubOutlined />}
             size="large"
+            href={github}
+            target="_black"
           />,
-
         ]}
       />
       <div className={style.cardImage}>
