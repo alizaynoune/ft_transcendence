@@ -1,12 +1,9 @@
-import { NextComponentType} from "next";
 import Image from "next/image";
-import { AppProps } from "next/app";
 import { ReactNode } from "react";
 import { Layout, Button, Typography } from "antd";
-import { Eye, EyeSlash } from "../public/assets/icons/EyeIcon";
 import { PoweroffOutlined } from "@ant-design/icons";
 import Icon from "@ant-design/icons";
-import layoutStyle from "../styles/layout.module.css";
+import layoutStyle from "./layout.module.css";
 
 const { Header, Footer, Content } = Layout;
 

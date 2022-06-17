@@ -1,7 +1,7 @@
 import { Input } from "antd";
 import { AudioOutlined } from "@ant-design/icons";
 import Image from "next/image";
-import heroStyle from '../styles/heroSection.module.css'
+import heroStyle from './heroSection.module.css'
 const { Search } = Input;
 
 const suffix = (

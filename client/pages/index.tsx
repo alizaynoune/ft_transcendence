@@ -1,6 +1,7 @@
 import type { NextPage } from "next";
 import styles from "../styles/Home.module.css";
-import HeroSection from "../components/HeroSection";
+import HeroSection from "../components/heroSection/HeroSection";
+import OurTeam from "../containers/OurTeam";
 
 
 const Home: NextPage = () => {
@@ -9,6 +10,7 @@ const Home: NextPage = () => {
       padding: '10px'
     }}>
       <HeroSection />
+      <OurTeam />
     </div>
   )
 };
