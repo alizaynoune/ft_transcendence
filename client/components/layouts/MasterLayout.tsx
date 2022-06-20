@@ -1,9 +1,7 @@
-import { NextComponentType, NextPage } from "next";
+import {  NextPage } from "next";
 import Image from "next/image";
 import { ReactNode } from "react";
 import { Layout, Button, Typography } from "antd";
-import { PoweroffOutlined } from "@ant-design/icons";
-import Icon from "@ant-design/icons";
 import layoutStyle from "./layout.module.css";
 
 const { Header, Footer, Content } = Layout;
@@ -33,7 +31,6 @@ const MasterLayout: NextPage<Props>  = (props) => {
           </Typography.Title>
           <Typography.Text className={layoutStyle.sectionGameInfoText}>
             Ping-pong is a game in which two or four players hit a light, hollow ball back and forth across a net stretched across the center of a table. The game is more commonly known as table tennis, reflecting its origin as an indoor modification of the sport of lawn tennis. The term ping-pong is a federally registered trademark for the game first issued to Parker Brothers, Inc., in 1901, and now owned by Escalade Sports, of Evansville, Indiana.
-
             Provide additional interactive capacity of editable and copyable.
           </Typography.Text>
         </div>

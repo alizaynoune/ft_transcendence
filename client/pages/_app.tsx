@@ -1,16 +1,20 @@
 import "../styles/globals.css";
-// import 'tailwindcss/tailwind.css'
 import type { AppProps } from "next/app";
 
-import MasterLayout from "../components/layouts/MasterLayout";
+import MasterLayout from "components/layouts/MasterLayout";
 
 import 'antd/dist/antd.css'
+import React from "react";
 
-function MyApp({ Component, pageProps }: AppProps) {
+function MyApp({ Component, pageProps, ...appProps }: AppProps) {
+  const layout = !appProps.router.pathname.includes('/auth')
+  
   return (
-    <MasterLayout>
-      <Component {...pageProps} />
-    </MasterLayout>
+    layout ? (
+      <MasterLayout>
+        <Component {...pageProps} />
+      </MasterLayout>
+    ) : <Component {...pageProps} />
   );
 }
 
