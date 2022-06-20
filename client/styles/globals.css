@@ -38,6 +38,11 @@ a {
   border-radius: 5px !important;
 } */
 
-input {
-  /* border-radius: 6px !important; */
+.ant-input-affix-wrapper {
+  /* border-radius: 5px !important;
+  border-left: 5px !important; */
+}
+
+[class*='ant-input'] {
+ border-left: 2px !important;
 }
