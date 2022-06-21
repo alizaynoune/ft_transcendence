@@ -1,6 +1,6 @@
 .container {
   width: 737px;
-  height: 520px;
+  height: 650px;
   background: #ffffff;
   box-shadow: 0px 0px 8px rgba(154, 154, 154, 0.5);
   border-radius: 10px;
@@ -14,22 +14,61 @@
   background-color: var(--primary-color);
   height: 100%;
   width: 40%;
-  /* order: 2; */
   position: absolute;
   left: 0;
   z-index: 1;
   animation: leftSide 0.3s linear;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 20px;
+  padding: 10px;
 }
 
 .rightSide {
-  /* background-color: aquamarine;  */
   height: 100%;
   width: 60%;
-  /* order: 1; */
   position: absolute;
   right: 0;
   animation: rightSide 0.3s linear;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding-top: 90px;
 }
+
+.title {
+    color: var(--primary-color) !important;
+    text-align: center;
+}
+.iconContainer {
+    text-align: center;
+}
+
+.icons {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+    
+}
+
+.loginForm {
+    width: 80%;
+    margin: auto;
+}
+
+.forgotPWD{
+    float: right;
+}
+
+.loginFormButton {
+    width: 100%;
+  }
+
+
+
 @keyframes leftSide {
   from {
     transform: translateX(150%);
