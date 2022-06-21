@@ -18,7 +18,7 @@
       position: absolute;
       left: 0;
       z-index: 1;
-      animation: leftSide 1s linear;
+      animation: leftSide 0.3s linear;
       
     }
     
@@ -28,7 +28,7 @@
     /* order: 1; */
     position: absolute;
     right: 0;
-    animation: rightSide 1s linear;
+    animation: rightSide 0.3s linear;
 }
   @keyframes leftSide {
     from {

@@ -8,35 +8,67 @@
   display: flex;
   border-radius: 6px;
   overflow: hidden;
-  /* display: flex; */
   position: relative;
-  /* flex-direction: row-reverse; */
-  /* animation: reverse 2s; */
 
 }
 
 .leftSide {
-    /* background-color: aquamarine;  */
     height: 100%;
     width: 60%;
     padding: 10px;
-    /* order: 2; */
     position: absolute;
     left: 0;
-    animation: leftSide 1s linear;
+    animation: leftSide 0.3s linear;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    padding-top: 90px;
+}
+
+.title {
+    color: var(--primary-color) !important;
+    text-align: center;
+}
+.iconContainer {
+    text-align: center;
+}
+
+.icons {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    gap: 20px;
     
 }
+
+.loginForm {
+    width: 80%;
+    margin: auto;
+}
+
+.forgotPWD{
+    float: right;
+}
+
+.loginFormButton {
+    width: 100%;
+  }
 
 .rightSide {
     background-color: var(--primary-color);
     height: 100%;
     width: 40%;
-    /* order: 1; */
     position: absolute;
     right: 0;
     z-index: 1;
-    animation: rightSide 1s linear;
+    animation: rightSide 0.3s linear;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 20px
 }
+
 
 @keyframes reverse {
     from {
@@ -61,5 +93,27 @@
     }
     to {
         transform: translateX(0%);
+    }
+}
+
+
+@media screen and (max-width: 700px) {
+    .container{
+        width: 90vw;
+    }
+    .rightSide{
+        display: none;
+    }
+    .leftSide{
+        width: 100%;
+    }
+    .loginForm{
+        width: 100%;
+    }
+}
+
+@media screen and (max-width: 700px) {
+    .forgotPWD{
+        float: left;
     }
 }

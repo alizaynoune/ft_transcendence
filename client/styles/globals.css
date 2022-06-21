@@ -34,8 +34,11 @@ a {
   box-sizing: border-box;
 }
 
-.ant-form-item-control-input-content > [class*="ant-input"] {
- /* border-left: 4px solid !important; */
+ .ant-form-item-control-input-content > [class*="ant-input"] {
  border-left-width: 5px !important;
  border-radius: 6px;
 }
+
+/* #components-form-demo-normal-login .login-form-button {
+  width: 100%;
+} */
