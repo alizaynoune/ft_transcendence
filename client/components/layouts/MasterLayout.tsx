@@ -1,9 +1,9 @@
+import layoutStyle from "./layout.module.css";
 import {  NextPage } from "next";
 import Image from "next/image";
 import { ReactNode } from "react";
 import { Layout, Button, Typography } from "antd";
-import layoutStyle from "./layout.module.css";
-
+import Link from "next/link";
 const { Header, Footer, Content } = Layout;
 
 type Props = {
@@ -16,7 +16,11 @@ const MasterLayout: NextPage<Props>  = (props) => {
     <Layout className={layoutStyle.layout}>
       <Header className={layoutStyle.header}>
         <Image src="/images/Logo.png" height={68} width={110} />
-        <Button>Sign in</Button>
+        <Button>
+          <Link href='/auth/login'>
+            Login
+          </Link>
+          </Button>
       </Header>
       <Content className={layoutStyle.contentContainer}>
         {children}

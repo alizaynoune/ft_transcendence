@@ -1,76 +1,51 @@
-.bady {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    padding: 80px 10px;
-    gap: 20px;
-    width: 100vw;
-    height: 100vh;
-    box-shadow: 0px 0px 8px rgba(154, 154, 154, 0.5);
-    border-radius: 6px;
-  }
-  
-  .logo {
-      background-color: var(--primary-color);
-      border-radius: 6px;
-      width: 120px;
-      height: 90px;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      box-shadow: 0px 0px 8px rgba(154, 154, 154, 0.5);
-  }
-  
-  .container {
-    width: 737px;
-    height: 520px;
-    background: #ffffff;
-    box-shadow: 0px 0px 8px rgba(154, 154, 154, 0.5);
-    border-radius: 10px;
-    display: flex;
-    border-radius: 6px;
-    overflow: hidden;
-    position: relative;
-  }
-  
-  .leftSide {
-      background-color: var(--primary-color);
-      height: 100%;
-      width: 40%;
-      /* order: 2; */
-      position: absolute;
-      left: 0;
-      z-index: 1;
-      animation: leftSide 1s linear;
-      
-    }
-    
-    .rightSide {
-    /* background-color: aquamarine;  */
-    height: 100%;
-    width: 60%;
-    /* order: 1; */
-    position: absolute;
-    right: 0;
-    animation: rightSide 1s linear;
+.container {
+  width: 737px;
+  height: 520px;
+  background: #ffffff;
+  box-shadow: 0px 0px 8px rgba(154, 154, 154, 0.5);
+  border-radius: 10px;
+  display: flex;
+  border-radius: 6px;
+  overflow: hidden;
+  position: relative;
 }
-  @keyframes leftSide {
-    from {
-        transform: translateX(150%);
-    }
-    to {
-        transform: translateX(0%);
-    }
+
+.leftSide {
+  background-color: var(--primary-color);
+  height: 100%;
+  width: 40%;
+  /* order: 2; */
+  position: absolute;
+  left: 0;
+  z-index: 1;
+  animation: leftSide 1s linear;
+}
+
+.rightSide {
+  /* background-color: aquamarine;  */
+  height: 100%;
+  width: 60%;
+  /* order: 1; */
+  position: absolute;
+  right: 0;
+  animation: rightSide 1s linear;
+}
+@keyframes leftSide {
+  from {
+    transform: translateX(150%);
+  }
+  to {
+    transform: translateX(0%);
+  }
 }
 
 @keyframes rightSide {
-    from {
-        transform: translateX(-100%);
-        opacity: 0;
-    }
-    to {
-        transform: translateX(0%);
-        opacity: 1;
-    }
+  from {
+    transform: translateX(-100%);
+    opacity: 0;
+  }
+  to {
+    transform: translateX(0%);
+    opacity: 1;
+  }
 }
-  

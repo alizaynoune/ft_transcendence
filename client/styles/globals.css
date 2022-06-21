@@ -34,15 +34,8 @@ a {
   box-sizing: border-box;
 }
 
-/* button{
-  border-radius: 5px !important;
-} */
-
-.ant-input-affix-wrapper {
-  /* border-radius: 5px !important;
-  border-left: 5px !important; */
-}
-
-[class*='ant-input'] {
- border-left: 2px !important;
+.ant-form-item-control-input-content > [class*="ant-input"] {
+ /* border-left: 4px solid !important; */
+ border-left-width: 5px !important;
+ border-radius: 6px;
 }
