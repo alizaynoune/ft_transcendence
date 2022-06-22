@@ -12,7 +12,7 @@ export default function handler(
     lastname: 'last name',
     email: 'user@email.com',
     phone: '+2120000000',
-    borthDay: '20/12/2022',
+    birthday: '20/12/2022',
     location: 'morocco',
     avatar: 'https://robohash.org/molestiaelaborealiquid.png?size=300x300&set=set1'
   }

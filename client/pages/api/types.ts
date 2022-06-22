@@ -3,7 +3,7 @@ export type ProfileType = {
     lastname: string;
     email: string;
     phone: string;
-    borthDay: string;
+    birthday: string;
     location: string;
     avatar: string;
   }
