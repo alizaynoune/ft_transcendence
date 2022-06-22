@@ -1,10 +1,10 @@
 import style from "./login.module.css";
 import { NextComponentType } from "next";
-import { Button, Input, Form, Checkbox, Typography, Radio } from "antd";
+import { Button, Input, Form, Checkbox, Typography, Divider } from "antd";
 import Link from "next/link";
 import { GoogleOutlined } from "@ant-design/icons";
 
-const { Title, Text, Paragraph } = Typography;
+const { Title, Text } = Typography;
 
 const Login: NextComponentType = () => {
   const onFinish = () => {};
@@ -13,10 +13,12 @@ const Login: NextComponentType = () => {
 
   return (
     <div className={style.container}>
+      {/* Left Side */}
       <div className={style.leftSide}>
         <Title className={style.title} level={3}>
           Login to Your Account
         </Title>
+        {/* Icons */}
         <div className={style.iconContainer}>
           <div className={style.icons}>
             <Button shape="circle" icon={<GoogleOutlined />}></Button>
@@ -24,19 +26,24 @@ const Login: NextComponentType = () => {
           </div>
           <Text type="secondary">or user your email for login</Text>
         </div>
+        {/* Icons End */}
+        {/* Form */}
         <Form
           name="login"
           className={style.loginForm}
           initialValues={{ remember: true }}
           onFinish={onFinish}
         >
+          {/* User name */}
           <Form.Item
             className={style.loginFormItem}
             name="username"
             rules={[{ required: true, message: "Please input your Username!" }]}
           >
-            <Input size="large" prefix={<EmailIcon />} placeholder="Username" />
+            <Input size="large" prefix={<EmailIcon />} placeholder="Email" />
           </Form.Item>
+          {/* User name End */}
+          {/* Passwrod */}
           <Form.Item
             className={style.loginFormItem}
             name="password"
@@ -49,6 +56,8 @@ const Login: NextComponentType = () => {
               size="large"
             />
           </Form.Item>
+          {/* Password End */}
+          {/* Remmember me */}
           <Form.Item className={style.rememberAndForogt}>
             <Form.Item
               name="remember"
@@ -57,11 +66,14 @@ const Login: NextComponentType = () => {
             >
               <Checkbox>Remember me</Checkbox>
             </Form.Item>
+            {/* Rommember me End */}
+            {/* Forgot Password */}
             <Button className={style.forgotPWD} type="link">
               <Link href="/auth/forgotpassword">forgot password?</Link>
             </Button>
           </Form.Item>
-
+          {/* Forgot Password End */}
+          {/* Submit */}
           <Form.Item>
             <Button
               type="primary"
@@ -71,8 +83,15 @@ const Login: NextComponentType = () => {
               SIGN IN
             </Button>
           </Form.Item>
+          {/* Submit End */}
         </Form>
+        {/* Form End */}
+          <Divider className={style.divider}>
+          <Link href="/auth/register">New Here!</Link>
+          </Divider>
       </div>
+      {/* Left Side End */}
+      {/* Right Side */}
       <div className={style.rightSide}>
         <Text strong style={{ fontSize: "30px", color: "#ffffff" }}>
           New Here!
@@ -84,6 +103,7 @@ const Login: NextComponentType = () => {
           <Link href="/auth/register">Register</Link>
         </Button>
       </div>
+      {/* Right Side End */}
     </div>
   );
 };

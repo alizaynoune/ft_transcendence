@@ -1,7 +1,7 @@
 import { NextComponentType } from "next";
 import Image from "next/image";
 import style from "./register.module.css";
-import { Button, Form, Typography, Input, Checkbox } from "antd";
+import { Button, Form, Typography, Input, Divider } from "antd";
 import Link from "next/link";
 import { GoogleOutlined } from "@ant-design/icons";
 
@@ -29,14 +29,14 @@ const Register: NextComponentType = () => {
       {/* Right side */}
       <div className={style.rightSide}>
         <Title className={style.title} level={3}>
-          Login to Your Account
+          Create Account
         </Title>
         <div className={style.iconContainer}>
           <div className={style.icons}>
             <Button shape="circle" icon={<GoogleOutlined />}></Button>
             <Button shape="circle" icon={<Icon_42 />}></Button>
           </div>
-          <Text type="secondary">or user your email for login</Text>
+          <Text type="secondary">or user your email to registration</Text>
         </div>
         <Form
           name="login"
@@ -48,16 +48,24 @@ const Register: NextComponentType = () => {
           <Form.Item
             className={style.loginFormItem}
             name="firstname"
-            rules={[{ required: true, message: "Please input your first name!" }]}
+            rules={[
+              { required: true, message: "Please input your first name!" },
+            ]}
           >
-            <Input size="large" prefix={<UserIcon />} placeholder="First name" />
+            <Input
+              size="large"
+              prefix={<UserIcon />}
+              placeholder="First name"
+            />
           </Form.Item>
           {/* First name end */}
           {/* Last name */}
           <Form.Item
             className={style.loginFormItem}
             name="lastname"
-            rules={[{ required: true, message: "Please input your last name!" }]}
+            rules={[
+              { required: true, message: "Please input your last name!" },
+            ]}
           >
             <Input size="large" prefix={<UserIcon />} placeholder="Last name" />
           </Form.Item>
@@ -68,7 +76,7 @@ const Register: NextComponentType = () => {
             name="email"
             rules={[{ required: true, message: "Please input your email!" }]}
           >
-            <Input size="large" prefix={<EmailIcon />} placeholder="Username" />
+            <Input size="large" prefix={<EmailIcon />} placeholder="Email" />
           </Form.Item>
           {/* Email end */}
           {/* password */}
@@ -108,11 +116,14 @@ const Register: NextComponentType = () => {
               htmlType="submit"
               className={style.loginFormButton}
             >
-             REGISTER
+              REGISTER
             </Button>
           </Form.Item>
           {/* submit end */}
         </Form>
+        <Divider className={style.divider}>
+          <Link href="/auth/login">Alredy have account!</Link>
+        </Divider>
       </div>
       {/* Right Side End */}
     </div>
