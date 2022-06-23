@@ -4,6 +4,7 @@ import style from "./register.module.css";
 import { Button, Form, Typography, Input, Divider } from "antd";
 import Link from "next/link";
 import { GoogleOutlined } from "@ant-design/icons";
+import { useSession, signIn, signOut } from "next-auth/react";
 
 const { Text, Title } = Typography;
 const Register: NextComponentType = () => {
@@ -34,7 +35,9 @@ const Register: NextComponentType = () => {
         <div className={style.iconContainer}>
           <div className={style.icons}>
             <Button shape="circle" icon={<GoogleOutlined />}></Button>
-            <Button shape="circle" icon={<Icon_42 />}></Button>
+            <Button shape="circle" icon={<Icon_42 />}
+            onClick={() => signIn()}
+            ></Button>
           </div>
           <Text type="secondary">or user your email to registration</Text>
         </div>

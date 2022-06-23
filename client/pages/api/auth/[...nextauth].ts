@@ -1,13 +1,50 @@
 import NextAuth from "next-auth"
 import FortyTwoProvider from "next-auth/providers/42-school";
-export default NextAuth({
-    
-  // Configure one or more authentication providers
+import GoogleProvider from 'next-auth/providers/google';
+export default  NextAuth({
+  // 42-school provider
   providers: [
     FortyTwoProvider({
-      clientId: process.env.API_ID_42 || "",
-      clientSecret: process.env.API_SECRET_42 || "",
+      clientId: process.env.FORTY_TWO_CLIENT_ID || "",
+      clientSecret:  process.env.FORTY_TWO_CLIENT_SECRET || "",
+      // profile(profile) {
+      //   console.log(profile.email);
+        
+      //   return profile
+      // }
     }),
-    // ...add more providers here
+    // google provider
+    GoogleProvider({
+      clientId: process.env.GOOGLE_CLIENT_ID || "",
+      clientSecret: process.env.GOOGLE_CLIENT_SECRET || "",
+      // profile(profile) {
+      //   console.log(profile);
+        
+      //   return profile
+      // }
+    })
   ],
+  callbacks: {
+    async signIn({ user, account, profile, email, credentials }) {
+      console.log(profile);
+      
+      return true
+    },
+    async redirect({ url, baseUrl }) {
+      // console.log(baseUrl, url);
+      
+      return baseUrl
+    },
+    async session({ session, user, token }) {
+      // console.log(session);
+      
+      return session
+    },
+    async jwt({ token, user, account, profile, isNewUser }) {
+      return token
+    }
+  },
+  // pages: {
+  //   signIn: '/auth/login'
+  // }
 })

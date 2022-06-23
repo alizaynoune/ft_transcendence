@@ -3,11 +3,21 @@ import { NextComponentType } from "next";
 import { Button, Input, Form, Checkbox, Typography, Divider } from "antd";
 import Link from "next/link";
 import { GoogleOutlined } from "@ant-design/icons";
+import {
+  getProviders,
+  signIn,
+  getSession,
+  getCsrfToken,
+} from "next-auth/react";
+import { InferGetServerSidePropsType } from "next";
 
 const { Title, Text } = Typography;
 
 const Login: NextComponentType = () => {
   const onFinish = () => {};
+  // console.log(providers, "Providers");
+  // console.log(getCsrfToken());
+  
 
   const onFinishFailed = () => {};
 
@@ -21,8 +31,12 @@ const Login: NextComponentType = () => {
         {/* Icons */}
         <div className={style.iconContainer}>
           <div className={style.icons}>
-            <Button shape="circle" icon={<GoogleOutlined />}></Button>
-            <Button shape="circle" icon={<Icon_42 />}></Button>
+            <Button shape="circle" icon={<GoogleOutlined />}
+            onClick={() => signIn('google')}
+            ></Button>
+            <Button shape="circle" icon={<Icon_42 />}
+            onClick={() => signIn('42-school')}
+            ></Button>
           </div>
           <Text type="secondary">or user your email for login</Text>
         </div>
@@ -86,9 +100,9 @@ const Login: NextComponentType = () => {
           {/* Submit End */}
         </Form>
         {/* Form End */}
-          <Divider className={style.divider}>
+        <Divider className={style.divider}>
           <Link href="/auth/register">New Here!</Link>
-          </Divider>
+        </Divider>
       </div>
       {/* Left Side End */}
       {/* Right Side */}

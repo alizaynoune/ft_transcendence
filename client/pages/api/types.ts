@@ -6,4 +6,5 @@ export type ProfileType = {
     birthday: string;
     location: string;
     avatar: string;
+    name: string;
   }
