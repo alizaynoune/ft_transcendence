@@ -10,16 +10,22 @@ import {
   getCsrfToken,
 } from "next-auth/react";
 import { InferGetServerSidePropsType } from "next";
+import { CtxOrReq } from "next-auth/client/_utils";
 
 const { Title, Text } = Typography;
 
-const Login: NextComponentType = () => {
+const Login = ({
+  providers,
+  csrfToken,
+}: InferGetServerSidePropsType<typeof getServerSideProps>) => {
   const onFinish = () => {};
   // console.log(providers, "Providers");
   // console.log(getCsrfToken());
-  
+  console.log(csrfToken, providers, "<<<<<token");
 
   const onFinishFailed = () => {};
+
+  const CsrfToken = getCsrfToken();
 
   return (
     <div className={style.container}>
@@ -31,11 +37,15 @@ const Login: NextComponentType = () => {
         {/* Icons */}
         <div className={style.iconContainer}>
           <div className={style.icons}>
-            <Button shape="circle" icon={<GoogleOutlined />}
-            onClick={() => signIn('google')}
+            <Button
+              shape="circle"
+              icon={<GoogleOutlined />}
+              onClick={() => signIn("google")}
             ></Button>
-            <Button shape="circle" icon={<Icon_42 />}
-            onClick={() => signIn('42-school')}
+            <Button
+              shape="circle"
+              icon={<Icon_42 />}
+              onClick={() => signIn("42-school")}
             ></Button>
           </div>
           <Text type="secondary">or user your email for login</Text>
@@ -57,6 +67,9 @@ const Login: NextComponentType = () => {
             <Input size="large" prefix={<EmailIcon />} placeholder="Email" />
           </Form.Item>
           {/* User name End */}
+          {/* csrfToken */}
+          {/* <input type='hidden' name='csrfToken' defaultValue={CsrfToken} /> */}
+          {/* csrfToken End */}
           {/* Passwrod */}
           <Form.Item
             className={style.loginFormItem}
@@ -122,6 +135,16 @@ const Login: NextComponentType = () => {
   );
 };
 
+export const getServerSideProps = async (context: CtxOrReq | undefined) => {
+  const providers = await getProviders();
+  const csrfToken = await getCsrfToken(context);
+  return {
+    props: { providers, csrfToken },
+  };
+};
+
+export default Login;
+
 const EmailIcon = () => (
   <svg
     width="1em"
@@ -176,5 +199,3 @@ const Icon_42 = () => (
     />
   </svg>
 );
-
-export default Login;

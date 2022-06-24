@@ -23,15 +23,18 @@ export default  NextAuth({
       //   return profile
       // }
     })
+
+    
+
   ],
   callbacks: {
     async signIn({ user, account, profile, email, credentials }) {
-      console.log(profile);
+      // console.log(profile);
       
       return true
     },
     async redirect({ url, baseUrl }) {
-      // console.log(baseUrl, url);
+      // console.log(baseUrl, url, ',<<<<<<<<<<<<url');
       
       return baseUrl
     },

@@ -12,7 +12,6 @@ import React from "react";
 function MyApp({ Component, pageProps: { session, ...pageProps }, ...appProps }: AppProps) {
   const isAuth = appProps.router.pathname.includes('/auth')
   const Layout = isAuth ? AuthLayout : MasterLayout;
-  console.log(process.env.API_ID_42);
   
   return (
     <SessionProvider session={session}>
