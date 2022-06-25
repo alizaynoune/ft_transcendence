@@ -15,7 +15,7 @@ const HeroSection: NextComponentType = () => {
       <div className={heroStyle.heroTextContainer}>
         <div className={heroStyle.heroText}>
           <Text >
-            this web is an project in 1337 named `ft_transcendece` is a onepage
+            this web is an project in 1337 named `ft_transcendence` is a onepage
             fullstack website where you can play pong with players among other
             things such a group chat, private messages, friends list, profiles,
             a match-making system, achievements.

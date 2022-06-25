@@ -17,7 +17,7 @@ const OurTeam: NextComponentType = () => {
       <TeamCard
         name="Ali Zaynoune"
         job="WebDev"
-        image="/images/team.png"
+        image="/images/ali.png"
         linkedin="https://linkedin.com"
         email="https://www.gmail.com"
         github="https://www.github.com"

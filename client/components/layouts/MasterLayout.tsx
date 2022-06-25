@@ -16,7 +16,7 @@ type Props = {
 const MasterLayout: NextPage<Props>  = (props) => {
   const {children} = props
   const {data: session} = useSession();
-  console.log(session, '<<<<<<<<data');
+  // console.log(session, '<<<<<<<<data');
   
   return (
     <Layout className={layoutStyle.layout}>

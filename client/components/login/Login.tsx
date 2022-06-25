@@ -135,13 +135,16 @@ const Login = ({
   );
 };
 
-export const getServerSideProps = async (context: CtxOrReq | undefined) => {
-  const providers = await getProviders();
-  const csrfToken = await getCsrfToken(context);
+export const getServerSideProps = async (ctx: CtxOrReq) => {
+  const providers = getProviders();
+  const csrfToken = await getCsrfToken();
   return {
-    props: { providers, csrfToken },
+    props: {
+      providers,
+      csrfToken,
+    },
   };
-};
+}
 
 export default Login;
 
