@@ -10,6 +10,7 @@
     height: 100%;
     color: var(--light-color);
     justify-items: center;
+    /* padding: 10px; */
 }
 
 .trigger * {
@@ -23,4 +24,5 @@
 .menu {
     background-color: var(--primary-color) !important;
     color: var(--light-color);
+    padding: 5px !important;
 }
