@@ -1,9 +1,10 @@
+import style from './sider.module.css';
 import React, { useState } from 'react';
 import { Layout, Button, Menu } from 'antd';
 import { UserOutlined, VideoCameraOutlined, UploadOutlined, MenuFoldOutlined, MenuUnfoldOutlined } from '@ant-design/icons';
 import Icon from '@ant-design/icons';
-
-import style from './sider.module.css';
+import Link from 'next/link';
+import { signOut } from 'next-auth/react';
 
 
 const { Sider } = Layout;
@@ -19,38 +20,50 @@ const SiderLayout: React.FC = () => {
                 <div className={style.trigger}>
                     <Icon component={collapsed ? triggerClose : triggerOpen} onClick={() => setCollapsed(!collapsed)} />
                 </div>
+                <div>
                 <Menu className={style.menu}
                     theme="dark"
                     mode="inline"
-                    // defaultSelectedKeys={['1']}
                     items={[
                         {
                             key: '1',
-                            icon: <Icon component={profileIcon} />,
+                            icon: <Link href='/profil/me'><Icon component={profileIcon} /></Link>,
                             label: 'Profile',
                         },
                         {
                             key: '2',
-                            icon: <Icon component={messageIcon} />,
+                            icon: <Link href='/message'><Icon component={messageIcon} /></Link>,
                             label: 'Messages',
                         },
                         {
                             key: '3',
-                            icon: <Icon component={achivementIcon} />,
+                            icon: <Link href='/achivements'><Icon component={achivementIcon} /></Link>,
                             label: 'Achivements',
                         },
                         {
                             key: '4',
-                            icon: <Icon component={gamesIcon} />,
+                            icon: <Link href=''><Icon component={gamesIcon} /></Link>,
                             label: 'Current Games',
                         },
                         {
                             key: '5',
                             icon: <Icon component={newGameIcon} />,
-                            label: 'Create Game',
+                            label: (<Link href='/newgame'>Create Game'</Link>),
                         },
                     ]}
                 />
+                <Menu className={style.menu}
+                    theme="dark"
+                    mode="inline"
+                    items={[
+                        {
+                            key: '1',
+                            icon: <Icon component={logoutIcon} onClick={() => signOut()} />,
+                            label: 'logout',
+                        },
+                    ]}
+                />
+                </div>
             </Sider>
         </div>
     );
@@ -137,5 +150,16 @@ const newGameIcon = () => (
         xmlns="http://www.w3.org/2000/svg">
         <path d="M4.75125 7.08625C4.75125 7.40865 5.0126 7.67 5.335 7.67C5.6574 7.67 5.91875 7.40865 5.91875 7.08625V5.91875H7.08625C7.40865 5.91875 7.67 5.6574 7.67 5.335C7.67 5.0126 7.40865 4.75125 7.08625 4.75125H5.91875V3.58375C5.91875 3.26135 5.6574 3 5.335 3C5.0126 3 4.75125 3.26135 4.75125 3.58375V4.75125H3.58375C3.26135 4.75125 3 5.0126 3 5.335C3 5.6574 3.26135 5.91875 3.58375 5.91875H4.75125V7.08625Z" fill="currentColor" />
         <path opacity="0.3" d="M8.66675 4.16602C8.66675 3.33759 9.33832 2.66602 10.1667 2.66602H11.8334C12.6618 2.66602 13.3334 3.33759 13.3334 4.16602V5.83268C13.3334 6.66111 12.6618 7.33268 11.8334 7.33268H10.1667C9.33832 7.33268 8.66675 6.66111 8.66675 5.83268V4.16602ZM2.66675 10.166C2.66675 9.33759 3.33832 8.66602 4.16675 8.66602H5.83342C6.66184 8.66602 7.33342 9.33759 7.33342 10.166V11.8327C7.33342 12.6611 6.66184 13.3327 5.83342 13.3327H4.16675C3.33832 13.3327 2.66675 12.6611 2.66675 11.8327V10.166ZM10.1667 8.66602C9.33832 8.66602 8.66675 9.33759 8.66675 10.166V11.8327C8.66675 12.6611 9.33832 13.3327 10.1667 13.3327H11.8334C12.6618 13.3327 13.3334 12.6611 13.3334 11.8327V10.166C13.3334 9.33759 12.6618 8.66602 11.8334 8.66602H10.1667Z" fill="currentColor" />
+    </svg>
+)
+
+const logoutIcon = () => (
+    <svg width="3em"
+        height="3em"
+        viewBox="0 0 30 30"
+        fill="currentColor">
+        <rect opacity="0.3" width="8" height="1.33333" rx="0.666667" transform="matrix(-1 0 0 1 13.3333 7.33398)" fill="currentColor" />
+        <path d="M11.9737 7.70103L10.917 6.82045C10.6035 6.55922 10.582 6.0852 10.8706 5.79666C11.1304 5.53685 11.5477 5.52459 11.8223 5.76869L13.4924 7.25324C13.9399 7.65103 13.9399 8.35027 13.4924 8.74806L11.8223 10.2326C11.5477 10.4767 11.1304 10.4645 10.8706 10.2046C10.582 9.9161 10.6035 9.44208 10.917 9.18085L11.9737 8.30027C12.1608 8.14434 12.1608 7.85696 11.9737 7.70103Z" fill="currentColor" />
+        <path d="M10.6667 3.77778V4C10.6667 4.36819 10.3683 4.66667 10.0001 4.66667C9.63189 4.66667 9.33341 4.36819 9.33341 4C9.33341 3.63181 9.03494 3.33333 8.66675 3.33333H4.33341C3.78113 3.33333 3.33341 3.78105 3.33341 4.33333V11.6667C3.33341 12.219 3.78113 12.6667 4.33341 12.6667H8.66675C9.03494 12.6667 9.33341 12.3682 9.33341 12C9.33341 11.6318 9.63189 11.3333 10.0001 11.3333C10.3683 11.3333 10.6667 11.6318 10.6667 12V12.2222C10.6667 13.2041 9.87081 14 8.88897 14H4.00008C2.89551 14 2.00008 13.1046 2.00008 12V4C2.00008 2.89543 2.89551 2 4.00008 2H8.88897C9.87081 2 10.6667 2.79594 10.6667 3.77778Z" fill="currentColor" />
     </svg>
 )
