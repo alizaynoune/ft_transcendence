@@ -10,7 +10,7 @@ const HeroSection: NextComponentType = () => {
   return (
     <div className={heroStyle.container}>
       <div className={heroStyle.heroSection}>
-        <Image  src="/images/hero.png" layout="fill" />
+        <Image  src="/images/hero.png" layout="fill" priority objectFit="cover" />
       </div>
       <div className={heroStyle.heroTextContainer}>
         <div className={heroStyle.heroText}>

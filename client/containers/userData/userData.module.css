@@ -1,0 +1,8 @@
+.container {
+    width: 100%;
+    /* ! delete height */
+    height: 100%; 
+    background-color: var(--background-color);
+    border-radius: 6px;
+    box-shadow: 0 0 10px 1px var(--shadwo-color);
+}
