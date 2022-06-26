@@ -36,7 +36,7 @@ const MasterLayout: NextPage<Props> = (props) => {
           <>
             {/* // ! Delet this button */}
             {/* <Button onClick={() => signOut()}>Logout</Button> */}
-            <Avatar src={session.user.image} size="large" />
+            <Avatar src={session.user.image} size={55} />
           </>
         )}
       </Header>
