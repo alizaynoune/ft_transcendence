@@ -1,16 +1,28 @@
 .container {
     /* height: 100%; */
     /* background-color: aqua; */
-    padding: 10px 0 10px 10px
+    padding: 10px 0 10px 10px;
+    z-index: 999;
+    /* height: 100%; */
 }
 
 .sider{
     background-color: var(--primary-color) !important;
-    border-radius: 5px;
+    border-radius: 6px;
     height: 100%;
     color: var(--light-color);
     justify-items: center;
     /* padding: 10px; */
+}
+
+.siderItems {
+    /* background-color: aqua; */
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    height: calc(100% - 60px);
+    /* align-items: center; */
+
 }
 
 .trigger * {
@@ -26,3 +38,11 @@
     color: var(--light-color);
     padding: 5px !important;
 }
+
+
+
+@media screen and (max-width: 700px) {
+    .container {
+        /* position: absolute; */
+    }
+  }

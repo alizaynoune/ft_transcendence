@@ -1,7 +1,6 @@
 import style from './sider.module.css';
 import React, { useState } from 'react';
-import { Layout, Button, Menu } from 'antd';
-import { UserOutlined, VideoCameraOutlined, UploadOutlined, MenuFoldOutlined, MenuUnfoldOutlined } from '@ant-design/icons';
+import { Layout, Badge, Menu } from 'antd';
 import Icon from '@ant-design/icons';
 import Link from 'next/link';
 import { signOut } from 'next-auth/react';
@@ -20,35 +19,35 @@ const SiderLayout: React.FC = () => {
                 <div className={style.trigger}>
                     <Icon component={collapsed ? triggerClose : triggerOpen} onClick={() => setCollapsed(!collapsed)} />
                 </div>
-                <div>
+                <div className={style.siderItems}>
                 <Menu className={style.menu}
                     theme="dark"
                     mode="inline"
                     items={[
                         {
                             key: '1',
-                            icon: <Link href='/profil/me'><Icon component={profileIcon} /></Link>,
-                            label: 'Profile',
+                            icon: <Icon component={profileIcon} />,
+                            label: (<Link href='/profile/me'>Profile</Link>),
                         },
                         {
                             key: '2',
-                            icon: <Link href='/message'><Icon component={messageIcon} /></Link>,
-                            label: 'Messages',
+                            icon: <Icon component={messageIcon} />,
+                            label: (<Link href='/message'>Messages</Link>),
                         },
                         {
                             key: '3',
-                            icon: <Link href='/achivements'><Icon component={achivementIcon} /></Link>,
-                            label: 'Achivements',
+                            icon: <Icon component={achivementIcon} />,
+                            label: (<Link href='/achivements'>Achivements</Link>),
                         },
                         {
                             key: '4',
-                            icon: <Link href=''><Icon component={gamesIcon} /></Link>,
-                            label: 'Current Games',
+                            icon: <Icon component={gamesIcon} />,
+                            label: (<Link href="">Current Games</Link>),
                         },
                         {
                             key: '5',
                             icon: <Icon component={newGameIcon} />,
-                            label: (<Link href='/newgame'>Create Game'</Link>),
+                            label: (<Link href='/game/newgame'>Create Game'</Link>),
                         },
                     ]}
                 />

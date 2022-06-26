@@ -10,6 +10,11 @@
 
 }
 
+.logo{
+    height: 100%;
+    /* line-height: 0 !important; */
+}
+
 .contentContainer {
     /* padding: 20px; */
 }
