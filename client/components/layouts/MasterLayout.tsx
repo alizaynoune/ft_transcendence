@@ -1,7 +1,7 @@
 import layoutStyle from "./layout.module.css";
 import { NextPage } from "next";
 import Image from "next/image";
-import { ReactNode, forwardRef } from "react";
+import { ReactNode, forwardRef, createRef } from "react";
 import { Layout, Button, Typography, Avatar, Menu } from "antd";
 import Link from "next/link";
 import { useSession, signOut, signIn } from "next-auth/react";
@@ -18,7 +18,7 @@ type Props = {
 const MasterLayout: React.FC<Props> = (props) => {
   const { children } = props;
   const { data: session } = useSession();
-  
+  const ref = createRef<HTMLDivElement>();
 
   return (
     // Master layout

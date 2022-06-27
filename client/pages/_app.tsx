@@ -12,16 +12,14 @@ function MyApp({ Component, pageProps, ...appProps }: AppProps) {
   const isAuth = appProps.router.pathname.includes('/auth')
   const Layout = isAuth ? AuthLayout : MasterLayout;
   const session = pageProps.session
-
+  const nodeRef = React.useRef(null)
 
   return (
-    <SessionProvider session={session}>
-      <StrictMode>
-        <Layout>
-          <Component {...pageProps} />
-        </Layout>
-      </StrictMode>
-    </SessionProvider>
+      <SessionProvider session={session}>
+          <Layout>
+            <Component {...pageProps} />
+          </Layout>
+      </SessionProvider>
   );
 }
 
