@@ -6,7 +6,7 @@ import heroStyle from "./heroSection.module.css";
 
 const { Text, Paragraph, Title } = Typography;
 
-const HeroSection: NextComponentType = () => {
+const HeroSection: React.FC = () => {
   return (
     <div className={heroStyle.container}>
       <div className={heroStyle.heroSection}>

@@ -8,7 +8,7 @@ type Props = {
   children: ReactNode;
 };
 
-const AuthLayout: NextPage<Props> = (props) => {
+const AuthLayout: React.FC<Props> = (props) => {
   const { children } = props;
   return (
     <div className={style.container}>

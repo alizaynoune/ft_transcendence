@@ -1,7 +1,7 @@
 import type {NextPage} from 'next'
 
 
-const NewGame: NextPage = () => {
+const NewGame: React.FC = () => {
 
     return (
         <h1>

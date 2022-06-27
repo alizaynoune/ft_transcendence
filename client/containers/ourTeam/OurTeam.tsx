@@ -3,7 +3,7 @@ import TeamCard from "../../components/ourTeamCard/OurTeamCard";
 
 import style from "./ourTeam.module.css";
 
-const OurTeam: NextComponentType = () => {
+const OurTeam: React.FC = () => {
   return (
     <div className={style.container}>
       <TeamCard

@@ -9,21 +9,15 @@ import {
   getSession,
   getCsrfToken,
 } from "next-auth/react";
-import { InferGetServerSidePropsType } from "next";
-import { CtxOrReq } from "next-auth/client/_utils";
 
 const { Title, Text } = Typography;
 
-const Login = ({
-  providers,
-  csrfToken,
-}: InferGetServerSidePropsType<typeof getServerSideProps>) => {
-  const onFinish = () => {};
+const Login: React.FC = () => {
+  const onFinish = () => { };
   // console.log(providers, "Providers");
   // console.log(getCsrfToken());
-  console.log(csrfToken, providers, "<<<<<token");
 
-  const onFinishFailed = () => {};
+  const onFinishFailed = () => { };
 
   const CsrfToken = getCsrfToken();
 
@@ -135,16 +129,6 @@ const Login = ({
   );
 };
 
-export const getServerSideProps = async (ctx: CtxOrReq) => {
-  const providers = getProviders();
-  const csrfToken = await getCsrfToken();
-  return {
-    props: {
-      providers,
-      csrfToken,
-    },
-  };
-}
 
 export default Login;
 

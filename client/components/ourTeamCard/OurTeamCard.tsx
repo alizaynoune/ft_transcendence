@@ -36,7 +36,7 @@ interface Props {
   image: string;
 }
 
-const OurTeamCard: NextPage<Props> = (props) => {
+const OurTeamCard: React.FC<Props> = (props) => {
   const { name, job, linkedin, email, github, image } = props;
   return (
     <div className={style.container}>

@@ -1,7 +1,7 @@
 import layoutStyle from "./layout.module.css";
 import { NextPage } from "next";
 import Image from "next/image";
-import { ReactNode } from "react";
+import { ReactNode, forwardRef } from "react";
 import { Layout, Button, Typography, Avatar, Menu } from "antd";
 import Link from "next/link";
 import { useSession, signOut, signIn } from "next-auth/react";
@@ -12,11 +12,13 @@ const { Header, Footer, Content, Sider } = Layout;
 
 type Props = {
   children: ReactNode;
+  footer?: boolean;
 };
 
-const MasterLayout: NextPage<Props> = (props) => {
+const MasterLayout: React.FC<Props> = (props) => {
   const { children } = props;
   const { data: session } = useSession();
+  
 
   return (
     // Master layout
@@ -53,7 +55,11 @@ const MasterLayout: NextPage<Props> = (props) => {
       {/* content Layout end */}
       <div className={layoutStyle.sectionGameInfo}>
         <div className={layoutStyle.sectionGameInfoLogo}>
-          <Image src="/images/Logo.png" height={68} width={110} />
+          <Link href='/'>
+            <a>
+            <Image src="/images/Logo.png" height={68} width={110} />
+            </a>
+          </Link>
         </div>
         <div className={layoutStyle.sectionGameInfoText}>
           <Typography.Title

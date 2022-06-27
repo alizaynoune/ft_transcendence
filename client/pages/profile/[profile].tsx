@@ -5,7 +5,7 @@ import Image from "next/image";
 import Statistics from "components/userStatistics/Statistics";
 import UserData from "containers/userData/UserData";
 
-const Profile: NextPage = () => {
+const Profile: React.FC = () => {
   return (
     <section className={style.container}>
       <div className={style.cover}>

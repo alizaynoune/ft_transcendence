@@ -7,7 +7,7 @@ import { GoogleOutlined } from "@ant-design/icons";
 import { useSession, signIn, signOut } from "next-auth/react";
 
 const { Text, Title } = Typography;
-const Register: NextComponentType = () => {
+const Register: React.FC = () => {
   const onFinish = () => {};
 
   const onFinishFailed = () => {};

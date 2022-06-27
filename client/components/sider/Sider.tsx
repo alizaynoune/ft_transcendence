@@ -1,5 +1,5 @@
 import style from "./sider.module.css";
-import React, { useState } from "react";
+import React, { useState, useRef } from "react";
 import { Layout, Menu, MenuProps } from "antd";
 import Icon from "@ant-design/icons";
 import Link from "next/link";
@@ -11,6 +11,10 @@ import achivementIcon from "public/assets/icons/achievements.svg";
 import gamesIcon from "public/assets/icons/Game.svg";
 import newGameIcon from "public/assets/icons/NewGame.svg";
 import logoutIcon from "public/assets/icons/out.svg";
+const nodeRef = React.forwardRef<HTMLDivElement, MenuProps>((props, ref) => (
+  <div ref={ref}>{props.children}</div>
+));
+
 
 const { Sider } = Layout;
 
@@ -30,27 +34,32 @@ function getItem(
 
 const items: MenuItem[] = [
   getItem(
-    <Link href="/profile/me">Profile</Link>,
+    // <Link href="/profile/me"><a>Profile</a></Link>,
+    "profile",
     "1",
     <Icon component={profileIcon} style={{ fontSize: "180%" }} />
   ),
   getItem(
-    <Link href="/message">Messages</Link>,
+    "messages",
+    // <Link href="/message">Messages</Link>,
     "2",
     <Icon component={messageIcon} style={{ fontSize: "180%" }} />
   ),
   getItem(
-    <Link href="/">Achivements</Link>,
+    "achievements",
+    // <Link href="/">Achivements</Link>,
     "3",
     <Icon component={achivementIcon} style={{ fontSize: "180%" }} />
   ),
   getItem(
-    <Link href="/">Current Games</Link>,
+    "games",
+    // <Link href="/">Current Games</Link>,
     "4",
     <Icon component={gamesIcon} style={{ fontSize: "180%" }} />
   ),
   getItem(
-    <Link href="/game/newgame">Create Game</Link>,
+    "newGame",
+    // <Link href="/game/newgame">Create Game</Link>,
     "5",
     <Icon component={newGameIcon} style={{ fontSize: "180%" }} />
   ),
@@ -58,9 +67,9 @@ const items: MenuItem[] = [
 
 const SiderLayout: React.FC = () => {
   const [collapsed, setCollapsed] = useState(true);
-
+  const nodeRef = useRef<HTMLDivElement>(null);
   return (
-    <div className={style.container}>
+    <div className={style.container} >
       <Sider
         className={style.sider}
         trigger={null}
@@ -73,20 +82,23 @@ const SiderLayout: React.FC = () => {
             onClick={() => setCollapsed(!collapsed)}
           />
         </div>
-        <div className={style.siderItems}>
+        <div className={style.siderItems} >
           <Menu
+            // nodeRef={nodeRef}
             className={style.menu}
             theme="dark"
             mode="inline"
             items={items}
           />
           <Menu
+            // nodeRef={nodeRef}
             className={style.menu}
             theme="dark"
             mode="inline"
             items={[
               getItem(
-                <span onClick={() => signOut()}>logout</span>,
+                "logout",
+                // <span onClick={() => signOut()}>logout</span>,
                 "1",
                 <Icon
                   component={logoutIcon}
