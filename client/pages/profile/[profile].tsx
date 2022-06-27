@@ -2,7 +2,7 @@ import style from "styles/profile.module.css";
 import type { NextPage } from "next";
 import Image from "next/image";
 // import { Image } from "antd";
-import Statistics from "containers/userStatistics/Statistics";
+import Statistics from "components/userStatistics/Statistics";
 import UserData from "containers/userData/UserData";
 
 const Profile: NextPage = () => {

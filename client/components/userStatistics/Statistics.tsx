@@ -1,11 +1,10 @@
 import style from "./statistics.module.css";
 import { NextComponentType } from "next";
 import Image from "next/image";
-import { Progress, Avatar, Tooltip } from "antd";
+import { Progress, Avatar, Badge, Typography } from "antd";
 import { useSession } from "next-auth/react";
-import { UserOutlined, AntDesignOutlined } from "@ant-design/icons";
 import Icon from "@ant-design/icons";
-import { ForwardRefExoticComponent } from "react";
+
 // Achivements Icons
 import friendly from "public/assets/icons/friendly.svg";
 import legendary from "public/assets/icons/legendary.svg";
@@ -26,6 +25,8 @@ interface AchivementsType {
 }
 
 const level = 12.7;
+const gameWine = 9;
+const gameLoses = 1;
 const achivementsStyle: { [key: string]: object } = {
   silver: {
     color: "#C0C0C0",
@@ -68,40 +69,41 @@ const fackAchivements: AchivementsType[] = [
   // freindly
   { name: "friendly", type: "silver" },
   { name: "friendly", type: "bronze" },
-  
   // legendary
   { name: "legendary", type: "silver" },
-  
   // sharpshooter
   { name: "sharpshooter", type: "silver" },
   { name: "sharpshooter", type: "bronze" },
   { name: "sharpshooter", type: "gold" },
   { name: "sharpshooter", type: "platinum" },
-  
   // wildfire
   { name: "wildfire", type: "silver" },
-  
   // winner
   { name: "winner", type: "silver" },
   { name: "winner", type: "bronze" },
   // photogenic
-  { name: "photogenic", type: 'platinum' },
+  { name: "photogenic", type: "platinum" },
 ];
 
+const {Text} = Typography
 const Statistics: React.FC = () => {
   const { data: session } = useSession();
   const progress = ((level - Math.floor(level)) / 1) * 100;
+  const WinRatio = (gameWine / (gameLoses + gameWine)) * 100;
 
   const mapAchivements = () => {
     return fackAchivements.map((a, index) => {
       return (
         <Avatar
           key={index}
-          // gap={10}
-          // icon={<Icon component={achievementsIcons[a.name]} />}
-          icon={<Icon component={achievementsIcons[a.name]} style={{
-            fontSize: '140%'
-          }} />}
+          icon={
+            <Icon
+              component={achievementsIcons[a.name]}
+              style={{
+                fontSize: "140%",
+              }}
+            />
+          }
           size={45}
           style={achivementsStyle[a.type]}
         />
@@ -138,24 +140,39 @@ const Statistics: React.FC = () => {
           maxStyle={achivementsStyle.maxStyle}
         >
           {mapAchivements()}
-          {/* <Avatar
-            icon={<Icon component={friendly} />}
-            style={achivementsStyle.platinum}
-          />
-          <Avatar
-            style={{ backgroundColor: "#f56a00", border: "3px solid green" }}
-          >
-            K
-          </Avatar>
-          <Avatar
-            style={{ backgroundColor: "#87d068" }}
-            icon={<UserOutlined />}
-          />
-          <Avatar
-            style={{ backgroundColor: "#1890ff" }}
-            icon={<AntDesignOutlined />}
-          /> */}
         </Avatar.Group>
+      </div>
+      <div className={style.gameRatioContainer}>
+        <Progress
+          type="dashboard"
+          percent={90}
+          gapDegree={180}
+          status="normal"
+          width={200}
+          trailColor="var(--error-color)"
+          format={() => <Text type='secondary'>Win Ratio {WinRatio}%</Text>}
+          style={{
+            height: "120px",
+          }}
+        />
+        <Badge
+          className={style.badge}
+          status="default"
+          color={'var(--primary-color)'}
+          text={<Text type='secondary'>Wins {gameWine}</Text>}
+          style={
+            {
+              // width: 20,
+              // height: 20,
+            }
+          }
+        />
+        <Badge
+          className={style.badge}
+          status="error"
+          text={<Text type='secondary'>Loses {gameLoses}</Text>}
+          size="default"
+        />
       </div>
     </div>
   );

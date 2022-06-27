@@ -39,3 +39,22 @@
     border-radius: 6px;
     padding: 5px;
 }
+
+.gameRatioContainer{
+    box-shadow: 0 0 10px 1px var(--shadwo-color);
+    border-radius: 6px;
+    padding: 10px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px
+}
+
+.gameRatioContainer * {
+    font-size: 20px !important;
+    font-weight: bold;
+}
+
+.badge span{
+    width: 10px;
+    height: 10px;
+}
