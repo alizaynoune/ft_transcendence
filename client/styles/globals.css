@@ -42,3 +42,5 @@ a {
 /* #components-form-demo-normal-login .login-form-button {
   width: 100%;
 } */
+
+.ant-tabs-nav-list{justify-content: space-between;width: 100%; padding: 0 20px;}

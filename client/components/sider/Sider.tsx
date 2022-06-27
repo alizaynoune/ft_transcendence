@@ -34,32 +34,27 @@ function getItem(
 
 const items: MenuItem[] = [
   getItem(
-    // <Link href="/profile/me"><a>Profile</a></Link>,
-    "profile",
+    <Link href="/profile/me"><a>Profile</a></Link>,
     "1",
     <Icon component={profileIcon} style={{ fontSize: "180%" }} />
   ),
   getItem(
-    "messages",
-    // <Link href="/message">Messages</Link>,
+    <Link href="/message">Messages</Link>,
     "2",
     <Icon component={messageIcon} style={{ fontSize: "180%" }} />
   ),
   getItem(
-    "achievements",
-    // <Link href="/">Achivements</Link>,
+    <Link href="/">Achivements</Link>,
     "3",
     <Icon component={achivementIcon} style={{ fontSize: "180%" }} />
   ),
   getItem(
-    "games",
-    // <Link href="/">Current Games</Link>,
+    <Link href="/">Current Games</Link>,
     "4",
     <Icon component={gamesIcon} style={{ fontSize: "180%" }} />
   ),
   getItem(
-    "newGame",
-    // <Link href="/game/newgame">Create Game</Link>,
+    <Link href="/game/newgame">Create Game</Link>,
     "5",
     <Icon component={newGameIcon} style={{ fontSize: "180%" }} />
   ),
@@ -97,8 +92,7 @@ const SiderLayout: React.FC = () => {
             mode="inline"
             items={[
               getItem(
-                "logout",
-                // <span onClick={() => signOut()}>logout</span>,
+                <span onClick={() => signOut()}>logout</span>,
                 "1",
                 <Icon
                   component={logoutIcon}
