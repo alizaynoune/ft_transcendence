@@ -1,6 +1,6 @@
 import style from "./sider.module.css";
 import React, { useState } from "react";
-import { Layout, Badge, Menu } from "antd";
+import { Layout, Menu, MenuProps } from "antd";
 import Icon from "@ant-design/icons";
 import Link from "next/link";
 import { signOut } from "next-auth/react";
@@ -13,6 +13,48 @@ import newGameIcon from "public/assets/icons/NewGame.svg";
 import logoutIcon from "public/assets/icons/out.svg";
 
 const { Sider } = Layout;
+
+type MenuItem = Required<MenuProps>["items"][number];
+
+function getItem(
+  label: React.ReactNode,
+  key: React.Key,
+  icon?: React.ReactNode
+): MenuItem {
+  return {
+    key,
+    icon,
+    label,
+  } as MenuItem;
+}
+
+const items: MenuItem[] = [
+  getItem(
+    <Link href="/profile/me">Profile</Link>,
+    "1",
+    <Icon component={profileIcon} style={{ fontSize: "180%" }} />
+  ),
+  getItem(
+    <Link href="/message">Messages</Link>,
+    "2",
+    <Icon component={messageIcon} style={{ fontSize: "180%" }} />
+  ),
+  getItem(
+    <Link href="/">Achivements</Link>,
+    "3",
+    <Icon component={achivementIcon} style={{ fontSize: "180%" }} />
+  ),
+  getItem(
+    <Link href="/">Current Games</Link>,
+    "4",
+    <Icon component={gamesIcon} style={{ fontSize: "180%" }} />
+  ),
+  getItem(
+    <Link href="/game/newgame">Create Game</Link>,
+    "5",
+    <Icon component={newGameIcon} style={{ fontSize: "180%" }} />
+  ),
+];
 
 const SiderLayout: React.FC = () => {
   const [collapsed, setCollapsed] = useState(true);
@@ -36,60 +78,22 @@ const SiderLayout: React.FC = () => {
             className={style.menu}
             theme="dark"
             mode="inline"
-            items={[
-              {
-                key: "1",
-                icon: (
-                  <Icon component={profileIcon} style={{ fontSize: "180%" }} />
-                ),
-                label: <Link href="/profile/me">Profile</Link>,
-              },
-              {
-                key: "2",
-                icon: (
-                  <Icon component={messageIcon} style={{ fontSize: "180%" }} />
-                ),
-                label: <Link href="/message">Messages</Link>,
-              },
-              {
-                key: "3",
-                icon: (
-                  <Icon component={achivementIcon} style={{ fontSize: "180%" }}/>
-                ),
-                label: <Link href="/">Achivements</Link>,
-              },
-              {
-                key: "4",
-                icon: (
-                  <Icon component={gamesIcon} style={{ fontSize: "180%" }} />
-                ),
-                label: <Link href="/">Current Games</Link>,
-              },
-              {
-                key: "5",
-                icon: (
-                  <Icon component={newGameIcon} style={{ fontSize: "180%" }} />
-                ),
-                label: <Link href="/game/newgame">Create Game</Link>,
-              },
-            ]}
+            items={items}
           />
           <Menu
             className={style.menu}
             theme="dark"
             mode="inline"
             items={[
-              {
-                key: "1",
-                icon: (
-                  <Icon
-                    component={logoutIcon}
-                    onClick={() => signOut()}
-                    style={{ fontSize: "180%" }}
-                  />
-                ),
-                label: "logout",
-              },
+              getItem(
+                <span onClick={() => signOut()}>logout</span>,
+                "1",
+                <Icon
+                  component={logoutIcon}
+                  style={{ fontSize: "180%" }}
+                  onClick={() => signOut()}
+                />
+              ),
             ]}
           />
         </div>
