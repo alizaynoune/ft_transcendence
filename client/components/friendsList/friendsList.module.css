@@ -1,0 +1,15 @@
+.container {
+    padding: 20px;
+}
+
+.item {
+    display: flex !important;
+    max-width: 400px !important;
+}
+
+.actionContainer {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+}

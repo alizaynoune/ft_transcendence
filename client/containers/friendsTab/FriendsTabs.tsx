@@ -2,7 +2,7 @@ import style from "./friendsTabs.module.css";
 import { Tabs, List, Avatar } from "antd";
 // import VirtualList from 'rc-virtual-list';
 
-import FriendsCard from "@/components/friendsCard/FriendsCard";
+import FriendsCard from "@/components/friendsList/FriendsList";
 
 const fakeUser = {
   username: "user name",
