@@ -1,7 +1,9 @@
 import style from "./accountSettingTab.module.css";
 import { Tabs } from "antd";
 
+// components
 import AccountEdit from "@/components/accountEdit/AccountEdit";
+import AccountPrivacy from "@/components/accountPrivacy/AccountPrivacy"
 
 const { TabPane } = Tabs;
 const AccountSettingTab: React.FC = () => {
@@ -23,7 +25,7 @@ const AccountSettingTab: React.FC = () => {
             <AccountEdit />
         </TabPane>
         <TabPane tab="Privacy" key="2">
-          Privacy
+          <AccountPrivacy />
         </TabPane>
       </Tabs>
     </div>

@@ -10,7 +10,7 @@ import {
   DatePicker,
   Select,
 } from "antd";
-import Icon, { DownOutlined } from "@ant-design/icons";
+import Icon from "@ant-design/icons";
 
 // Icons
 import profileIcon from "@/icons/user.svg";
@@ -132,11 +132,12 @@ const AccountSetting: React.FC = () => {
             <Button
               type="primary"
               htmlType="submit"
+              size="large"
               style={{
                 width: "100%",
               }}
             >
-              Submit
+              Update
             </Button>
           </Form.Item>
         </Col>
