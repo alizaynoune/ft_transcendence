@@ -1,5 +1,5 @@
 import { NextComponentType } from "next";
-import RegisterComponet from 'components/Register/Register'
+import RegisterComponet from '@/components/Register/Register'
 
 const Register: NextComponentType = () => {
     return(

@@ -5,12 +5,12 @@ import Icon from "@ant-design/icons";
 import Link from "next/link";
 import { signOut } from "next-auth/react";
 // Icons
-import profileIcon from "public/assets/icons/user.svg";
-import messageIcon from "public/assets/icons/message.svg";
-import achivementIcon from "public/assets/icons/achievements.svg";
-import gamesIcon from "public/assets/icons/Game.svg";
-import newGameIcon from "public/assets/icons/NewGame.svg";
-import logoutIcon from "public/assets/icons/out.svg";
+import profileIcon from "@/icons/user.svg";
+import messageIcon from "@/icons/message.svg";
+import achivementIcon from "@/icons/achievements.svg";
+import gamesIcon from "@/icons/Game.svg";
+import newGameIcon from "@/icons/NewGame.svg";
+import logoutIcon from "@/icons/out.svg";
 const nodeRef = React.forwardRef<HTMLDivElement, MenuProps>((props, ref) => (
   <div ref={ref}>{props.children}</div>
 ));

@@ -5,7 +5,7 @@ import { ReactNode, forwardRef, createRef } from "react";
 import { Layout, Button, Typography, Avatar, Menu } from "antd";
 import Link from "next/link";
 import { useSession, signOut, signIn } from "next-auth/react";
-import SiderLayout from "../sider/Sider";
+import SiderLayout from "@/components/sider/Sider";
 // import {}
 
 const { Header, Footer, Content, Sider } = Layout;

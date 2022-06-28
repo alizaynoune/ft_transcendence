@@ -1,5 +1,5 @@
 import { NextComponentType } from "next";
-import ForgotPWDComponet from 'components/forgotPWD/ForgotPWD'
+import ForgotPWDComponet from '@/components/forgotPWD/ForgotPWD'
 
 const FogotPasswod: NextComponentType = () => {
     return(

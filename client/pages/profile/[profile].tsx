@@ -2,8 +2,8 @@ import style from "styles/profile.module.css";
 import type { NextPage } from "next";
 import Image from "next/image";
 // import { Image } from "antd";
-import Statistics from "components/userStatistics/Statistics";
-import UserData from "containers/userData/UserData";
+import Statistics from "@/components/userStatistics/Statistics";
+import UserData from "@/containers/userData/UserData";
 
 const Profile: React.FC = () => {
   return (

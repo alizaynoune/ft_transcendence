@@ -1,5 +1,5 @@
 import { NextComponentType } from "next";
-import LoginComponet from 'components/login/Login'
+import LoginComponet from '@/components/login/Login'
 
 const Login: NextComponentType = () => {
     return(

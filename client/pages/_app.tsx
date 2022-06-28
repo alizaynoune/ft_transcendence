@@ -1,8 +1,8 @@
 import "../styles/globals.css";
 import type { AppProps } from "next/app";
 import { SessionProvider } from "next-auth/react"
-import MasterLayout from "components/layouts/MasterLayout";
-import AuthLayout from 'components/layouts/authLayout/AuthLayout'
+import MasterLayout from "@/components/layouts/MasterLayout";
+import AuthLayout from '@/components/layouts/authLayout/AuthLayout'
 import 'antd/dist/antd.css'
 import React, { StrictMode } from "react";
 

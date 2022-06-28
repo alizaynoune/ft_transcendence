@@ -6,12 +6,12 @@ import { useSession } from "next-auth/react";
 import Icon from "@ant-design/icons";
 
 // Achivements Icons
-import friendly from "public/assets/icons/friendly.svg";
-import legendary from "public/assets/icons/legendary.svg";
-import photogenic from "public/assets/icons/photogenic.svg";
-import sharpshooter from "public/assets/icons/sharpshooter.svg";
-import wildfire from "public/assets/icons/wildfire.svg";
-import winner from "public/assets/icons/winner.svg";
+import friendly from "@/icons/friendly.svg";
+import legendary from "@/icons/legendary.svg";
+import photogenic from "@/icons/photogenic.svg";
+import sharpshooter from "@/icons/sharpshooter.svg";
+import wildfire from "@/icons/wildfire.svg";
+import winner from "@/icons/winner.svg";
 
 interface AchivementsType {
   name:

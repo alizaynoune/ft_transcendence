@@ -1,6 +1,6 @@
 import style from "./userData.module.css";
 import { Tabs } from "antd";
-import AccountSetting from 'components/accountSetting/AccountSetting'
+import AccountSetting from '@/containers/accountSettingTab/AccountSettingTab'
 
 const { TabPane } = Tabs;
 
