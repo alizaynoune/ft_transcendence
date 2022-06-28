@@ -1,14 +1,8 @@
 import style from "./friendsList.module.css";
 import React, { useEffect, useState } from "react";
-import { List, Avatar, Space, Popover, Button } from "antd";
-import Icon from "@ant-design/icons";
+import { List } from "antd";
+import UserCard from "@/components/userCard/UserCard";
 
-// Icons
-import DotsVIcon from "@/icons/DotsV.svg";
-import DeleteUserIcon from '@/icons/DeleteUser.svg';
-import BlockUserIcon from '@/icons/BlockUser.svg';
-import MessageIcon from '@/icons/message.svg';
-import PlayGameIcon from '@/icons/PlayGame.svg';
 
 
 
@@ -86,55 +80,7 @@ const FriendsCard: React.FC = () => {
           pageSize: 16,
         }}
         renderItem={(item) => (
-          <List.Item className={style.item}
-            key={item.login.uuid}
-            actions={[
-              <Popover
-                content={
-                  <div className={style.actionContainer}>
-                    <Button
-                      ghost
-                      type="primary"
-                      icon={<Icon component={MessageIcon} style={{ fontSize: '120%' }} />}
-                      onClick={() => deleteFriend(item.login.uuid)}
-                    />
-                    <Button
-                      ghost
-                      type="primary"
-                      icon={<Icon component={PlayGameIcon} style={{ fontSize: '120%' }} />}
-                      onClick={() => deleteFriend(item.login.uuid)}
-                    />
-                    <Button
-                      ghost
-                      type="primary"
-                      icon={<Icon component={BlockUserIcon} style={{ fontSize: '120%' }} />}
-                      onClick={() => deleteFriend(item.login.uuid)}
-                    />
-                    <Button
-                      ghost
-                      type="primary"
-                      icon={<Icon component={DeleteUserIcon} style={{ fontSize: '120%' }} />}
-                      onClick={() => deleteFriend(item.login.uuid)}
-                    />
-                  </div>
-                }
-                trigger="click"
-                placement="left"
-
-              >
-                <Icon
-                  component={DotsVIcon}
-                  style={{ fontSize: "140%" }}
-                />
-              </Popover>,
-            ]}
-          >
-            <List.Item.Meta
-              avatar={<Avatar src={item.picture.large} size='large' />}
-              title={`${item.name.first} ${item.name.last}`}
-              description={item.login.username}
-            />
-          </List.Item>
+          <UserCard type="friend" user={item} />
         )}
       />
     </div>

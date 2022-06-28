@@ -1,14 +1,7 @@
 import style from "./RequestList.module.css";
 import React, { useEffect, useState } from "react";
-import { List, Avatar, Space, Popover, Button } from "antd";
-import Icon, { CloseOutlined, CheckOutlined } from "@ant-design/icons";
-
-// Icons
-import DotsVIcon from "@/icons/DotsV.svg";
-import DeleteUserIcon from '@/icons/DeleteUser.svg';
-import BlockUserIcon from '@/icons/BlockUser.svg';
-import MessageIcon from '@/icons/message.svg';
-import PlayGameIcon from '@/icons/PlayGame.svg';
+import { List } from "antd";
+import UserCard from '@/components/userCard/UserCard';
 
 
 interface DataType {
@@ -84,44 +77,7 @@ const FriendRequestList: React.FC = () => {
                     pageSize: 16,
                 }}
                 renderItem={(item) => (
-                    <List.Item className={style.item}
-                        key={item.login.uuid}
-                        actions={[
-                            <Popover
-                                content={
-                                    <div className={style.actionContainer}>
-                                        <Button
-                                            ghost
-                                            danger
-                                            type="primary"
-                                            icon={<CloseOutlined />}
-                                            onClick={() => deleteFriend(item.login.uuid)}
-                                        />
-                                        <Button
-                                            ghost
-                                            type="primary"
-                                            icon={<CheckOutlined />}
-                                            onClick={() => deleteFriend(item.login.uuid)}
-                                        />
-                                    </div>
-                                }
-                                trigger="click"
-                                placement="left"
-
-                            >
-                                <Icon
-                                    component={DotsVIcon}
-                                    style={{ fontSize: "140%" }}
-                                />
-                            </Popover>,
-                        ]}
-                    >
-                        <List.Item.Meta
-                            avatar={<Avatar src={item.picture.large} size='large' />}
-                            title={`${item.name.first} ${item.name.last}`}
-                            description={item.login.username}
-                        />
-                    </List.Item>
+                    <UserCard user={item} type='request' />
                 )}
             />
         </div>
