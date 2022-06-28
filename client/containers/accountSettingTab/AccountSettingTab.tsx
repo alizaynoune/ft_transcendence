@@ -18,7 +18,8 @@ const AccountSettingTab: React.FC = () => {
           borderRadius: "6px",
           fontWeight: "bold",
           boxShadow: "0px 0px 8px rgba(154, 154, 154, 0.5)",
-          padding: "0 20px",
+          padding: "0 40px",
+          color: 'var(--light-color)'
         }}
       >
         <TabPane tab="Edit" key="1">
