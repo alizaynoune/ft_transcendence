@@ -1,6 +1,6 @@
 import style from "./sider.module.css";
 import React, { useState, useRef } from "react";
-import { Layout, Menu, MenuProps } from "antd";
+import { Layout, Menu, MenuProps, Badge } from "antd";
 import Icon from "@ant-design/icons";
 import Link from "next/link";
 import { signOut } from "next-auth/react";
@@ -34,14 +34,16 @@ function getItem(
 
 const items: MenuItem[] = [
   getItem(
-    <Link href="/profile/me"><a>Profile</a></Link>,
+    <Link href="/profile/me">Profile</Link>,
     "1",
     <Icon component={profileIcon} style={{ fontSize: "180%" }} />
   ),
   getItem(
     <Link href="/message">Messages</Link>,
     "2",
-    <Icon component={messageIcon} style={{ fontSize: "180%" }} />
+    <Badge dot offset={[-2, 4]}>
+      <Icon component={messageIcon} style={{ fontSize: "180%", color: 'var(--light-color)' }} />
+    </Badge>
   ),
   getItem(
     <Link href="/">Achivements</Link>,
