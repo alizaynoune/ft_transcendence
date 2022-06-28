@@ -1,6 +1,5 @@
 import style from "./accountEdit.module.css";
 import {
-  Tabs,
   Form,
   Input,
   Button,
@@ -8,15 +7,17 @@ import {
   Row,
   Dropdown,
   Menu,
-  MenuProps,
+  DatePicker,
+  Select,
 } from "antd";
 import Icon, { DownOutlined } from "@ant-design/icons";
 
 // Icons
 import profileIcon from "@/icons/user.svg";
-import emailIcon from '@/icons/email.svg'
-
-const { TabPane } = Tabs;
+import emailIcon from "@/icons/email.svg";
+import phoneIcon from "@/icons/Phone.svg";
+import locationIcon from "@/icons/Location.svg";
+import calenderEditIcon from "@/icons/CalenderEdit.svg";
 
 const menu = (
   <Menu
@@ -36,6 +37,7 @@ const menu = (
   />
 );
 
+const { Option } = Select;
 const AccountSetting: React.FC = () => {
   return (
     <Form className={style.form} name="accountSettings">
@@ -81,16 +83,21 @@ const AccountSetting: React.FC = () => {
             <Input
               size="large"
               placeholder="Phone"
-              prefix={<Icon component={profileIcon} />}
+              prefix={<Icon component={phoneIcon} />}
             />
           </Form.Item>
         </Col>
         <Col span={10}>
           <Form.Item name="birthday">
-            <Input
+            <DatePicker
               size="large"
               placeholder="Birthday"
-              prefix={<Icon component={profileIcon} />}
+              suffixIcon={
+                <Icon
+                  component={calenderEditIcon}
+                  style={{ fontSize: "140%" }}
+                />
+              }
             />
           </Form.Item>
         </Col>
@@ -99,16 +106,26 @@ const AccountSetting: React.FC = () => {
             <Input
               size="large"
               placeholder="Address"
-              prefix={<Icon component={profileIcon} />}
+              prefix={<Icon component={locationIcon} />}
             />
           </Form.Item>
         </Col>
         <Col span={10}>
-          <Dropdown overlay={menu} trigger={["click"]}>
-            <Button type="primary" ghost icon={<DownOutlined />}>
-              Grender
-            </Button>
-          </Dropdown>
+          <Select
+            // showSearch
+            placeholder="Grender"
+            optionFilterProp="children"
+            // onChange={onChange}
+            // onSearch={onSearch}
+            filterOption={(input, option) =>
+              (option!.children as unknown as string)
+                .toLowerCase()
+                .includes(input.toLowerCase())
+            }
+          >
+            <Option value="Male">Male</Option>
+            <Option value="Female">Female</Option>
+          </Select>
         </Col>
         <Col span={10}>
           <Form.Item>

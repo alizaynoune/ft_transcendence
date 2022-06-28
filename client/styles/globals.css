@@ -33,14 +33,20 @@ a {
 * {
   box-sizing: border-box;
 }
-
- .ant-form-item-control-input-content > [class*="ant-input"] {
- border-left-width: 5px !important;
- border-radius: 6px;
+/* ant-picker */
+.ant-form-item-control-input-content > [class*="ant-input"],
+.ant-form-item-control-input-content > [class*="ant-picker"] {
+  border-left-width: 5px !important;
+  border-radius: 6px;
+  width: 100%;
 }
 
 /* #components-form-demo-normal-login .login-form-button {
   width: 100%;
 } */
 
-.ant-tabs-nav-list{justify-content: space-between;width: 100%; padding: 0 20px;}
+.ant-tabs-nav-list {
+  justify-content: space-between;
+  width: 100%;
+  padding: 0 20px;
+}
