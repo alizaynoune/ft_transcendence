@@ -90,7 +90,6 @@ const FriendsCard: React.FC = () => {
             key={item.login.uuid}
             actions={[
               <Popover
-                // key="ellipsis"
                 content={
                   <div className={style.actionContainer}>
                     <Button
@@ -126,7 +125,6 @@ const FriendsCard: React.FC = () => {
                 <Icon
                   component={DotsVIcon}
                   style={{ fontSize: "140%" }}
-                // onClick={deleteFriend.bind(this, item.login.uuid)}
                 />
               </Popover>,
             ]}

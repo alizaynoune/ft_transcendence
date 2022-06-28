@@ -2,13 +2,9 @@ import style from "./friendsTabs.module.css";
 import { Tabs, List, Avatar } from "antd";
 // import VirtualList from 'rc-virtual-list';
 
-import FriendsCard from "@/components/friendsList/FriendsList";
+import FriendsList from "@/components/friendsList/FriendsList";
+import Request from '@/components/RequestList/RequestList';
 
-const fakeUser = {
-  username: "user name",
-  email: "user@gmail.com",
-  avatar: "https://randomuser.me/api/portraits/med/women/94.jpg",
-};
 
 const { TabPane } = Tabs;
 const FriendsTabs: React.FC = () => {
@@ -28,28 +24,10 @@ const FriendsTabs: React.FC = () => {
         }}
       >
         <TabPane tab="Friends" key="1">
-          {/* <List> */}
-              <FriendsCard />
-            {/* <List.Item key="1">
-              <List.Item.Meta
-                avatar={<Avatar src={fakeUser.avatar} size="large" />}
-                title={fakeUser.username}
-                description={fakeUser.email}
-              />
-              <div>Content</div>
-            </List.Item>
-            <List.Item key="2">
-              <List.Item.Meta
-                avatar={<Avatar src={fakeUser.avatar} size="large" />}
-                title={fakeUser.username}
-                description={fakeUser.email}
-              />
-              <div>Content</div>
-            </List.Item> */}
-          {/* </List> */}
+          <FriendsList />
         </TabPane>
         <TabPane tab="Friend requests" key="2">
-          {/* <AccountPrivacy /> */}
+          <Request />
         </TabPane>
       </Tabs>
     </div>
