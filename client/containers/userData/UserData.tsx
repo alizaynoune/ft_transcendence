@@ -3,6 +3,7 @@ import { Tabs } from "antd";
 import AccountSetting from '@/containers/accountSettingTab/AccountSettingTab'
 import FriendsTabs from '@/containers/friendsTab/FriendsTabs'
 import BlockedsList from "@/components/blockedsList/BlockedsList";
+import LastMatches from "@/components/lastMatches/LastMatches";
 
 const { TabPane } = Tabs;
 
@@ -24,7 +25,7 @@ const UserData: React.FC = () => {
           <BlockedsList />
         </TabPane>
         <TabPane tab="Last Matches" key="4">
-          Last Matches
+          <LastMatches />
         </TabPane>
       </Tabs>
     </div>

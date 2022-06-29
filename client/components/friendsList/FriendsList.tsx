@@ -58,10 +58,6 @@ const FriendsCard: React.FC = () => {
     loadMoreData();
   }, []);
 
-  const deleteFriend = (id: string) => {
-    console.log(id);
-
-  }
 
   return (
     <div className={style.container}>
