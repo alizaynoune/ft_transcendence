@@ -1,8 +1,9 @@
 import style from "./lastMatches.module.css";
-import { Space, Table, Tag } from "antd";
+import { Space, Table, Tag, Avatar } from "antd";
 import type { ColumnsType } from "antd/lib/table";
 import React, { useState, useEffect } from "react";
 import moment from "moment";
+import Link from "next/link";
 
 interface UserType {
   gender: string;
@@ -96,27 +97,34 @@ const LastMatches: React.FC = () => {
     creatData();
   }, [users]);
 
-  useEffect(() => {
-    console.group("data");
-    console.log(data);
-    console.groupEnd();
-  }, [data]);
-//   moment(item.createdAt).fromNow()
   const columns: ColumnsType<DataType> = [
     {
       title: "User",
       dataIndex: "user",
       key: "user",
+      render: (_, { avatar, user }) => (
+        <Link href={`/profile/${user}`}>
+            <a className={style.avatar}>
+          <Avatar src={avatar} size='large' />
+          <span>{user}</span>
+          </a>
+        </ Link>
+      ),
     },
     {
       title: "Result",
       dataIndex: "result",
       key: "result",
-      render: result => <Tag key={result}
-      color={result === 'winn' ? 'var(--success-color)' : 'var(--error-color)'}
-      >
+      render: (result) => (
+        <Tag
+          key={result}
+          color={
+            result === "winn" ? "var(--success-color)" : "var(--error-color)"
+          }
+        >
           {result.toUpperCase()}
-      </Tag>
+        </Tag>
+      ),
     },
     {
       title: "Level",
@@ -127,7 +135,7 @@ const LastMatches: React.FC = () => {
       title: "Date",
       dataIndex: "date",
       key: "date",
-      render: date => <span>{moment(date).fromNow()}</span>
+      render: (date) => <span>{moment(date).fromNow()}</span>,
     },
     {
       title: "Duration",
@@ -136,7 +144,21 @@ const LastMatches: React.FC = () => {
     },
   ];
 
-  return <Table columns={columns} dataSource={data} />;
+  return (
+    <div className={style.container}>
+      <Table
+        className={style.table}
+        rowClassName={(record, index) =>
+          index % 2 === 0 ? style.tableRowLight : style.tableRowDark
+        }
+        columns={columns}
+        dataSource={data}
+        pagination={{
+            position: ['bottomCenter']
+        }}
+      />
+    </div>
+  );
 };
 
 export default LastMatches;

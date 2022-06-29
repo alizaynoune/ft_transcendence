@@ -51,3 +51,8 @@ a {
   padding: 0 20px;
   margin: auto;
 }
+
+.ant-table-thead > tr >th{
+  color: white !important;
+  background: #464E5F !important;
+}

@@ -1,0 +1,25 @@
+.container {
+  padding: 20px;
+}
+
+.table {
+  padding: 6px;
+  border-radius: 6px !important;
+  box-shadow: 0 0 10px 1px var(--shadwo-color);
+  background-color: #464e5f;
+}
+
+.tableRowLight {
+  background-color: rgba(70, 78, 95, 0.3);
+}
+
+.tableRowDark {
+  background-color: rgba(70, 78, 95, 0.8);
+  /* opacity: 0.2; */
+}
+
+.avatar {
+    display: flex;
+    align-items: flex-end;
+    color: var(--dark-color);
+}
