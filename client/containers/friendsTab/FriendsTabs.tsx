@@ -3,8 +3,7 @@ import { Tabs, List, Avatar } from "antd";
 // import VirtualList from 'rc-virtual-list';
 
 import FriendsList from "@/components/friendsList/FriendsList";
-import Request from '@/components/RequestList/RequestList';
-
+import Request from "@/components/RequestList/RequestList";
 
 const { TabPane } = Tabs;
 const FriendsTabs: React.FC = () => {

@@ -85,7 +85,7 @@ const fackAchivements: AchivementsType[] = [
   { name: "photogenic", type: "platinum" },
 ];
 
-const {Text} = Typography
+const { Text } = Typography;
 const Statistics: React.FC = () => {
   const { data: session } = useSession();
   const progress = ((level - Math.floor(level)) / 1) * 100;
@@ -150,7 +150,7 @@ const Statistics: React.FC = () => {
           status="normal"
           width={200}
           trailColor="var(--error-color)"
-          format={() => <Text type='secondary'>Win Ratio {WinRatio}%</Text>}
+          format={() => <Text type="secondary">Win Ratio {WinRatio}%</Text>}
           style={{
             height: "120px",
           }}
@@ -158,8 +158,8 @@ const Statistics: React.FC = () => {
         <Badge
           className={style.badge}
           status="default"
-          color={'var(--primary-color)'}
-          text={<Text type='secondary'>Wins {gameWine}</Text>}
+          color={"var(--primary-color)"}
+          text={<Text type="secondary">Wins {gameWine}</Text>}
           style={
             {
               // width: 20,
@@ -170,7 +170,7 @@ const Statistics: React.FC = () => {
         <Badge
           className={style.badge}
           status="error"
-          text={<Text type='secondary'>Loses {gameLoses}</Text>}
+          text={<Text type="secondary">Loses {gameLoses}</Text>}
           size="default"
         />
       </div>
