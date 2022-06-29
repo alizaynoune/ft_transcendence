@@ -33,6 +33,9 @@
     left: 0;
     /* opacity: 1; */
 }
+.progress * {
+    color: var(--light-color) !important;
+}
 
 .achievements {
     box-shadow: 0 0 10px 1px var(--shadwo-color);

@@ -21,4 +21,5 @@
     display: flex;
     align-items: flex-end;
     color: var(--dark-color);
+    gap: 5px;
 }
