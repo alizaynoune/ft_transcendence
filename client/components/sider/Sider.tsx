@@ -38,7 +38,7 @@ const items: MenuItem[] = [
     />,
   ),
   getItem(
-    <Link href="/chat">Messages</Link>,
+    <Link href="/messenger">Messenger</Link>,
     '2',
     <Badge dot offset={[-2, 4]}>
       <Icon
@@ -91,7 +91,6 @@ const SiderLayout: React.FC = () => {
         </div>
         <div className={style.siderItems}>
           <Menu
-            // nodeRef={nodeRef}
             className={style.menu}
             theme="dark"
             mode="inline"
