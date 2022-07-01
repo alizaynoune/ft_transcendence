@@ -1,0 +1,29 @@
+/* .card{
+    background-color: aqua;
+    padding: 5px;
+    display: flex;
+    gap: 5px;
+}
+
+.cardBody{
+    background-color: bisque;
+    width: 100%;
+    display: grid;
+    grid-template-columns: auto auto;
+    grid-template-rows: auto auto;
+    justify-content: space-between;
+    align-items: center;
+} */
+
+.card {
+    /* padding: 20px; */
+    /* background-color: aqua; */
+}
+
+.cardBody {
+    /* background-color: azure; */
+    display: flex !important;
+    width: 100%;
+    justify-content: space-between;
+    /* max-width: 400px !important; */
+}

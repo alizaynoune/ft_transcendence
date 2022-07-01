@@ -25,7 +25,8 @@
       "@/images/*": ["public/images/*"],
       "@/icons/*": [
         "public/assets/icons/*"
-      ]
+      ],
+      "@/types/*": ["types/*"],
     }
   },
   "exclude": [

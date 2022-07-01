@@ -24,7 +24,7 @@ interface AchivementsType {
   type: "silver" | "bronze" | "gold" | "platinum";
 }
 
-const level = 12.7;
+// const level = 12.7;
 const gameWine = 9;
 const gameLoses = 1;
 const achivementsStyle: { [key: string]: object } = {
@@ -86,10 +86,28 @@ const fackAchivements: AchivementsType[] = [
 ];
 
 const { Text } = Typography;
-const Statistics: React.FC = () => {
+
+interface Props {
+  avatar: string;
+  level: number;
+  achievements: {
+    name: string;
+    types: string[];
+  }[];
+  matches: {
+    total: number;
+    winne: number;
+  }
+}
+
+const Statistics: React.FC<Props> = (props) => {
   const { data: session } = useSession();
+  const {avatar, achievements, matches, level} = props;
   const progress = ((level - Math.floor(level)) / 1) * 100;
-  const WinRatio = (gameWine / (gameLoses + gameWine)) * 100;
+  const WinRatio = ((matches.winne / matches.total) * 100).toFixed(1);
+
+
+  // console.log(props);
 
   const mapAchivements = () => {
     return fackAchivements.map((a, index) => {
@@ -116,7 +134,8 @@ const Statistics: React.FC = () => {
       <div className={style.progressContainer}>
         <Image
           className={style.progressImage}
-          src="/images/defaultProfileAvatar.jpg"
+          loader={() => avatar}
+          src="me.png"
           objectFit="cover"
           layout="fill"
         />
@@ -127,7 +146,7 @@ const Statistics: React.FC = () => {
           percent={progress}
           status="normal"
           width={200}
-          format={() => level}
+          format={() => level.toFixed(2)}
           trailColor="rgba(0, 0, 0, 0.2)"
         />
       </div>
