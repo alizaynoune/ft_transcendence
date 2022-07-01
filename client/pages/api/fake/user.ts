@@ -18,16 +18,16 @@ const achievementsNames = [
 const achievementsTypes = ["silver", "bronze", "gold", "platinum"];
 
 const randomTypes = () => {
-    const n = Math.floor(Math.random() * 4)
+    const n = Math.floor(Math.random() * 3)
     const types = []
     for (let i = 0; i <= n; i++){
-        types.push(achievementsNames[Math.floor(Math.random() * 4)])
+        types.push(achievementsTypes[Math.floor(Math.random() * 4)])
     }
     return types
 }
 
 const randomAchievments = () => {
-    const n = Math.floor(Math.random() * 10)
+    const n = Math.floor(Math.random() * 8)
     const ach = []
     for (let i = 0; i <= n; i++){
         ach.push({

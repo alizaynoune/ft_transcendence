@@ -18,21 +18,21 @@ const Profile: React.FC<Props> = (props) => {
   const [loading, setLoading] = useState(false)
   const {achievements, avatar, matches, level} = props.data
 
-  const loadProfile = () => {
-    if (loading) {
-      return;
-    }
-    setLoading(true)
-    // axios.get('http://localhost:3000/profile/me').then(res => {
-    //   console.log(re)
-    // })
-    console.log(props.data);
+  // const loadProfile = () => {
+  //   if (loading) {
+  //     return;
+  //   }
+  //   setLoading(true)
+  //   // axios.get('http://localhost:3000/profile/me').then(res => {
+  //   //   console.log(re)
+  //   // })
+  //   console.log(props.data);
     
-  }
+  // }
 
-  useEffect(() => {
-    loadProfile()
-  }, [])
+  // useEffect(() => {
+  //   loadProfile()
+  // }, [])
   return (
     <section className={style.container}>
       <div className={style.cover}>
@@ -60,15 +60,15 @@ const Profile: React.FC<Props> = (props) => {
 };
 
 export const getServerSideProps = async () => {
-  // try {
+  try {
     // const res = await axios.get('http://localhost:3000/profile/me');
     const res = await fetch(`http://localhost:3000/api/fake/user`)
   const data = await res.json()
   return { props: { data } }
-  // } catch (error) {
-  //   console.log(error);
+  } catch (error) {
+    console.log(error);
     
-  // }
+  }
 }
 
 export default Profile;

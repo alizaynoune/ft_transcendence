@@ -97,34 +97,39 @@ interface Props {
   matches: {
     total: number;
     winne: number;
-  }
+  };
 }
 
 const Statistics: React.FC<Props> = (props) => {
-  const { data: session } = useSession();
-  const {avatar, achievements, matches, level} = props;
+  // const { data: session } = useSession();
+  
+  const { avatar, achievements, matches, level } = props;
+  console.log(matches);
   const progress = ((level - Math.floor(level)) / 1) * 100;
-  const WinRatio = ((matches.winne / matches.total) * 100).toFixed(1);
+  const WinRatio = parseInt(((matches.winne / matches.total) * 100).toFixed(2));
 
-
-  // console.log(props);
+  console.log(matches);
 
   const mapAchivements = () => {
-    return fackAchivements.map((a, index) => {
+    return achievements.map((a, index) => {
       return (
-        <Avatar
-          key={index}
-          icon={
-            <Icon
-              component={achievementsIcons[a.name]}
-              style={{
-                fontSize: "140%",
-              }}
+        a.types.map(t => {
+          return (
+            <Avatar
+              key={index}
+              icon={
+                <Icon
+                  component={achievementsIcons[a.name]}
+                  style={{
+                    fontSize: "140%",
+                  }}
+                />
+              }
+              size={45}
+              style={achivementsStyle[t]}
             />
-          }
-          size={45}
-          style={achivementsStyle[a.type]}
-        />
+          )
+        })
       );
     });
   };
@@ -164,7 +169,7 @@ const Statistics: React.FC<Props> = (props) => {
       <div className={style.gameRatioContainer}>
         <Progress
           type="dashboard"
-          percent={90}
+          percent={WinRatio}
           gapDegree={180}
           status="normal"
           width={200}
@@ -178,18 +183,12 @@ const Statistics: React.FC<Props> = (props) => {
           className={style.badge}
           status="default"
           color={"var(--primary-color)"}
-          text={<Text type="secondary">Wins {gameWine}</Text>}
-          style={
-            {
-              // width: 20,
-              // height: 20,
-            }
-          }
+          text={<Text type="secondary">Wins {matches.winne}</Text>}
         />
         <Badge
           className={style.badge}
           status="error"
-          text={<Text type="secondary">Loses {gameLoses}</Text>}
+          text={<Text type="secondary">Loses {matches.total - matches.winne}</Text>}
           size="default"
         />
       </div>
