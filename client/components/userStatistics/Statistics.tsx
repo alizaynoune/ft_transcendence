@@ -13,20 +13,6 @@ import sharpshooter from "@/icons/sharpshooter.svg";
 import wildfire from "@/icons/wildfire.svg";
 import winner from "@/icons/winner.svg";
 
-interface AchivementsType {
-  name:
-    | "friendly"
-    | "legendary"
-    | "photogenic"
-    | "sharpshooter"
-    | "wildfire"
-    | "winner";
-  type: "silver" | "bronze" | "gold" | "platinum";
-}
-
-// const level = 12.7;
-const gameWine = 9;
-const gameLoses = 1;
 const achivementsStyle: { [key: string]: object } = {
   silver: {
     color: "#C0C0C0",
@@ -65,27 +51,6 @@ const achievementsIcons: { [key: string]: any } = {
   winner,
 };
 
-const fackAchivements: AchivementsType[] = [
-  // freindly
-  { name: "friendly", type: "silver" },
-  { name: "friendly", type: "bronze" },
-  // legendary
-  { name: "legendary", type: "silver" },
-  // sharpshooter
-  { name: "sharpshooter", type: "silver" },
-  { name: "sharpshooter", type: "bronze" },
-  { name: "sharpshooter", type: "gold" },
-  { name: "sharpshooter", type: "platinum" },
-  // wildfire
-  { name: "wildfire", type: "silver" },
-  // winner
-  { name: "winner", type: "silver" },
-  { name: "winner", type: "bronze" },
-  // photogenic
-  { name: "photogenic", type: "platinum" },
-];
-
-const { Text } = Typography;
 
 interface Props {
   avatar: string;
@@ -100,15 +65,13 @@ interface Props {
   };
 }
 
+const { Text } = Typography;
 const Statistics: React.FC<Props> = (props) => {
   // const { data: session } = useSession();
   
   const { avatar, achievements, matches, level } = props;
-  console.log(matches);
   const progress = ((level - Math.floor(level)) / 1) * 100;
   const WinRatio = parseInt(((matches.winne / matches.total) * 100).toFixed(2));
-
-  console.log(matches);
 
   const mapAchivements = () => {
     return achievements.map((a, index) => {
