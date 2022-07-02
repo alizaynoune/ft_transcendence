@@ -3,7 +3,13 @@ import {useAppSelector} from '@/hooks/reduxHooks'
 import { selectAuht } from '@/store/reducers/auth'
 import React, { ReactNode } from 'react'
 
-const AuthRoute = ({Component, pageProps}: AppProps) => {
-
-    return <Component {...pageProps} />
+const AuthRoute = (Component: React.FC) => {
+    // const {isAuth} = useAppSelector(selectAuht)
+    // console.log(isAuth);
+    console.log('doneeee');
+    
+    
+    return <Component />
 }
+
+export default AuthRoute

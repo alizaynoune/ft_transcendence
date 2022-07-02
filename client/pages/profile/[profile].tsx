@@ -4,6 +4,7 @@ import Statistics from "@/components/userStatistics/Statistics";
 import UserData from "@/containers/userData/UserData";
 import { useEffect, useState } from "react";
 import axios from "@/config/axios";
+import AuthRoute from 'tools/protectedRoutes'
 
 // types
 import {ProfileType} from '@/types/types'
@@ -55,4 +56,4 @@ export const getServerSideProps = async () => {
   }
 }
 
-export default Profile;
+export default AuthRoute(Profile);
