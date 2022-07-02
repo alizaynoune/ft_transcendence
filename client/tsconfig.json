@@ -24,7 +24,8 @@
       "@/store/*": ["store/*"],
       "@/reducers/*": ["store/reducers/*"],
       "@/actions/*": ["store/actions/*"],
-      "@/config/*": ["config/*"]
+      "@/config/*": ["config/*"],
+      "@/hooks/*": ["hooks/*"],
     }
   },
   "exclude": ["node_modules"],

@@ -13,8 +13,6 @@ interface Props {
 }
 
 const Profile: React.FC<Props> = (props) => {
-  // const [data, setData] = useState<ProfileType | null>(null)
-  const [loading, setLoading] = useState(false)
   const {achievements, avatar, matches, level} = props.data
   console.log(props);
   
