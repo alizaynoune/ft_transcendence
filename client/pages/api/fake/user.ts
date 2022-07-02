@@ -1,10 +1,4 @@
-import type { NextApiHandler, NextApiRequest, NextApiResponse } from "next";
-import { ProfileType } from "@/types/types";
-import { BorderBottomOutlined } from "@ant-design/icons";
-
-// name:
-
-// type: "silver" | "bronze" | "gold" | "platinum";
+import type { NextApiRequest, NextApiResponse } from "next";
 
 const achievementsNames = [
   "friendly",

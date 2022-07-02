@@ -1,45 +1,34 @@
 import style from "./login.module.css";
-import { useState } from "react";
 import { Button, Input, Form, Checkbox, Typography, Divider } from "antd";
 import Link from "next/link";
 import Icon, { GoogleOutlined } from "@ant-design/icons";
-import {
-  getProviders,
-  signIn,
-  getSession,
-  getCsrfToken,
-} from "next-auth/react";
-import {profileThunk} from '@/actions/profile'
-import {selectProfile} from '@/reducers/profile'
+import { signIn } from "next-auth/react";
+import { profileThunk } from "@/actions/profile";
+import { selectProfile } from "@/reducers/profile";
+import { selectAuht } from "@/reducers/auth";
+import { AuhtTunk } from "@/actions/auth";
 import axios from "@/config/axios";
 
 // hooks
-import {useAppDispatch, useAppSelector} from '@/hooks/reduxHooks'
+import { useAppDispatch, useAppSelector } from "@/hooks/reduxHooks";
 
 // icons
-import EmailIcon from '@/icons/email.svg'
-import PasswordIcon from '@/icons/password.svg'
-import Icon_42 from '@/icons/42.svg'
-
+import EmailIcon from "@/icons/email.svg";
+import PasswordIcon from "@/icons/password.svg";
+import Icon_42 from "@/icons/42.svg";
 
 const { Title, Text } = Typography;
 
 const Login: React.FC = () => {
-  const dispatch = useAppDispatch()
-  const selector = useAppDispatch()
-  const {
-    isLoading,
-    error,
-    isAuth,
-  } = useAppSelector(selectProfile);
-  const onFinish = async() => {
-      dispatch(profileThunk())
+  const dispatch = useAppDispatch();
+  const { isLoading, error, isAuth } = useAppSelector(selectAuht);
+  const onFinish = async () => {
+    dispatch(AuhtTunk());
   };
 
   const onFinishFailed = () => {
-    console.log('failed');
-    // profileThunk()
-   };
+    console.log("failed");
+  };
 
   return (
     <div className={style.container}>
@@ -58,7 +47,7 @@ const Login: React.FC = () => {
             ></Button>
             <Button
               shape="circle"
-              icon={<Icon component={Icon_42} style={{fontSize: '120%'}} />}
+              icon={<Icon component={Icon_42} style={{ fontSize: "120%" }} />}
               onClick={() => signIn("42-school")}
             ></Button>
           </div>
@@ -78,7 +67,13 @@ const Login: React.FC = () => {
             name="username"
             rules={[{ required: true, message: "Please input your Username!" }]}
           >
-            <Input size="large" prefix={<Icon component={EmailIcon} style={{fontSize: '120%'}} />} placeholder="Email" />
+            <Input
+              size="large"
+              prefix={
+                <Icon component={EmailIcon} style={{ fontSize: "120%" }} />
+              }
+              placeholder="Email"
+            />
           </Form.Item>
           {/* User name End */}
           {/* Passwrod */}
@@ -88,7 +83,9 @@ const Login: React.FC = () => {
             rules={[{ required: true, message: "Please input your Password!" }]}
           >
             <Input.Password
-              prefix={<Icon component={PasswordIcon} style={{fontSize: '120%'}} />}
+              prefix={
+                <Icon component={PasswordIcon} style={{ fontSize: "120%" }} />
+              }
               type="password"
               placeholder="Password"
               size="large"
@@ -147,5 +144,4 @@ const Login: React.FC = () => {
   );
 };
 
-export default Login
-
+export default Login;

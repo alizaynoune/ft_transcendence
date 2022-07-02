@@ -1,5 +1,17 @@
+export interface AuthType {
+  // isAuth: boolean;
+  id: string;
+  email: string;
+  avatar: string;
+  name: {
+    first: string;
+    last: string;
+  };
+  username: string;
+  token: string;
+}
 
-export type ProfileType = {
+export interface ProfileType {
   id: string;
   username: string;
   name: {
@@ -20,10 +32,10 @@ export type ProfileType = {
   matches: {
     total: number;
     winne: number;
-  }
-};
+  };
+}
 
-export type HistoryMessengerType = {
+export interface HistoryMessengerType {
   id: string;
   type: "group" | "direct";
   password: boolean;
@@ -31,14 +43,13 @@ export type HistoryMessengerType = {
     username: string;
     avatar: string;
   }[];
-};
+}
 
-export type ConversationsType = {
+export interface ConversationsType {
   id: string;
   userId: string;
   username: string;
   read: boolean;
   message: string;
-}[];
-
-
+}
+[];

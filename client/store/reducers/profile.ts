@@ -4,7 +4,7 @@ import type { RootState } from "@/store/store";
 import type { ProfileType } from "@/types/types";
 import {profileThunk} from '@/actions/profile'
 
-export type ProfileState = {
+interface ProfileState {
   isLoading: boolean;
   error: unknown;
   isAuth: boolean;
