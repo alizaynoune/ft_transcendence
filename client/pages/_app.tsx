@@ -14,6 +14,7 @@ function MyApp({ Component, pageProps, ...appProps }: AppProps) {
   const session = pageProps.session;
 
   return (
+    // ! Delete Session Provider
     <SessionProvider session={session}>
       <Provider store={store}>
         <Layout>

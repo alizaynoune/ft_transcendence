@@ -1,15 +1,25 @@
 import type { AppProps } from 'next/app'
-import {useAppSelector} from '@/hooks/reduxHooks'
-import { selectAuht } from '@/store/reducers/auth'
-import React, { ReactNode } from 'react'
+import { useAppDispatch, useAppSelector } from "@/hooks/reduxHooks";
+import { selectAuht } from "@/reducers/auth";
+import React, { ReactNode, useEffect } from 'react'
+import { redirect } from 'next/dist/server/api-utils';
+import Router, { useRouter } from 'next/router';
 
-const AuthRoute = (Component: React.FC) => {
-    // const {isAuth} = useAppSelector(selectAuht)
-    // console.log(isAuth);
-    console.log('doneeee');
+const authRoute = (Component: React.FC<any>) => {
+    // console.log('doneeee');
     
     
-    return <Component />
+    return (props : any) => {
+        const { isLoading, error, isAuth } = useAppSelector(selectAuht);
+        const router = useRouter()
+        console.log(isAuth);
+
+        useEffect(() => {
+            if (!isAuth)
+                router.push('/auth/login')
+        }, [])
+        return <Component {...props} />
+    }
 }
 
-export default AuthRoute
+export default authRoute
