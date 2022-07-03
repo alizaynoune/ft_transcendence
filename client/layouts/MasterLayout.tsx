@@ -6,7 +6,9 @@ import { Layout, Button, Typography, Avatar, Menu } from "antd";
 import Link from "next/link";
 import { useSession, signOut, signIn } from "next-auth/react";
 import SiderLayout from "@/components/sider/Sider";
-// import {}
+
+import {useAppSelector} from '@/hooks/reduxHooks'
+import {selectAuth} from '@/reducers/auth'
 
 const { Header, Footer, Content, Sider } = Layout;
 
@@ -17,8 +19,11 @@ type Props = {
 
 const MasterLayout: React.FC<Props> = (props) => {
   const { children } = props;
-  const { data: session } = useSession();
-  const ref = createRef<HTMLDivElement>();
+  // const { data: session } = useSession();
+  const {isAuth, avatar} = useAppSelector(selectAuth)
+  // const ref = createRef<HTMLDivElement>();
+  console.log(isAuth);
+  
 
   return (
     // Master layout
@@ -30,7 +35,7 @@ const MasterLayout: React.FC<Props> = (props) => {
             <Image src="/images/Logo.png" height={68} width={110} />
           </a>
         </Link>
-        {!session ? (
+        {!isAuth ? (
           <Button>
             <Link href="/auth/login">Login</Link>
           </Button>
@@ -38,7 +43,7 @@ const MasterLayout: React.FC<Props> = (props) => {
           <>
             {/* // ! Delet this button */}
             {/* <Button onClick={() => signOut()}>Logout</Button> */}
-            <Avatar src={session.user.image} size={55} />
+            <Avatar src={avatar} size={55} />
           </>
         )}
       </Header>
@@ -46,7 +51,7 @@ const MasterLayout: React.FC<Props> = (props) => {
       {/* content Layout */}
       <Layout>
         {/* Sider */}
-        {session && <SiderLayout />}
+        {isAuth&& <SiderLayout />}
         {/* Sider end */}
         {/* content */}
         <Content className={layoutStyle.contentContainer}>{children}</Content>

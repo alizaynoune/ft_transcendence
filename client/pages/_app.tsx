@@ -15,13 +15,13 @@ function MyApp({ Component, pageProps, ...appProps }: AppProps) {
 
   return (
     // ! Delete Session Provider
-    <SessionProvider session={session}>
+    // <SessionProvider session={session}>
       <Provider store={store}>
         <Layout>
           <Component {...pageProps} />
         </Layout>
       </Provider>
-    </SessionProvider>
+    // </SessionProvider>
   );
 }
 

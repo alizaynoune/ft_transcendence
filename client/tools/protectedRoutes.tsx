@@ -1,6 +1,6 @@
 import type { AppProps } from 'next/app'
 import { useAppDispatch, useAppSelector } from "@/hooks/reduxHooks";
-import { selectAuht } from "@/reducers/auth";
+import { selectAuth } from "@/reducers/auth";
 import React, { ReactNode, useEffect } from 'react'
 import { redirect } from 'next/dist/server/api-utils';
 import Router, { useRouter } from 'next/router';
@@ -10,7 +10,7 @@ const authRoute = (Component: React.FC<any>) => {
     
     
     return (props : any) => {
-        const { isLoading, error, isAuth } = useAppSelector(selectAuht);
+        const { isLoading, error, isAuth } = useAppSelector(selectAuth);
         const router = useRouter()
         console.log(isAuth);
 

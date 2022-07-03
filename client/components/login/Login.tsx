@@ -3,12 +3,9 @@ import { Button, Input, Form, Checkbox, Typography, Divider } from "antd";
 import Link from "next/link";
 import Icon, { GoogleOutlined } from "@ant-design/icons";
 import { signIn } from "next-auth/react";
-import { profileThunk } from "@/actions/profile";
-import { selectProfile } from "@/reducers/profile";
-import { selectAuht } from "@/reducers/auth";
+import { selectAuth } from "@/reducers/auth";
 import { AuhtTunk } from "@/actions/auth";
-import axios from "@/config/axios";
-
+import { useRouter } from 'next/router';
 // hooks
 import { useAppDispatch, useAppSelector } from "@/hooks/reduxHooks";
 
@@ -16,15 +13,29 @@ import { useAppDispatch, useAppSelector } from "@/hooks/reduxHooks";
 import EmailIcon from "@/icons/email.svg";
 import PasswordIcon from "@/icons/password.svg";
 import Icon_42 from "@/icons/42.svg";
+import { useEffect } from "react";
 
 const { Title, Text } = Typography;
 
 const Login: React.FC = () => {
   const dispatch = useAppDispatch();
-  const { isLoading, error, isAuth } = useAppSelector(selectAuht);
+  const { isLoading, error, isAuth } = useAppSelector(selectAuth);
+  const router = useRouter()
   const onFinish = async () => {
-    dispatch(AuhtTunk());
+    dispatch(AuhtTunk())
+    .then((res) => {
+      console.log(res, '<<<<<res');
+      
+      router.push('/')
+    })
+    .catch((e) => {
+      console.log(e);
+    })
   };
+
+  useEffect(() => {
+    if (isAuth) router.push('/')
+  }, [])
 
   const onFinishFailed = () => {
     console.log("failed");

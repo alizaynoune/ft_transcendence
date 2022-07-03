@@ -5,7 +5,7 @@ import OurTeam from "@/containers/ourTeam/OurTeam";
 import { useSession } from "next-auth/react";
 
 const Home: NextPage = () => {
-  const { data: session } = useSession();
+  // const { data: session } = useSession();
   return (
     <>
       <HeroSection />
