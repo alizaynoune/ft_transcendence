@@ -2,7 +2,7 @@ import { createSlice } from "@reduxjs/toolkit";
 import type { RootState } from "@/store/store";
 import type { AuthType } from "@/types/types";
 import { AuhtTunk } from "@/actions/auth";
-import {saveSession} from 'tools/localStorage'
+import {loadSession} from 'tools/localStorage'
 
 interface AuthSliceType extends AuthType {
   isLoading: boolean;

@@ -17,6 +17,7 @@ export default function login(
             name: result.name,
             username: result.login.username,
             avatar: result.picture.large,
+            token: 'token'
         }
         res.status(200).json(data)
     })

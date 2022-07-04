@@ -56,5 +56,5 @@ export const getServerSideProps = async () => {
   }
 }
 
-export default AuthRoute(Profile);
-// export default Profile
+// export default AuthRoute(Profile);
+export default Profile

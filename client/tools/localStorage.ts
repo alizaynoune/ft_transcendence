@@ -1,22 +1,20 @@
-
-export const loadSession = () => {
-try {    
-    const serialized = localStorage.getItem('session')
-    if (!serialized) return undefined
-    return JSON.parse(serialized)
-} catch (error) {
-    console.log(error, 'session Error');
-    return undefined
+const KEY = "session";
+export function loadSession() {
+  try {
+    const serializedState = localStorage.getItem(KEY);
+    if (!serializedState) return '';
+    return JSON.parse(serializedState);
+  } catch (e) {
+    return '';
+  }
 }
-}
 
-export const saveSession = (data: any) => {
-    try {
-        const serialized = JSON.stringify(data)
-        localStorage.setItem('session', serialized)
-    } catch (error) {
-        console.log(error, 'seve session Error');
-        
-    }
+export async function saveSession(state: any) {
+  try {
+    const serializedState = JSON.stringify(state);
+    localStorage.setItem(KEY, serializedState);
+  } catch (e) {
+    // Ignore
+  }
 }
 
