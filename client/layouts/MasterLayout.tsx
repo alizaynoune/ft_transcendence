@@ -15,9 +15,9 @@ import Link from "next/link";
 import { useSession, signOut, signIn } from "next-auth/react";
 import SiderLayout from "@/components/sider/Sider";
 
-import { useAppSelector } from "@/hooks/reduxHooks";
-import { selectAuth } from "@/reducers/auth";
-import logoutIcon from '@/icons/out.svg'
+import { useAppSelector, useAppDispatch } from "@/hooks/reduxHooks";
+import { selectAuth, logout } from "@/reducers/auth";
+import logoutIcon from "@/icons/out.svg";
 import Icon from "@ant-design/icons";
 
 
@@ -48,19 +48,24 @@ type Props = {
 const MasterLayout: React.FC<Props> = (props) => {
   const { children } = props;
   const { isAuth, avatar, email } = useAppSelector(selectAuth);
+  const dispatch = useAppDispatch()
   console.log(isAuth);
 
   const items: MenuProps["items"] = [
-      getItem(
-        email,
-        "1",
-        null,
-        [
-          getItem('', '2', null, undefined,  'divider'),
-          getItem("logout", "1", <Icon component={logoutIcon} style={{ fontSize: "120%" }}  />),
-        ],
-        "group"
-      ),
+    getItem(
+      email,
+      "1",
+      null,
+      [
+        getItem("", "2", null, undefined, "divider"),
+        getItem(
+          "logout",
+          "1",
+          <Icon component={logoutIcon} style={{ fontSize: "120%" }} />
+        ),
+      ],
+      "group"
+    ),
   ];
 
   return (
@@ -79,20 +84,13 @@ const MasterLayout: React.FC<Props> = (props) => {
           </Button>
         ) : (
           // <>
-            <Dropdown
-              overlay={
-                <Menu
-                  // style={{ width: 256 }}
-                  mode="inline"
-                  items={items}
-                />
-              }
-              trigger={["click"]}
-            >
-              <a>
-                <Avatar src={avatar} size={55} />
-              </a>
-            </Dropdown>
+          <Dropdown overlay={<Menu items={items} onClick={(e) => {
+          dispatch(logout())
+          }} />} trigger={["click"]}>
+            <a>
+              <Avatar src={avatar} size={55} />
+            </a>
+          </Dropdown>
           // </>
         )}
       </Header>

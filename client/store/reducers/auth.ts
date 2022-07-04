@@ -2,6 +2,7 @@ import { createSlice } from "@reduxjs/toolkit";
 import type { RootState } from "@/store/store";
 import type { AuthType } from "@/types/types";
 import { AuhtTunk } from "@/actions/auth";
+import {saveSession} from 'tools/localStorage'
 
 interface AuthSliceType extends AuthType {
   isLoading: boolean;
@@ -28,7 +29,11 @@ export const AuthSlice = createSlice({
   name: "auth",
   initialState,
   reducers: {
-    login: (state, { payload }) => {},
+    login: (state, { payload }) => {
+      state.isLoading = false;
+      state.isAuth = true
+      console.log(payload, "done");
+    },
 
     logout: (state) => {
       Object.assign(state, { ...initialState });
@@ -41,10 +46,11 @@ export const AuthSlice = createSlice({
         state.error = null;
       })
       .addCase(AuhtTunk.fulfilled, (state, { payload }) => {
-        console.log(payload);
         state.isLoading = false;
         state.isAuth = true;
         Object.assign(state, { ...payload });
+        // saveSession(state)
+        // AuthSlice.actions.login(payload);
       });
   },
 });

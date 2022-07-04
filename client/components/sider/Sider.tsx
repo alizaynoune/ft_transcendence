@@ -104,14 +104,16 @@ const SiderLayout: React.FC = () => {
             className={style.menu}
             theme="dark"
             mode="inline"
+            onClick={(e) => {
+              dispatch(logout())
+            }}
             items={[
               getItem(
-                <span onClick={() => dispatch(logout())}>logout</span>,
+                'logout',
                 '1',
                 <Icon
                   component={logoutIcon}
                   style={{ fontSize: '180%', color: 'var(--light-color)' }}
-                  onClick={() => dispatch(logout())}
                 />,
               ),
             ]}
