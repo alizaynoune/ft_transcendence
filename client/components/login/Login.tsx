@@ -54,12 +54,12 @@ const Login: React.FC = () => {
             <Button
               shape="circle"
               icon={<GoogleOutlined />}
-              onClick={() => signIn("google")}
+              onClick={() => onFinish()}
             ></Button>
             <Button
               shape="circle"
               icon={<Icon component={Icon_42} style={{ fontSize: "120%" }} />}
-              onClick={() => signIn("42-school")}
+              onClick={() => onFinish()}
             ></Button>
           </div>
           <Text type="secondary">or user your email for login</Text>

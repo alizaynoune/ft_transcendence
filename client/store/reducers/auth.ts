@@ -27,7 +27,11 @@ const initialState: AuthSliceType = {
 export const AuthSlice = createSlice({
   name: "auth",
   initialState,
-  reducers: {},
+  reducers: {
+    logout: (state) => {
+      Object.assign(state, {...initialState})
+    }
+  },
   extraReducers: (builder) => {
     builder
     .addCase(AuhtTunk.pending, (state) => {
@@ -43,5 +47,6 @@ export const AuthSlice = createSlice({
   },
 });
 
+export const {logout} = AuthSlice.actions
 export const selectAuth = (state: RootState) => state.auth;
 export default AuthSlice.reducer;

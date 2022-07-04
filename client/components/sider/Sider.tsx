@@ -4,6 +4,8 @@ import { Layout, Menu, MenuProps, Badge } from 'antd'
 import Icon from '@ant-design/icons'
 import Link from 'next/link'
 import { signOut } from 'next-auth/react'
+import {useAppDispatch} from '@/hooks/reduxHooks'
+import {logout} from '@/reducers/auth'
 // Icons
 import profileIcon from '@/icons/user.svg'
 import messageIcon from '@/icons/message.svg'
@@ -75,6 +77,7 @@ const items: MenuItem[] = [
 
 const SiderLayout: React.FC = () => {
   const [collapsed, setCollapsed] = useState(true)
+  const dispatch = useAppDispatch()
   return (
     <div className={style.container}>
       <Sider
@@ -103,12 +106,12 @@ const SiderLayout: React.FC = () => {
             mode="inline"
             items={[
               getItem(
-                <span onClick={() => signOut()}>logout</span>,
+                <span onClick={() => dispatch(logout())}>logout</span>,
                 '1',
                 <Icon
                   component={logoutIcon}
                   style={{ fontSize: '180%', color: 'var(--light-color)' }}
-                  onClick={() => signOut()}
+                  onClick={() => dispatch(logout())}
                 />,
               ),
             ]}
