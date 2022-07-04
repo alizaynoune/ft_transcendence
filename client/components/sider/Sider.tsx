@@ -6,6 +6,7 @@ import Link from 'next/link'
 import { signOut } from 'next-auth/react'
 import {useAppDispatch} from '@/hooks/reduxHooks'
 import {logout} from '@/reducers/auth'
+
 // Icons
 import profileIcon from '@/icons/user.svg'
 import messageIcon from '@/icons/message.svg'
@@ -33,7 +34,7 @@ function getItem(
 const items: MenuItem[] = [
   getItem(
     <Link href="/profile/me">Profile</Link>,
-    '1',
+    'profile',
     <Icon
       component={profileIcon}
       style={{ fontSize: '180%', color: 'var(--light-color)' }}
@@ -41,7 +42,7 @@ const items: MenuItem[] = [
   ),
   getItem(
     <Link href="/messenger">Messenger</Link>,
-    '2',
+    'messenger',
     <Badge dot offset={[-2, 4]}>
       <Icon
         component={messageIcon}
@@ -51,7 +52,7 @@ const items: MenuItem[] = [
   ),
   getItem(
     <Link href="/achivements">Achivements</Link>,
-    '3',
+    'achivements',
     <Icon
       component={achivementIcon}
       style={{ fontSize: '180%', color: 'var(--light-color)' }}
@@ -59,7 +60,7 @@ const items: MenuItem[] = [
   ),
   getItem(
     <Link href="/game">Current Games</Link>,
-    '4',
+    'game',
     <Icon
       component={gamesIcon}
       style={{ fontSize: '180%', color: 'var(--light-color)' }}
@@ -67,7 +68,7 @@ const items: MenuItem[] = [
   ),
   getItem(
     <Link href="/game/new">Create Game</Link>,
-    '5',
+    'gameNew',
     <Icon
       component={newGameIcon}
       style={{ fontSize: '180%', color: 'var(--light-color)' }}
@@ -100,7 +101,6 @@ const SiderLayout: React.FC = () => {
             items={items}
           />
           <Menu
-            // nodeRef={nodeRef}
             className={style.menu}
             theme="dark"
             mode="inline"

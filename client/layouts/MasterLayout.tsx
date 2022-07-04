@@ -2,13 +2,41 @@ import layoutStyle from "./layout.module.css";
 import { NextPage } from "next";
 import Image from "next/image";
 import { ReactNode, forwardRef, createRef } from "react";
-import { Layout, Button, Typography, Avatar, Menu } from "antd";
+import {
+  Layout,
+  Button,
+  Typography,
+  Avatar,
+  Dropdown,
+  Menu,
+  MenuProps,
+} from "antd";
 import Link from "next/link";
 import { useSession, signOut, signIn } from "next-auth/react";
 import SiderLayout from "@/components/sider/Sider";
 
-import {useAppSelector} from '@/hooks/reduxHooks'
-import {selectAuth} from '@/reducers/auth'
+import { useAppSelector } from "@/hooks/reduxHooks";
+import { selectAuth } from "@/reducers/auth";
+import logoutIcon from '@/icons/out.svg'
+import Icon from "@ant-design/icons";
+
+
+type MenuItem = Required<MenuProps>["items"][number];
+const getItem = (
+  label: React.ReactNode,
+  key: React.Key,
+  icon?: React.ReactNode,
+  children?: MenuItem[],
+  type?: "group" | "divider"
+) => {
+  return {
+    key,
+    icon,
+    children,
+    label,
+    type,
+  } as MenuItem;
+};
 
 const { Header, Footer, Content, Sider } = Layout;
 
@@ -19,18 +47,28 @@ type Props = {
 
 const MasterLayout: React.FC<Props> = (props) => {
   const { children } = props;
-  // const { data: session } = useSession();
-  const {isAuth, avatar} = useAppSelector(selectAuth)
-  // const ref = createRef<HTMLDivElement>();
+  const { isAuth, avatar, email } = useAppSelector(selectAuth);
   console.log(isAuth);
-  
+
+  const items: MenuProps["items"] = [
+      getItem(
+        email,
+        "1",
+        null,
+        [
+          getItem('', '2', null, undefined,  'divider'),
+          getItem("logout", "1", <Icon component={logoutIcon} style={{ fontSize: "120%" }}  />),
+        ],
+        "group"
+      ),
+  ];
 
   return (
     // Master layout
     <Layout className={layoutStyle.layout}>
       {/* Header */}
       <Header className={layoutStyle.header}>
-        <Link href="/" >
+        <Link href="/">
           <a className={layoutStyle.logo}>
             <Image src="/images/Logo.png" height={68} width={110} />
           </a>
@@ -40,18 +78,29 @@ const MasterLayout: React.FC<Props> = (props) => {
             <Link href="/auth/login">Login</Link>
           </Button>
         ) : (
-          <>
-            {/* // ! Delet this button */}
-            {/* <Button onClick={() => signOut()}>Logout</Button> */}
-            <Avatar src={avatar} size={55} />
-          </>
+          // <>
+            <Dropdown
+              overlay={
+                <Menu
+                  // style={{ width: 256 }}
+                  mode="inline"
+                  items={items}
+                />
+              }
+              trigger={["click"]}
+            >
+              <a>
+                <Avatar src={avatar} size={55} />
+              </a>
+            </Dropdown>
+          // </>
         )}
       </Header>
       {/* Header end */}
       {/* content Layout */}
       <Layout>
         {/* Sider */}
-        {isAuth&& <SiderLayout />}
+        {isAuth && <SiderLayout />}
         {/* Sider end */}
         {/* content */}
         <Content className={layoutStyle.contentContainer}>{children}</Content>
@@ -60,9 +109,9 @@ const MasterLayout: React.FC<Props> = (props) => {
       {/* content Layout end */}
       <div className={layoutStyle.sectionGameInfo}>
         <div className={layoutStyle.sectionGameInfoLogo}>
-          <Link href='/'>
+          <Link href="/">
             <a>
-            <Image src="/images/Logo.png" height={68} width={110} />
+              <Image src="/images/Logo.png" height={68} width={110} />
             </a>
           </Link>
         </div>

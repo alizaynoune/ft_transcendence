@@ -28,25 +28,27 @@ export const AuthSlice = createSlice({
   name: "auth",
   initialState,
   reducers: {
+    login: (state, { payload }) => {},
+
     logout: (state) => {
-      Object.assign(state, {...initialState})
-    }
+      Object.assign(state, { ...initialState });
+    },
   },
   extraReducers: (builder) => {
     builder
-    .addCase(AuhtTunk.pending, (state) => {
-        state.isLoading = true
-        state.error = null
-    })
-    .addCase(AuhtTunk.fulfilled, (state, { payload }) => {
-      console.log(payload);
-      state.isLoading = false
-      state.isAuth = true
-      Object.assign(state, {...payload})
-    });
+      .addCase(AuhtTunk.pending, (state) => {
+        state.isLoading = true;
+        state.error = null;
+      })
+      .addCase(AuhtTunk.fulfilled, (state, { payload }) => {
+        console.log(payload);
+        state.isLoading = false;
+        state.isAuth = true;
+        Object.assign(state, { ...payload });
+      });
   },
 });
 
-export const {logout} = AuthSlice.actions
+export const { logout } = AuthSlice.actions;
 export const selectAuth = (state: RootState) => state.auth;
 export default AuthSlice.reducer;
