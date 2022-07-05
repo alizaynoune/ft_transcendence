@@ -52,6 +52,8 @@ const HistroyMessenger: React.FC = () => {
       .then((body) => {
         setData(body.results);
         setLoading(false);
+        console.log(body);
+        
       })
       .catch(() => {
         setLoading(false);
@@ -102,7 +104,7 @@ const HistroyMessenger: React.FC = () => {
           total: 20,
           pageSize: 16,
         }}
-        // renderItem={(item) => <ConversationCard  user={item} />}
+        // renderItem={(item) => <ConversationCard  data={item} />}
       />
 
       </div>

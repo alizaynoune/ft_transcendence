@@ -4,15 +4,19 @@ import { Avatar, Typography, Badge, List, Popover } from "antd";
 import Link from "next/link";
 
 interface Props {
+  data: {
     username: string
     avatar: string
     lastMessage?: string
     messageNotReade?: number
+  }
 }
 
 const { Text, Title } = Typography;
 const ConversationCard: React.FC<Props> = (props) => {
-    const {username, avatar, lastMessage, messageNotReade} = props
+    const {username, avatar, lastMessage, messageNotReade} = props.data
+    console.log(props.data);
+    
   return (
     <div className={style.card}>
       <List.Item

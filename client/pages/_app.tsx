@@ -18,11 +18,6 @@ function MyApp({ Component, pageProps, ...appProps }: AppProps) {
   const isAuth = appProps.router.pathname.includes("/auth");
   const Layout = isAuth ? AuthLayout : MasterLayout;
 
-  useEffect(() => {
-    console.log(store);
-    // ! change to login by token
-  }, []);
-
   return (
     <Provider store={store}>
       <Layout>
