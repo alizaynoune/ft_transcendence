@@ -18,7 +18,8 @@ const ConversationCard: React.FC<Props> = (props) => {
     console.log(props.data);
     
   return (
-    <div className={style.card}>
+    <div className={style.card_items}>
+      <div className={style.card_item}>
       <List.Item
         className={style.cardBody}
         actions={[
@@ -39,7 +40,10 @@ const ConversationCard: React.FC<Props> = (props) => {
           title={<Text strong>{username}</Text>}
           description={<Text type="secondary">{lastMessage}</Text>}
         />
-      </List.Item>
+       
+      </List.Item> 
+      <div className={style.date}>28/10/1997</div>
+      </div>
     </div>
   );
 };

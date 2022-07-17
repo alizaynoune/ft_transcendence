@@ -5,10 +5,12 @@ import Icon from "@ant-design/icons";
 
 // components 
 import ConversationCard from "@/components/historyMessengerCard/HistoryMessengerCard";
+import ConversationGroupCard from "@/components/historyMessengerGroupCard/HistoryMessengerGroupCard";
 
 // icons
 import searchIcon from "@/icons/search.svg";
 import createGroupIcon from "@/icons/addGroup.svg";
+import { group } from "console";
 
 
 interface DataType {
@@ -88,7 +90,20 @@ const HistroyMessenger: React.FC = () => {
         />
       </div>
       <div>
-        {/* <ConversationCard username="user name" avatar="" /> */}
+        <ConversationCard data={{username: 'amal rtam', avatar:"ksjskj",lastMessage:'hello how are you?',messageNotReade:11}} />
+        <ConversationGroupCard data={{
+          groupName : 'girls',
+          users : [
+            {username: 'amal rtam', avatar:"/images/defaultProfileAvatar.jpg"},
+            {username: 'amal rtam', avatar:"/images/defaultProfileAvatar.jpg"},
+            {username: 'amal rtam', avatar:"/images/defaultProfileAvatar.jpg"},
+            {username: 'amal rtam', avatar:"/images/defaultProfileAvatar.jpg"},
+            {username: 'amal rtam', avatar:"/images/defaultProfileAvatar.jpg"}
+          ],
+          lastMessage: 'Ali makayswach'
+
+        }}
+        />
 
         <List
         dataSource={data}

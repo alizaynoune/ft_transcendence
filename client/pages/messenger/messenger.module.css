@@ -15,9 +15,10 @@
 }
 
 .boxMessenger {
-    background-color: red;
+    background-color: "#3699FF";
     flex: 2.3 1 0;
     /* width: 100%; */
+   
 }
 
 .settingMessenger {

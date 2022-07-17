@@ -1,7 +1,15 @@
 .container {
+  /* background */
+
+  background: #f3f6f9;
+  /* shadowSecondary */
+
+  box-shadow: 0px 0px 8px rgba(154, 154, 154, 0.5);
+  border-radius: 6px;
+  padding: 10px 20px;
 }
 
-.header{
-    display: flex;
-    gap: 5px
+.header {
+  display: flex;
+  gap: 5px;
 }

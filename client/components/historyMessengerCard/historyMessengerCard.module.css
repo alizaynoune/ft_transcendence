@@ -15,15 +15,38 @@
     align-items: center;
 } */
 
-.card {
-    /* padding: 20px; */
-    /* background-color: aqua; */
+.card_items {
+  /* grid-template-rows: repeat(1,1fr); */
+  /* background-color: aqua; */
+  margin: 30px 0px;
+}
+
+.card_item {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  background: rgba(164, 176, 182, 0.09);
+  box-shadow: 0px 0px 8px rgba(0, 0, 0, 0.25);
+  border-radius: 6px;
 }
 
 .cardBody {
-    /* background-color: azure; */
-    display: flex !important;
-    width: 100%;
-    justify-content: space-between;
-    /* max-width: 400px !important; */
+  /* background-color: azure; */
+
+  /* display: flex !important; */
+  /* width: 100%; */
+  /* justify-content: space-between; */
+  /* flex-direction: row; */
+  /* max-width: 400px !important; */
+  grid-column: 1/4;
+  grid-row: 1/2;
+  padding: 12px 11px;
+  /* margin: 20px 25px;   */
+}
+
+.date {
+  /* display: flex; */
+  grid-column: 3/4;
+  grid-row: 1;
+  text-align: right;
+  margin-right: 20px;
 }
