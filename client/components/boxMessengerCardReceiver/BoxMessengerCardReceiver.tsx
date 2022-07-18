@@ -6,6 +6,21 @@ const { Meta } = Card;
 interface Props {}
 
 const CardReceiver: React.FC<Props> = (props) => {
+
+  interface Props {
+    data:{
+      message:{
+        content : string
+        time : string
+        status : "pending" | "send" | "receive" | "read" 
+      },
+      user:{
+        username : string
+        avatar : string
+      }
+    }
+  }
+
   return (
     <div className={style.container}>
       <div className={style.box}>
@@ -19,12 +34,7 @@ const CardReceiver: React.FC<Props> = (props) => {
         </Card>
         <div className={style.box_message_avatar}>
           <Avatar
-            src={
-              <Image
-                src="https://joeschmoe.io/api/v1/random"
-                style={{ width: 32 }}
-              />
-            }
+            src="/images/defaultProfileAvatar.jpg"
           />
         </div>
         <div className={style.box_message_time}>

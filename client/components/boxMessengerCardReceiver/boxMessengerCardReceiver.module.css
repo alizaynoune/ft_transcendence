@@ -13,7 +13,7 @@
 .box {
   display: grid;
   grid-template-columns:1fr 90% ;
-  grid-template-rows: 1fr 1fr;
+  grid-template-rows: 1fr 50px;
   /* border: 5px solid blue; */
   width: 60%;
 
@@ -23,7 +23,7 @@
   grid-column: 2;
   grid-row: 1;
   padding: 10px;
-  height: max-content;
+  border: none;
 
   /* light */
 
@@ -51,8 +51,11 @@
 }
 
 .box_message_time {
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
   grid-column: 2;
   grid-row: 2;
   text-align: start;
-  padding: 12px 3px;
+  padding-top: 12px; 
 }

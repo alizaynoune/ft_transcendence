@@ -3,7 +3,7 @@ import { useState, useEffect } from "react";
 import { Input, Button, List } from "antd";
 import Icon from "@ant-design/icons";
 
-// components 
+// components
 import ConversationCard from "@/components/historyMessengerCard/HistoryMessengerCard";
 import ConversationGroupCard from "@/components/historyMessengerGroupCard/HistoryMessengerGroupCard";
 
@@ -11,7 +11,6 @@ import ConversationGroupCard from "@/components/historyMessengerGroupCard/Histor
 import searchIcon from "@/icons/search.svg";
 import createGroupIcon from "@/icons/addGroup.svg";
 import { group } from "console";
-
 
 interface DataType {
   gender: string;
@@ -55,7 +54,6 @@ const HistroyMessenger: React.FC = () => {
         setData(body.results);
         setLoading(false);
         console.log(body);
-        
       })
       .catch(() => {
         setLoading(false);
@@ -70,9 +68,9 @@ const HistroyMessenger: React.FC = () => {
     <div className={style.container}>
       <div className={style.header}>
         <Input
-        style={{
-          borderRadius: '5px'
-        }}
+          style={{
+            borderRadius: "5px",
+          }}
           suffix={
             <Icon
               component={searchIcon}
@@ -90,38 +88,75 @@ const HistroyMessenger: React.FC = () => {
         />
       </div>
       <div>
-        <ConversationCard data={{username: 'amal rtam', avatar:"ksjskj",lastMessage:'hello how are you?',messageNotReade:11}} />
-        <ConversationGroupCard data={{
-          groupName : 'girls',
-          users : [
-            {username: 'amal rtam', avatar:"/images/defaultProfileAvatar.jpg"},
-            {username: 'amal rtam', avatar:"/images/defaultProfileAvatar.jpg"},
-            {username: 'amal rtam', avatar:"/images/defaultProfileAvatar.jpg"},
-            {username: 'amal rtam', avatar:"/images/defaultProfileAvatar.jpg"},
-            {username: 'amal rtam', avatar:"/images/defaultProfileAvatar.jpg"}
-          ],
-          lastMessage: 'Ali makayswach'
-
-        }}
+        <ConversationCard
+          data={{
+            username: "amal rtam",
+            avatar: "ksjskj",
+            lastMessage: "hello how are you?",
+            messageNotReade: 11,
+          }}
+        />
+        <ConversationGroupCard
+          data={{
+            groupName: "girls",
+            users: [
+              {
+                username: "amal rtam",
+                avatar: "/images/defaultProfileAvatar.jpg",
+              },
+              {
+                username: "amal rtam",
+                avatar: "/images/defaultProfileAvatar.jpg",
+              },
+              {
+                username: "amal rtam",
+                avatar: "/images/defaultProfileAvatar.jpg",
+              },
+              {
+                username: "amal rtam",
+                avatar: "/images/defaultProfileAvatar.jpg",
+              },
+              {
+                username: "amal rtam",
+                avatar: "/images/defaultProfileAvatar.jpg",
+              },
+            ],
+            lastMessage: "Happy Coding",
+          }}
+        />
+        <ConversationCard
+          data={{
+            username: "amal rtam",
+            avatar: "ksjskj",
+            lastMessage: "hello how are you?",
+            messageNotReade: 11,
+          }}
+        />
+        <ConversationCard
+          data={{
+            username: "amal rtam",
+            avatar: "ksjskj",
+            lastMessage: "hello how are you?",
+            messageNotReade: 11,
+          }}
         />
 
         <List
-        dataSource={data}
-        // itemLayout="horizontal"
-        // grid={{
-        //   gutter: 10,
-        //   column: 2,
-        // }}
-        pagination={{
-          onChange: (page) => {
-            console.log(page);
-          },
-          total: 20,
-          pageSize: 16,
-        }}
-        // renderItem={(item) => <ConversationCard  data={item} />}
-      />
-
+          dataSource={data}
+          // itemLayout="horizontal"
+          // grid={{
+          //   gutter: 10,
+          //   column: 2,
+          // }}
+          pagination={{
+            onChange: (page) => {
+              console.log(page);
+            },
+            total: 20,
+            pageSize: 16,
+          }}
+          // renderItem={(item) => <ConversationCard  data={item} />}
+        />
       </div>
     </div>
   );
