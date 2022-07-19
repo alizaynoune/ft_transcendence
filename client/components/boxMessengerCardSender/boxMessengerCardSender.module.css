@@ -3,7 +3,7 @@
   flex-direction: row;
   justify-content: flex-end;
   align-items: flex-end;
-  padding: 0px;
+  padding: 0px 3px;
   /* gap: 8px; */
   width: 100%;
 

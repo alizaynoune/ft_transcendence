@@ -21,7 +21,7 @@ const ConversationGroupCard: React.FC<Props> = (props) => {
   const mapUsers = () => {
     return users.map((u, index) => {
       return (
-          <Avatar size={45} src={u.avatar} />
+          <Avatar key={u.username} size={45} src={u.avatar} />
       );
     });
   };
