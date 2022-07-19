@@ -6,15 +6,23 @@ import Icon from "@ant-design/icons";
 
 
 // To Add functionnality to scroll to the end of the list of messages
+import { useState, useEffect, useRef } from "react";
 
 //Icons
 import EmojiSmile from "@/icons/EmojiSmile.svg";
 import Send from "@/icons/Send.svg";
 
 const BoxMessenger: React.FC = () => {
+  const bottomRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    bottomRef.current?.scrollIntoView();
+  });
+
+
   return (
     <div className={style.container}>
-      <div className={style.box}>
+      <div className={style.box} >
         <CardSender
           data={{
             message: {
@@ -51,23 +59,24 @@ const BoxMessenger: React.FC = () => {
           }}
         />
 
-      </div>        
+        <div ref={bottomRef} />
+      </div>
       <Input
-          className={style.Input}
-          prefix={
-            <Icon
-              component={EmojiSmile}
-              style={{ fontSize: "120%", color: "var(--primary-color)" }}
-            />
-          }
-          suffix={
-            <Icon
-              component={Send}
-              style={{ fontSize: "120%", color: "var(--primary-color)" }}
-            />
-          }
-          placeholder="Message"
-        />
+        className={style.Input}
+        prefix={
+          <Icon
+            component={EmojiSmile}
+            style={{ fontSize: "120%", color: "var(--primary-color)" }}
+          />
+        }
+        suffix={
+          <Icon
+            component={Send}
+            style={{ fontSize: "120%", color: "var(--primary-color)" }}
+          />
+        }
+        placeholder="Message"
+      />
     </div>
   );
 };
