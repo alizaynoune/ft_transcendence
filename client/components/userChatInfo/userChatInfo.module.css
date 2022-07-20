@@ -1,0 +1,25 @@
+.container{
+    /* display: flex;
+    flex-direction: column;
+    align-items: center; */
+    /* height: 100%; */
+}
+
+.userAvatar{
+    height: 100px;
+    /* width: max-content; */
+}
+
+.box{
+    border: 1px solid red;
+ 
+}
+
+.boxUserInfo{
+    
+}
+
+
+.boxUserOptions{
+
+}

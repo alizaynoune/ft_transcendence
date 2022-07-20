@@ -1,10 +1,10 @@
 
-
+import UserChatInfo from "@/components/userChatInfo/UserChatInfo"
 
 const SettingMessenger : React.FC = () => {
     return (
         <div>
-            Setting Messenger
+           <UserChatInfo/>
         </div>
     )
 }
