@@ -41,7 +41,7 @@ const CardSender: React.FC<Props> = (props) => {
         <div className={style.box_message_time}>
          {message.time} 
           <Icon
-          style={(message.status != "read")? {'fontSize' : '140%'} : {'fontSize' : '190%'} }
+          style={(message!.status != "read")? {'fontSize' : '140%'} : {'fontSize' : '190%'} }
             className={style.icon}
             component={(message.status != "read")? send : read }
           />
