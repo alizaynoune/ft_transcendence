@@ -1,5 +1,6 @@
 import layoutStyle from "./layout.module.css";
 import { NextPage } from "next";
+import { useRouter } from "next/router";
 import Image from "next/image";
 import { ReactNode, forwardRef, createRef } from "react";
 import {
@@ -12,7 +13,6 @@ import {
   MenuProps,
 } from "antd";
 import Link from "next/link";
-import { useSession, signOut, signIn } from "next-auth/react";
 import SiderLayout from "@/components/sider/Sider";
 
 import { useAppSelector, useAppDispatch } from "@/hooks/reduxHooks";
@@ -47,9 +47,12 @@ type Props = {
 
 const MasterLayout: React.FC<Props> = (props) => {
   const { children } = props;
+  const router = useRouter()
   const { isAuth, avatar, email } = useAppSelector(selectAuth);
   const dispatch = useAppDispatch()
-  console.log(isAuth);
+  // console.log(isAuth);
+  console.log(router.asPath);
+  
 
   const items: MenuProps["items"] = [
     getItem(
@@ -105,6 +108,7 @@ const MasterLayout: React.FC<Props> = (props) => {
         {/* content end */}
       </Layout>
       {/* content Layout end */}
+        { router.asPath === '/' && (
       <div className={layoutStyle.sectionGameInfo}>
         <div className={layoutStyle.sectionGameInfoLogo}>
           <Link href="/">
@@ -132,8 +136,9 @@ const MasterLayout: React.FC<Props> = (props) => {
           </Typography.Text>
         </div>
       </div>
+        )}
       <Footer className={layoutStyle.footer}>
-        <span>Ft_transcendence</span>
+        <span>ft_transcendence</span>
         <span>© 2022 1337. All rights reserved.</span>
       </Footer>
     </Layout>
