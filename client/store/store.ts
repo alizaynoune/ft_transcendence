@@ -23,3 +23,7 @@ export type AppThunk<ReturnType = void> = ThunkAction<
   unknown,
   Action<string>
 >;
+
+
+// => auth {}
+// => notif {}

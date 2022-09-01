@@ -11,6 +11,18 @@ export interface AuthType {
   token: string;
 }
 
+export interface NotificationType {
+  id: string;
+  type: string; // ! change it
+  user: {
+    name: string;
+    avatar: string;
+  };
+  read: boolean;
+  content: string;
+  date: Date;
+}
+
 export interface ProfileType {
   id: string;
   username: string;

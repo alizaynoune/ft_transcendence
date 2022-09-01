@@ -4,7 +4,7 @@ import Link from "next/link";
 import Icon, { GoogleOutlined } from "@ant-design/icons";
 import { signIn } from "next-auth/react";
 import { selectAuth } from "@/reducers/auth";
-import { AuhtTunk } from "@/actions/auth";
+import { AuthTunk } from "@/store/actions/auth";
 import { useRouter } from 'next/router';
 // hooks
 import { useAppDispatch, useAppSelector } from "@/hooks/reduxHooks";
@@ -21,16 +21,22 @@ const Login: React.FC = () => {
   const dispatch = useAppDispatch();
   const { isLoading, error, isAuth } = useAppSelector(selectAuth);
   const router = useRouter()
-  const onFinish = async () => {
-    dispatch(AuhtTunk())
-    .then((res) => {
-      console.log(res, '<<<<<res');
+  const onFinish = () => {
+    // dispatch(AuthTunk())
+    // .then((res) => {
+    //   console.log(res, '<<<<<res');
       
-      router.push('/')
-    })
-    .catch((e) => {
-      console.log(e);
-    })
+    //   router.push('/')
+    // })
+    // .catch((e) => {
+    //   console.log(e);
+    // })
+    try {
+     dispatch(AuthTunk())
+     router.push('/')
+    } catch (error) {
+      console.log('<<<error>>>>>>>>', error);
+    }
   };
 
   useEffect(() => {

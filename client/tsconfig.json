@@ -23,7 +23,7 @@
       "@/types/*": ["types/*"],
       "@/store/*": ["store/*"],
       "@/reducers/*": ["store/reducers/*"],
-      "@/actions/*": ["store/actions/*"],
+      "@/actions/*": ["store/actionsTunk/*"],
       "@/config/*": ["config/*"],
       "@/hooks/*": ["hooks/*"]
     }

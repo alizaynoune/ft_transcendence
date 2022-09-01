@@ -7,7 +7,7 @@ import React, { useEffect } from "react";
 import { Provider } from "react-redux";
 import { store } from "store/store";
 import { saveSession, loadSession } from "tools/localStorage";
-import {AuhtTunk} from '@/actions/auth'
+import {AuhtTunk} from '@/store/actions/auth'
 import {useAppDispatch} from '@/hooks/reduxHooks'
 
 store.subscribe(() => {

@@ -2,7 +2,7 @@ import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import type { RootState } from "@/store/store";
 
 import type { ProfileType } from "@/types/types";
-import {profileThunk} from '@/actions/profile'
+import {profileThunk} from '@/store/actions/profile'
 
 interface ProfileState {
   isLoading: boolean;
