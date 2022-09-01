@@ -21,7 +21,7 @@ const Login: React.FC = () => {
   const dispatch = useAppDispatch();
   const { isLoading, error, isAuth } = useAppSelector(selectAuth);
   const router = useRouter()
-  const onFinish = () => {
+  const onFinish = async () => {
     // dispatch(AuthTunk())
     // .then((res) => {
     //   console.log(res, '<<<<<res');
@@ -32,7 +32,7 @@ const Login: React.FC = () => {
     //   console.log(e);
     // })
     try {
-     dispatch(AuthTunk())
+     await dispatch(AuthTunk())
      router.push('/')
     } catch (error) {
       console.log('<<<error>>>>>>>>', error);

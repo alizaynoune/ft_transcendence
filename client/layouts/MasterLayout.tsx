@@ -2,6 +2,7 @@ import layoutStyle from "./layout.module.css";
 import { NextPage } from "next";
 import { useRouter } from "next/router";
 import Image from "next/image";
+import { EditOutlined, EllipsisOutlined, SettingOutlined } from '@ant-design/icons';
 import { ReactNode, forwardRef, createRef } from "react";
 import {
   Layout,
@@ -11,6 +12,7 @@ import {
   Dropdown,
   Menu,
   MenuProps,
+  Card,
 } from "antd";
 import Link from "next/link";
 import SiderLayout from "@/components/sider/Sider";
@@ -25,20 +27,17 @@ type MenuItem = Required<MenuProps>["items"][number];
 const getItem = (
   label: React.ReactNode,
   key: React.Key,
-  icon?: React.ReactNode,
-  children?: MenuItem[],
-  type?: "group" | "divider"
+  type: "group"
 ) => {
   return {
-    key,
-    icon,
-    children,
     label,
+    key,
     type,
   } as MenuItem;
 };
 
 const { Header, Footer, Content, Sider } = Layout;
+const {Meta} = Card
 
 type Props = {
   children: ReactNode;
@@ -48,25 +47,29 @@ type Props = {
 const MasterLayout: React.FC<Props> = (props) => {
   const { children } = props;
   const router = useRouter()
-  const { isAuth, avatar, email } = useAppSelector(selectAuth);
+  const { isAuth, avatar, email, name } = useAppSelector(selectAuth);
   const dispatch = useAppDispatch()
   // console.log(isAuth);
   console.log(router.asPath);
   
 
   const items: MenuProps["items"] = [
+
     getItem(
-      email,
+      <Card
+      bordered={false}
+      actions={[
+        <Icon component={logoutIcon} style={{ fontSize: "120%" }} onClick={(e) => {dispatch(logout())}} />,
+        <Link href='/profile/me#AccountSettings'><SettingOutlined key="setting" /></Link>,
+      ]}
+    >
+      <Meta
+        avatar={<Avatar src={avatar} size='large' />}
+        title={name.first + ' ' + name.last}
+        description={email}
+      />
+    </Card>,
       "1",
-      null,
-      [
-        getItem("", "2", null, undefined, "divider"),
-        getItem(
-          "logout",
-          "1",
-          <Icon component={logoutIcon} style={{ fontSize: "120%" }} />
-        ),
-      ],
       "group"
     ),
   ];
@@ -87,9 +90,8 @@ const MasterLayout: React.FC<Props> = (props) => {
           </Button>
         ) : (
           // <>
-          <Dropdown overlay={<Menu items={items} onClick={(e) => {
-          dispatch(logout())
-          }} />} trigger={["click"]}>
+          <Dropdown overlay={<Menu items={items}   />} trigger={["click"]}
+          >
             <a>
               <Avatar src={avatar} size={55} />
             </a>
