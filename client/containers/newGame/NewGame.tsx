@@ -1,6 +1,6 @@
 import { Button } from "antd";
 import style from "./newGame.module.css";
-import ListFriends from "@/components/newGameInvitFriends/NGameInvitFriends";
+import ListFriends from "@/components/newGameInviteFriends/NGameInviteFriends";
 import { Menu, Dropdown, Select } from "antd";
 import { useState } from "react";
 
@@ -26,14 +26,16 @@ const NewGame: React.FC = () => {
         <Option value={2}>{"Medium"}</Option>
         <Option value={3}>{"Difficult"}</Option>
       </Select>
-      <div className={style.stage}>
+      <div className={style.stageContainer}>
         <ListFriends />
         {/* racquet */}
+        <div className={style.stage}>
         <div className={style.racquet}></div>
         {/* dashed line */}
         <div className={style.dashedLine}></div>
         {/* racquet */}
         <div className={style.racquet}></div>
+        </div>
         <Button type="primary" size="large">
           {"Play with random user"}
         </Button>
