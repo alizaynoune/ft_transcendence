@@ -27,12 +27,16 @@ type MenuItem = Required<MenuProps>["items"][number];
 const getItem = (
   label: React.ReactNode,
   key: React.Key,
-  type: "group"
+  type?: "group",
+  // disabled?: boolean,
+  // children?: []
 ) => {
   return {
     label,
     key,
     type,
+    // disabled,
+    // children,
   } as MenuItem;
 };
 
@@ -57,6 +61,7 @@ const MasterLayout: React.FC<Props> = (props) => {
 
     getItem(
       <Card
+      // style={{cursor: 'initial'}}
       bordered={false}
       actions={[
         <Icon component={logoutIcon} style={{ fontSize: "120%" }} onClick={(e) => {dispatch(logout())}} />,
@@ -70,7 +75,9 @@ const MasterLayout: React.FC<Props> = (props) => {
       />
     </Card>,
       "1",
-      "group"
+      "group",
+      // true,
+      // []
     ),
   ];
 
@@ -90,7 +97,7 @@ const MasterLayout: React.FC<Props> = (props) => {
           </Button>
         ) : (
           // <>
-          <Dropdown overlay={<Menu items={items}   />} trigger={["click"]}
+          <Dropdown overlay={<Menu items={items}  />} trigger={["click"]}
           >
             <a>
               <Avatar src={avatar} size={55} />
