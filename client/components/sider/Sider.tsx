@@ -33,7 +33,7 @@ function getItem(
 
 const items: MenuItem[] = [
   getItem(
-    <Link href="/profile/me">Profile</Link>,
+    <Link href="/profile/me">{"Profile"}</Link>,
     'profile',
     <Icon
       component={profileIcon}
@@ -41,7 +41,7 @@ const items: MenuItem[] = [
     />,
   ),
   getItem(
-    <Link href="/messenger">Messenger</Link>,
+    <Link href="/messenger">{"Messenger"}</Link>,
     'messenger',
     <Badge dot offset={[-2, 4]}>
       <Icon
@@ -51,7 +51,7 @@ const items: MenuItem[] = [
     </Badge>,
   ),
   getItem(
-    <Link href="/achivements">Achivements</Link>,
+    <Link href="/achivements">{"Achivements"}</Link>,
     'achivements',
     <Icon
       component={achivementIcon}
@@ -59,7 +59,7 @@ const items: MenuItem[] = [
     />,
   ),
   getItem(
-    <Link href="/game">Current Games</Link>,
+    <Link href="/game">{"Current Games"}</Link>,
     'game',
     <Icon
       component={gamesIcon}
@@ -67,7 +67,7 @@ const items: MenuItem[] = [
     />,
   ),
   getItem(
-    <Link href="/game/new">Create Game</Link>,
+    <Link href="/game/new">{"Create Game"}</Link>,
     'gameNew',
     <Icon
       component={newGameIcon}

@@ -1,0 +1,73 @@
+.container {
+  background-color: var(--secondary-color);
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  padding: 10px;
+  gap: 5px;
+  isolation: isolate;
+  width: 931px;
+  height: 700px;
+
+  /* Secondary */
+  /* shadowSecondary */
+
+  box-shadow: 0px 0px 8px rgba(154, 154, 154, 0.5);
+  border-radius: 6px;
+
+  /* Inside auto layout */
+
+  flex: none;
+  order: 0;
+  flex-grow: 0;
+  margin: auto;
+}
+
+.selectLevel {
+    /* float: right; */
+}
+
+.stage {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  padding: 20px;
+  gap: 10px;
+  height: calc(100% - 40px);
+  /* width: 911px; */
+  /* height: 610px; */
+
+  /* Dark */
+
+  background: #5a5c69;
+  border-radius: 5px;
+
+  /* Inside auto layout */
+
+  flex: none;
+  order: 1;
+  align-self: stretch;
+  /* flex-grow: 0; */
+  /* z-index: 0; */
+}
+
+.racquet {
+  border: 3px solid #fff;
+  height: 90px;
+}
+
+.dashedLine {
+  /* border: 2px dashed green; */
+  /* margin-top: 10px; */
+  background-image: linear-gradient(
+    to bottom,
+    #fff 0%,
+    #fff 50%,
+    transparent 50%
+  );
+  background-size: 2px 28px;
+  background-repeat: repeat-y;
+  width: 2px;
+  height: 100%;
+}

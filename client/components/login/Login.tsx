@@ -5,7 +5,7 @@ import Icon, { GoogleOutlined } from "@ant-design/icons";
 import { signIn } from "next-auth/react";
 import { selectAuth } from "@/reducers/auth";
 import { AuthTunk } from "@/store/actions/auth";
-import { useRouter } from 'next/router';
+import { useRouter } from "next/router";
 // hooks
 import { useAppDispatch, useAppSelector } from "@/hooks/reduxHooks";
 
@@ -20,28 +20,28 @@ const { Title, Text } = Typography;
 const Login: React.FC = () => {
   const dispatch = useAppDispatch();
   const { isLoading, error, isAuth } = useAppSelector(selectAuth);
-  const router = useRouter()
+  const router = useRouter();
   const onFinish = async () => {
     // dispatch(AuthTunk())
     // .then((res) => {
     //   console.log(res, '<<<<<res');
-      
+
     //   router.push('/')
     // })
     // .catch((e) => {
     //   console.log(e);
     // })
     try {
-     await dispatch(AuthTunk())
-     router.push('/')
+      await dispatch(AuthTunk());
+      router.push("/");
     } catch (error) {
-      console.log('<<<error>>>>>>>>', error);
+      console.log("<<<error>>>>>>>>", error);
     }
   };
 
   useEffect(() => {
-    if (isAuth) router.push('/')
-  }, [])
+    if (isAuth) router.push("/");
+  }, []);
 
   const onFinishFailed = () => {
     console.log("failed");
@@ -52,7 +52,7 @@ const Login: React.FC = () => {
       {/* Left Side */}
       <div className={style.leftSide}>
         <Title className={style.title} level={3}>
-          Login to Your Account
+          {"Login to Your Account"}
         </Title>
         {/* Icons */}
         <div className={style.iconContainer}>
@@ -68,7 +68,7 @@ const Login: React.FC = () => {
               onClick={() => onFinish()}
             ></Button>
           </div>
-          <Text type="secondary">or user your email for login</Text>
+          <Text type="secondary">{"or user your email for login"}</Text>
         </div>
         {/* Icons End */}
         {/* Form */}
@@ -116,12 +116,12 @@ const Login: React.FC = () => {
               valuePropName="checked"
               style={{ float: "left" }}
             >
-              <Checkbox>Remember me</Checkbox>
+              <Checkbox>{"Remember me"}</Checkbox>
             </Form.Item>
             {/* Rommember me End */}
             {/* Forgot Password */}
             <Button className={style.forgotPWD} type="link">
-              <Link href="/auth/forgotpassword">forgot password?</Link>
+              <Link href="/auth/forgotpassword">{"forgot password?"}</Link>
             </Button>
           </Form.Item>
           {/* Forgot Password End */}
@@ -133,27 +133,24 @@ const Login: React.FC = () => {
               loading={isLoading}
               className={style.loginFormButton}
             >
-              SIGN IN
+              {"SIGN IN"}
             </Button>
           </Form.Item>
           {/* Submit End */}
         </Form>
         {/* Form End */}
-        <Divider className={style.divider}>
-          <Link href="/auth/register">New Here!</Link>
-        </Divider>
       </div>
       {/* Left Side End */}
       {/* Right Side */}
       <div className={style.rightSide}>
         <Text strong style={{ fontSize: "30px", color: "#ffffff" }}>
-          New Here!
+          {"New Here!"}
         </Text>
         <Text style={{ color: "#ffffff" }}>
-          sign up and discover a great Game
+          {"sign up and discover a great Game"}
         </Text>
         <Button style={{ color: "var(--primary-color)" }}>
-          <Link href="/auth/register">Register</Link>
+          <Link href="/auth/register">{"Register"}</Link>
         </Button>
       </div>
       {/* Right Side End */}
