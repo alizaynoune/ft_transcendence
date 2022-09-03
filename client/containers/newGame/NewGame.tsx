@@ -3,6 +3,7 @@ import style from "./newGame.module.css";
 import ListFriends from "@/components/newGameInviteFriends/NGameInviteFriends";
 import { Menu, Dropdown, Select } from "antd";
 import { useState } from "react";
+import Link from "next/link";
 
 const { Option } = Select;
 
@@ -10,7 +11,7 @@ const NewGame: React.FC = () => {
   const [gameLevel, setGameLevel] = useState<number>(1);
   const onChange = (value: number) => {
     console.log(`selected ${value}`);
-    setGameLevel(value)
+    setGameLevel(value);
   };
   return (
     <div className={style.container}>
@@ -30,15 +31,17 @@ const NewGame: React.FC = () => {
         <ListFriends />
         {/* racquet */}
         <div className={style.stage}>
-        <div className={style.racquet}></div>
-        {/* dashed line */}
-        <div className={style.dashedLine}></div>
-        {/* racquet */}
-        <div className={style.racquet}></div>
+          <div className={style.racquet}></div>
+          {/* dashed line */}
+          <div className={style.dashedLine}></div>
+          {/* racquet */}
+          <div className={style.racquet}></div>
         </div>
-        <Button type="primary" size="large">
-          {"Play with random user"}
-        </Button>
+        <Link href="/game/id">
+          <Button type="primary" size="large">
+            {"Play with random user"}
+          </Button>
+        </Link>
       </div>
     </div>
   );

@@ -59,7 +59,7 @@ const items: MenuItem[] = [
     />,
   ),
   getItem(
-    <Link href="/game">{"Current Games"}</Link>,
+    <Link href="/game/current">{"Current Games"}</Link>,
     'game',
     <Icon
       component={gamesIcon}

@@ -33,7 +33,14 @@ const Login: React.FC = () => {
     // })
     try {
       await dispatch(AuthTunk());
-      router.push("/");
+      console.log(window.history, 'back');
+      
+      // router.back()
+      // if (window.history.length > 1 && document.referrer.indexOf(window.location.host) !== -1) {
+      //   router.back();
+      // } else {
+        router.push('/');
+      // }
     } catch (error) {
       console.log("<<<error>>>>>>>>", error);
     }

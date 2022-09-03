@@ -2,7 +2,7 @@
 const Games : React.FC= () => {
     return(
         <div>
-            current Games
+            playGame
         </div>
     )
 }
