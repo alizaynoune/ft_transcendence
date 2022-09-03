@@ -17,10 +17,18 @@
 
 .FriendsList {
     height: 100%;
+    width: 100%;
     /* background-color: green; */
-    min-width: 300px;
+    /* min-width: 300px; */
+    /* overflow-y: scroll; */
+    overflow: hidden;
+    /* direction: ltr;  */
+  }
+
+  .scrollableDiv {
+    height: 100%;
+    /* background-color: green; */
+    min-width: 350px;
     overflow-y: scroll;
     overflow-x: hidden;
-    direction: ltr;
-    
   }

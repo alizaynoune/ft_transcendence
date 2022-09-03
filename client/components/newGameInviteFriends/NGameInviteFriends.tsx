@@ -1,8 +1,9 @@
 import style from "./newGameInviteFriends.module.css";
-import { Avatar, Button, List, Skeleton, AutoComplete, Input } from "antd";
+import { Avatar, Button, List, Skeleton, AutoComplete, Input, Divider } from "antd";
 import Icon from "@ant-design/icons";
 import { UserOutlined } from "@ant-design/icons";
 import React, { useEffect, useState } from "react";
+import InfiniteScroll from "react-infinite-scroll-component";
 
 import SendIcon from "@/icons/Send.svg";
 
@@ -41,7 +42,7 @@ const NGameInvitFriends: React.FC = () => {
       });
   }, []);
 
-  const onLoadMore = () => {
+  const loadMoreData = () => {
     setLoading(true);
     setList(
       data.concat(
@@ -73,16 +74,16 @@ const NGameInvitFriends: React.FC = () => {
           lineHeight: "32px",
         }}
       >
-        <Button onClick={onLoadMore}>loading more</Button>
+        {/* <Button onClick={loadMoreData}>loading more</Button> */}
       </div>
     ) : null;
 
   const filter = (
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
   ) => {
-      const value = e.target.value.toLowerCase()
-      console.log(value);
-      
+    const value = e.target.value.toLowerCase();
+    console.log(value);
+
     const newList = data.filter((item) => {
       return (
         item.email?.toLocaleLowerCase()?.includes(value) ||
@@ -94,35 +95,45 @@ const NGameInvitFriends: React.FC = () => {
   };
 
   return (
-    <div className={style.container}>
-        {/* <h1>{'Invite Freinds'}</h1> */}
+    <div className={style.container}
+    >
+      {/* <h1>{'Invite Freinds'}</h1> */}
       <Input.Search
         className={style.search}
         size="large"
         placeholder="Invite Freinds"
         onChange={filter}
       />
-      <List
-        className={style.FriendsList}
-        loading={initLoading}
-        itemLayout="horizontal"
-        loadMore={loadMore}
-        dataSource={list}
-        renderItem={(item) => (
-          <List.Item
-          >
-            <Skeleton avatar title={false} loading={item.loading} active>
-              <List.Item.Meta
-                avatar={<Avatar src={item.picture.large} size="large" />}
-                title={
-                  <a href="#">{item.name?.first + " " + item.name?.last}</a>
-                }
-                description={item.email}
-              />
-            </Skeleton>
-          </List.Item>
-        )}
-      />
+      <div id="scrollableDiv" className={style.scrollableDiv}>
+      <InfiniteScroll
+        dataLength={data.length}
+        next={loadMoreData}
+        hasMore={data.length < 50} // ! change to length of result
+        loader={<Skeleton avatar paragraph={{ rows: 1 }} active />}
+        endMessage={<Divider plain>It is all, nothing more 🤐</Divider>}
+        scrollableTarget="scrollableDiv"
+      >
+        <List
+        
+          className={style.FriendsList}
+          loading={initLoading}
+          itemLayout="horizontal"
+          loadMore={loadMore}
+          dataSource={list}
+          renderItem={(item) => (
+            <List.Item>
+              <Skeleton avatar title={false} loading={item.loading} active>
+                <List.Item.Meta
+                  avatar={<Avatar src={item.picture.large} size="large" />}
+                  title={item.name?.first + " " + item.name?.last}
+                  description={item.email}
+                />
+              </Skeleton>
+            </List.Item>
+          )}
+        />
+      </InfiniteScroll>
+      </div>
     </div>
   );
 };
