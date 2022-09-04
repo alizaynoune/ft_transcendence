@@ -26,6 +26,7 @@
 
 .search input {
   background-color: #464E5F;
+  color: var(--light-color);
 }
 
 .FriendsList {
@@ -36,6 +37,7 @@
     /* overflow-y: scroll; */
     overflow: hidden;
     margin: 0;
+    /* scrollbar-color: green; */
     /* direction: ltr;  */
   }
 
@@ -45,4 +47,6 @@
     min-width: 350px;
     overflow-y: scroll;
     overflow-x: hidden;
+    /* scrollbar-width:unset; */
+    /* scroll-padding-block-start:inherit; */
   }

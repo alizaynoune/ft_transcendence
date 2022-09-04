@@ -10,6 +10,43 @@
 
 }
 
+.leftDiv{
+    width: 50%;
+    height: 100%;
+    /* background-color: aqua; */
+    display: flex;
+    gap: 20px;
+    align-items: center;
+    /* flex-direction: row; */
+    /* justify-content: space-between; */
+}
+
+.rightDiv{
+    width: 50%;
+    height: 100%;
+    /* background-color: bisque; */
+    display: flex;
+    align-items: center;
+    gap: 30px;
+    /* justify-items: end; */
+    justify-content: end;
+}
+
+.search{
+    background: none;
+    border-radius: 5px;
+    width: 300px;
+}
+
+.search input{
+    background: none;
+    color: var(--light-color);
+}
+
+.search input::placeholder{
+    color: var(--light-color);
+}
+
 .logo{
     height: 100%;
     /* line-height: 0 !important; */
@@ -47,6 +84,7 @@
 }
 
 @media screen and (max-width: 600px) {
+    .search{display: none;}
     .sectionGameInfoLogo{
         display: none;
     }
