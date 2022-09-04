@@ -1,11 +1,24 @@
 import style from "./newGameInviteFriends.module.css";
-import { Avatar, Button, List, Skeleton, AutoComplete, Input, Divider } from "antd";
+import {
+  Avatar,
+  Button,
+  List,
+  Skeleton,
+  AutoComplete,
+  Input,
+  Divider,
+  Typography,
+} from "antd";
 import Icon from "@ant-design/icons";
 import { UserOutlined } from "@ant-design/icons";
 import React, { useEffect, useState } from "react";
 import InfiniteScroll from "react-infinite-scroll-component";
 
 import SendIcon from "@/icons/Send.svg";
+import SearchIcon from "@/icons/search.svg";
+
+const { Text, Paragraph, Title } = Typography;
+
 
 interface DataType {
   gender?: string;
@@ -95,44 +108,54 @@ const NGameInvitFriends: React.FC = () => {
   };
 
   return (
-    <div className={style.container}
-    >
-      {/* <h1>{'Invite Freinds'}</h1> */}
-      <Input.Search
-        className={style.search}
-        size="large"
-        placeholder="Invite Freinds"
-        onChange={filter}
-      />
-      <div id="scrollableDiv" className={style.scrollableDiv}>
-      <InfiniteScroll
-        dataLength={data.length}
-        next={loadMoreData}
-        hasMore={data.length < 50} // ! change to length of result
-        loader={<Skeleton avatar paragraph={{ rows: 1 }} active />}
-        endMessage={<Divider plain>It is all, nothing more 🤐</Divider>}
-        scrollableTarget="scrollableDiv"
-      >
-        <List
-        
-          className={style.FriendsList}
-          loading={initLoading}
-          itemLayout="horizontal"
-          loadMore={loadMore}
-          dataSource={list}
-          renderItem={(item) => (
-            <List.Item>
-              <Skeleton avatar title={false} loading={item.loading} active>
-                <List.Item.Meta
-                  avatar={<Avatar src={item.picture.large} size="large" />}
-                  title={item.name?.first + " " + item.name?.last}
-                  description={item.email}
-                />
-              </Skeleton>
-            </List.Item>
-          )}
+    <div className={style.container}>
+      <div className={style.searchContainer}>
+        {/* <strong>{"Invite Freinds"}</strong> */}
+        <Title level={5} italic type="secondary" style={{
+          textAlign: 'center',
+          color: 'var(--light-color)'
+        }}>{"Invite Freind"}</Title>
+        <Input
+          className={style.search}
+          size="large"
+          placeholder="Enter name or email"
+          onChange={filter}
+          suffix={<Icon component={SearchIcon} style={{ fontSize: "135%", color: 'var(--light-color)' }} />}
+          style={
+            {
+              // backgroundColor: '#5a5c69'
+            }
+          }
         />
-      </InfiniteScroll>
+      </div>
+      <div id="scrollableDiv" className={style.scrollableDiv}>
+        <InfiniteScroll
+          dataLength={data.length}
+          next={loadMoreData}
+          hasMore={data.length < 50} // ! change to length of result
+          loader={<Skeleton avatar paragraph={{ rows: 1 }} active />}
+          endMessage={<Divider plain>It is all, nothing more 🤐</Divider>}
+          scrollableTarget="scrollableDiv"
+        >
+          <List
+            className={style.FriendsList}
+            loading={initLoading}
+            itemLayout="horizontal"
+            loadMore={loadMore}
+            dataSource={list}
+            renderItem={(item) => (
+              <List.Item>
+                <Skeleton avatar title={false} loading={item.loading} active>
+                  <List.Item.Meta
+                    avatar={<Avatar src={item.picture.large} size="large" />}
+                    title={item.name?.first + " " + item.name?.last}
+                    description={item.email}
+                  />
+                </Skeleton>
+              </List.Item>
+            )}
+          />
+        </InfiniteScroll>
       </div>
     </div>
   );

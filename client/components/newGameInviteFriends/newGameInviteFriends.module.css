@@ -1,11 +1,20 @@
 .container {
     background-color: var(--light-color);
     border-radius: 6px;
-    padding: 5px;
+    padding: 6px;
     height: 100%;
     display: flex;
     flex-direction: column;
-    gap: 20px;
+    /* gap: -2px; */
+}
+
+.searchContainer {
+  background-color: #464E5F;
+  padding: 6px;
+  border-radius: 6px;
+  box-shadow: 0px 0px 20px rgba(154, 154, 154, 0.5);
+
+  /* margin: 0; */
 }
 
 .search {
@@ -15,6 +24,10 @@
     border-radius: 6px;
 }
 
+.search input {
+  background-color: #464E5F;
+}
+
 .FriendsList {
     height: 100%;
     width: 100%;
@@ -22,6 +35,7 @@
     /* min-width: 300px; */
     /* overflow-y: scroll; */
     overflow: hidden;
+    margin: 0;
     /* direction: ltr;  */
   }
 
