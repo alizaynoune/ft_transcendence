@@ -1,9 +1,10 @@
 import style from "./boxMessenger.module.css";
-import CardSender from "@/components/boxMessengerCardSender/BoxMessengerCardSender";
-import CardReceiver from "@/components/boxMessengerCardReceiver/BoxMessengerCardReceiver";
+import CardSender from "@/components/boxMessengerCardSender/BoxMessengerCardSender"; // ! remove it
+import CardReceiver from "@/components/boxMessengerCardReceiver/BoxMessengerCardReceiver"; // ! remove it
 import { Input, Button, List } from "antd";
 import Icon from "@ant-design/icons";
 
+import MessageText from "@/components/MessageText/MessageText";
 
 // To Add functionnality to scroll to the end of the list of messages
 import { useState, useEffect, useRef } from "react";
@@ -19,11 +20,29 @@ const BoxMessenger: React.FC = () => {
     bottomRef.current?.scrollIntoView();
   });
 
-
   return (
     <div className={style.container}>
-      <div className={style.box} >
-        <CardSender
+      <div className={style.box}>
+        <MessageText
+          id="122222"
+          conversationID="128"
+          read={false}
+          sender={{
+            id: "183",
+            name: {
+              first: "ali",
+              last: "zaynoune",
+              username: "alzaynou",
+            },
+            email: "alzaynou@email.com",
+            avatar: 'avatar',
+            status: "online",
+          }}
+          content="test message"
+          date={new Date("December 17, 1995 03:24:00")}
+          deleted={false}
+        />
+        {/* <CardSender
           data={{
             message: {
               content:
@@ -57,12 +76,13 @@ const BoxMessenger: React.FC = () => {
               avatar: "hrth",
             },
           }}
-        />
+        /> */}
 
         <div ref={bottomRef} />
       </div>
       <Input
         className={style.Input}
+        size='large'
         prefix={
           <Icon
             component={EmojiSmile}

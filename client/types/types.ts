@@ -63,5 +63,25 @@ export interface ConversationsType {
   username: string;
   read: boolean;
   message: string;
+}[];
+
+export interface MessageTextType {
+  id: string;
+  conversationID: string;
+  read: boolean;
+  sender: {
+    id: string;
+    name: {
+      first: string;
+      last: string;
+      username: string;
+    };
+    avatar: string;
+    email: string;
+    status: 'online' | 'offline' | 'playing'
+  };
+  // receiver: {}[];
+  content: string;
+  date: Date;
+  deleted: boolean;
 }
-[];
