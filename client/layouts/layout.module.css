@@ -1,106 +1,105 @@
 .layout {
-    background-color: var(--background-color) !important;
+  background-color: var(--background-color) !important;
 }
 
 .header {
-    background-color: var(--primary-color) !important;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-
+  background-color: var(--primary-color) !important;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
 }
 
-.leftDiv{
-    width: 50%;
-    height: 100%;
-    /* background-color: aqua; */
-    display: flex;
-    gap: 20px;
-    align-items: center;
-    /* flex-direction: row; */
-    /* justify-content: space-between; */
+.leftDiv {
+  width: 50%;
+  height: 100%;
+  /* background-color: aqua; */
+  display: flex;
+  gap: 20px;
+  align-items: center;
+  /* flex-direction: row; */
+  justify-content: left;
 }
 
-.rightDiv{
-    width: 50%;
-    height: 100%;
-    /* background-color: bisque; */
-    display: flex;
-    align-items: center;
-    gap: 30px;
-    /* justify-items: end; */
-    justify-content: end;
+.rightDiv {
+  width: 50%;
+  height: 100%;
+  /* background-color: bisque; */
+  display: flex;
+  align-items: center;
+  gap: 30px;
+  /* justify-items: end; */
+  justify-content: right;
 }
 
-.search{
-    background: none;
-    border-radius: 5px;
-    width: 300px;
+.search {
+  background: none;
+  border-radius: 5px;
+  width: 300px;
 }
 
-.search input{
-    background: none;
-    color: var(--light-color);
+.search input {
+  background: none;
+  color: var(--light-color);
 }
 
-.search input::placeholder{
-    color: var(--light-color);
+.search input::placeholder {
+  color: var(--light-color);
 }
 
-.logo{
-    height: 100%;
-    /* line-height: 0 !important; */
+.logo {
+  height: 100%;
+  /* line-height: 0 !important; */
 }
 
 .contentContainer {
-    padding: 10px;
+  padding: 10px;
 }
 
 .sectionGameInfo {
-    background-color: var(--primary-color);
-    display: flex;
-    justify-content: space-around;
-    align-items: center;
-    padding: 20px 0;
+  background-color: var(--primary-color);
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  padding: 20px 0;
 }
 
 .sectionGameInfoTettel {
-    text-align: center;
-    color: var(--light-color) !important;
+  text-align: center;
+  color: var(--light-color) !important;
 }
 
-
-.sectionGameInfoText{
-    width: 60%;
-    color: var(--light-color) !important;
-    font-size: 14px;
-    font-weight: bold;
+.sectionGameInfoText {
+  width: 60%;
+  color: var(--light-color) !important;
+  font-size: 14px;
+  font-weight: bold;
 }
 
 .footer {
-    background-color: var(--primary-color) !important;
-    display: flex;
-    justify-content: space-between;
+  background-color: var(--primary-color) !important;
+  display: flex;
+  justify-content: space-between;
 }
 
 @media screen and (max-width: 600px) {
-    .search{display: none;}
-    .sectionGameInfoLogo{
-        display: none;
-    }
+  .search {
+    display: none;
+  }
+  .sectionGameInfoLogo {
+    display: none;
+  }
 
-    .sectionGameInfoText{
-        width: 100%;
-        padding: 10px;
-    }
+  .sectionGameInfoText {
+    width: 100%;
+    padding: 10px;
+  }
 
-    .footer{
-        justify-content: space-around;
-        padding: 10px;
-    }
+  .footer {
+    justify-content: space-around;
+    padding: 10px;
+  }
 
-    .footer span:first-of-type{
-        display: none;
-    }
-
+  .footer span:first-of-type {
+    display: none;
+  }
 }

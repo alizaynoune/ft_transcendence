@@ -47,39 +47,35 @@ export interface ProfileType {
   };
 }
 
-export interface HistoryMessengerType {
+export interface UserType {
   id: string;
-  type: "group" | "direct";
-  password: boolean;
-  users: {
+  name: {
+    first: string;
+    last: string;
     username: string;
-    avatar: string;
-  }[];
+  };
+  avatar: string;
+  email: string;
+  status: "online" | "offline" | "playing";
 }
 
 export interface ConversationsType {
   id: string;
-  userId: string;
-  username: string;
-  read: boolean;
-  message: string;
-}[];
+  type: 'group' | 'direct'
+  adminID: string;
+  members: UserType[];
+  lastMessage: {
+    id: string;
+    date: Date;
+    content: string;
+  };
+};
 
 export interface MessageTextType {
   id: string;
   conversationID: string;
   read: boolean;
-  sender: {
-    id: string;
-    name: {
-      first: string;
-      last: string;
-      username: string;
-    };
-    avatar: string;
-    email: string;
-    status: 'online' | 'offline' | 'playing'
-  };
+  sender: UserType;
   // receiver: {}[];
   content: string;
   date: Date;

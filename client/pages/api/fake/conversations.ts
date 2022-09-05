@@ -1,0 +1,79 @@
+import type { NextApiRequest, NextApiResponse } from "next";
+import type { ConversationsType, UserType } from "@/types/types";
+
+const status = ["online", "offline", "playing"];
+const ids: any[] = [];
+
+function FakeText(length : any, characters: string) {
+    var result           = '';
+    // var characters       = ' ABCDEFGHIJKLMNOPQRSTUVWXYZ abcdefghijklmnopqrstuvwxyz 0123456789 ';
+    var charactersLength = characters.length;
+    for ( var i = 0; i < length; i++ ) {
+      result += characters.charAt(Math.floor(Math.random() * 
+ charactersLength));
+   }
+   return result;
+}
+
+const FakeUser = (data: any) => {
+  const conv = data.map((d: any) => {
+    ids.push(d.login.uuid);
+    return {
+      id: d.login.uuid,
+      name: {
+        first: d.name.first,
+        last: d.name.last,
+        username: d.login.username,
+      },
+      avatar: d.picture.large,
+      email: d.email,
+      status: status[Math.floor(Math.random() * 3)],
+    };
+  });
+  return conv;
+};
+
+const FakeConversation = (users: any) => {
+  let totalUsers = Math.floor(Math.random() * 40);
+  totalUsers = totalUsers < 2 ? 2 : totalUsers;
+  const members = users.slice(0, totalUsers);
+  const type = totalUsers == 2 ? "direct" : "group";
+  const conv = {
+      id : FakeText(30, '-ABCDEFGHIJKLMNOPQRSTUVWXYZ-abcdefghijklmnopqrstuvwxyz-0123456789-'),
+      type,
+      adminID: members[0].id,
+      members,
+      lastMessage : {
+          content : FakeText(Math.floor(Math.random() * 100), ' ABCDEFGHIJKLMNOPQRSTUVWXYZ abcdefghijklmnopqrstuvwxyz 0123456789 '),
+          data: new Date
+      }
+  }
+  return conv;
+};
+
+export default function conversations(
+  req: NextApiRequest,
+  res: NextApiResponse<any>
+) {
+  fetch(
+    "https://randomuser.me/api/?results=40&inc=name,gender,email,nat,picture,login&noinfo"
+  )
+    .then((d) => d.json())
+    .then((d) => {
+      const rD = FakeUser(d.results);
+      const resLenght = Math.floor(Math.random() * 10) + 20
+      let result = []
+      for (let i = 0 ; i <= resLenght;  i++) {
+          result.push(FakeConversation(rD))
+      }
+      res.status(200).json({
+          total: resLenght + 1,
+          result
+      });
+    })
+    .catch((err) => {
+      console.log(err);
+
+      res.status(400).json({ messenger: "error" });
+    });
+}

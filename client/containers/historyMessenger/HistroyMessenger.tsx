@@ -1,45 +1,25 @@
 import style from "./historyMessenger.module.css";
 import { useState, useEffect } from "react";
-import { Input, Button, List } from "antd";
+import { Input, Button, List, Skeleton, Divider, Avatar } from "antd";
+import InfiniteScroll from "react-infinite-scroll-component";
 import Icon from "@ant-design/icons";
 
 // components
-import ConversationCard from "@/components/historyMessengerCard/HistoryMessengerCard";
-import ConversationGroupCard from "@/components/historyMessengerGroupCard/HistoryMessengerGroupCard";
+import ConversationCard from "@/components/conversationCard/ConversationCard";
 
 // icons
 import searchIcon from "@/icons/search.svg";
 import createGroupIcon from "@/icons/addGroup.svg";
-import { group } from "console";
+// import { group } from "console";
 
-interface DataType {
-  gender: string;
-  name: {
-    title: string;
-    first: string;
-    last: string;
-  };
-  email: string;
-  picture: {
-    large: string;
-    medium: string;
-    thumbnail: string;
-  };
-  nat: string;
-  login: {
-    uuid: string;
-    username: string;
-    password: string;
-    salt: string;
-    md5: string;
-    sha1: string;
-    sha256: string;
-  };
-}
+// Types
+import {ConversationsType} from '@/types/types'
 
 const HistroyMessenger: React.FC = () => {
   const [loading, setLoading] = useState(false);
-  const [data, setData] = useState<DataType[]>([]);
+  const [initLoading, setInitLoading] = useState(true);
+  const [data, setData] = useState<ConversationsType[]>([]);
+  const [list, setList] = useState<ConversationsType[]>([]);
 
   const loadMoreData = () => {
     if (loading) {
@@ -47,18 +27,34 @@ const HistroyMessenger: React.FC = () => {
     }
     setLoading(true);
     fetch(
-      "https://randomuser.me/api/?results=16&inc=name,gender,email,nat,picture,login&noinfo"
+      "http://localhost:3000/api/fake/conversations"
     )
       .then((res) => res.json())
       .then((body) => {
-        setData(body.results);
+        setData(old => body.result);
+        console.log(data);
         setLoading(false);
-        console.log(body);
+        setInitLoading(false)
+        // window.dispatchEvent(new Event("resize"));
       })
       .catch(() => {
         setLoading(false);
       });
   };
+
+  // const loadMore =
+  // !initLoading && loading ? (
+  //   <div
+  //     style={{
+  //       textAlign: "center",
+  //       marginTop: 12,
+  //       height: 32,
+  //       lineHeight: "32px",
+  //     }}
+  //   >
+  //     {/* <Button onClick={loadMoreData}>loading more</Button> */}
+  //   </div>
+  // ) : null;
 
   useEffect(() => {
     loadMoreData();
@@ -77,7 +73,7 @@ const HistroyMessenger: React.FC = () => {
               style={{ fontSize: "120%", color: "var(--primary-color)" }}
             />
           }
-          placeholder="search friends"
+          placeholder="find friends"
         />
         <Button
           type="primary"
@@ -87,76 +83,50 @@ const HistroyMessenger: React.FC = () => {
           }
         />
       </div>
-      <div>
-        <ConversationCard
-          data={{
-            username: "amal rtam",
-            avatar: "ksjskj",
-            lastMessage: "hello how are you?",
-            messageNotReade: 11,
-          }}
-        />
-        <ConversationGroupCard
-          data={{
-            groupName: "girls",
-            users: [
-              {
-                username: "amal rtam",
-                avatar: "/images/defaultProfileAvatar.jpg",
-              },
-              {
-                username: "amal rtam",
-                avatar: "/images/defaultProfileAvatar.jpg",
-              },
-              {
-                username: "amal rtam",
-                avatar: "/images/defaultProfileAvatar.jpg",
-              },
-              {
-                username: "amal rtam",
-                avatar: "/images/defaultProfileAvatar.jpg",
-              },
-              {
-                username: "amal rtam",
-                avatar: "/images/defaultProfileAvatar.jpg",
-              },
-            ],
-            lastMessage: "Happy Coding",
-          }}
-        />
-        <ConversationCard
-          data={{
-            username: "amal rtam",
-            avatar: "ksjskj",
-            lastMessage: "hello how are you?",
-            messageNotReade: 11,
-          }}
-        />
-        <ConversationCard
-          data={{
-            username: "amal rtam",
-            avatar: "ksjskj",
-            lastMessage: "hello how are you?",
-            messageNotReade: 11,
-          }}
-        />
-
-        <List
+      <div id="scrollableDiv" className={style.scrollableDiv}>
+      <InfiniteScroll
+          dataLength={data.length}
+          next={loadMoreData}
+          hasMore={data.length < 50} // ! change to length of result
+          loader={<Skeleton avatar paragraph={{ rows: 1 }} active />}
+          endMessage={<Divider plain>It is all, nothing more 🤐</Divider>}
+          scrollableTarget="scrollableDiv"
+        >
+          <List
+            className={style.FriendsList}
+            loading={initLoading}
+            itemLayout="horizontal"
+            // loadMore={loadMore}
+            dataSource={data}
+            renderItem={(item) => (
+              <List.Item>
+                <Skeleton avatar title={false} loading={loading} active>
+                  <List.Item.Meta
+                    avatar={<Avatar src={item.members[0].avatar} size="large" />}
+                    title={item.members[0].name.username}
+                    description={item.lastMessage.content}
+                  />
+                </Skeleton>
+              </List.Item>
+            )}
+          />
+        </InfiniteScroll>
+        {/* <List
           dataSource={data}
           // itemLayout="horizontal"
           // grid={{
           //   gutter: 10,
           //   column: 2,
           // }}
-          pagination={{
-            onChange: (page) => {
-              console.log(page);
-            },
-            total: 20,
-            pageSize: 16,
-          }}
-          // renderItem={(item) => <ConversationCard  data={item} />}
-        />
+          // pagination={{
+          //   onChange: (page) => {
+          //     console.log(page);
+          //   },
+          //   total: 20,
+          //   pageSize: 16,
+          // }}
+          renderItem={(item) => <ConversationCard {...item} />}
+        /> */}
       </div>
     </div>
   );

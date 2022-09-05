@@ -19,7 +19,6 @@ import SearchIcon from "@/icons/search.svg";
 
 const { Text, Paragraph, Title } = Typography;
 
-
 interface DataType {
   gender?: string;
   name: {
@@ -34,7 +33,7 @@ interface DataType {
     thumbnail?: string;
   };
   nat?: string;
-  loading: boolean;
+  // loading: boolean;
 }
 
 const count = 10;
@@ -60,7 +59,6 @@ const NGameInvitFriends: React.FC = () => {
     setList(
       data.concat(
         [...new Array(count)].map(() => ({
-          loading: true,
           name: {},
           picture: {},
         }))
@@ -77,19 +75,19 @@ const NGameInvitFriends: React.FC = () => {
       });
   };
 
-  const loadMore =
-    !initLoading && !loading ? (
-      <div
-        style={{
-          textAlign: "center",
-          marginTop: 12,
-          height: 32,
-          lineHeight: "32px",
-        }}
-      >
-        {/* <Button onClick={loadMoreData}>loading more</Button> */}
-      </div>
-    ) : null;
+  // const loadMore =
+  //   !initLoading && loading ? (
+  //     <div
+  //       style={{
+  //         textAlign: "center",
+  //         marginTop: 12,
+  //         height: 32,
+  //         lineHeight: "32px",
+  //       }}
+  //     >
+  //       {/* <Button onClick={loadMoreData}>loading more</Button> */}
+  //     </div>
+  //   ) : null;
 
   const filter = (
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
@@ -110,21 +108,27 @@ const NGameInvitFriends: React.FC = () => {
   return (
     <div className={style.container}>
       <div className={style.searchContainer}>
-        {/* <strong>{"Invite Freinds"}</strong> */}
-        <Title level={5} italic type="secondary" style={{
-          textAlign: 'center',
-          color: 'var(--light-color)'
-        }}>{"Invite Freind"}</Title>
+        <Title
+          level={5}
+          italic
+          type="secondary"
+          style={{
+            textAlign: "center",
+            color: "var(--light-color)",
+          }}
+        >
+          {"Invite Friend"}
+        </Title>
         <Input
           className={style.search}
           size="large"
           placeholder="Enter name or email"
           onChange={filter}
-          suffix={<Icon component={SearchIcon} style={{ fontSize: "135%", color: 'var(--light-color)' }} />}
-          style={
-            {
-              // backgroundColor: '#5a5c69'
-            }
+          suffix={
+            <Icon
+              component={SearchIcon}
+              style={{ fontSize: "135%", color: "var(--light-color)" }}
+            />
           }
         />
       </div>
@@ -141,11 +145,11 @@ const NGameInvitFriends: React.FC = () => {
             className={style.FriendsList}
             loading={initLoading}
             itemLayout="horizontal"
-            loadMore={loadMore}
+            // loadMore={loadMore}
             dataSource={list}
             renderItem={(item) => (
               <List.Item>
-                <Skeleton avatar title={false} loading={item.loading} active>
+                <Skeleton avatar title={false} loading={loading} active>
                   <List.Item.Meta
                     avatar={<Avatar src={item.picture.large} size="large" />}
                     title={item.name?.first + " " + item.name?.last}
