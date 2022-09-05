@@ -4,6 +4,7 @@
     /* height: 100%; */
     /* height: 100%; */
     display: flex;
+    height: calc(100vh - 155px);
     /* flex-grow: 4; */
     /* gap: 5px */
 }

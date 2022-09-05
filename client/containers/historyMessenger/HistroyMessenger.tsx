@@ -2,10 +2,7 @@ import style from "./historyMessenger.module.css";
 import { useState, useEffect } from "react";
 import { Input, Button, List, Skeleton, Divider, Avatar } from "antd";
 import InfiniteScroll from "react-infinite-scroll-component";
-import Icon from "@ant-design/icons";
-
-// components
-import ConversationCard from "@/components/conversationCard/ConversationCard";
+import Icon, { BoldOutlined } from "@ant-design/icons";
 
 // icons
 import searchIcon from "@/icons/search.svg";
@@ -13,28 +10,24 @@ import createGroupIcon from "@/icons/addGroup.svg";
 // import { group } from "console";
 
 // Types
-import {ConversationsType} from '@/types/types'
+import { ConversationsType } from "@/types/types";
 
 const HistroyMessenger: React.FC = () => {
   const [loading, setLoading] = useState(false);
   const [initLoading, setInitLoading] = useState(true);
   const [data, setData] = useState<ConversationsType[]>([]);
-  const [list, setList] = useState<ConversationsType[]>([]);
 
   const loadMoreData = () => {
     if (loading) {
       return;
     }
     setLoading(true);
-    fetch(
-      "http://localhost:3000/api/fake/conversations"
-    )
+    fetch("http://localhost:3000/api/fake/conversations")
       .then((res) => res.json())
       .then((body) => {
-        setData(old => body.result);
-        console.log(data);
+        setData((old) => [...old, ...body.result]);
         setLoading(false);
-        setInitLoading(false)
+        setInitLoading(false);
         // window.dispatchEvent(new Event("resize"));
       })
       .catch(() => {
@@ -42,23 +35,21 @@ const HistroyMessenger: React.FC = () => {
       });
   };
 
-  // const loadMore =
-  // !initLoading && loading ? (
-  //   <div
-  //     style={{
-  //       textAlign: "center",
-  //       marginTop: 12,
-  //       height: 32,
-  //       lineHeight: "32px",
-  //     }}
-  //   >
-  //     {/* <Button onClick={loadMoreData}>loading more</Button> */}
-  //   </div>
-  // ) : null;
-
   useEffect(() => {
     loadMoreData();
   }, []);
+
+  // const avatars = (members: [{avatar: string}]) => {
+  //   if (members.length > 2) {
+  //     <Avatar.Group>
+  //       {members.map}
+  //     </Avatar.Group>
+  //   }else {
+  //     return (
+  //       <Avatar src={members[0].avatar} size="large" />
+  //     )
+  //   }
+  // }
 
   return (
     <div className={style.container}>
@@ -84,7 +75,7 @@ const HistroyMessenger: React.FC = () => {
         />
       </div>
       <div id="scrollableDiv" className={style.scrollableDiv}>
-      <InfiniteScroll
+        <InfiniteScroll
           dataLength={data.length}
           next={loadMoreData}
           hasMore={data.length < 50} // ! change to length of result
@@ -93,16 +84,25 @@ const HistroyMessenger: React.FC = () => {
           scrollableTarget="scrollableDiv"
         >
           <List
-            className={style.FriendsList}
+            className={style.conversationList}
             loading={initLoading}
             itemLayout="horizontal"
-            // loadMore={loadMore}
             dataSource={data}
             renderItem={(item) => (
               <List.Item>
                 <Skeleton avatar title={false} loading={loading} active>
                   <List.Item.Meta
-                    avatar={<Avatar src={item.members[0].avatar} size="large" />}
+                    avatar={
+                      item.members.length == 2 ? (
+                        <Avatar src={item.members[Math.floor(Math.random() * 2)].avatar} size="large" />
+                      ) : (
+                        <Avatar.Group maxCount={2} maxPopoverTrigger='click'>
+                          {item.members.map((m, key) => (
+                            <Avatar src={m.avatar} key={key} />
+                          ))}
+                        </Avatar.Group>
+                      )
+                    }
                     title={item.members[0].name.username}
                     description={item.lastMessage.content}
                   />
@@ -111,22 +111,6 @@ const HistroyMessenger: React.FC = () => {
             )}
           />
         </InfiniteScroll>
-        {/* <List
-          dataSource={data}
-          // itemLayout="horizontal"
-          // grid={{
-          //   gutter: 10,
-          //   column: 2,
-          // }}
-          // pagination={{
-          //   onChange: (page) => {
-          //     console.log(page);
-          //   },
-          //   total: 20,
-          //   pageSize: 16,
-          // }}
-          renderItem={(item) => <ConversationCard {...item} />}
-        /> */}
       </div>
     </div>
   );

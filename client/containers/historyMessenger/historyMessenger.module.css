@@ -3,13 +3,30 @@
 
   background: #f3f6f9;
   /* shadowSecondary */
-
+  height: 100%;
+  /* width: 100%; */
   box-shadow: 0px 0px 8px rgba(154, 154, 154, 0.5);
   border-radius: 6px;
-  padding: 10px 20px;
+  /* padding: 10px 20px; */
+  overflow: hidden;
 }
 
 .header {
   display: flex;
   gap: 5px;
+  padding: 10px 20px;
+}
+
+.scrollableDiv {
+  height: calc(100% - 40px);
+  /* background-color: green; */
+  min-width: 350px;
+  padding: 10px;
+  overflow-y: scroll;
+  overflow-x: hidden;
+}
+
+.conversationList{
+  overflow: hidden;
+  width: 100%;
 }

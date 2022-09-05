@@ -6,7 +6,6 @@ const ids: any[] = [];
 
 function FakeText(length : any, characters: string) {
     var result           = '';
-    // var characters       = ' ABCDEFGHIJKLMNOPQRSTUVWXYZ abcdefghijklmnopqrstuvwxyz 0123456789 ';
     var charactersLength = characters.length;
     for ( var i = 0; i < length; i++ ) {
       result += characters.charAt(Math.floor(Math.random() * 
