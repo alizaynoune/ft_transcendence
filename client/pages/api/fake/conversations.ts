@@ -48,6 +48,7 @@ const FakeConversation = (users: any) => {
   const conv = {
       id : FakeText(30, '-ABCDEFGHIJKLMNOPQRSTUVWXYZ-abcdefghijklmnopqrstuvwxyz-0123456789-'),
       type,
+      name: type === 'group' ? 'group name' : null,
       adminID: members[0].id,
       members,
       lastMessage : {

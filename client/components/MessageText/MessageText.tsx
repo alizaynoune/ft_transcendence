@@ -2,10 +2,9 @@ import React from 'react'
 import style from './messageText.module.css'
 
 
-import { MessageTextType } from '@/types/types'
+import { MessageTextType, ConversationsType } from '@/types/types'
 
-const MessageText :React.FC<MessageTextType> = (props) => {
-
+const MessageText :React.FC<ConversationsType> = (props) => {
 
     return(
         <div className={style.container}>

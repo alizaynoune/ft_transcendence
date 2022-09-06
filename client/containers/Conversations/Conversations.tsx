@@ -1,6 +1,14 @@
-import style from "./historyMessenger.module.css";
+import style from "./conversations.module.css";
 import { useState, useEffect } from "react";
-import { Input, Button, List, Skeleton, Divider, Avatar, Typography } from "antd";
+import {
+  Input,
+  Button,
+  List,
+  Skeleton,
+  Divider,
+  Avatar,
+  Typography,
+} from "antd";
 import InfiniteScroll from "react-infinite-scroll-component";
 import Icon, { BoldOutlined } from "@ant-design/icons";
 import moment from "moment";
@@ -14,8 +22,7 @@ import createGroupIcon from "@/icons/addGroup.svg";
 import { ConversationsType } from "@/types/types";
 import Link from "next/link";
 
-
-const {Paragraph} = Typography
+const { Paragraph } = Typography;
 const HistroyMessenger: React.FC = () => {
   const [loading, setLoading] = useState(false);
   const [initLoading, setInitLoading] = useState(true);
@@ -32,8 +39,8 @@ const HistroyMessenger: React.FC = () => {
         setData((old) => [...old, ...body.result]);
         setLoading(false);
         setInitLoading(false);
-        console.log(body.result, 'result');
-        
+        console.log(body.result, "result");
+
         // window.dispatchEvent(new Event("resize"));
       })
       .catch(() => {
@@ -85,24 +92,46 @@ const HistroyMessenger: React.FC = () => {
             renderItem={(item) => (
               <List.Item>
                 <Skeleton avatar title={false} loading={loading} active>
-                  {/* <Link href='#'> */}
-                  <List.Item.Meta
-                    avatar={
-                      item.members.length == 2 ? (
-                        <Avatar src={item.members[Math.floor(Math.random() * 2)].avatar} size="large" />
+                  <div className={style.listItem} onClick={(e) => {
+                    console.log(e);
+                    
+                  }}>
+                    <List.Item.Meta
+                      avatar={
+                        item.members.length == 2 ? (
+                          <Avatar
+                            src={
+                              item.members[Math.floor(Math.random() * 2)].avatar
+                            }
+                            size="large"
+                          />
                         ) : (
-                          <Avatar.Group maxCount={2} maxPopoverTrigger='click'>
-                          {item.members.map((m, key) => (
-                            <Avatar src={m.avatar} key={key} />
+                          <Avatar.Group maxCount={2} maxPopoverTrigger="click">
+                            {item.members.map((m, key) => (
+                              <Avatar src={m.avatar} key={key} />
                             ))}
-                        </Avatar.Group>
-                      )
-                    }
-                    title={item.members[0].name.username}
-                    description={<Paragraph ellipsis type="secondary" style={{width: '100%'}} >{item.lastMessage.content}</Paragraph>}
+                          </Avatar.Group>
+                        )
+                      }
+                      title={
+                        item.type === "group"
+                          ? item.name
+                          : item.members[0].name.username // ! change to reciver name
+                      }
+                      description={
+                        <Paragraph
+                          ellipsis
+                          type="secondary"
+                          style={{ width: "90%" }}
+                        >
+                          {item.lastMessage.content}
+                        </Paragraph>
+                      }
                     />
-                  <Paragraph type="secondary">{moment(item.lastMessage.date).fromNow()}</Paragraph>
-                    {/* </Link> */}
+                    <Paragraph type="secondary">
+                      {moment(item.lastMessage.date).fromNow()}
+                    </Paragraph>
+                  </div>
                 </Skeleton>
               </List.Item>
             )}

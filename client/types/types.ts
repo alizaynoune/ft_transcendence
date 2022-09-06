@@ -61,7 +61,8 @@ export interface UserType {
 
 export interface ConversationsType {
   id: string;
-  type: 'group' | 'direct'
+  type: 'group' | 'direct';
+  name: string | null;
   adminID: string;
   members: UserType[];
   lastMessage: {

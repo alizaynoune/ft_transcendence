@@ -1,7 +1,7 @@
 import style from './messenger.module.css'
 
 // containers
-import HistoryMessenger from '@/containers/historyMessenger/HistroyMessenger'
+import HistoryMessenger from '@/containers/Conversations/Conversations'
 import BoxMessenger from '@/containers/boxMessenger/BoxMessenger'
 import SettingMessenger from '@/containers/settingMessenger/SettingMessenger'
 
