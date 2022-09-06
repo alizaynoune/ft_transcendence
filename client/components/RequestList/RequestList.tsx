@@ -66,8 +66,13 @@ const FriendRequestList: React.FC = () => {
                 dataSource={data}
                 itemLayout="horizontal"
                 grid={{
-                    gutter: 10,
-                    column: 2,
+                    gutter: 16,
+                    xs: 1,
+                    sm: 1,
+                    md: 2,
+                    lg: 2,
+                    xl: 3,
+                    xxl: 3,
                 }}
                 pagination={{
                     onChange: (page) => {

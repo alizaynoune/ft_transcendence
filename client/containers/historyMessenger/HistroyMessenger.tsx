@@ -12,6 +12,7 @@ import createGroupIcon from "@/icons/addGroup.svg";
 
 // Types
 import { ConversationsType } from "@/types/types";
+import Link from "next/link";
 
 
 const {Paragraph} = Typography
@@ -84,23 +85,24 @@ const HistroyMessenger: React.FC = () => {
             renderItem={(item) => (
               <List.Item>
                 <Skeleton avatar title={false} loading={loading} active>
+                  {/* <Link href='#'> */}
                   <List.Item.Meta
                     avatar={
                       item.members.length == 2 ? (
                         <Avatar src={item.members[Math.floor(Math.random() * 2)].avatar} size="large" />
-                      ) : (
-                        <Avatar.Group maxCount={2} maxPopoverTrigger='click'>
+                        ) : (
+                          <Avatar.Group maxCount={2} maxPopoverTrigger='click'>
                           {item.members.map((m, key) => (
                             <Avatar src={m.avatar} key={key} />
-                          ))}
+                            ))}
                         </Avatar.Group>
                       )
                     }
                     title={item.members[0].name.username}
-                    // description={item.lastMessage.content}
                     description={<Paragraph ellipsis type="secondary" style={{width: '100%'}} >{item.lastMessage.content}</Paragraph>}
-                  />
+                    />
                   <Paragraph type="secondary">{moment(item.lastMessage.date).fromNow()}</Paragraph>
+                    {/* </Link> */}
                 </Skeleton>
               </List.Item>
             )}
