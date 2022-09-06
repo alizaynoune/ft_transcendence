@@ -63,7 +63,7 @@ const LastMatches: React.FC = () => {
       .then((body) => {
         setUsers(body.results);
         setLoading(false);
-        //   console.log(body.results);
+          // console.log(body.results, 'result');
       })
       .catch(() => {
         setLoading(false);

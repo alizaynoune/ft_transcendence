@@ -1,8 +1,9 @@
 import style from "./historyMessenger.module.css";
 import { useState, useEffect } from "react";
-import { Input, Button, List, Skeleton, Divider, Avatar } from "antd";
+import { Input, Button, List, Skeleton, Divider, Avatar, Typography } from "antd";
 import InfiniteScroll from "react-infinite-scroll-component";
 import Icon, { BoldOutlined } from "@ant-design/icons";
+import moment from "moment";
 
 // icons
 import searchIcon from "@/icons/search.svg";
@@ -12,6 +13,8 @@ import createGroupIcon from "@/icons/addGroup.svg";
 // Types
 import { ConversationsType } from "@/types/types";
 
+
+const {Paragraph} = Typography
 const HistroyMessenger: React.FC = () => {
   const [loading, setLoading] = useState(false);
   const [initLoading, setInitLoading] = useState(true);
@@ -28,6 +31,8 @@ const HistroyMessenger: React.FC = () => {
         setData((old) => [...old, ...body.result]);
         setLoading(false);
         setInitLoading(false);
+        console.log(body.result, 'result');
+        
         // window.dispatchEvent(new Event("resize"));
       })
       .catch(() => {
@@ -38,18 +43,6 @@ const HistroyMessenger: React.FC = () => {
   useEffect(() => {
     loadMoreData();
   }, []);
-
-  // const avatars = (members: [{avatar: string}]) => {
-  //   if (members.length > 2) {
-  //     <Avatar.Group>
-  //       {members.map}
-  //     </Avatar.Group>
-  //   }else {
-  //     return (
-  //       <Avatar src={members[0].avatar} size="large" />
-  //     )
-  //   }
-  // }
 
   return (
     <div className={style.container}>
@@ -104,8 +97,10 @@ const HistroyMessenger: React.FC = () => {
                       )
                     }
                     title={item.members[0].name.username}
-                    description={item.lastMessage.content}
+                    // description={item.lastMessage.content}
+                    description={<Paragraph ellipsis type="secondary" style={{width: '100%'}} >{item.lastMessage.content}</Paragraph>}
                   />
+                  <Paragraph type="secondary">{moment(item.lastMessage.date).fromNow()}</Paragraph>
                 </Skeleton>
               </List.Item>
             )}
@@ -115,5 +110,4 @@ const HistroyMessenger: React.FC = () => {
     </div>
   );
 };
-
 export default HistroyMessenger;

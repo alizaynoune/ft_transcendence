@@ -32,9 +32,17 @@ const FakeUser = (data: any) => {
   return conv;
 };
 
+function randomDate(start: Date, end: Date) {
+  return new Date(
+    start.getTime() + Math.random() * (end.getTime() - start.getTime())
+  );
+}
+
 const FakeConversation = (users: any) => {
   let totalUsers = Math.floor(Math.random() * 40);
   totalUsers = totalUsers < 2 ? 2 : totalUsers;
+  const startDate = new Date(2012, 1, 1)
+  const endDate = new Date()
   const members = users.slice(0, totalUsers);
   const type = totalUsers == 2 ? "direct" : "group";
   const conv = {
@@ -44,7 +52,7 @@ const FakeConversation = (users: any) => {
       members,
       lastMessage : {
           content : FakeText(Math.floor(Math.random() * 100), ' ABCDEFGHIJKLMNOPQRSTUVWXYZ abcdefghijklmnopqrstuvwxyz 0123456789 '),
-          data: new Date
+          date:  randomDate(new Date(2012, 0, 1), new Date())
       }
   }
   return conv;
