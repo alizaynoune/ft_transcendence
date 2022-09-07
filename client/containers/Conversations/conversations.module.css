@@ -19,21 +19,13 @@
 
 .scrollableDiv {
   height: calc(100% - 40px);
-  /* background-color: green; */
-  /* min-width: 350px; */
   padding: 10px;
   overflow-y: scroll;
   overflow-x: hidden;
 }
 
-.conversationList{
+.conversationList {
   overflow: hidden;
-  width: 100%;
 }
 
-.listItem {
-  /* background-color: aqua; */
-  width: 100%;
-  display: flex;
-  cursor: pointer;
-}
+

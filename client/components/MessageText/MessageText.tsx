@@ -4,7 +4,12 @@ import style from './messageText.module.css'
 
 import { MessageTextType, ConversationsType } from '@/types/types'
 
-const MessageText :React.FC<ConversationsType> = (props) => {
+
+type PropsType = {
+    currentConversation: ConversationsType | null
+  }
+
+const MessageText :React.FC<PropsType> = (props) => {
 
     return(
         <div className={style.container}>
