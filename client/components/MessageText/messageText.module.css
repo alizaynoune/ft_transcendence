@@ -1,0 +1,52 @@
+.container {
+  /* background-color: blue; */
+  /* margin: 5px; */
+  width: 100%;
+  position: relative;
+}
+
+.left {
+  /* background-color: aqua; */
+  display: flex;
+  justify-items: start;
+}
+
+.right {
+  /* background-color: bisque; */
+  display: flex;
+  justify-content: flex-end;
+}
+
+.messageContainer {
+    /* background-color: blue; */
+    padding: 10px;
+    display: flex;
+    align-items: flex-end;
+    min-width: 50%;
+}
+
+/* .right .messageContainer {
+} */
+
+.left .messageContainer{
+    /* background-color: blueviolet; */
+    display: flex;
+}
+
+.messageText {
+  background-color: beige;
+  width: 100%;
+  border-radius: 6px;
+  display: flex;
+  flex-direction: column;
+}
+
+/* .messageAvatar {
+}
+
+.messageDate {
+    align-self: end;
+}
+
+.messageStatus {
+} */

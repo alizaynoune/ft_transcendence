@@ -27,7 +27,7 @@ const { Paragraph } = Typography;
 // setTitle: React.Dispatch<React.SetStateAction<string>>;
 
 type PropsType = {
-  setCurrentConversation: React.Dispatch<React.SetStateAction<ConversationsType | null>>
+  setCurrentConversation: React.Dispatch<React.SetStateAction<ConversationsType | undefined>>
 }
 
 const HistroyMessenger: React.FC<PropsType> = ({setCurrentConversation}) => {
@@ -53,13 +53,18 @@ const HistroyMessenger: React.FC<PropsType> = ({setCurrentConversation}) => {
   };
 
   useEffect(() => {
+    data ? setCurrentConversation(data[0]) : null;
+  }, [initLoading])
+
+  useEffect(() => {
     loadMoreData();
+    // 
   }, []);
 
-  const onClick = (id: string) => {
-    const conv = data.find(i => i.id === id) || null
-    setCurrentConversation(conv)
-    console.log(id, conv);
+  const changeConversation = (id: string) => {
+    const conv = data.find(i => i.id === id)
+    conv && setCurrentConversation(conv)
+    // console.log(id, conv);
   }
 
   return (
@@ -90,7 +95,7 @@ const HistroyMessenger: React.FC<PropsType> = ({setCurrentConversation}) => {
           dataLength={data.length}
           next={loadMoreData}
           hasMore={data.length < 50} // ! change to length of result
-          loader={<Skeleton avatar paragraph={{ rows: 1 }} active />}
+          loader={<Skeleton avatar paragraph={{ rows: 2 }} active />}
           endMessage={<Divider plain>It is all, nothing more 🤐</Divider>}
           scrollableTarget="scrollableDiv"
         >
@@ -102,9 +107,8 @@ const HistroyMessenger: React.FC<PropsType> = ({setCurrentConversation}) => {
             renderItem={(item) => (
               <List.Item
                 style={{ cursor: "pointer" }}
-                onClick={() => onClick(item.id)}
+                onClick={() => changeConversation(item.id)}
               >
-                <Skeleton avatar title={false} loading={loading} active>
                   <List.Item.Meta
                     avatar={
                       item.members.length == 2 ? (
@@ -140,9 +144,6 @@ const HistroyMessenger: React.FC<PropsType> = ({setCurrentConversation}) => {
                   <Paragraph type="secondary">
                     {moment(item.lastMessage.date).fromNow()}
                   </Paragraph>
-                  {/* </a>
-                  </Link> */}
-                </Skeleton>
               </List.Item>
             )}
           />

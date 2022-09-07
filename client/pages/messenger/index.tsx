@@ -1,36 +1,42 @@
-import style from './messenger.module.css'
+import style from "./messenger.module.css";
 
 // containers
-import Conversations from '@/containers/Conversations/Conversations'
-import BoxMessenger from '@/containers/boxMessenger/BoxMessenger'
-import SettingMessenger from '@/containers/settingMessenger/SettingMessenger'
-import { SetStateAction, useEffect, useState } from 'react'
+import Conversations from "@/containers/Conversations/Conversations";
+import BoxMessenger from "@/containers/boxMessenger/BoxMessenger";
+import SettingMessenger from "@/containers/settingMessenger/SettingMessenger";
+import { SetStateAction, useEffect, useState } from "react";
 
-import {ConversationsType} from 'types/types'
+import { ConversationsType } from "types/types";
 
 const Messanger: React.FC = () => {
-  const [currentConversation, setCurrentConversation] = useState<ConversationsType | null>(null)
+  const [currentConversation, setCurrentConversation] =
+    useState<ConversationsType>();
 
-useEffect(() => {
-  console.log(currentConversation, 'done');
-  
-}, [currentConversation])
+  useEffect(() => {
+    console.log("rerander");
+  }, []);
   return (
     <div className={style.container}>
       <div className={style.historyMessenger}>
-        <Conversations setCurrentConversation={function (value: SetStateAction<ConversationsType | null>): void {
-          return setCurrentConversation(value)
-        } } {...setCurrentConversation} />
+        <Conversations
+          setCurrentConversation={function (
+            value: SetStateAction<ConversationsType | undefined>
+          ): void {
+            setCurrentConversation(value);
+          }}
+          {...setCurrentConversation}
+        />
       </div>
       <div className={style.boxMessenger}>
-        <BoxMessenger currentConversation={currentConversation} />
+        {currentConversation && (
+          <BoxMessenger currentConversation={currentConversation} />
+        )}
       </div>
       <div className={style.settingMessenger}>
         <SettingMessenger />
       </div>
     </div>
-    
-  )
-}
+  );
+};
 
-export default Messanger
+export default Messanger;

@@ -1,8 +1,20 @@
 import type { NextApiRequest, NextApiResponse } from "next";
 import type { ConversationsType, UserType } from "@/types/types";
+import { LoremIpsum } from "lorem-ipsum";
 
 const status = ["online", "offline", "playing"];
 const ids: any[] = [];
+
+const lorem = new LoremIpsum({
+  sentencesPerParagraph: {
+    max: 8,
+    min: 4,
+  },
+  wordsPerSentence: {
+    max: 16,
+    min: 4,
+  },
+});
 
 function FakeText(length : any, characters: string) {
     var result           = '';
@@ -52,7 +64,7 @@ const FakeConversation = (users: any) => {
       adminID: members[0].id,
       members,
       lastMessage : {
-          content : FakeText(Math.floor(Math.random() * 100), ' ABCDEFGHIJKLMNOPQRSTUVWXYZ abcdefghijklmnopqrstuvwxyz 0123456789 '),
+          content : lorem.generateWords(Math.floor(Math.random() * 10)),
           date:  randomDate(new Date(2012, 0, 1), new Date())
       }
   }
