@@ -3,7 +3,6 @@ import React, { useState, useRef } from 'react'
 import { Layout, Menu, MenuProps, Badge } from 'antd'
 import Icon from '@ant-design/icons'
 import Link from 'next/link'
-import { signOut } from 'next-auth/react'
 import {useAppDispatch} from '@/hooks/reduxHooks'
 import {logout} from '@/reducers/auth'
 

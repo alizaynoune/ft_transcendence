@@ -1,28 +1,23 @@
 .container {
-  /* background-color: blue; */
-  /* margin: 5px; */
   width: 100%;
   position: relative;
 }
 
 .left {
-  /* background-color: aqua; */
   display: flex;
   justify-items: start;
 }
 
 .right {
-  /* background-color: bisque; */
   display: flex;
   justify-content: flex-end;
 }
 
 .messageContainer {
-    /* background-color: blue; */
     display: flex;
     align-items: flex-end;
     min-width: 40%;
-    max-width: 60%;
+    max-width: 90%;
     padding: 10px;
     gap: 2px;
   }
@@ -32,15 +27,10 @@
   }
   
   .left .messageContainer{
-    /* background-color: blueviolet; */
-    /* display: flex; */
   }
   
   .messageText {
-  /* border: 1px solid; */
-  /* background-color: beige; */
   width: 100%;
-  /* border-radius: 10px; */
   display: flex;
   flex-direction: column;
   gap: 2px;
@@ -49,7 +39,6 @@
 }
 
 .right .messageText {
-  /* flex: unset; */
   align-items: flex-end;
   border-radius: 10px 10px 0px 10px;
   background-color: var(--primary-color);
@@ -64,7 +53,6 @@
 }
 
 .messageDate {
-    /* align-self: end; */
 }
 
 .messageStatus {
