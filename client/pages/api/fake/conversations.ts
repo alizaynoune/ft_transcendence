@@ -60,11 +60,11 @@ const FakeConversation = (users: any) => {
   const conv = {
       id : FakeText(30, '-ABCDEFGHIJKLMNOPQRSTUVWXYZ-abcdefghijklmnopqrstuvwxyz-0123456789-'),
       type,
-      name: type === 'group' ? 'group name' : null,
+      name: type === 'group' ? lorem.generateWords(1) : null,
       adminID: members[0].id,
       members,
       lastMessage : {
-          content : lorem.generateWords(Math.floor(Math.random() * 10)),
+          content : lorem.generateSentences(1),
           date:  randomDate(new Date(2012, 0, 1), new Date())
       }
   }

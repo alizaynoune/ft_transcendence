@@ -36,7 +36,7 @@ const fakeMessage = (id: string, sender: UserType): MessageTextType => {
     id: "message id",
     conversationID: id,
     read: Math.random() < 0.5,
-    content: lorem.generateWords(Math.floor(Math.random() * 10)),
+    content: lorem.generateSentences(1),
     date: new Date(),
     sender,
     deleted: false,

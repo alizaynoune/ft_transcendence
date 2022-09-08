@@ -7,15 +7,16 @@ type PropsType = {
   conversation: ConversationsType;
 };
 
-const SettingMessenger: React.FC<PropsType> = (props) => {
-  console.log(props.conversation);
+const SettingMessenger: React.FC<PropsType> = ({conversation}) => {
+//   console.log(props.conversation);
 
   return (
     <div className={style.container}>
       <Card
-        title="Default size card"
+        title={conversation.type === 'group' ? conversation.name : conversation.members[1].name.username}
         extra={<a href="#">More</a>}
-        style={{ width: 300 }}
+        className={style.card}
+        // style={{ width: 300 }}
       >
         <p>Card content</p>
         <p>Card content</p>
