@@ -17,15 +17,14 @@ const MessageText: React.FC<PropsType> = ({ message, number }) => {
     <div className={style.container}>
       <div className={number === 1 ? style.right : style.left}>
         <div className={style.messageContainer}>
-          {!number ? <Avatar src={message.sender.avatar} /> : null}
+          <Avatar src={message.sender.avatar} />
           <div className={style.messageText}>
             <Typography.Text strong>{message.content}</Typography.Text>
-            <Typography.Paragraph type="secondary">
+            <Typography.Paragraph style={{margin: 0}} type="secondary">
               {moment(message.date).fromNow()}
             </Typography.Paragraph>
             {number ? <CheckOutlined /> : null}
           </div>
-            {number ? <Avatar src={message.sender.avatar} /> : null}
         </div>
       </div>
     </div>

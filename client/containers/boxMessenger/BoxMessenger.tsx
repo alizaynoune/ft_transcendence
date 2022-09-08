@@ -52,7 +52,7 @@ const BoxMessenger: React.FC<PropsType> = ({ currentConversation }) => {
 
   useEffect(() => {
     const newMessage: MessageTextType[] = [];
-    const count = Math.floor(Math.random() * 50)
+    const count = Math.floor(Math.random() * 100);
     for (let i = 0; i < count; i++) {
       newMessage.push(
         fakeMessage(
@@ -60,66 +60,55 @@ const BoxMessenger: React.FC<PropsType> = ({ currentConversation }) => {
           currentConversation.members[
             Math.floor(Math.random() * currentConversation.members.length)
           ]
-          )
-          );
-          
-        }
-        setMessages([...newMessage]);
+        )
+      );
+    }
+    setMessages([...newMessage]);
   }, [currentConversation]);
 
   return (
     <div className={style.container}>
       <div className={style.box}>
         {messages.map((m, key) => {
-          return <MessageText message={m} key={key} number={Math.random() < 0.5 ? 1 : 0} />;
+          return (
+            <MessageText
+              message={m}
+              key={key}
+              number={
+                  m.sender.id === currentConversation.members[0].id
+                  ? 1
+                  : 0
+              }
+            />
+          );
         })}
         <div ref={bottomRef} />
       </div>
-      {/* <Input
-        className={style.Input}
-        size="large"
-        onPressEnter={(e) => {
-          console.log(e.target.value);
-          
-        }}
-        prefix={
-          <Icon
-            component={EmojiSmile}
-            style={{ fontSize: "120%", color: "var(--primary-color)" }}
-          />
-        }
-        suffix={
-          <Icon
-            component={Send}
-            style={{ fontSize: "120%", color: "var(--primary-color)" }}
-          />
-        }
-        placeholder="Message"
-      /> */}
-      <Input.Group 
-      compact
-      // size="large"
+      <Input.Group
+        compact
       >
-      <Input
-      style={{ width: 'calc(100% - 200px)' }}
-        className={style.Input}
-        size="large"
-        prefix={
-          <Icon
-            component={EmojiSmile}
-            style={{ fontSize: "120%", color: "var(--primary-color)" }}
-          />
-        }
-        suffix={
-          <Icon
-            component={Send}
-            style={{ fontSize: "120%", color: "var(--primary-color)" }}
-          />
-        }
-        placeholder="Message"
-      />
-      <Button type="primary" size='large'>Submit</Button>
-    </Input.Group>
+        <Input
+          style={{ width: "calc(100% - 200px)" }}
+          className={style.Input}
+          size="large"
+          prefix={
+            <Icon
+              component={EmojiSmile}
+              style={{ fontSize: "120%", color: "var(--primary-color)" }}
+            />
+          }
+          suffix={
+            <Icon
+              component={Send}
+              style={{ fontSize: "120%", color: "var(--primary-color)" }}
+            />
+          }
+          placeholder="Message"
+        />
+        <Button type="primary" size="large">
+          Submit
+        </Button>
+      </Input.Group>
     </div>
   );
 };
