@@ -23,7 +23,12 @@
 }
 
 .settingMessenger {
-    background-color: blue;
+    /* background-color: blue; */
     flex: 1 1 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    box-shadow: 0px 0px 8px rgba(154, 154, 154, 0.5);
+    border-radius: 6px;
     /* width: 100%; */
 }

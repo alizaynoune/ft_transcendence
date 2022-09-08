@@ -22,6 +22,12 @@
   padding: 10px;
   overflow-y: scroll;
   overflow-x: hidden;
+  -ms-overflow-style: none;  /* IE and Edge */
+  scrollbar-width: none;
+}
+
+.scrollableDiv::-webkit-scrollbar{
+  display: none;
 }
 
 .conversationList {

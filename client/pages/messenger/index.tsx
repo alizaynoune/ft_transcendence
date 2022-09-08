@@ -33,7 +33,9 @@ const Messanger: React.FC = () => {
         )}
       </div>
       <div className={style.settingMessenger}>
-        <SettingMessenger />
+        {currentConversation && (
+          <SettingMessenger conversation={currentConversation} />
+        )}
       </div>
     </div>
   );

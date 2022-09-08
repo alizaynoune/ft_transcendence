@@ -11,7 +11,7 @@ type PropsType = {
 };
 
 const MessageText: React.FC<PropsType> = ({ message, number }) => {
-  console.log(message, number);
+  // console.log(message, number);
 
   return (
     <div className={style.container}>

@@ -1,7 +1,7 @@
 import style from "./boxMessenger.module.css";
 import CardSender from "@/components/boxMessengerCardSender/BoxMessengerCardSender"; // ! remove it
 import CardReceiver from "@/components/boxMessengerCardReceiver/BoxMessengerCardReceiver"; // ! remove it
-import { Input, Button, List, message } from "antd";
+import { Input, Button, List, message, Form } from "antd";
 import Icon from "@ant-design/icons";
 import { LoremIpsum } from "lorem-ipsum"; //!delete it
 
@@ -46,6 +46,7 @@ const fakeMessage = (id: string, sender: UserType): MessageTextType => {
 const BoxMessenger: React.FC<PropsType> = ({ currentConversation }) => {
   const bottomRef = useRef<HTMLDivElement>(null);
   const [messages, setMessages] = useState<MessageTextType[]>([]);
+  const [value, setValue] = useState<string>("sdfas");
   useEffect(() => {
     bottomRef.current?.scrollIntoView();
   });
@@ -66,6 +67,11 @@ const BoxMessenger: React.FC<PropsType> = ({ currentConversation }) => {
     setMessages([...newMessage]);
   }, [currentConversation]);
 
+  const onSubmit = (e: any) => {
+    console.log(e);
+  };
+
+
   return (
     <div className={style.container}>
       <div className={style.box}>
@@ -74,41 +80,45 @@ const BoxMessenger: React.FC<PropsType> = ({ currentConversation }) => {
             <MessageText
               message={m}
               key={key}
-              number={
-                  m.sender.id === currentConversation.members[0].id
-                  ? 1
-                  : 0
-              }
+              number={m.sender.id === currentConversation.members[0].id ? 1 : 0}
             />
           );
         })}
         <div ref={bottomRef} />
       </div>
-      <Input.Group
-        compact
+      <Form name="form"
+      onFinish={onSubmit}
       >
-        <Input
-          style={{ width: "calc(100% - 200px)" }}
-          className={style.Input}
-          size="large"
-          prefix={
-            <Icon
-              component={EmojiSmile}
-              style={{ fontSize: "120%", color: "var(--primary-color)" }}
+        <Form.Item
+        name="message"
+        >
+          {/* <Input.Group compact> */}
+            <Input
+              style={{ width: "calc(100% - 100px)" }}
+              className={style.Input}
+              size="large"
+              // value={value}
+              // onChange={onChange}
+              placeholder="Message"
+              prefix={
+                <Icon
+                  component={EmojiSmile}
+                  style={{ fontSize: "120%", color: "var(--primary-color)" }}
+                />
+              }
+              suffix={
+                <Icon
+                  component={Send}
+                  style={{ fontSize: "120%", color: "var(--primary-color)" }}
+                />
+              }
             />
-          }
-          suffix={
-            <Icon
-              component={Send}
-              style={{ fontSize: "120%", color: "var(--primary-color)" }}
-            />
-          }
-          placeholder="Message"
-        />
-        <Button type="primary" size="large">
-          Submit
-        </Button>
-      </Input.Group>
+            {/* <Button type="primary" size="large" htmlType="submit">
+              Submit
+            </Button>
+          </Input.Group> */}
+        </Form.Item>
+      </Form>
     </div>
   );
 };
