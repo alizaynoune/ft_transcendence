@@ -7,7 +7,7 @@ import { CheckOutlined } from "@ant-design/icons";
 
 type PropsType = {
   message: MessageTextType;
-  number: number; // ! for test
+  number: number; // ! for test change it to if(sender.id === auth.id)
 };
 
 const MessageText: React.FC<PropsType> = ({ message, number }) => {
@@ -19,7 +19,7 @@ const MessageText: React.FC<PropsType> = ({ message, number }) => {
         <div className={style.messageContainer}>
           <Avatar src={message.sender.avatar} />
           <div className={style.messageText}>
-            <Typography.Text strong>{message.content}</Typography.Text>
+            <Typography.Text >{message.content}</Typography.Text>
             <Typography.Paragraph style={{margin: 0}} type="secondary">
               {moment(message.date).fromNow()}
             </Typography.Paragraph>

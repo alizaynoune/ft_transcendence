@@ -1,6 +1,4 @@
 import style from "./boxMessenger.module.css";
-import CardSender from "@/components/boxMessengerCardSender/BoxMessengerCardSender"; // ! remove it
-import CardReceiver from "@/components/boxMessengerCardReceiver/BoxMessengerCardReceiver"; // ! remove it
 import { Input, Button, List, message, Form } from "antd";
 import Icon from "@ant-design/icons";
 import { LoremIpsum } from "lorem-ipsum"; //!delete it

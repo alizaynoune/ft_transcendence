@@ -32,13 +32,13 @@
 }
 
 .search {
-  background: none;
-  border-radius: 5px;
-  width: 300px;
+  background: none !important;
+  border-radius: 6px !important;
+  max-width: 300px;
 }
 
 .search input {
-  background: none;
+  background: none !important;
   color: var(--light-color);
 }
 
