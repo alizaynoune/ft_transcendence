@@ -14,8 +14,7 @@ import Icon, { BoldOutlined } from "@ant-design/icons";
 import moment from "moment";
 
 // icons
-import searchIcon from "@/icons/search.svg";
-import createGroupIcon from "@/icons/addGroup.svg";
+import { SearchIcon, AddGroupIcon } from "@/icons/index";
 
 // Types
 import { ConversationsType } from "@/types/types";
@@ -23,10 +22,12 @@ import { ConversationsType } from "@/types/types";
 const { Paragraph } = Typography;
 
 type PropsType = {
-  setCurrentConversation: React.Dispatch<React.SetStateAction<ConversationsType | undefined>>
-}
+  setCurrentConversation: React.Dispatch<
+    React.SetStateAction<ConversationsType | undefined>
+  >;
+};
 
-const HistroyMessenger: React.FC<PropsType> = ({setCurrentConversation}) => {
+const HistroyMessenger: React.FC<PropsType> = ({ setCurrentConversation }) => {
   const [loading, setLoading] = useState(false);
   const [initLoading, setInitLoading] = useState(true);
   const [data, setData] = useState<ConversationsType[]>([]);
@@ -50,18 +51,18 @@ const HistroyMessenger: React.FC<PropsType> = ({setCurrentConversation}) => {
 
   useEffect(() => {
     data ? setCurrentConversation(data[0]) : null;
-  }, [initLoading])
+  }, [initLoading]);
 
   useEffect(() => {
     loadMoreData();
-    // 
+    //
   }, []);
 
   const changeConversation = (id: string) => {
-    const conv = data.find(i => i.id === id)
-    conv && setCurrentConversation(conv)
+    const conv = data.find((i) => i.id === id);
+    conv && setCurrentConversation(conv);
     // console.log(id, conv);
-  }
+  };
 
   return (
     <div className={style.container}>
@@ -72,7 +73,7 @@ const HistroyMessenger: React.FC<PropsType> = ({setCurrentConversation}) => {
           }}
           suffix={
             <Icon
-              component={searchIcon}
+              component={SearchIcon}
               style={{ fontSize: "120%", color: "var(--primary-color)" }}
             />
           }
@@ -81,9 +82,7 @@ const HistroyMessenger: React.FC<PropsType> = ({setCurrentConversation}) => {
         <Button
           type="primary"
           size="large"
-          icon={
-            <Icon component={createGroupIcon} style={{ fontSize: "120%" }} />
-          }
+          icon={<Icon component={AddGroupIcon} style={{ fontSize: "120%" }} />}
         />
       </div>
       <div id="scrollableDiv" className={style.scrollableDiv}>
@@ -105,41 +104,39 @@ const HistroyMessenger: React.FC<PropsType> = ({setCurrentConversation}) => {
                 style={{ cursor: "pointer" }}
                 onClick={() => changeConversation(item.id)}
               >
-                  <List.Item.Meta
-                    avatar={
-                      item.members.length == 2 ? (
-                        <Avatar
-                          src={
-                            item.members[Math.floor(Math.random() * 2)].avatar
-                          }
-                          size="large"
-                        />
-                      ) : (
-                        <Avatar.Group maxCount={2} maxPopoverTrigger="click">
-                          {item.members.map((m, key) => (
-                            <Avatar src={m.avatar} key={key} />
-                          ))}
-                        </Avatar.Group>
-                      )
-                    }
-                    title={
-                      item.type === "group"
-                        ? item.name
-                        : item.members[0].name.username // ! change to reciver name
-                    }
-                    description={
-                      <Paragraph
-                        ellipsis
-                        type="secondary"
-                        style={{ width: "90%" }}
-                      >
-                        {item.lastMessage.content}
-                      </Paragraph>
-                    }
-                  />
-                  <Paragraph type="secondary">
-                    {moment(item.lastMessage.date).fromNow()}
-                  </Paragraph>
+                <List.Item.Meta
+                  avatar={
+                    item.members.length == 2 ? (
+                      <Avatar
+                        src={item.members[Math.floor(Math.random() * 2)].avatar}
+                        size="large"
+                      />
+                    ) : (
+                      <Avatar.Group maxCount={2} maxPopoverTrigger="click">
+                        {item.members.map((m, key) => (
+                          <Avatar src={m.avatar} key={key} />
+                        ))}
+                      </Avatar.Group>
+                    )
+                  }
+                  title={
+                    item.type === "group"
+                      ? item.name
+                      : item.members[0].name.username // ! change to reciver name
+                  }
+                  description={
+                    <Paragraph
+                      ellipsis
+                      type="secondary"
+                      style={{ width: "90%" }}
+                    >
+                      {item.lastMessage.content}
+                    </Paragraph>
+                  }
+                />
+                <Paragraph type="secondary">
+                  {moment(item.lastMessage.date).fromNow()}
+                </Paragraph>
               </List.Item>
             )}
           />

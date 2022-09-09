@@ -5,15 +5,17 @@ import { ConversationsType } from "@/types/types";
 import { ReactNode, useEffect } from "react";
 import Icon from "@ant-design/icons";
 
-import SettingIcon from "@/icons/Settings2.svg";
-import UserIcon from "@/icons/user.svg";
-import InvetGameIcon from "@/icons/PlayGame.svg";
-import LevelIcon from "@/icons/level.svg";
-import TrashIcon from "@/icons/Trash.svg";
-import BlockIcon from "@/icons/BlockUser.svg";
-import SpeakerIcon from "@/icons/speaker.svg";
-import MuteIcon from "@/icons/mute.svg";
-import SettingsIcon from "@/icons/Setting.svg";
+import {
+  Settings2Icon,
+  UserIcon,
+  PlayGameIcon,
+  LevelIcon,
+  TrashIcon,
+  BlockUserIcon,
+  SpeakerIcon,
+  MuteIcon,
+  SettingIcon,
+} from "@/icons/index";
 
 import type { CustomIconComponentProps } from "@ant-design/icons/lib/components/Icon";
 import type { UserType } from "@/types/types";
@@ -45,7 +47,7 @@ const CardSettingText = [
   },
   {
     lable: "Invet to play a game",
-    icon: InvetGameIcon,
+    icon: PlayGameIcon,
   },
   {
     lable: "Level 42",
@@ -57,7 +59,7 @@ const CardSettingText = [
   },
   {
     lable: "Block",
-    icon: BlockIcon,
+    icon: BlockUserIcon,
   },
   {
     lable: "Mute",
@@ -141,7 +143,11 @@ const SettingMessenger: React.FC<PropsType> = ({ conversation }) => {
         }
         extra={
           conversation.type === "group" ? (
-            <Button type="link" ghost icon={<Icon component={SettingIcon} />} />
+            <Button
+              type="link"
+              ghost
+              icon={<Icon component={Settings2Icon} />}
+            />
           ) : null
         }
       >

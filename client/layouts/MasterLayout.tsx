@@ -28,9 +28,8 @@ import SiderLayout from "@/components/sider/Sider";
 import { useAppSelector, useAppDispatch } from "@/hooks/reduxHooks";
 import { selectAuth, logout } from "@/reducers/auth";
 import Icon from "@ant-design/icons";
-import logoutIcon from "@/icons/out.svg";
-import NotifIcon from "@/icons/notif.svg";
-import SearchIcon from "@/icons/search.svg";
+
+import { OutIcon, NotifIcon, SearchIcon } from "@/icons/index";
 
 type MenuItem = Required<MenuProps>["items"][number];
 const getItem = (label: React.ReactNode, key: React.Key, type?: "group") => {
@@ -64,7 +63,7 @@ const MasterLayout: React.FC<Props> = (props) => {
         bordered={false}
         actions={[
           <Icon
-            component={logoutIcon}
+            component={OutIcon}
             style={{ fontSize: "120%" }}
             onClick={(e) => {
               dispatch(logout());

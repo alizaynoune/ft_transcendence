@@ -6,12 +6,14 @@ import { useSession } from "next-auth/react";
 import Icon from "@ant-design/icons";
 
 // Achivements Icons
-import friendly from "@/icons/friendly.svg";
-import legendary from "@/icons/legendary.svg";
-import photogenic from "@/icons/photogenic.svg";
-import sharpshooter from "@/icons/sharpshooter.svg";
-import wildfire from "@/icons/wildfire.svg";
-import winner from "@/icons/winner.svg";
+import {
+  FriendlyIcon as friendly,
+  LegendaryIcon as legendary,
+  PhotogenicIcon as photogenic,
+  SharpshooterIcon as sharpshooter,
+  WildfireIcon as wildfire,
+  WinnerIcon as winner,
+} from "@/icons/index";
 
 const achivementsStyle: { [key: string]: object } = {
   silver: {
@@ -51,7 +53,6 @@ const achievementsIcons: { [key: string]: any } = {
   winner,
 };
 
-
 interface Props {
   avatar: string;
   level: number;
@@ -68,32 +69,30 @@ interface Props {
 const { Text } = Typography;
 const Statistics: React.FC<Props> = (props) => {
   // const { data: session } = useSession();
-  
+
   const { avatar, achievements, matches, level } = props;
   const progress = ((level - Math.floor(level)) / 1) * 100;
   const WinRatio = parseInt(((matches.winne / matches.total) * 100).toFixed(2));
 
   const mapAchivements = () => {
     return achievements.map((a, index) => {
-      return (
-        a.types.map(t => {
-          return (
-            <Avatar
-              key={index}
-              icon={
-                <Icon
-                  component={achievementsIcons[a.name]}
-                  style={{
-                    fontSize: "140%",
-                  }}
-                />
-              }
-              size={45}
-              style={achivementsStyle[t]}
-            />
-          )
-        })
-      );
+      return a.types.map((t) => {
+        return (
+          <Avatar
+            key={index}
+            icon={
+              <Icon
+                component={achievementsIcons[a.name]}
+                style={{
+                  fontSize: "140%",
+                }}
+              />
+            }
+            size={45}
+            style={achivementsStyle[t]}
+          />
+        );
+      });
     });
   };
 
@@ -151,7 +150,9 @@ const Statistics: React.FC<Props> = (props) => {
         <Badge
           className={style.badge}
           status="error"
-          text={<Text type="secondary">Loses {matches.total - matches.winne}</Text>}
+          text={
+            <Text type="secondary">Loses {matches.total - matches.winne}</Text>
+          }
           size="default"
         />
       </div>

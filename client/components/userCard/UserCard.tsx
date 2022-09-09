@@ -3,11 +3,13 @@ import { List, Avatar, Button, Popover } from "antd";
 import Icon, { CloseOutlined, CheckOutlined } from "@ant-design/icons";
 
 // Icons
-import DotsVIcon from "@/icons/DotsV.svg";
-import DeleteUserIcon from "@/icons/DeleteUser.svg";
-import BlockUserIcon from "@/icons/BlockUser.svg";
-import MessageIcon from "@/icons/message.svg";
-import PlayGameIcon from "@/icons/PlayGame.svg";
+import {
+  DotsVIcon,
+  DeleteUserIcon,
+  BlockUserIcon,
+  MessageIcon,
+  PlayGameIcon,
+} from "@/icons/index";
 
 interface DataType {
   gender: string;
@@ -92,10 +94,7 @@ const FriendButtons = (id: string) => (
 
 const BlockButtons = (id: string) => (
   <div className={style.actionContainer}>
-    <Button
-      type="primary"
-      onClick={() => deleteFriend(id)}
-    >
+    <Button type="primary" onClick={() => deleteFriend(id)}>
       Unblock
     </Button>
   </div>

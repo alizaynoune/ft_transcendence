@@ -13,11 +13,13 @@ import {
 import Icon from "@ant-design/icons";
 
 // Icons
-import profileIcon from "@/icons/user.svg";
-import emailIcon from "@/icons/email.svg";
-import phoneIcon from "@/icons/Phone.svg";
-import locationIcon from "@/icons/Location.svg";
-import calenderEditIcon from "@/icons/CalenderEdit.svg";
+import {
+  UserIcon,
+  EmailIcon,
+  PhoneIcon,
+  LocationIcon,
+  CalenderEditIcon,
+} from "@/icons/index";
 
 const menu = (
   <Menu
@@ -47,7 +49,7 @@ const AccountSetting: React.FC = () => {
             <Input
               size="large"
               placeholder="First Name"
-              prefix={<Icon component={profileIcon} />}
+              prefix={<Icon component={UserIcon} />}
             />
           </Form.Item>
         </Col>
@@ -56,7 +58,7 @@ const AccountSetting: React.FC = () => {
             <Input
               size="large"
               placeholder="Last Name"
-              prefix={<Icon component={profileIcon} />}
+              prefix={<Icon component={UserIcon} />}
             />
           </Form.Item>
         </Col>
@@ -65,7 +67,7 @@ const AccountSetting: React.FC = () => {
             <Input
               size="large"
               placeholder="Username"
-              prefix={<Icon component={profileIcon} />}
+              prefix={<Icon component={UserIcon} />}
             />
           </Form.Item>
         </Col>
@@ -74,7 +76,7 @@ const AccountSetting: React.FC = () => {
             <Input
               size="large"
               placeholder="Email"
-              prefix={<Icon component={emailIcon} />}
+              prefix={<Icon component={EmailIcon} />}
             />
           </Form.Item>
         </Col>
@@ -83,7 +85,7 @@ const AccountSetting: React.FC = () => {
             <Input
               size="large"
               placeholder="Phone"
-              prefix={<Icon component={phoneIcon} />}
+              prefix={<Icon component={PhoneIcon} />}
             />
           </Form.Item>
         </Col>
@@ -94,7 +96,7 @@ const AccountSetting: React.FC = () => {
               placeholder="Birthday"
               suffixIcon={
                 <Icon
-                  component={calenderEditIcon}
+                  component={CalenderEditIcon}
                   style={{ fontSize: "140%" }}
                 />
               }
@@ -106,7 +108,7 @@ const AccountSetting: React.FC = () => {
             <Input
               size="large"
               placeholder="Address"
-              prefix={<Icon component={locationIcon} />}
+              prefix={<Icon component={LocationIcon} />}
             />
           </Form.Item>
         </Col>

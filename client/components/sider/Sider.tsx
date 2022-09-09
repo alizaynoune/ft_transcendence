@@ -1,83 +1,85 @@
-import style from './sider.module.css'
-import React, { useState, useRef } from 'react'
-import { Layout, Menu, MenuProps, Badge } from 'antd'
-import Icon from '@ant-design/icons'
-import Link from 'next/link'
-import {useAppDispatch} from '@/hooks/reduxHooks'
-import {logout} from '@/reducers/auth'
+import style from "./sider.module.css";
+import React, { useState, useRef } from "react";
+import { Layout, Menu, MenuProps, Badge } from "antd";
+import Icon from "@ant-design/icons";
+import Link from "next/link";
+import { useAppDispatch } from "@/hooks/reduxHooks";
+import { logout } from "@/reducers/auth";
 
 // Icons
-import profileIcon from '@/icons/user.svg'
-import messageIcon from '@/icons/message.svg'
-import achivementIcon from '@/icons/achievements.svg'
-import gamesIcon from '@/icons/Game.svg'
-import newGameIcon from '@/icons/NewGame.svg'
-import logoutIcon from '@/icons/out.svg'
+import {
+  UserIcon,
+  MessageIcon,
+  AchievementsIcon,
+  GameIcon,
+  OutIcon,
+  NewGameIcon,
+} from "@/icons/index";
 
-const { Sider } = Layout
+const { Sider } = Layout;
 
-type MenuItem = Required<MenuProps>['items'][number]
+type MenuItem = Required<MenuProps>["items"][number];
 
 function getItem(
   label: React.ReactNode,
   key: React.Key,
-  icon?: React.ReactNode,
+  icon?: React.ReactNode
 ): MenuItem {
   return {
     key,
     icon,
     label,
-  } as MenuItem
+  } as MenuItem;
 }
 
 const items: MenuItem[] = [
   getItem(
     <Link href="/profile/me">{"Profile"}</Link>,
-    'profile',
+    "profile",
     <Icon
-      component={profileIcon}
-      style={{ fontSize: '180%', color: 'var(--light-color)' }}
-    />,
+      component={UserIcon}
+      style={{ fontSize: "180%", color: "var(--light-color)" }}
+    />
   ),
   getItem(
     <Link href="/messenger">{"Messenger"}</Link>,
-    'messenger',
+    "messenger",
     <Badge dot offset={[-2, 4]}>
       <Icon
-        component={messageIcon}
-        style={{ fontSize: '180%', color: 'var(--light-color)' }}
+        component={MessageIcon}
+        style={{ fontSize: "180%", color: "var(--light-color)" }}
       />
-    </Badge>,
+    </Badge>
   ),
   getItem(
     <Link href="/achivements">{"Achivements"}</Link>,
-    'achivements',
+    "achivements",
     <Icon
-      component={achivementIcon}
-      style={{ fontSize: '180%', color: 'var(--light-color)' }}
-    />,
+      component={AchievementsIcon}
+      style={{ fontSize: "180%", color: "var(--light-color)" }}
+    />
   ),
   getItem(
     <Link href="/game/current">{"Current Games"}</Link>,
-    'game',
+    "game",
     <Icon
-      component={gamesIcon}
-      style={{ fontSize: '180%', color: 'var(--light-color)' }}
-    />,
+      component={GameIcon}
+      style={{ fontSize: "180%", color: "var(--light-color)" }}
+    />
   ),
   getItem(
     <Link href="/game/new">{"Create Game"}</Link>,
-    'gameNew',
+    "gameNew",
     <Icon
-      component={newGameIcon}
-      style={{ fontSize: '180%', color: 'var(--light-color)' }}
-    />,
+      component={NewGameIcon}
+      style={{ fontSize: "180%", color: "var(--light-color)" }}
+    />
   ),
-]
+];
 
 const SiderLayout: React.FC = () => {
-  const [collapsed, setCollapsed] = useState(true)
-  const dispatch = useAppDispatch()
+  const [collapsed, setCollapsed] = useState(true);
+  const dispatch = useAppDispatch();
   return (
     <div className={style.container}>
       <Sider
@@ -104,26 +106,26 @@ const SiderLayout: React.FC = () => {
             theme="dark"
             mode="inline"
             onClick={(e) => {
-              dispatch(logout())
+              dispatch(logout());
             }}
             items={[
               getItem(
-                'logout',
-                '1',
+                "logout",
+                "1",
                 <Icon
-                  component={logoutIcon}
-                  style={{ fontSize: '180%', color: 'var(--light-color)' }}
-                />,
+                  component={OutIcon}
+                  style={{ fontSize: "180%", color: "var(--light-color)" }}
+                />
               ),
             ]}
           />
         </div>
       </Sider>
     </div>
-  )
-}
+  );
+};
 
-export default SiderLayout
+export default SiderLayout;
 
 const triggerOpen = () => (
   <svg
@@ -156,7 +158,7 @@ const triggerOpen = () => (
       fill="currentColor"
     />
   </svg>
-)
+);
 
 const triggerClose = () => (
   <svg
@@ -189,4 +191,4 @@ const triggerClose = () => (
       fill="currentColor"
     />
   </svg>
-)
+);

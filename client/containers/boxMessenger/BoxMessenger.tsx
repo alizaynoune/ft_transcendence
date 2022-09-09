@@ -11,8 +11,7 @@ import { useState, useEffect, useRef } from "react";
 import { ConversationsType, MessageTextType, UserType } from "types/types";
 
 //Icons
-import EmojiSmile from "@/icons/EmojiSmile.svg";
-import Send from "@/icons/Send.svg";
+import { EmojiSmileIcon, SendIcon } from "@/icons/index";
 
 const lorem = new LoremIpsum({
   sentencesPerParagraph: {
@@ -69,7 +68,6 @@ const BoxMessenger: React.FC<PropsType> = ({ currentConversation }) => {
     console.log(e);
   };
 
-
   return (
     <div className={style.container}>
       <div className={style.box}>
@@ -84,34 +82,30 @@ const BoxMessenger: React.FC<PropsType> = ({ currentConversation }) => {
         })}
         <div ref={bottomRef} />
       </div>
-      <Form name="form"
-      onFinish={onSubmit}
-      >
-        <Form.Item
-        name="message"
-        >
+      <Form name="form" onFinish={onSubmit}>
+        <Form.Item name="message">
           {/* <Input.Group compact> */}
-            <Input
-              style={{ width: "calc(100% - 100px)" }}
-              className={style.Input}
-              size="large"
-              // value={value}
-              // onChange={onChange}
-              placeholder="Message"
-              prefix={
-                <Icon
-                  component={EmojiSmile}
-                  style={{ fontSize: "120%", color: "var(--primary-color)" }}
-                />
-              }
-              suffix={
-                <Icon
-                  component={Send}
-                  style={{ fontSize: "120%", color: "var(--primary-color)" }}
-                />
-              }
-            />
-            {/* <Button type="primary" size="large" htmlType="submit">
+          <Input
+            style={{ width: "calc(100% - 100px)" }}
+            className={style.Input}
+            size="large"
+            // value={value}
+            // onChange={onChange}
+            placeholder="Message"
+            prefix={
+              <Icon
+                component={EmojiSmileIcon}
+                style={{ fontSize: "120%", color: "var(--primary-color)" }}
+              />
+            }
+            suffix={
+              <Icon
+                component={SendIcon}
+                style={{ fontSize: "120%", color: "var(--primary-color)" }}
+              />
+            }
+          />
+          {/* <Button type="primary" size="large" htmlType="submit">
               Submit
             </Button>
           </Input.Group> */}

@@ -5,9 +5,7 @@ import type { CheckboxValueType } from "antd/es/checkbox/Group";
 import Icon from "@ant-design/icons";
 
 // Icons
-import emailIcon from "@/icons/email.svg";
-import phoneIcon from "@/icons/Phone.svg";
-import offIcon from "@/icons/Off.svg";
+import { EmailIcon, PhoneIcon, OffIcon } from "@/icons/index";
 
 // const options = [
 //     {lable: 'test', value: 'Disabled'},
@@ -30,7 +28,7 @@ const AccountPrivacy: React.FC = () => {
     {
       label: (
         <span>
-          <Icon component={emailIcon} style={{ fontSize: "120%" }} /> Email
+          <Icon component={EmailIcon} style={{ fontSize: "120%" }} /> Email
         </span>
       ),
       value: "Email",
@@ -38,7 +36,7 @@ const AccountPrivacy: React.FC = () => {
     {
       label: (
         <span>
-          <Icon component={phoneIcon} style={{ fontSize: "120%" }} /> Phone
+          <Icon component={PhoneIcon} style={{ fontSize: "120%" }} /> Phone
         </span>
       ),
       value: "Phone",
@@ -46,7 +44,7 @@ const AccountPrivacy: React.FC = () => {
     {
       label: (
         <span>
-          <Icon component={offIcon} style={{ fontSize: "120%" }} /> Disabled
+          <Icon component={OffIcon} style={{ fontSize: "120%" }} /> Disabled
         </span>
       ),
       value: "Disabled",

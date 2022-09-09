@@ -8,12 +8,10 @@ import { AuthTunk } from "@/store/actions/auth";
 import { useRouter } from "next/router";
 // hooks
 import { useAppDispatch, useAppSelector } from "@/hooks/reduxHooks";
+import { useEffect } from "react";
 
 // icons
-import EmailIcon from "@/icons/email.svg";
-import PasswordIcon from "@/icons/password.svg";
-import Icon_42 from "@/icons/42.svg";
-import { useEffect } from "react";
+import { EmailIcon, PasswordIcon, _42Icon } from "@/icons/index";
 
 const { Title, Text } = Typography;
 
@@ -33,13 +31,13 @@ const Login: React.FC = () => {
     // })
     try {
       await dispatch(AuthTunk());
-      console.log(window.history, 'back');
-      
+      console.log(window.history, "back");
+
       // router.back()
       // if (window.history.length > 1 && document.referrer.indexOf(window.location.host) !== -1) {
       //   router.back();
       // } else {
-        router.push('/');
+      router.push("/");
       // }
     } catch (error) {
       console.log("<<<error>>>>>>>>", error);
@@ -71,7 +69,7 @@ const Login: React.FC = () => {
             ></Button>
             <Button
               shape="circle"
-              icon={<Icon component={Icon_42} style={{ fontSize: "120%" }} />}
+              icon={<Icon component={_42Icon} style={{ fontSize: "120%" }} />}
               onClick={() => onFinish()}
             ></Button>
           </div>

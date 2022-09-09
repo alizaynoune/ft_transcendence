@@ -14,8 +14,7 @@ import { UserOutlined } from "@ant-design/icons";
 import React, { useEffect, useState } from "react";
 import InfiniteScroll from "react-infinite-scroll-component";
 
-import SendIcon from "@/icons/Send.svg";
-import SearchIcon from "@/icons/search.svg";
+import {SendIcon, SearchIcon} from "@/icons/index"
 
 const { Text, Paragraph, Title } = Typography;
 
