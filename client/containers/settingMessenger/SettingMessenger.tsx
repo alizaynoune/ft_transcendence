@@ -16,7 +16,7 @@ import MuteIcon from "@/icons/mute.svg";
 import SettingsIcon from "@/icons/Setting.svg";
 
 import type { CustomIconComponentProps } from "@ant-design/icons/lib/components/Icon";
-import type {UserType} from '@/types/types'
+import type { UserType } from "@/types/types";
 type PropsType = {
   conversation: ConversationsType;
 };
@@ -69,19 +69,27 @@ const getCardGridItem = () => {
   return CardSettingText.map((i) => CardGrid(i.icon, i.lable));
 };
 
-const CardMembers = (members:UserType[]) => {
-  return members.map(m =>
-    <Card.Grid style={CardGridStyle}>
+const handelClick = (id: string) => {
+  console.log(id);
+};
+
+const CardMembers = (members: UserType[]) => {
+  return members.map((m) => (
+    <Card.Grid
+      style={CardGridStyle}
+      key={m.id}
+      onClick={(e) => handelClick(m.id)}
+    >
       <Space>
-        <Avatar src={m.avatar} size='large' />
+        <Avatar src={m.avatar} size="large" />
         <Space direction="vertical">
           <Typography.Text>{m.name.username}</Typography.Text>
           <Typography.Text type="secondary">{m.email}</Typography.Text>
         </Space>
       </Space>
     </Card.Grid>
-    )
-}
+  ));
+};
 
 const SettingMessenger: React.FC<PropsType> = ({ conversation }) => {
   useEffect(() => {
@@ -107,13 +115,24 @@ const SettingMessenger: React.FC<PropsType> = ({ conversation }) => {
             {conversation.type === "group" && (
               <Avatar src={conversation.members[0].avatar} size="large" />
             )}
-            <Space direction="vertical" align={conversation.type === 'group' ? "start" : 'center'}>
-              
-              <Typography.Text strong>
-                {conversation.type === "group"
-                  ? conversation.name
-                  : conversation.members[1].name.username}
-              </Typography.Text>
+            <Space
+              direction="vertical"
+              align={conversation.type === "group" ? "start" : "center"}
+            >
+              {conversation.type === "group" ? (
+                <Space>
+                  <Typography.Text strong>
+                    {conversation.members[1].name.username}
+                  </Typography.Text>
+                  <Typography.Text type="success">{"admin"}</Typography.Text>
+                </Space>
+              ) : (
+                <Typography.Text strong>
+                  {" "}
+                  {conversation.members[1].name.username}
+                </Typography.Text>
+              )}
+
               <Typography.Text type="secondary">
                 {conversation.members[1].email}
               </Typography.Text>
@@ -126,7 +145,9 @@ const SettingMessenger: React.FC<PropsType> = ({ conversation }) => {
           ) : null
         }
       >
-        {conversation.type === 'group' ? CardMembers(conversation.members) : getCardGridItem()}
+        {conversation.type === "group"
+          ? CardMembers(conversation.members)
+          : getCardGridItem()}
       </Card>
     </div>
   );
