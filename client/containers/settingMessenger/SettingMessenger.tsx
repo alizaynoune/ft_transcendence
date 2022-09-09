@@ -2,23 +2,75 @@ import style from "./settingMessenger.module.css";
 import { Avatar, Button, Card, Space, Typography } from "antd";
 
 import { ConversationsType } from "@/types/types";
-import { useEffect } from "react";
+import { ReactNode, useEffect } from "react";
 import Icon from "@ant-design/icons";
 
 import SettingIcon from "@/icons/Settings2.svg";
+import UserIcon from "@/icons/user.svg";
+import InvetGameIcon from "@/icons/PlayGame.svg";
+import LevelIcon from "@/icons/level.svg";
+import TrashIcon from "@/icons/Trash.svg";
+import BlockIcon from "@/icons/BlockUser.svg";
+import SpeakerIcon from "@/icons/speaker.svg";
+import MuteIcon from "@/icons/mute.svg";
+import SettingsIcon from "@/icons/Setting.svg";
 
+import type { CustomIconComponentProps } from '@ant-design/icons/lib/components/Icon';
 type PropsType = {
   conversation: ConversationsType;
 };
 
-const CardGridStyle = {
+const CardGridStyle: React.CSSProperties = {
   width: "100%",
+  cursor: "pointer",
+  color: "var(--secondary-color)",
+};
+
+const CardGrid = (icon: any, label: string) => {
+  return (
+    <Card.Grid  style={CardGridStyle}>
+      <Space>
+        <Icon component={icon} style={{fontSize: '130%'}} />
+        <Typography.Text>{label}</Typography.Text>
+      </Space>
+    </Card.Grid>
+  );
+};
+
+const CardSettingText = [
+  {
+    lable: "View profile",
+    icon: UserIcon,
+  },
+  {
+    lable: "Invet to play a game",
+    icon: InvetGameIcon ,
+  },
+  {
+    lable: "Level 42",
+    icon: LevelIcon ,
+  },
+  {
+    lable: "Delete conversation",
+    icon: TrashIcon,
+  },
+  {
+    lable: "Block",
+    icon: BlockIcon ,
+  },
+  {
+    lable: "Mute",
+    icon: SpeakerIcon,
+  },
+];
+
+const getCardGridItem = () => {
+  return CardSettingText.map((i) => 
+    CardGrid(i.icon, i.lable)
+  );
 };
 
 const SettingMessenger: React.FC<PropsType> = ({ conversation }) => {
-  //   console.log(props.conversation);
-  // const []
-
   useEffect(() => {
     console.log(conversation.id);
   }, [conversation]);
@@ -29,11 +81,9 @@ const SettingMessenger: React.FC<PropsType> = ({ conversation }) => {
         <Avatar
           style={{
             marginBottom: "-35px",
-            zIndex: 10,
+            zIndex: 2,
           }}
-          src={
-            conversation.members[1].avatar
-          }
+          src={conversation.members[1].avatar}
           size={70}
         />
       )}
@@ -51,28 +101,60 @@ const SettingMessenger: React.FC<PropsType> = ({ conversation }) => {
             </Typography.Text>
           </Space>
         }
-        // cover={<Avatar src={conversation.members[0].avatar} size='large' />}
         extra={
           conversation.type === "group" ? (
-            <Button
-              type="link"
-              ghost
-              icon={
-                <Icon
-                  component={SettingIcon}
-                  // style={{ color: "var(--primary-color)", fontSize: "120%" }}
-                />
-              }
-            />
+            <Button type="link" ghost icon={<Icon component={SettingIcon} />} />
           ) : null
         }
       >
-        {/* <p>Card content</p> */}
-        <Card.Grid style={CardGridStyle}>
-          <span className="test">test</span>
+        {getCardGridItem()}
+        {/* <Card.Grid style={CardGridStyle}>
+          <Space>
+            <Icon component={UserIcon} />
+            <Typography.Text>{"View profile"}</Typography.Text>
+          </Space>
         </Card.Grid>
-        <Card.Grid style={CardGridStyle}>grid Card</Card.Grid>
-        <Card.Grid style={CardGridStyle}>grid Card</Card.Grid>
+
+        <Card.Grid style={CardGridStyle}>
+          <Space>
+            <Icon component={InvetGameIcon} />
+            <Typography.Text>{"View profile"}</Typography.Text>
+          </Space>
+        </Card.Grid>
+        <Card.Grid style={CardGridStyle}>
+          <Space>
+            <Icon component={LevelIcon} />
+            <Typography.Text>{"View profile"}</Typography.Text>
+          </Space>
+        </Card.Grid>
+        <Card.Grid style={CardGridStyle}>
+          <Space>
+            <Icon component={TrashIcon} />
+            <Typography.Text>{"View profile"}</Typography.Text>
+          </Space>
+        </Card.Grid>
+        <Card.Grid style={CardGridStyle}>
+          <Space>
+            <Icon component={BlockIcon} />
+            <Typography.Text>{"View profile"}</Typography.Text>
+          </Space>
+        </Card.Grid>
+        <Card.Grid style={CardGridStyle}>
+          <Space>
+            <Icon component={SpeakerIcon} />
+            <Typography.Text>{"View profile"}</Typography.Text>
+          </Space>
+        </Card.Grid> */}
+        {/* <Card.Grid style={CardGridStyle}>
+          <Space>
+            <Icon component={MuteIcon} />
+          </Space>
+        </Card.Grid>
+        <Card.Grid style={CardGridStyle}>
+          <Space>
+            <Icon component={SettingsIcon} />
+          </Space>
+        </Card.Grid> */}
       </Card>
     </div>
   );

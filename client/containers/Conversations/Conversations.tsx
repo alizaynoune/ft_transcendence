@@ -13,8 +13,6 @@ import InfiniteScroll from "react-infinite-scroll-component";
 import Icon, { BoldOutlined } from "@ant-design/icons";
 import moment from "moment";
 
-// components
-import MessageBox from '@/components/messageText/MessageText'
 // icons
 import searchIcon from "@/icons/search.svg";
 import createGroupIcon from "@/icons/addGroup.svg";
@@ -23,8 +21,6 @@ import createGroupIcon from "@/icons/addGroup.svg";
 import { ConversationsType } from "@/types/types";
 
 const { Paragraph } = Typography;
-
-// setTitle: React.Dispatch<React.SetStateAction<string>>;
 
 type PropsType = {
   setCurrentConversation: React.Dispatch<React.SetStateAction<ConversationsType | undefined>>

@@ -23,14 +23,5 @@
 }
 
 .card [class=ant-card-head-title] {
-      /* background-color: aqua; */
-      /* color: aqua !important; */
-      /* position: absolute; */
-      /* margin: auto; */
-      /* right: 50%; */
-      /* top: -40px; */
-      /* display: flex; */
-      /* justify-content: center; */
-      /* align-items: center; */
-      /* flex-direction: row; */
+  text-align: center;
 }
