@@ -15,7 +15,8 @@ import SpeakerIcon from "@/icons/speaker.svg";
 import MuteIcon from "@/icons/mute.svg";
 import SettingsIcon from "@/icons/Setting.svg";
 
-import type { CustomIconComponentProps } from '@ant-design/icons/lib/components/Icon';
+import type { CustomIconComponentProps } from "@ant-design/icons/lib/components/Icon";
+import type {UserType} from '@/types/types'
 type PropsType = {
   conversation: ConversationsType;
 };
@@ -28,9 +29,9 @@ const CardGridStyle: React.CSSProperties = {
 
 const CardGrid = (icon: any, label: string) => {
   return (
-    <Card.Grid  style={CardGridStyle}>
+    <Card.Grid style={CardGridStyle}>
       <Space>
-        <Icon component={icon} style={{fontSize: '130%'}} />
+        <Icon component={icon} style={{ fontSize: "130%" }} />
         <Typography.Text>{label}</Typography.Text>
       </Space>
     </Card.Grid>
@@ -44,11 +45,11 @@ const CardSettingText = [
   },
   {
     lable: "Invet to play a game",
-    icon: InvetGameIcon ,
+    icon: InvetGameIcon,
   },
   {
     lable: "Level 42",
-    icon: LevelIcon ,
+    icon: LevelIcon,
   },
   {
     lable: "Delete conversation",
@@ -56,7 +57,7 @@ const CardSettingText = [
   },
   {
     lable: "Block",
-    icon: BlockIcon ,
+    icon: BlockIcon,
   },
   {
     lable: "Mute",
@@ -65,10 +66,22 @@ const CardSettingText = [
 ];
 
 const getCardGridItem = () => {
-  return CardSettingText.map((i) => 
-    CardGrid(i.icon, i.lable)
-  );
+  return CardSettingText.map((i) => CardGrid(i.icon, i.lable));
 };
+
+const CardMembers = (members:UserType[]) => {
+  return members.map(m =>
+    <Card.Grid style={CardGridStyle}>
+      <Space>
+        <Avatar src={m.avatar} size='large' />
+        <Space direction="vertical">
+          <Typography.Text>{m.name.username}</Typography.Text>
+          <Typography.Text type="secondary">{m.email}</Typography.Text>
+        </Space>
+      </Space>
+    </Card.Grid>
+    )
+}
 
 const SettingMessenger: React.FC<PropsType> = ({ conversation }) => {
   useEffect(() => {
@@ -90,15 +103,21 @@ const SettingMessenger: React.FC<PropsType> = ({ conversation }) => {
       <Card
         className={style.card}
         title={
-          <Space direction="vertical" align="center">
-            <Typography.Text strong>
-              {conversation.type === "group"
-                ? conversation.name
-                : conversation.members[1].name.username}
-            </Typography.Text>
-            <Typography.Text type="secondary">
-              {conversation.members[1].email}
-            </Typography.Text>
+          <Space>
+            {conversation.type === "group" && (
+              <Avatar src={conversation.members[0].avatar} size="large" />
+            )}
+            <Space direction="vertical" align={conversation.type === 'group' ? "start" : 'center'}>
+              
+              <Typography.Text strong>
+                {conversation.type === "group"
+                  ? conversation.name
+                  : conversation.members[1].name.username}
+              </Typography.Text>
+              <Typography.Text type="secondary">
+                {conversation.members[1].email}
+              </Typography.Text>
+            </Space>
           </Space>
         }
         extra={
@@ -107,54 +126,7 @@ const SettingMessenger: React.FC<PropsType> = ({ conversation }) => {
           ) : null
         }
       >
-        {getCardGridItem()}
-        {/* <Card.Grid style={CardGridStyle}>
-          <Space>
-            <Icon component={UserIcon} />
-            <Typography.Text>{"View profile"}</Typography.Text>
-          </Space>
-        </Card.Grid>
-
-        <Card.Grid style={CardGridStyle}>
-          <Space>
-            <Icon component={InvetGameIcon} />
-            <Typography.Text>{"View profile"}</Typography.Text>
-          </Space>
-        </Card.Grid>
-        <Card.Grid style={CardGridStyle}>
-          <Space>
-            <Icon component={LevelIcon} />
-            <Typography.Text>{"View profile"}</Typography.Text>
-          </Space>
-        </Card.Grid>
-        <Card.Grid style={CardGridStyle}>
-          <Space>
-            <Icon component={TrashIcon} />
-            <Typography.Text>{"View profile"}</Typography.Text>
-          </Space>
-        </Card.Grid>
-        <Card.Grid style={CardGridStyle}>
-          <Space>
-            <Icon component={BlockIcon} />
-            <Typography.Text>{"View profile"}</Typography.Text>
-          </Space>
-        </Card.Grid>
-        <Card.Grid style={CardGridStyle}>
-          <Space>
-            <Icon component={SpeakerIcon} />
-            <Typography.Text>{"View profile"}</Typography.Text>
-          </Space>
-        </Card.Grid> */}
-        {/* <Card.Grid style={CardGridStyle}>
-          <Space>
-            <Icon component={MuteIcon} />
-          </Space>
-        </Card.Grid>
-        <Card.Grid style={CardGridStyle}>
-          <Space>
-            <Icon component={SettingsIcon} />
-          </Space>
-        </Card.Grid> */}
+        {conversation.type === 'group' ? CardMembers(conversation.members) : getCardGridItem()}
       </Card>
     </div>
   );
