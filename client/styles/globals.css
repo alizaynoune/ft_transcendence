@@ -15,6 +15,11 @@
   --dark-color: #000000;
   --hover-color: rgba(54, 153, 255, 0.5);
   --shadwo-color: #999999;
+  --platinum-color: #E5E4E2;
+  --bronze-color: #CD7F32;
+  --gold-color: #FFDF00;
+  --silver-color: #C0C0C0;
+--active-color: #464E5F;
 }
 
 html,

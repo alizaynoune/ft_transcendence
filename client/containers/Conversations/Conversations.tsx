@@ -10,7 +10,7 @@ import {
   Typography,
 } from "antd";
 import InfiniteScroll from "react-infinite-scroll-component";
-import Icon, { BoldOutlined } from "@ant-design/icons";
+import Icon from "@ant-design/icons";
 import moment from "moment";
 
 // icons
