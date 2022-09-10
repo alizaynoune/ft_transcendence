@@ -5,7 +5,7 @@ import { Progress, Avatar, Badge, Typography } from "antd";
 import { useSession } from "next-auth/react";
 import Icon from "@ant-design/icons";
 
-// Achivements Icons
+// Achievements Icons
 import {
   FriendlyIcon as friendly,
   LegendaryIcon as legendary,
@@ -15,7 +15,7 @@ import {
   WinnerIcon as winner,
 } from "@/icons/index";
 
-const achivementsStyle: { [key: string]: object } = {
+const achievementsStyle: { [key: string]: object } = {
   silver: {
     color: "#C0C0C0",
     border: "2px solid #C0C0C0",
@@ -74,7 +74,7 @@ const Statistics: React.FC<Props> = (props) => {
   const progress = ((level - Math.floor(level)) / 1) * 100;
   const WinRatio = parseInt(((matches.winne / matches.total) * 100).toFixed(2));
 
-  const mapAchivements = () => {
+  const mapAchievements = () => {
     return achievements.map((a, index) => {
       return a.types.map((t) => {
         return (
@@ -89,7 +89,7 @@ const Statistics: React.FC<Props> = (props) => {
               />
             }
             size={45}
-            style={achivementsStyle[t]}
+            style={achievementsStyle[t]}
           />
         );
       });
@@ -123,9 +123,9 @@ const Statistics: React.FC<Props> = (props) => {
           size={45}
           maxPopoverTrigger="click"
           maxPopoverPlacement="bottom"
-          maxStyle={achivementsStyle.maxStyle}
+          maxStyle={achievementsStyle.maxStyle}
         >
-          {mapAchivements()}
+          {mapAchievements()}
         </Avatar.Group>
       </div>
       <div className={style.gameRatioContainer}>

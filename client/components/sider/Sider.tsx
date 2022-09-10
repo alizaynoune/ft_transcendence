@@ -52,8 +52,8 @@ const items: MenuItem[] = [
     </Badge>
   ),
   getItem(
-    <Link href="/achivements">{"Achivements"}</Link>,
-    "achivements",
+    <Link href="/achievements">{"Achievements"}</Link>,
+    "achievements",
     <Icon
       component={AchievementsIcon}
       style={{ fontSize: "180%", color: "var(--light-color)" }}
