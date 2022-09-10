@@ -10,20 +10,32 @@ import {
   SharpshooterIcon,
 } from "@/icons/index";
 
+import { AchievementType } from "@/types/types";
+
 interface PropsType {
-  icon: 0 | 1 | 2 | 3 | 4 | 5;
-  type: "platinum" | "gold" | "bronze" | "silver";
-  haveIt: boolean;
+  name:
+    | "Winner"
+    | "Friendly"
+    | "Photogenic"
+    | "Wildfire"
+    | "Legendary"
+    | "Sharpshooter";
+  type: {
+    name: string;
+    xp: number;
+    description: string;
+    wind: boolean;
+  };
 }
 
-const AchievementsIcon = [
-  WinnerIcon,
-  FriendlyIcon,
-  PhotogenicIcon,
-  WildfireIcon,
-  LegendaryIcon,
-  SharpshooterIcon,
-];
+const AchievementsIcon = {
+  Winner: WinnerIcon,
+  Friendly: FriendlyIcon,
+  Photogenic: PhotogenicIcon,
+  Wildfire: WildfireIcon,
+  Legendary: LegendaryIcon,
+  Sharpshooter: SharpshooterIcon,
+};
 
 const Name = [
   "Winner",
@@ -34,30 +46,30 @@ const Name = [
   "Sharpshooter",
 ];
 
-const AchievementsCard: React.FC<PropsType> = ({ type, icon, haveIt }) => {
+const AchievementsCard: React.FC<PropsType> = ({ name, type }) => {
   return (
-    <Space className={style.container}>
-      <Space className={`${style.iconContainer} ${style[type]}`}>
-        <Icon
-          component={AchievementsIcon[icon]}
-          className={`${style.icon} ${style[type]}`}
-        />
-      </Space>
-      <Space className={style.body} direction="vertical">
-        <Space className={style.header}>
-          <Typography.Text strong>{Name[icon]}</Typography.Text>
-          <Typography.Text strong type="secondary">
-            {"1500xp"}
-          </Typography.Text>
-          <Typography.Text strong type="secondary">
-            {type}
-          </Typography.Text>
+    <div className={style.container}>
+        <Space className={`${style.iconContainer} ${style[type.name]}`}>
+          <Icon
+            component={AchievementsIcon[name]}
+            className={`${style.icon} ${style[type.name]}`}
+          />
         </Space>
-        <Typography.Paragraph>
-          {"win 3 matches with max a score more text"}
-        </Typography.Paragraph>
-      </Space>
-    </Space>
+        <Space className={style.body} direction="vertical">
+          <Space className={style.header}>
+            <Typography.Text strong>{name}</Typography.Text>
+            <Typography.Text strong type="secondary">
+              {`${type.xp}XP`}
+            </Typography.Text>
+            <Typography.Text strong type="secondary">
+              {type.name}
+            </Typography.Text>
+          </Space>
+          <Typography.Paragraph>
+            {type.description}
+          </Typography.Paragraph>
+        </Space>
+    </div>
   );
 };
 

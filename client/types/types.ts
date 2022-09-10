@@ -61,7 +61,7 @@ export interface UserType {
 
 export interface ConversationsType {
   id: string;
-  type: 'group' | 'direct';
+  type: "group" | "direct";
   name: string | null;
   adminID: string;
   members: UserType[];
@@ -70,7 +70,7 @@ export interface ConversationsType {
     date: Date;
     content: string;
   };
-};
+}
 
 export interface MessageTextType {
   id: string;
@@ -81,4 +81,14 @@ export interface MessageTextType {
   content: string;
   date: Date;
   deleted: boolean;
+}
+export interface AchievementType {
+  name: "Winner" | "Friendly" | "Photogenic" | "Wildfire" | "Legendary" | "Sharpshooter";
+
+  types: {
+    name: string;
+    xp: number;
+    description: string;
+    wind: boolean;
+  }[];
 }
