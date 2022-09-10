@@ -14,18 +14,18 @@
   /* margin: 10px; */
   /* background-color: aqua; */
   /* width: 100%; */
-  /* overflow: hidden; */
+  overflow: hidden;
 }
 
 .card {
   display: flex;
   background-color: var(--background-color);
   border-radius: 10px;
-  box-shadow: 0px 0px 8px rgba(154, 154, 154, 0.5);
+  /* box-shadow: 0px 0px 8px rgba(154, 154, 154, 0.5); */
   transition: 0.4s ease-out;
   position: relative;
   left: 0px;
-  overflow: hidden;
+  /* overflow: hidden; */
   /* width: 100%; */
   /* background-color: green; */
 }

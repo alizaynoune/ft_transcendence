@@ -1,6 +1,6 @@
 import style from "./achievementCard.module.css";
 import { Card, Space, Typography } from "antd";
-import Icon from "@ant-design/icons";
+import Icon, {LockOutlined} from "@ant-design/icons";
 import {
   WinnerIcon,
   FriendlyIcon,
@@ -10,7 +10,6 @@ import {
   SharpshooterIcon,
 } from "@/icons/index";
 
-import { AchievementType } from "@/types/types";
 
 interface PropsType {
   name:
@@ -37,18 +36,11 @@ const AchievementsIcon = {
   Sharpshooter: SharpshooterIcon,
 };
 
-const Name = [
-  "Winner",
-  "Friendly",
-  "Photogenic",
-  "Wildfire",
-  "Legendary",
-  "Sharpshooter",
-];
 
 const AchievementsCard: React.FC<PropsType> = ({ name, type }) => {
   return (
     <div className={style.container}>
+      {!type.wind && <LockOutlined className={style.locked} />}
         <Space className={`${style.iconContainer} ${style[type.name]}`}>
           <Icon
             component={AchievementsIcon[name]}
