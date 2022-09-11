@@ -2,11 +2,11 @@ import type { NextApiRequest, NextApiResponse } from "next";
 
 
 // https://randomuser.me/api/?&inc=name,email,picture,login&noinfo
-export default function login(
+export default async function login(
     req: NextApiRequest,
     res: NextApiResponse<any>
 ){
-    fetch('https://randomuser.me/api/?&inc=name,email,picture,login&noinfo')
+    await fetch('https://randomuser.me/api/?&inc=name,email,picture,login&noinfo')
     .then(d => d.json())
     .then(body => {
         console.log(body);

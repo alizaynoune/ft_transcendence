@@ -1,0 +1,32 @@
+.card {
+    /* background-color: aqua; */
+    padding: 20px;
+    box-shadow: 0px 0px 8px rgba(154, 154, 154, 0.5);
+    border-radius: 10px;
+    gap: 20px;
+    width: 100%;
+    justify-content: space-around;
+}
+
+.card [class="ant-space-item"] {
+    width: 100%;
+}
+.divider {
+    height: 40px;
+    width: 5px;
+    /* height: 100%; */
+    background-color: var(--active-color);
+    border-radius: 3px;
+    /* margin: auto; */
+}
+
+.user{
+    background-color: aqua;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    /* justify-items: end; */
+    /* justify-content: end; */
+    flex-direction: column;
+    /* justify-content: space-around; */
+}

@@ -32,7 +32,7 @@ const randomAchievments = () => {
     return ach;
 }
 
-export default function handler(
+export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse<any>
 ) {
@@ -41,7 +41,7 @@ export default function handler(
   const totalGame = Math.floor(Math.random() * 100);
   const GameWinn = Math.floor(Math.random() * totalGame);
 
-  fetch("https://randomuser.me/api")
+  await fetch("https://randomuser.me/api")
     .then((d) => d.json())
     .then((body) => {
       const result = body.results[0];

@@ -76,10 +76,10 @@ const handelClick = (id: string) => {
 };
 
 const CardMembers = (members: UserType[]) => {
-  return members.map((m) => (
+  return members.map((m, key) => (
     <Card.Grid
       style={CardGridStyle}
-      key={m.id}
+      key={key}
       onClick={(e) => handelClick(m.id)}
     >
       <Space>
@@ -145,7 +145,6 @@ const SettingMessenger: React.FC<PropsType> = ({ conversation }) => {
           conversation.type === "group" ? (
             <Button
               type="link"
-              ghost
               icon={<Icon component={Settings2Icon} />}
             />
           ) : null
