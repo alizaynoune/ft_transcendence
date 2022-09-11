@@ -12,7 +12,7 @@ interface PropsType {
   users: UserType[];
 }
 
-const { Text, Title } = Typography;
+const { Text, Title, Paragraph } = Typography;
 const CurrentGameCard: React.FC<PropsType> = (props) => {
   console.log(props);
   const { users, id } = props;
@@ -29,16 +29,16 @@ const CurrentGameCard: React.FC<PropsType> = (props) => {
         </Space>
       }
     >
-      <div className={style.user}>
+      <div className={`${style.player} ${style.left}`}>
         <Avatar src={users[0].avatar} size="large" />
-        <Text strong type="secondary">
+        <Text strong type="secondary" ellipsis>
           {users[0].username}
         </Text>
       </div>
       {/* <Space className={style.user} align="end" direction="vertical"> */}
-      <div className={style.user}>
+      <div className={`${style.player} ${style.right}`}>
         <Avatar src={users[1].avatar} size="large" />
-        <Text strong type="secondary">
+        <Text strong type="secondary" ellipsis>
           {users[0].username}
         </Text>
       </div>

@@ -1,6 +1,6 @@
 import style from "./achievementCard.module.css";
 import { Card, Space, Typography } from "antd";
-import Icon, {LockOutlined} from "@ant-design/icons";
+import Icon, { LockOutlined } from "@ant-design/icons";
 import {
   WinnerIcon,
   FriendlyIcon,
@@ -9,7 +9,6 @@ import {
   LegendaryIcon,
   SharpshooterIcon,
 } from "@/icons/index";
-
 
 interface PropsType {
   name:
@@ -36,31 +35,28 @@ const AchievementsIcon = {
   Sharpshooter: SharpshooterIcon,
 };
 
-
 const AchievementsCard: React.FC<PropsType> = ({ name, type }) => {
   return (
     <div className={style.container}>
       {!type.wind && <LockOutlined className={style.locked} />}
-        <Space className={`${style.iconContainer} ${style[type.name]}`}>
-          <Icon
-            component={AchievementsIcon[name]}
-            className={`${style.icon} ${style[type.name]}`}
-          />
+      <Space className={`${style.iconContainer} ${style[type.name]}`}>
+        <Icon
+          component={AchievementsIcon[name]}
+          className={`${style.icon} ${style[type.name]}`}
+        />
+      </Space>
+      <Space className={style.body} direction="vertical">
+        <Space className={style.header}>
+          <Typography.Text strong>{name}</Typography.Text>
+          <Typography.Text strong type="secondary">
+            {`${type.xp}XP`}
+          </Typography.Text>
+          <Typography.Text strong type="secondary">
+            {type.name}
+          </Typography.Text>
         </Space>
-        <Space className={style.body} direction="vertical">
-          <Space className={style.header}>
-            <Typography.Text strong>{name}</Typography.Text>
-            <Typography.Text strong type="secondary">
-              {`${type.xp}XP`}
-            </Typography.Text>
-            <Typography.Text strong type="secondary">
-              {type.name}
-            </Typography.Text>
-          </Space>
-          <Typography.Paragraph>
-            {type.description}
-          </Typography.Paragraph>
-        </Space>
+        <Typography.Paragraph>{type.description}</Typography.Paragraph>
+      </Space>
     </div>
   );
 };

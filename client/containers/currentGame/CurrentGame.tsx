@@ -50,12 +50,13 @@ const CurrentGame: React.FC = () => {
   return (
     <div
     id="scrollableDiv"
-    style={{
-      height: 900,
-      overflow: 'auto',
-      padding: '0 16px',
-      border: '1px solid rgba(140, 140, 140, 0.35)',
-    }} // romve it
+    className={style.container}
+    // style={{
+    //   height: "100%",
+    //   overflow: 'auto',
+    //   padding: '0 16px',
+    //   border: '1px solid rgba(140, 140, 140, 0.35)',
+    // }} // romve it
   >
       <InfiniteScroll
         dataLength={data.length}
@@ -67,10 +68,19 @@ const CurrentGame: React.FC = () => {
       >
         {data.length ? (
           <List
-            className={style.conversationList}
+            className={style.list}
             loading={loading}
             itemLayout="horizontal"
             dataSource={data}
+            grid={{
+              gutter: 16,
+              xs: 1,
+              sm: 1,
+              md: 2,
+              lg: 2,
+              xl: 3,
+              xxl: 3,
+            }}
             renderItem={(item) => (
               <List.Item
                 style={{ cursor: "pointer" }}
