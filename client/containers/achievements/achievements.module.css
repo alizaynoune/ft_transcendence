@@ -41,3 +41,26 @@
   border-radius: 10px;
   opacity: 0.5;
 }
+
+@media screen and (max-width: 576px){
+  .container {
+    width: 100%;
+    padding: 15px 10px;
+  }
+  .card:not(:first-child) {
+    margin-top: -50px;
+  }
+  .card:hover ~ .card {
+    transform: translateY(50px);
+  }
+}
+
+@media screen and (min-width: 576px){}
+
+@media screen and (min-width: 768px){}
+
+@media screen and (min-width: 992px){}
+
+@media screen and (min-width: 1200px) {}
+
+@media screen and (min-width: 1600px){}

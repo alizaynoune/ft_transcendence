@@ -126,6 +126,9 @@ const SiderLayout: React.FC<PropsType> = (props) => {
             theme="dark"
             mode="inline"
             items={items}
+            onSelect={(e) => {
+              if (e.key === 'logout') dispatch(logout())
+            }}
           />
         </div>
       </Sider>

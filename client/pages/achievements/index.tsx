@@ -178,8 +178,6 @@ const Achievements: React.FC = () => {
   return (
     <div className={style.container}>
       {AchievMap()}
-      {/* <AchievementsContainer {...Achiev[0]} />
-        <AchievementsContainer {...Achiev[1]} /> */}
     </div>
   );
 };

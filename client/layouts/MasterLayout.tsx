@@ -31,7 +31,13 @@ import { useAppSelector, useAppDispatch } from "@/hooks/reduxHooks";
 import { selectAuth, logout } from "@/reducers/auth";
 import Icon from "@ant-design/icons";
 
-import { OutIcon, NotifIcon, SearchIcon, MenuCloseIcon, MenuOpenIcon } from "@/icons/index";
+import {
+  OutIcon,
+  NotifIcon,
+  SearchIcon,
+  MenuCloseIcon,
+  MenuOpenIcon,
+} from "@/icons/index";
 
 type MenuItem = Required<MenuProps>["items"][number];
 const getItem = (label: React.ReactNode, key: React.Key, type?: "group") => {
@@ -51,7 +57,7 @@ type Props = {
 };
 
 const MasterLayout: React.FC<Props> = (props) => {
-  const [collapsed, setCollapsed] = useState<boolean>(true)
+  const [collapsed, setCollapsed] = useState<boolean>(true);
   const { children } = props;
   const router = useRouter();
   const { isAuth, avatar, email, name } = useAppSelector(selectAuth);
@@ -94,108 +100,115 @@ const MasterLayout: React.FC<Props> = (props) => {
     <Layout className={style.layout}>
       {/* Header */}
       <Affix>
-      <Header className={style.header}>
-      <div className={style.trigger}>
-          <Icon
-            component={collapsed ? MenuOpenIcon : MenuCloseIcon}
-            style={{
-              fontSize: "40px",
-              color: "var(--light-color)",
-            }}
-            onClick={() => setCollapsed(!collapsed)}
-          />
-        </div>
-        <div className={style.leftDiv}>
-          <Link href="/">
-            <a className={style.logo}>
-              <Image src="/images/Logo.png" height={68} width={110} />
-            </a>
-          </Link>
-          {isAuth && (
-            <Input
-              className={style.search}
-              size="large"
-              placeholder="Search"
-              suffix={
-                <Icon
-                  component={SearchIcon}
-                  style={{ fontSize: "135%", color: "var(--light-color)" }}
-                />
-              }
+        <Header className={style.header}>
+          <div className={style.trigger}>
+            <Icon
+              component={collapsed ? MenuOpenIcon : MenuCloseIcon}
+              style={{
+                fontSize: "40px",
+                color: "var(--light-color)",
+              }}
+              onClick={() => setCollapsed(!collapsed)}
             />
-          )}
-        </div>
-        {!isAuth ? (
-          <Button>
-            <Link href="/auth/login">Login</Link>
-          </Button>
-        ) : (
-          <div className={style.rightDiv}>
-            <Badge count={3}>
-              <BellFilled
-                style={{
-                  fontSize: "180%",
-                  color: "var(--light-color)",
-                  fontWeight: "bold",
-                }}
-              />
-            </Badge>
-            <Dropdown overlay={<Menu items={items} />} trigger={["click"]}>
-              <a>
-                <Avatar src={avatar} size={55} />
-              </a>
-            </Dropdown>
           </div>
-        )}
-      </Header>
+          <div className={style.leftDiv}>
+            <Link href="/">
+              <a className={style.logo}>
+                <Image src="/images/Logo.png" height={68} width={110} />
+              </a>
+            </Link>
+            {isAuth && (
+              <Input
+                className={style.search}
+                size="large"
+                placeholder="Search"
+                suffix={
+                  <Icon
+                    component={SearchIcon}
+                    style={{ fontSize: "135%", color: "var(--light-color)" }}
+                  />
+                }
+              />
+            )}
+          </div>
+          {!isAuth ? (
+            <Button>
+              <Link href="/auth/login">Login</Link>
+            </Button>
+          ) : (
+            <div className={style.rightDiv}>
+              <Badge count={3}>
+                <BellFilled
+                  style={{
+                    fontSize: "180%",
+                    color: "var(--light-color)",
+                    fontWeight: "bold",
+                  }}
+                />
+              </Badge>
+              <Link href={"/profile/me"}>
+                <a>
+                  <Avatar src={avatar} size={55} />
+                </a>
+              </Link>
+            </div>
+          )}
+        </Header>
       </Affix>
       {/* Header end */}
       {/* content Layout */}
       <Layout className={style.layoutContent}>
         {/* Sider */}
         {/* {isAuth &&<Affix offsetTop={70}><SiderLayout /></Affix>} */}
-        <Affix offsetTop={70}><SiderLayout collapsed={collapsed} setCollapsed={function (
-            value: SetStateAction<boolean>
-          ): void {
-            setCollapsed(value);
-          }} /></Affix>
+        <Affix offsetTop={70}>
+          <SiderLayout
+            collapsed={collapsed}
+            setCollapsed={function (value: SetStateAction<boolean>): void {
+              setCollapsed(value);
+            }}
+          />
+        </Affix>
         {/* Sider end */}
         {/* content */}
         <Content className={style.contentContainer}>{children}</Content>
         {/* content end */}
-      {/* content Layout end */}
+        {/* content Layout end */}
       </Layout>
       <Layout className={style.layoutFooter}>
-      {router.asPath === "/" && (
-        <div className={style.sectionGameInfo}>
-          <div className={style.sectionGameInfoLogo}>
-            <Link href="/">
-              <a>
-                <Image src="/images/Logo.png" height={68} width={110} />
-              </a>
-            </Link>
+        {router.asPath === "/" && (
+          <div className={style.sectionGameInfo}>
+            <div className={style.sectionGameInfoLogo}>
+              <Link href="/">
+                <a>
+                  <Image src="/images/Logo.png" height={68} width={110} />
+                </a>
+              </Link>
+            </div>
+            <div className={style.sectionGameInfoText}>
+              <Typography.Title
+                level={3}
+                className={style.sectionGameInfoTettel}
+              >
+                About game
+              </Typography.Title>
+              <Typography.Text className={style.sectionGameInfoText}>
+                Ping-pong is a game in which two or four players hit a light,
+                hollow ball back and forth across a net stretched across the
+                center of a table. The game is more commonly known as table
+                tennis, reflecting its origin as an indoor modification of the
+                sport of lawn tennis. The term ping-pong is a federally
+                registered trademark for the game first issued to Parker
+                Brothers, Inc., in 1901, and now owned by Escalade Sports, of
+                Evansville, Indiana. Provide additional interactive capacity of
+                editable and copyable.
+              </Typography.Text>
+            </div>
           </div>
-          <div className={style.sectionGameInfoText}>
-            <Typography.Title level={3} className={style.sectionGameInfoTettel}>
-              About game
-            </Typography.Title>
-            <Typography.Text className={style.sectionGameInfoText}>
-              Ping-pong is a game in which two or four players hit a light,
-              hollow ball back and forth across a net stretched across the
-              center of a table. The game is more commonly known as table
-              tennis, reflecting its origin as an indoor modification of the
-              sport of lawn tennis. The term ping-pong is a federally registered
-              trademark for the game first issued to Parker Brothers, Inc., in
-              1901, and now owned by Escalade Sports, of Evansville, Indiana.
-              Provide additional interactive capacity of editable and copyable.
-            </Typography.Text>
-          </div>
-        </div>
-      )}
-      <Footer className={style.footer}>
-        <span>ft_transcendence</span>
-        <span>© 2022 1337. All rights reserved.</span>
-      </Footer>
+        )}
+        <Footer className={style.footer}>
+          <span>ft_transcendence</span>
+          <span>© 2022 1337. All rights reserved.</span>
+        </Footer>
       </Layout>
     </Layout>
     // Master layout end
