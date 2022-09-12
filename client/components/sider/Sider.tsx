@@ -1,7 +1,7 @@
 import style from "./sider.module.css";
 import React, { useState, useRef } from "react";
 import { Layout, Menu, MenuProps, Badge } from "antd";
-import Icon from "@ant-design/icons";
+import Icon, {HomeFilled} from "@ant-design/icons";
 import Link from "next/link";
 import { useAppDispatch } from "@/hooks/reduxHooks";
 import { logout } from "@/reducers/auth";
@@ -15,12 +15,16 @@ import {
   OutIcon,
   NewGameIcon,
   MenuOpenIcon,
-  MenuCloseIcon
+  MenuCloseIcon,
 } from "@/icons/index";
 
 const { Sider } = Layout;
 
 type MenuItem = Required<MenuProps>["items"][number];
+interface PropsType {
+  collapsed: boolean;
+  setCollapsed: React.Dispatch<React.SetStateAction<boolean>>;
+}
 
 function getItem(
   label: React.ReactNode,
@@ -36,11 +40,19 @@ function getItem(
 
 const items: MenuItem[] = [
   getItem(
+    <Link href="/">{"Home"}</Link>,
+    "Home",
+    <HomeFilled style={{
+      fontSize: 25,
+      color: "var(--light-color)"
+    }}/>
+  ),
+  getItem(
     <Link href="/profile/me">{"Profile"}</Link>,
     "profile",
     <Icon
       component={UserIcon}
-      style={{ fontSize: "180%", color: "var(--light-color)" }}
+      style={{ fontSize: 25, color: "var(--light-color)" }}
     />
   ),
   getItem(
@@ -49,7 +61,7 @@ const items: MenuItem[] = [
     <Badge dot offset={[-2, 4]}>
       <Icon
         component={MessageIcon}
-        style={{ fontSize: "180%", color: "var(--light-color)" }}
+        style={{ fontSize: 25, color: "var(--light-color)" }}
       />
     </Badge>
   ),
@@ -58,7 +70,7 @@ const items: MenuItem[] = [
     "achievements",
     <Icon
       component={AchievementsIcon}
-      style={{ fontSize: "180%", color: "var(--light-color)" }}
+      style={{ fontSize: 25, color: "var(--light-color)" }}
     />
   ),
   getItem(
@@ -66,7 +78,7 @@ const items: MenuItem[] = [
     "game",
     <Icon
       component={GameIcon}
-      style={{ fontSize: "180%", color: "var(--light-color)" }}
+      style={{ fontSize: 25, color: "var(--light-color)" }}
     />
   ),
   getItem(
@@ -74,16 +86,24 @@ const items: MenuItem[] = [
     "gameNew",
     <Icon
       component={NewGameIcon}
-      style={{ fontSize: "180%", color: "var(--light-color)" }}
+      style={{ fontSize: 25, color: "var(--light-color)" }}
+    />
+  ),
+  getItem(
+    "logout",
+    "logout",
+    <Icon
+      component={OutIcon}
+      style={{ fontSize: 25, color: "var(--light-color)" }}
     />
   ),
 ];
 
-const SiderLayout: React.FC = () => {
-  const [collapsed, setCollapsed] = useState(true);
+const SiderLayout: React.FC<PropsType> = (props) => {
+  const { collapsed, setCollapsed } = props;
   const dispatch = useAppDispatch();
   return (
-    <div className={style.container}>
+    <div className={`${style.container} ${!collapsed ? style.open : ''}`}>
       <Sider
         className={style.sider}
         trigger={null}
@@ -94,7 +114,8 @@ const SiderLayout: React.FC = () => {
           <Icon
             component={collapsed ? MenuOpenIcon : MenuCloseIcon}
             style={{
-              fontSize: '40px'
+              fontSize: "40px",
+              color: "var(--light-color)",
             }}
             onClick={() => setCollapsed(!collapsed)}
           />
@@ -105,24 +126,6 @@ const SiderLayout: React.FC = () => {
             theme="dark"
             mode="inline"
             items={items}
-          />
-          <Menu
-            className={style.menu}
-            theme="dark"
-            mode="inline"
-            onClick={(e) => {
-              dispatch(logout());
-            }}
-            items={[
-              getItem(
-                "logout",
-                "1",
-                <Icon
-                  component={OutIcon}
-                  style={{ fontSize: "180%", color: "var(--light-color)" }}
-                />
-              ),
-            ]}
           />
         </div>
       </Sider>

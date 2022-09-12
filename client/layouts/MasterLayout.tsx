@@ -1,4 +1,5 @@
 import style from "./layout.module.css";
+import React, { useState, useRef, SetStateAction } from "react";
 import { NextPage } from "next";
 import { useRouter } from "next/router";
 import Image from "next/image";
@@ -21,6 +22,7 @@ import {
   Card,
   Input,
   Badge,
+  Affix,
 } from "antd";
 import Link from "next/link";
 import SiderLayout from "@/components/sider/Sider";
@@ -29,7 +31,7 @@ import { useAppSelector, useAppDispatch } from "@/hooks/reduxHooks";
 import { selectAuth, logout } from "@/reducers/auth";
 import Icon from "@ant-design/icons";
 
-import { OutIcon, NotifIcon, SearchIcon } from "@/icons/index";
+import { OutIcon, NotifIcon, SearchIcon, MenuCloseIcon, MenuOpenIcon } from "@/icons/index";
 
 type MenuItem = Required<MenuProps>["items"][number];
 const getItem = (label: React.ReactNode, key: React.Key, type?: "group") => {
@@ -49,6 +51,7 @@ type Props = {
 };
 
 const MasterLayout: React.FC<Props> = (props) => {
+  const [collapsed, setCollapsed] = useState<boolean>(true)
   const { children } = props;
   const router = useRouter();
   const { isAuth, avatar, email, name } = useAppSelector(selectAuth);
@@ -90,7 +93,18 @@ const MasterLayout: React.FC<Props> = (props) => {
     // Master layout
     <Layout className={style.layout}>
       {/* Header */}
+      <Affix>
       <Header className={style.header}>
+      <div className={style.trigger}>
+          <Icon
+            component={collapsed ? MenuOpenIcon : MenuCloseIcon}
+            style={{
+              fontSize: "40px",
+              color: "var(--light-color)",
+            }}
+            onClick={() => setCollapsed(!collapsed)}
+          />
+        </div>
         <div className={style.leftDiv}>
           <Link href="/">
             <a className={style.logo}>
@@ -134,17 +148,24 @@ const MasterLayout: React.FC<Props> = (props) => {
           </div>
         )}
       </Header>
+      </Affix>
       {/* Header end */}
       {/* content Layout */}
-      <Layout>
+      <Layout className={style.layoutContent}>
         {/* Sider */}
-        {isAuth && <SiderLayout />}
+        {/* {isAuth &&<Affix offsetTop={70}><SiderLayout /></Affix>} */}
+        <Affix offsetTop={70}><SiderLayout collapsed={collapsed} setCollapsed={function (
+            value: SetStateAction<boolean>
+          ): void {
+            setCollapsed(value);
+          }} /></Affix>
         {/* Sider end */}
         {/* content */}
         <Content className={style.contentContainer}>{children}</Content>
         {/* content end */}
-      </Layout>
       {/* content Layout end */}
+      </Layout>
+      <Layout className={style.layoutFooter}>
       {router.asPath === "/" && (
         <div className={style.sectionGameInfo}>
           <div className={style.sectionGameInfoLogo}>
@@ -175,6 +196,7 @@ const MasterLayout: React.FC<Props> = (props) => {
         <span>ft_transcendence</span>
         <span>© 2022 1337. All rights reserved.</span>
       </Footer>
+      </Layout>
     </Layout>
     // Master layout end
   );

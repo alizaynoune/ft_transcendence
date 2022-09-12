@@ -61,3 +61,15 @@ a {
   color: white !important;
   background: #464E5F !important;
 }
+
+@media screen and (max-width: 576px){}
+
+@media screen and (min-width: 576px){}
+
+@media screen and (min-width: 768px){}
+
+@media screen and (min-width: 992px){}
+
+@media screen and (min-width: 1200px) {}
+
+@media screen and (min-width: 1600px){}

@@ -1,5 +1,6 @@
 .layout {
   background-color: var(--background-color) !important;
+  /* height: 100vh; */
 }
 
 .header {
@@ -7,7 +8,12 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
+  margin: 0 5px 0 5px;
+  border-radius: 0 0 6px 6px;
+  
 }
+
+.trigger {display: none;}
 
 .leftDiv {
   width: 50%;
@@ -51,8 +57,22 @@
   /* line-height: 0 !important; */
 }
 
+/* .layoutContent {} */
+
 .contentContainer {
   padding: 10px;
+}
+
+.layoutFooter{
+  margin: 0 5px 5px 95px;
+  border-radius: 8px;
+  overflow: hidden;
+  border-radius: 10px;
+  box-shadow: 0px 0px 8px rgba(154, 154, 154, 0.8);
+  /* background-color: bisque; */
+  /* width: calc(100vw - 40px);
+  justify-content: flex-end; */
+  /* align-items: flex-end; */
 }
 
 .sectionGameInfo {
@@ -103,3 +123,21 @@
     display: none;
   }
 }
+
+@media screen and (max-width: 576px){
+  .header{padding: 0 5px !important;}
+  .leftDiv{display: none;}
+  .trigger{
+    display: block;
+  }
+}
+
+@media screen and (min-width: 576px){}
+
+@media screen and (min-width: 768px){}
+
+@media screen and (min-width: 992px){}
+
+@media screen and (min-width: 1200px) {}
+
+@media screen and (min-width: 1600px){}
