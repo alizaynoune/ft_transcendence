@@ -2,7 +2,6 @@ import style from "./statistics.module.css";
 import { NextComponentType } from "next";
 import Image from "next/image";
 import { Progress, Avatar, Badge, Typography } from "antd";
-import { useSession } from "next-auth/react";
 import Icon from "@ant-design/icons";
 
 // Achievements Icons
@@ -81,15 +80,12 @@ const Statistics: React.FC<Props> = (props) => {
           <Avatar
             key={index}
             icon={
-              <Icon
-                component={achievementsIcons[a.name]}
-                style={{
-                  fontSize: "140%",
-                }}
-              />
+              // <div className={style.icon}>
+              <Icon component={achievementsIcons[a.name]} />
+              // </div>
             }
-            size={45}
-            style={achievementsStyle[t]}
+            size={80}
+            className={`${style[t]} ${style.avatar}`}
           />
         );
       });
@@ -119,11 +115,18 @@ const Statistics: React.FC<Props> = (props) => {
       </div>
       <div className={style.achievements}>
         <Avatar.Group
+          className={style.avatarGroup}
           maxCount={4}
-          size={45}
+          size={80}
           maxPopoverTrigger="click"
           maxPopoverPlacement="bottom"
-          maxStyle={achievementsStyle.maxStyle}
+          maxStyle={{
+            color: "#FFFFFF",
+            border: "2px solid #FFFFFF",
+            backgroundColor: "#3699FF",
+            cursor: "pointer",
+            marginLeft: '-40px',
+          }}
         >
           {mapAchievements()}
         </Avatar.Group>

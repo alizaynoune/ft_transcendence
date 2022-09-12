@@ -1,10 +1,8 @@
-import style from "styles/profile.module.css";
+import style from "./profile.module.css";
 import Image from "next/image";
 import Statistics from "@/components/userStatistics/Statistics";
 import UserData from "@/containers/userData/UserData";
-import { useEffect, useState } from "react";
 import axios from "@/config/axios";
-import AuthRoute from 'tools/protectedRoutes'
 
 // types
 import {ProfileType} from '@/types/types'

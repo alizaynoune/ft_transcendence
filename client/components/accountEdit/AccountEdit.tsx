@@ -44,7 +44,7 @@ const AccountSetting: React.FC = () => {
   return (
     <Form className={style.form} name="accountSettings">
       <Row gutter={24} justify="space-around" align="middle">
-        <Col span={10}>
+        <Col xs={{ span: 24, offset: 1 }} lg={{ span: 10, offset: 1 }}>
           <Form.Item name="firstname">
             <Input
               size="large"
@@ -53,7 +53,7 @@ const AccountSetting: React.FC = () => {
             />
           </Form.Item>
         </Col>
-        <Col span={10}>
+        <Col  xs={{ span: 24, offset: 1 }} lg={{ span: 10, offset: 1 }}>
           <Form.Item name="laststname">
             <Input
               size="large"
@@ -62,7 +62,7 @@ const AccountSetting: React.FC = () => {
             />
           </Form.Item>
         </Col>
-        <Col span={10}>
+        <Col xs={{ span: 24, offset: 1 }} lg={{ span: 10, offset: 1 }}>
           <Form.Item name="username">
             <Input
               size="large"
@@ -71,7 +71,7 @@ const AccountSetting: React.FC = () => {
             />
           </Form.Item>
         </Col>
-        <Col span={10}>
+        <Col xs={{ span: 24, offset: 1 }} lg={{ span: 10, offset: 1 }}>
           <Form.Item name="email">
             <Input
               size="large"
@@ -80,7 +80,7 @@ const AccountSetting: React.FC = () => {
             />
           </Form.Item>
         </Col>
-        <Col span={10}>
+        <Col xs={{ span: 24, offset: 1 }} lg={{ span: 10, offset: 1 }}>
           <Form.Item name="phone">
             <Input
               size="large"
@@ -89,7 +89,7 @@ const AccountSetting: React.FC = () => {
             />
           </Form.Item>
         </Col>
-        <Col span={10}>
+        <Col xs={{ span: 24, offset: 1 }} lg={{ span: 10, offset: 1 }}>
           <Form.Item name="birthday">
             <DatePicker
               size="large"
@@ -103,7 +103,7 @@ const AccountSetting: React.FC = () => {
             />
           </Form.Item>
         </Col>
-        <Col span={10}>
+        <Col xs={{ span: 24, offset: 1 }} lg={{ span: 10, offset: 1 }}>
           <Form.Item name="address">
             <Input
               size="large"
@@ -112,7 +112,7 @@ const AccountSetting: React.FC = () => {
             />
           </Form.Item>
         </Col>
-        <Col span={10}>
+        <Col xs={{ span: 24, offset: 1 }} lg={{ span: 10, offset: 1 }}>
           <Select
             // showSearch
             placeholder="Grender"
@@ -129,7 +129,7 @@ const AccountSetting: React.FC = () => {
             <Option value="Female">Female</Option>
           </Select>
         </Col>
-        <Col span={10}>
+        <Col xs={{ span: 24, offset: 1 }} lg={{ span: 10, offset: 1 }}>
           <Form.Item>
             <Button
               type="primary"

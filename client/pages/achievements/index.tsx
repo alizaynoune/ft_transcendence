@@ -145,7 +145,7 @@ const Achiev: AchievementType[] = [
         name: "platinum",
         xp: 500,
         description: "win 4 matche with a max score",
-        wind: false,
+        wind: true,
       },
     ],
   },

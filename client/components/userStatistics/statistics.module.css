@@ -61,3 +61,35 @@
     width: 10px;
     height: 10px;
 }
+
+.silver {
+    color: var(--silver-color);
+    background-color: var(--active-color);
+    border: 3px solid var(--silver-color) !important;
+  }
+  
+  .bronze {
+    color: var(--bronze-color);
+    background-color: var(--background-color);
+    border: 3px solid var(--bronze-color) !important;
+  }
+  
+  .gold {
+    color: var(--gold-color);
+    background-color: var(--background-color);
+    border: 3px solid var(--gold-color) !important;
+  }
+  .platinum {
+    color: var(--platinum-color);
+    background-color: var(--dark-color);
+    border: 3px solid var(--platinum-color) !important;
+  }
+
+  .avatar{
+      box-shadow: 0px 0px 12px rgba(45, 45, 45, 0.8);
+      font-size: 59px !important;
+    }
+
+  .avatarGroup .avatar:not(:first-child) {
+      margin-left: -35px;
+  }

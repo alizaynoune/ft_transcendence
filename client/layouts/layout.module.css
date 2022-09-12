@@ -69,10 +69,6 @@
   overflow: hidden;
   border-radius: 10px;
   box-shadow: 0px 0px 8px rgba(154, 154, 154, 0.8);
-  /* background-color: bisque; */
-  /* width: calc(100vw - 40px);
-  justify-content: flex-end; */
-  /* align-items: flex-end; */
 }
 
 .sectionGameInfo {
@@ -113,6 +109,8 @@
     width: 100%;
     padding: 10px;
   }
+
+  .layoutFooter{margin: 5px;}
 
   .footer {
     justify-content: space-around;
