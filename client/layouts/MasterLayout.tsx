@@ -59,7 +59,6 @@ const MasterLayout: React.FC<Props> = (props) => {
   const items: MenuProps["items"] = [
     getItem(
       <Card
-        // style={{cursor: 'initial'}}
         bordered={false}
         actions={[
           <Icon
