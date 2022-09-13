@@ -9,6 +9,10 @@
     /* gap: 5px */
 }
 
+.tabsContainer{
+    width: 100%;
+}
+
 .historyMessenger {
     /* background-color: aqua; */
     /* width: 10%; */
