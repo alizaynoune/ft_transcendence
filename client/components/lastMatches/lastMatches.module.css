@@ -23,3 +23,20 @@
     color: var(--dark-color);
     gap: 5px;
 }
+
+@media screen and (max-width: 576px){
+  .container{padding: 0;}
+  .username{display: none;}
+}
+
+@media screen and (min-width: 576px){
+  .username{display: inline-block;}
+}
+
+@media screen and (min-width: 768px){}
+
+@media screen and (min-width: 992px){}
+
+@media screen and (min-width: 1200px) {}
+
+@media screen and (min-width: 1600px){}

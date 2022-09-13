@@ -1,9 +1,11 @@
 import style from "./friendsTabs.module.css";
-import { Tabs, List, Avatar } from "antd";
-// import VirtualList from 'rc-virtual-list';
+import { Tabs, List, Avatar, Typography } from "antd";
+import Icon, {EditFilled} from "@ant-design/icons";
 
 import FriendsList from "@/components/friendsList/FriendsList";
 import Request from "@/components/RequestList/RequestList";
+
+import {FriendsIcon, AddFriendIcon} from "@/icons/index"
 
 const { TabPane } = Tabs;
 const FriendsTabs: React.FC = () => {
@@ -22,10 +24,24 @@ const FriendsTabs: React.FC = () => {
           color: "var(--light-color)",
         }}
       >
-        <TabPane tab="Friends" key="1">
+        <TabPane 
+        tab={
+          <>
+          <Typography className={style.tabText}>{"Friends"}</Typography>
+          <Icon component={FriendsIcon} className={style.tabIcon} />
+          </>
+        }
+        key="1">
           <FriendsList />
         </TabPane>
-        <TabPane tab="Friend requests" key="2">
+        <TabPane 
+        tab={
+          <>
+          <Typography className={style.tabText}>{"Friend requests"}</Typography>
+          <Icon component={AddFriendIcon} className={style.tabIcon} />
+          </>
+        }
+        key="2">
           <Request />
         </TabPane>
       </Tabs>

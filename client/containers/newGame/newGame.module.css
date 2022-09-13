@@ -7,7 +7,7 @@
   gap: 10px;
   isolation: isolate;
   width: 931px;
-  height: 700px;
+  height: calc(100vh - 100px);
 
   /* Secondary */
   /* shadowSecondary */
@@ -23,7 +23,6 @@
   margin: auto;
 }
 
-
 .stageContainer {
   display: flex;
   flex-direction: row;
@@ -31,7 +30,7 @@
   justify-content: space-between;
   padding: 10px;
   gap: 20px;
-  height: calc(100% - 50px);
+  /* height: calc(100% - 40px); */
   background: #5a5c69;
   border-radius: 5px;
 
@@ -45,11 +44,11 @@
 }
 
 .stage {
-    width: 100%;
-    height: 100%;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
 }
 
 .racquet {
@@ -71,4 +70,34 @@
   background-repeat: repeat-y;
   width: 2px;
   height: 100%;
+}
+
+@media screen and (max-width: 576px) {
+  .container {
+    width: 100%;
+    padding: 0;
+  }
+  .stage {
+    display: none;
+  }
+  .stageContainer {
+    flex-direction: column-reverse;
+    padding: 5px;
+    gap: 5px
+  }
+}
+
+@media screen and (min-width: 576px) {
+}
+
+@media screen and (min-width: 768px) {
+}
+
+@media screen and (min-width: 992px) {
+}
+
+@media screen and (min-width: 1200px) {
+}
+
+@media screen and (min-width: 1600px) {
 }

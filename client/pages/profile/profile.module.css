@@ -21,32 +21,44 @@
     gap: 30px;
     margin-top: -80px;
     z-index: 1;
+    /* background-color: aqua; */
 }
 
 .statistics {
-    /* width: 100%; */
-    /* height: 300px; */
     flex-basis: 350px;
 }
 
 .data {
     width: 100%;
-    /* height: 300px; */
-    /* flex-basis: calc(100% - 300px); */
-
 }
 
 @media screen and (max-width: 576px){
     .statisticsData{
         flex-direction: column;
+        padding: 0 5px;
+        margin-top: -218px;
+    }
+    .cover{height: 300px;}
+}
+
+@media screen and (min-width: 576px){
+    .statisticsData{
+        flex-direction: column;
+        padding: 0 5px;
     }
 }
 
-@media screen and (min-width: 576px){}
+@media screen and (min-width: 768px){
 
-@media screen and (min-width: 768px){}
+}
 
-@media screen and (min-width: 992px){}
+@media screen and (min-width: 992px){
+    .statisticsData{
+        flex-direction: row;
+        padding: 0 15px;
+        gap: 10;
+    }
+}
 
 @media screen and (min-width: 1200px) {}
 

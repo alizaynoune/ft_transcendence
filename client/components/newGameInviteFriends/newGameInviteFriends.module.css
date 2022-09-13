@@ -3,6 +3,7 @@
     border-radius: 6px;
     padding: 6px;
     height: 100%;
+    width: 100%;
     display: flex;
     flex-direction: column;
     /* gap: -2px; */
@@ -44,9 +45,24 @@
   .scrollableDiv {
     height: 100%;
     /* background-color: green; */
-    min-width: 350px;
+    /* min-width: 350px; */
+    width: 100% ;
     overflow-y: scroll;
     overflow-x: hidden;
     /* scrollbar-width:unset; */
     /* scroll-padding-block-start:inherit; */
   }
+
+  @media screen and (max-width: 576px){
+    .container{padding: 0;}
+  }
+  
+  @media screen and (min-width: 576px){}
+  
+  @media screen and (min-width: 768px){}
+  
+  @media screen and (min-width: 992px){}
+  
+  @media screen and (min-width: 1200px) {}
+  
+  @media screen and (min-width: 1600px){}

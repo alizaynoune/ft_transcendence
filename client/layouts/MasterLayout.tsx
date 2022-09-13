@@ -3,7 +3,7 @@ import React, { useState, useRef, SetStateAction } from "react";
 import { NextPage } from "next";
 import { useRouter } from "next/router";
 import Image from "next/image";
-import {
+import Icon, {
   EditOutlined,
   EllipsisOutlined,
   SettingOutlined,
@@ -28,25 +28,9 @@ import Link from "next/link";
 import SiderLayout from "@/components/sider/Sider";
 
 import { useAppSelector, useAppDispatch } from "@/hooks/reduxHooks";
-import { selectAuth, logout } from "@/reducers/auth";
-import Icon from "@ant-design/icons";
+import { selectAuth } from "@/reducers/auth";
 
-import {
-  OutIcon,
-  NotifIcon,
-  SearchIcon,
-  MenuCloseIcon,
-  MenuOpenIcon,
-} from "@/icons/index";
-
-type MenuItem = Required<MenuProps>["items"][number];
-const getItem = (label: React.ReactNode, key: React.Key, type?: "group") => {
-  return {
-    label,
-    key,
-    type,
-  } as MenuItem;
-};
+import { SearchIcon, MenuCloseIcon, MenuOpenIcon } from "@/icons/index";
 
 const { Header, Footer, Content, Sider } = Layout;
 const { Meta } = Card;
@@ -64,36 +48,6 @@ const MasterLayout: React.FC<Props> = (props) => {
   const dispatch = useAppDispatch();
   // console.log(isAuth);
   console.log(router.asPath);
-
-  const items: MenuProps["items"] = [
-    getItem(
-      <Card
-        bordered={false}
-        actions={[
-          <Icon
-            component={OutIcon}
-            style={{ fontSize: "120%" }}
-            onClick={(e) => {
-              dispatch(logout());
-            }}
-          />,
-          <Link href="/profile/me#AccountSettings">
-            <SettingOutlined key="setting" />
-          </Link>,
-        ]}
-      >
-        <Meta
-          avatar={<Avatar src={avatar} size="large" />}
-          title={name.first + " " + name.last}
-          description={email}
-        />
-      </Card>,
-      "1",
-      "group"
-      // true,
-      // []
-    ),
-  ];
 
   return (
     // Master layout

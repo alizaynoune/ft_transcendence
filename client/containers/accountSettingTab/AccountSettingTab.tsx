@@ -1,9 +1,10 @@
 import style from "./accountSettingTab.module.css";
-import { Tabs } from "antd";
+import { Tabs, Typography } from "antd";
+import Icon, { EditFilled, FileProtectOutlined } from "@ant-design/icons";
 
 // components
 import AccountEdit from "@/components/accountEdit/AccountEdit";
-import AccountPrivacy from "@/components/accountPrivacy/AccountPrivacy"
+import AccountPrivacy from "@/components/accountPrivacy/AccountPrivacy";
 
 const { TabPane } = Tabs;
 const AccountSettingTab: React.FC = () => {
@@ -19,13 +20,29 @@ const AccountSettingTab: React.FC = () => {
           fontWeight: "bold",
           boxShadow: "0px 0px 8px rgba(154, 154, 154, 0.5)",
           padding: "0 40px",
-          color: 'var(--light-color)'
+          color: "var(--light-color)",
         }}
       >
-        <TabPane tab="Edit" key="1">
-            <AccountEdit />
+        <TabPane
+          tab={
+            <>
+              <Typography className={style.tabText}>{"Friends"}</Typography>
+              <EditFilled className={style.tabIcon} />
+            </>
+          }
+          key="1"
+        >
+          <AccountEdit />
         </TabPane>
-        <TabPane tab="Privacy" key="2">
+        <TabPane
+          tab={
+            <>
+              <Typography className={style.tabText}>{"Friends"}</Typography>
+              <FileProtectOutlined className={style.tabIcon} />
+            </>
+          }
+          key="2"
+        >
           <AccountPrivacy />
         </TabPane>
       </Tabs>

@@ -6,3 +6,21 @@
     border-radius: 6px;
     box-shadow: 0 0 10px 1px var(--shadwo-color);
 }
+
+.tabIcon {display: none;}
+
+
+@media screen and (max-width: 576px){
+    .tabIcon{display: inline-block;}
+    .tabText{display: none;}
+}
+
+@media screen and (min-width: 576px){}
+
+@media screen and (min-width: 768px){}
+
+@media screen and (min-width: 992px){}
+
+@media screen and (min-width: 1200px) {}
+
+@media screen and (min-width: 1600px){}

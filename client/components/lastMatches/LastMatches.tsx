@@ -106,7 +106,7 @@ const LastMatches: React.FC = () => {
         <Link href={`/profile/${user}`}>
             <a className={style.avatar}>
           <Avatar src={avatar} size='large' />
-          <span>{user}</span>
+          <span className={style.username}>{user}</span>
           </a>
         </ Link>
       ),
@@ -130,17 +130,20 @@ const LastMatches: React.FC = () => {
       title: "Level",
       dataIndex: "gamelevel",
       key: "level",
+      responsive: [ 'xl', 'xxl'],
     },
     {
       title: "Date",
       dataIndex: "date",
       key: "date",
+      responsive: ['md','lg', 'xl', 'xxl'],
       render: (date) => <span>{moment(date).fromNow()}</span>,
     },
     {
       title: "Duration",
       dataIndex: "duration",
       key: "duration",
+      responsive: ['lg', 'xl', 'xxl']
     },
   ];
 

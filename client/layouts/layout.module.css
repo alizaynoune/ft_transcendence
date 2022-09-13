@@ -61,6 +61,9 @@
 
 .contentContainer {
   padding: 10px;
+  min-height: calc(100vh - 200px) !important;
+  /* height: calc(100vh - 300px); */
+  /* background-color: aqua; */
 }
 
 .layoutFooter{
@@ -125,9 +128,8 @@
 @media screen and (max-width: 576px){
   .header{padding: 0 5px !important;}
   .leftDiv{display: none;}
-  .trigger{
-    display: block;
-  }
+  .trigger{ display: block;}
+  .contentContainer{padding: 5px;}
 }
 
 @media screen and (min-width: 576px){}
