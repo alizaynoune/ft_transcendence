@@ -83,10 +83,10 @@ const BoxMessenger: React.FC<PropsType> = ({ currentConversation }) => {
         <div ref={bottomRef} />
       </div>
       <Form name="form" onFinish={onSubmit}>
-        <Form.Item name="message">
+        <Form.Item name="message" >
           {/* <Input.Group compact> */}
           <Input
-            style={{ width: "calc(100% - 100px)" }}
+            style={{ width: "100%" }}
             className={style.Input}
             size="large"
             // value={value}
@@ -95,13 +95,13 @@ const BoxMessenger: React.FC<PropsType> = ({ currentConversation }) => {
             prefix={
               <Icon
                 component={EmojiSmileIcon}
-                style={{ fontSize: "120%", color: "var(--primary-color)" }}
+                style={{ fontSize: 20, color: "var(--primary-color)" }}
               />
             }
             suffix={
               <Icon
                 component={SendIcon}
-                style={{ fontSize: "120%", color: "var(--primary-color)" }}
+                style={{ fontSize: 20, color: "var(--primary-color)" }}
               />
             }
           />

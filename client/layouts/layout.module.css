@@ -57,11 +57,15 @@
   /* line-height: 0 !important; */
 }
 
-/* .layoutContent {} */
+.layoutContent {
+  /* background-color: aqua !important; */
+  height: calc(100vh - 140px);
+}
 
 .contentContainer {
+  /* background-color: blue; */
   padding: 10px;
-  min-height: calc(100vh - 200px) !important;
+  min-height: 100%;
   /* height: calc(100vh - 300px); */
   /* background-color: aqua; */
 }

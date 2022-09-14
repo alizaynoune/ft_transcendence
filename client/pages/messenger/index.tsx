@@ -29,13 +29,13 @@ const Messanger: React.FC = () => {
     if (hashs.includes(hash)) setCurrentTab(hash);
     console.log(hash);
   };
-  useEffect(() => {
-    handelUrlHash();
-    setLayoutTabs(window.innerWidth < 1200);
-  }, []);
+  // useEffect(() => {
+  //   handelUrlHash();
+  //   setLayoutTabs(window.innerWidth < 1200);
+  // }, []);
   return (
     <div className={style.container}>
-      {layoutTabs ? (
+      {/* {layoutTabs ? (
         <Tabs
           centered
           size="large"
@@ -76,7 +76,7 @@ const Messanger: React.FC = () => {
           </TabPane>
         </Tabs>
       ) : (
-        <>
+        <> */}
           <div className={style.historyMessenger}>
             <Conversations
               setCurrentConversation={function (
@@ -97,8 +97,8 @@ const Messanger: React.FC = () => {
               <SettingMessenger conversation={currentConversation} />
             )}
           </div>
-        </>
-      )}
+        {/* </>
+      )} */}
     </div>
   );
 };
