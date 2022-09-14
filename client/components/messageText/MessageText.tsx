@@ -19,7 +19,7 @@ const MessageText: React.FC<PropsType> = ({ message, number }) => {
         <div className={style.messageContainer}>
           <Avatar src={message.sender.avatar} />
           <div className={style.messageText}>
-            <Typography.Text >{message.content}</Typography.Text>
+            <Typography.Text style={{fontSize: 16}}>{message.content}</Typography.Text>
             <Typography.Paragraph style={{margin: 0}} type="secondary">
               {moment(message.date).fromNow()}
             </Typography.Paragraph>

@@ -2,7 +2,6 @@ import style from "./login.module.css";
 import { Button, Input, Form, Checkbox, Typography, Divider } from "antd";
 import Link from "next/link";
 import Icon, { GoogleOutlined } from "@ant-design/icons";
-import { signIn } from "next-auth/react";
 import { selectAuth } from "@/reducers/auth";
 import { AuthTunk } from "@/store/actions/auth";
 import { useRouter } from "next/router";
