@@ -41,7 +41,7 @@
 .right .messageText {
   align-items: flex-end;
   border-radius: 10px 10px 0px 10px;
-  background-color: var(--primary-color);
+  background-color: var(--success-color);
 }
 
 .left .messageText {
@@ -56,4 +56,34 @@
 }
 
 .messageStatus {
+}
+
+.status *{
+  font-size: 15px;
+  /* font-weight: bold; */
+}
+
+.statusSend{
+  color: var(--secondary-color)
+}
+
+.statusRead{
+  color: var(--primary-color);
+  /* border: teal solid 1px; */
+}
+
+.statusRead span:first-of-type, .statusDelivered span:first-of-type{
+  margin-right: -10px;
+}
+
+.statusDelivered{
+  color: var(--secondary-color)
+}
+
+.statusFailer{
+  color: var(--error-color);
+}
+
+.statusWaiting{
+  color: var(--secondary-color)
 }

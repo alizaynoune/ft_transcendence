@@ -75,16 +75,15 @@ export interface ConversationsType {
 export interface MessageTextType {
   id: string;
   conversationID: string;
-  read: boolean;
+  // read: boolean;
+  status: 'send' | 'read' | 'delivered' | 'failer' | 'waiting' | string;
   sender: UserType;
-  // receiver: {}[];
   content: string;
   date: Date;
   deleted: boolean;
 }
 export interface AchievementType {
   name: "Winner" | "Friendly" | "Photogenic" | "Wildfire" | "Legendary" | "Sharpshooter";
-
   types: {
     name: string;
     xp: number;

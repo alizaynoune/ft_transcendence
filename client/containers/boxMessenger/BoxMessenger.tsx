@@ -2,7 +2,7 @@ import style from "./boxMessenger.module.css";
 import { Input, Button, List, message, Form } from "antd";
 import Icon from "@ant-design/icons";
 import type { FormInstance } from "antd/es/form";
-import Picker from 'emoji-picker-react';
+import Picker from "emoji-picker-react";
 
 import { LoremIpsum } from "lorem-ipsum"; //!delete it
 import MessageText from "@/components/messageText/MessageText";
@@ -29,15 +29,18 @@ type PropsType = {
   currentConversation: ConversationsType;
 };
 
+const messageStatus = ["send", "read", "delivered", "failer", "waiting"];
+
 const fakeMessage = (id: string, sender: UserType): MessageTextType => {
   return {
     id: "message id",
     conversationID: id,
-    read: Math.random() < 0.5,
+    // read: Math.random() < 0.5,
     content: lorem.generateSentences(1),
     date: new Date(),
     sender,
     deleted: false,
+    status: messageStatus[Math.floor(Math.random() * 5)],
   };
 };
 
@@ -45,7 +48,7 @@ const BoxMessenger: React.FC<PropsType> = ({ currentConversation }) => {
   const bottomRef = useRef<HTMLDivElement>(null);
   const [messages, setMessages] = useState<MessageTextType[]>([]);
   const [value, setValue] = useState<string>("sdfas");
-  const [showEmoji, setShowEmoji] = useState<boolean>(false)
+  const [showEmoji, setShowEmoji] = useState<boolean>(false);
   useEffect(() => {
     bottomRef.current?.scrollIntoView();
   });
@@ -68,15 +71,26 @@ const BoxMessenger: React.FC<PropsType> = ({ currentConversation }) => {
 
   const onSubmit = () => {
     console.log(value);
-    setMessages(old => [...old, {id: 'test', conversationID: currentConversation.id, read: false, content: value, date: new Date, sender: currentConversation.members[0], deleted: false}])
-    setValue("")
-    setShowEmoji(false)
+    setMessages((old) => [
+      ...old,
+      {
+        id: "test",
+        conversationID: currentConversation.id,
+        // read: false,
+        content: value,
+        date: new Date(),
+        sender: currentConversation.members[0],
+        deleted: false,
+        status: messageStatus[Math.floor(Math.random() * 5)],
+      },
+    ]);
+    setValue("");
+    setShowEmoji(false);
   };
 
-  const onEmojiClick = (event : any, emojiObject : any) => {
+  const onEmojiClick = (event: any, emojiObject: any) => {
     console.log(emojiObject);
-    setValue(old => old.concat(emojiObject.emoji))
-    
+    setValue((old) => old.concat(emojiObject.emoji));
   };
 
   return (
@@ -93,16 +107,17 @@ const BoxMessenger: React.FC<PropsType> = ({ currentConversation }) => {
         })}
         <div ref={bottomRef} />
       </div>
-      {showEmoji &&(
-        <Picker onEmojiClick={onEmojiClick}
-      disableSearchBar={true}
-      pickerStyle={{
-        margin: '5px',
-        with: '100%',
-      }}
-      />
+      {showEmoji && (
+        <Picker
+          onEmojiClick={onEmojiClick}
+          disableSearchBar={true}
+          pickerStyle={{
+            margin: "5px",
+            with: "100%",
+          }}
+        />
       )}
-      
+
       <Form name="message" onFinish={onSubmit}>
         <Input.Group compact>
           <Input
@@ -135,9 +150,6 @@ const BoxMessenger: React.FC<PropsType> = ({ currentConversation }) => {
           />
         </Input.Group>
       </Form>
-      {/* <i className="twa twa-railway-car"></i> */}
-      <span style={{fontSize: 25}}>{String.fromCodePoint(parseInt("1f93c-200d-2640-fe0f",16))}</span>
-      {/* <Picker data={data} onEmojiSelect={console.log} /> */}
     </div>
   );
 };
