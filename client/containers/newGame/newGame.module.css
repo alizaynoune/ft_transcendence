@@ -7,8 +7,9 @@
   gap: 10px;
   isolation: isolate;
   width: 931px;
-  height: calc(100vh - 100px);
-
+  height: 100%;
+  max-height: 100em;
+max-width: 930px;
   /* Secondary */
   /* shadowSecondary */
 
@@ -33,11 +34,12 @@
   /* height: calc(100% - 40px); */
   background: #5a5c69;
   border-radius: 5px;
+  height: calc(100% - 50px);
 
   /* Inside auto layout */
 
-  flex: none;
-  order: 1;
+  /* flex: none; */
+  /* order: 1; */
   align-self: stretch;
   /* flex-grow: 0; */
   /* z-index: 0; */
@@ -88,12 +90,49 @@
 }
 
 @media screen and (min-width: 576px) {
+  .container {
+    width: 100%;
+    padding: 0;
+  }
+  .stage {
+    display: none;
+  }
+  .stageContainer {
+    flex-direction: column-reverse;
+    padding: 5px;
+    gap: 5px
+  }
 }
 
 @media screen and (min-width: 768px) {
+  .container {
+    width: 100%;
+    padding: 0;
+  }
+  .stage {
+    display: none;
+  }
+  .stageContainer {
+    flex-direction: column-reverse;
+    padding: 5px;
+    gap: 5px
+  }
 }
 
 @media screen and (min-width: 992px) {
+  .container {
+    /* width: 100%; */
+    padding: 5px;
+    /* width: 931px; */
+  }
+  .stage {
+    display: flex;
+  }
+  .stageContainer {
+    flex-direction: row;
+    padding: 5px;
+    gap: 5px
+  }
 }
 
 @media screen and (min-width: 1200px) {
