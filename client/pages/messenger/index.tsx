@@ -12,16 +12,9 @@ const { TabPane } = Tabs;
 const Messanger: React.FC = () => {
   const [currentConversation, setCurrentConversation] =
     useState<ConversationsType>();
-  const [layoutTabs, setLayoutTabs] = useState<Boolean>(false);
+  // const [layoutTabs, setLayoutTabs] = useState<Boolean>(false);
   const [currentTab, setCurrentTab] = useState<string>("Conversations");
   const router = useRouter();
-
-  useEffect(() => {
-    window.addEventListener("resize", () => {
-      console.log(window.innerWidth);
-      setLayoutTabs(window.innerWidth < 1200);
-    });
-  });
 
   const handelUrlHash = () => {
     const hashs = ["Conversations", "Message", "Settings"];
@@ -29,13 +22,12 @@ const Messanger: React.FC = () => {
     if (hashs.includes(hash)) setCurrentTab(hash);
     console.log(hash);
   };
-  // useEffect(() => {
-  //   handelUrlHash();
-  //   setLayoutTabs(window.innerWidth < 1200);
-  // }, []);
+  useEffect(() => {
+    handelUrlHash();
+  }, []);
   return (
-    <div className={style.container}>
-      {/* {layoutTabs ? (
+    <>
+      <div className={`${style.md} ${style.container}`}>
         <Tabs
           centered
           size="large"
@@ -49,23 +41,25 @@ const Messanger: React.FC = () => {
           <TabPane
             tab={"Conversations"}
             key={"Conversations"}
-            className={style.historyMessenger}
+            // className={style.historyMessenger}
           >
-            <Conversations
-              setCurrentConversation={function (
-                value: SetStateAction<ConversationsType | undefined>
-              ): void {
-                setCurrentConversation(value);
-              }}
-              {...setCurrentConversation}
-            />
+          <Conversations
+            setCurrentConversation={function (
+              value: SetStateAction<ConversationsType | undefined>
+            ): void {
+              setCurrentConversation(value);
+            }}
+            {...setCurrentConversation}
+          />
+        {/* </div> */}
           </TabPane>
-          <TabPane tab="Message" key={"Message"}>
-            <div className={style.boxMessenger}>
-              {currentConversation && (
-                <BoxMessenger currentConversation={currentConversation} />
-              )}
-            </div>
+          <TabPane tab="Message" key={"Message"} className={style.boxMessenger}>
+          {/* <div  */}
+          {currentConversation && (
+            <BoxMessenger currentConversation={currentConversation} />
+            // <SettingMessenger conversation={currentConversation} />
+          )}
+        {/* </div> */}
           </TabPane>
           <TabPane tab="Settings" key={"Settings"}>
             <div className={style.settingMessenger}>
@@ -75,31 +69,31 @@ const Messanger: React.FC = () => {
             </div>
           </TabPane>
         </Tabs>
-      ) : (
-        <> */}
-          <div className={style.historyMessenger}>
-            <Conversations
-              setCurrentConversation={function (
-                value: SetStateAction<ConversationsType | undefined>
-              ): void {
-                setCurrentConversation(value);
-              }}
-              {...setCurrentConversation}
-            />
-          </div>
-          <div className={style.boxMessenger}>
-            {currentConversation && (
-              <BoxMessenger currentConversation={currentConversation} />
-            )}
-          </div>
-          <div className={style.settingMessenger}>
-            {currentConversation && (
-              <SettingMessenger conversation={currentConversation} />
-            )}
-          </div>
-        {/* </>
-      )} */}
-    </div>
+      </div>
+      <div className={`${style.xxl} ${style.container}`}>
+        <div className={style.historyMessenger}>
+          <Conversations
+            setCurrentConversation={function (
+              value: SetStateAction<ConversationsType | undefined>
+            ): void {
+              setCurrentConversation(value);
+            }}
+            {...setCurrentConversation}
+          />
+        </div>
+        <div className={style.boxMessenger}>
+          {currentConversation && (
+            <BoxMessenger currentConversation={currentConversation} />
+            // <div></div>
+          )}
+        </div>
+        <div className={style.settingMessenger}>
+          {currentConversation && (
+            <SettingMessenger conversation={currentConversation} />
+          )}
+        </div>
+      </div>
+    </>
   );
 };
 
