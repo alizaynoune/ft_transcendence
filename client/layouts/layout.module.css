@@ -60,6 +60,7 @@
 .layoutContent {
   /* background-color: aqua !important; */
   /* min-height: calc(100vh - 100px); */
+  /* padding-bottom: 80px; */
 }
 
 .contentContainer {
@@ -70,7 +71,7 @@
 }
 
 .layoutFooter{
-  margin: 0 5px 5px 95px;
+  margin: 0px 5px 5px 95px;
   border-radius: 8px;
   overflow: hidden;
   border-radius: 10px;

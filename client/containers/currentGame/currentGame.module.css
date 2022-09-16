@@ -1,22 +1,9 @@
 .container{
- /* background-color: aqua; */
- /* padding: 10px;  */
  width: 100%;
  overflow-x: hidden;
- /* display: flex; */
- /* grid-template-columns: repeat(auto-fill, minmax(500px, 1fr)); */
- /* justify-content: space-around; */
- /* gap: 10px; */
 }
 
 .list {
   padding: 5px;
   overflow-x: hidden;
-  /* width: 100%; */
-  /* width: 100%; */
-  /* height: 100%; */
-  /* display: flex; */
-  /* background-color: aqua !important; */
-  /* justify-content: space-around; */
-  /* gap: 10px; */
 }

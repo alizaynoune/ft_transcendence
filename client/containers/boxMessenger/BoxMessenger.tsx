@@ -50,7 +50,7 @@ const BoxMessenger: React.FC<PropsType> = ({ currentConversation }) => {
   const [value, setValue] = useState<string>("sdfas");
   const [showEmoji, setShowEmoji] = useState<boolean>(false);
   useEffect(() => {
-    bottomRef.current?.scrollIntoView();
+    bottomRef.current?.scrollIntoView({ behavior: "smooth" });
   });
 
   useEffect(() => {

@@ -43,6 +43,7 @@ const AccountSettingTab: React.FC = () => {
           }
           key="2"
         >
+          
           <AccountPrivacy />
         </TabPane>
       </Tabs>

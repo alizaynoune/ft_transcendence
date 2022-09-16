@@ -76,7 +76,7 @@ const CurrentGame: React.FC = () => {
               gutter: 16,
               xs: 1,
               sm: 1,
-              md: 2,
+              md: 1,
               lg: 2,
               xl: 3,
               xxl: 3,
@@ -86,19 +86,6 @@ const CurrentGame: React.FC = () => {
                 style={{ cursor: "pointer" }}
               >
                   <CurrentGameCard {...item} />
-                {/* <List.Item.Meta
-                  avatar={item.users[0].avatar}
-                  title={item.users[0].username}
-                  description={
-                    <Paragraph
-                      ellipsis
-                      type="secondary"
-                      style={{ width: "90%" }}
-                    >
-                      {"done"}
-                    </Paragraph>
-                  }
-                /> */}
               </List.Item>
             )}
           />
