@@ -5,14 +5,15 @@ import Conversations from "@/containers/Conversations/Conversations";
 import BoxMessenger from "@/containers/boxMessenger/BoxMessenger";
 import SettingMessenger from "@/containers/settingMessenger/SettingMessenger";
 import { SetStateAction, useEffect, useState } from "react";
-import { Tabs } from "antd";
+import { Tabs, Typography } from "antd";
+import { SettingIcon, Messager1Icon, MessageIcon, Settings2Icon } from "@/icons/index";
 import { ConversationsType } from "types/types";
+import Icon, {HistoryOutlined} from "@ant-design/icons";
 
 const { TabPane } = Tabs;
 const Messanger: React.FC = () => {
   const [currentConversation, setCurrentConversation] =
-    useState<ConversationsType>();
-  // const [layoutTabs, setLayoutTabs] = useState<Boolean>(false);
+    useState<ConversationsType | undefined>(undefined);
   const [currentTab, setCurrentTab] = useState<string>("Conversations");
   const router = useRouter();
 
@@ -20,11 +21,11 @@ const Messanger: React.FC = () => {
     const hashs = ["Conversations", "Message", "Settings"];
     const hash = router.asPath.split("#")[1];
     if (hashs.includes(hash)) setCurrentTab(hash);
-    console.log(hash);
   };
   useEffect(() => {
     handelUrlHash();
   }, []);
+
   return (
     <>
       <div className={`${style.md} ${style.container}`}>
@@ -34,39 +35,55 @@ const Messanger: React.FC = () => {
           className={style.tabsContainer}
           activeKey={currentTab}
           onChange={(key) => {
-            router.push(`#${key}`);
+            router.push(`#${key}`);            
             setCurrentTab(key);
           }}
         >
           <TabPane
-            tab={"Conversations"}
             key={"Conversations"}
-            // className={style.historyMessenger}
+            className={style.historyMessenger}
+            tab={
+              <>
+                <Typography.Text className={style.tabText}>
+                  {"Conversations"}
+                </Typography.Text>
+                <Icon className={style.tabIcon} component={MessageIcon} />
+              </>
+            }
           >
-          <Conversations
-            setCurrentConversation={function (
-              value: SetStateAction<ConversationsType | undefined>
-            ): void {
-              setCurrentConversation(value);
-            }}
-            {...setCurrentConversation}
-          />
-        {/* </div> */}
+            <Conversations
+              setCurrentConversation={function (
+                value: SetStateAction<ConversationsType | undefined>
+              ): void {
+                setCurrentConversation(value);
+                setCurrentTab('Message')
+              }}
+              {...setCurrentConversation}
+            />
           </TabPane>
-          <TabPane tab="Message" key={"Message"} className={style.boxMessenger}>
-          {/* <div  */}
-          {currentConversation && (
-            <BoxMessenger currentConversation={currentConversation} />
-            // <SettingMessenger conversation={currentConversation} />
-          )}
-        {/* </div> */}
+          <TabPane
+            key={"Message"}
+            className={style.boxMessenger}
+          >
+            {currentConversation && (
+              <BoxMessenger currentConversation={currentConversation} />
+            )}
           </TabPane>
-          <TabPane tab="Settings" key={"Settings"}>
-            <div className={style.settingMessenger}>
-              {currentConversation && (
-                <SettingMessenger conversation={currentConversation} />
-              )}
-            </div>
+          <TabPane
+            key={"Settings"}
+            className={style.settingMessenger}
+            tab={
+              <>
+                <Typography.Text className={style.tabText}>
+                  {"Settings"}
+                </Typography.Text>
+                <Icon className={style.tabIcon} component={SettingIcon} />
+              </>
+            }
+          >
+            {currentConversation && (
+              <SettingMessenger conversation={currentConversation} />
+            )}
           </TabPane>
         </Tabs>
       </div>
@@ -84,7 +101,6 @@ const Messanger: React.FC = () => {
         <div className={style.boxMessenger}>
           {currentConversation && (
             <BoxMessenger currentConversation={currentConversation} />
-            // <div></div>
           )}
         </div>
         <div className={style.settingMessenger}>

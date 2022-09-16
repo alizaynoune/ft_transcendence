@@ -92,7 +92,7 @@ const NGameInvitFriends: React.FC = () => {
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
   ) => {
     const value = e.target.value.toLowerCase();
-    console.log(value);
+//console.log(value);
 
     const newList = data.filter((item) => {
       return (

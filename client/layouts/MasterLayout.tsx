@@ -49,6 +49,15 @@ const MasterLayout: React.FC<Props> = (props) => {
   // console.log(isAuth);
   console.log(router.asPath);
 
+  // <Layout>
+  //     <Sider>Sider</Sider>
+  //     <Layout>
+  //       <Header>Header</Header>
+  //       <Content>Content</Content>
+  //       <Footer>Footer</Footer>
+  //     </Layout>
+  //   </Layout>
+
   return (
     // Master layout
     <Layout className={style.layout}>

@@ -10,7 +10,7 @@ const { Option } = Select;
 const NewGame: React.FC = () => {
   const [gameLevel, setGameLevel] = useState<1 | 2 | 3>(1);
   const onChange = (value: 1 | 2 | 3) => {
-    console.log(`selected ${value}`);
+//console.log(`selected ${value}`);
     setGameLevel(value);
   };
   return (

@@ -42,7 +42,7 @@ interface Props {
 }
 
 const deleteFriend = (id: string) => {
-  console.log(id);
+//console.log(id);
 };
 
 const RequestButtons = (id: string) => (

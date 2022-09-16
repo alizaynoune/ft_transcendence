@@ -57,7 +57,7 @@ const FriendRequestList: React.FC = () => {
     }, []);
 
     const deleteFriend = (id: string) => {
-        console.log(id);
+//console.log(id);
 
     }
     return (
@@ -76,7 +76,7 @@ const FriendRequestList: React.FC = () => {
                 }}
                 pagination={{
                     onChange: (page) => {
-                        console.log(page);
+//console.log(page);
                     },
                     total: 20,
                     pageSize: 16,

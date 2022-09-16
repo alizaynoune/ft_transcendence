@@ -30,7 +30,7 @@ const Login: React.FC = () => {
     // })
     try {
       await dispatch(AuthTunk());
-      console.log(window.history, "back");
+//console.log(window.history, "back");
 
       // router.back()
       // if (window.history.length > 1 && document.referrer.indexOf(window.location.host) !== -1) {
@@ -39,7 +39,7 @@ const Login: React.FC = () => {
       router.push("/");
       // }
     } catch (error) {
-      console.log("<<<error>>>>>>>>", error);
+//console.log("<<<error>>>>>>>>", error);
     }
   };
 
@@ -48,7 +48,7 @@ const Login: React.FC = () => {
   }, []);
 
   const onFinishFailed = () => {
-    console.log("failed");
+//console.log("failed");
   };
 
   return (

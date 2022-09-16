@@ -9,7 +9,7 @@ export default async function login(
     await fetch('https://randomuser.me/api/?&inc=name,email,picture,login&noinfo')
     .then(d => d.json())
     .then(body => {
-        console.log(body);
+//console.log(body);
         const result = body.results[0]
         const data = {
             id: result.login.uuid,

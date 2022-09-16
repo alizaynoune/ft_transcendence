@@ -72,7 +72,7 @@ const getCardGridItem = () => {
 };
 
 const handelClick = (id: string) => {
-  console.log(id);
+//console.log(id);
 };
 
 const CardMembers = (members: UserType[]) => {
@@ -95,7 +95,7 @@ const CardMembers = (members: UserType[]) => {
 
 const SettingMessenger: React.FC<PropsType> = ({ conversation }) => {
   useEffect(() => {
-    console.log(conversation.id);
+//console.log(conversation.id);
   }, [conversation]);
 
   return (

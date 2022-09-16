@@ -12,7 +12,7 @@ const authRoute = (Component: React.FC<any>) => {
     return (props : any) => {
         const { isLoading, error, isAuth } = useAppSelector(selectAuth);
         const router = useRouter()
-        console.log(isAuth);
+//console.log(isAuth);
 
         useEffect(() => {
             if (!isAuth)

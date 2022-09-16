@@ -14,7 +14,7 @@ interface PropsType {
 
 const { Text, Title, Paragraph } = Typography;
 const CurrentGameCard: React.FC<PropsType> = (props) => {
-  console.log(props);
+//console.log(props);
   const { users, id } = props;
 
   return (

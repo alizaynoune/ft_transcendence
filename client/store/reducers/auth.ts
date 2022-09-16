@@ -32,7 +32,7 @@ export const AuthSlice = createSlice({
     login: (state, { payload }) => {
       state.isLoading = false;
       state.isAuth = true
-      console.log(payload, "done");
+//console.log(payload, "done");
     },
 
     logout: (state) => {

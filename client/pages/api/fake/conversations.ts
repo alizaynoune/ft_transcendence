@@ -52,8 +52,6 @@ function randomDate(start: Date, end: Date) {
 const FakeConversation = (users: any) => {
   let totalUsers = Math.floor(Math.random() * 40);
   totalUsers = totalUsers < 2 ? 2 : totalUsers;
-  const startDate = new Date(2012, 1, 1);
-  const endDate = new Date();
   const members = users.slice(0, totalUsers);
   const type = totalUsers == 2 ? "direct" : "group";
   const conv = {
@@ -97,7 +95,7 @@ const conversations = async(
       res.status(400).json({message :"error"})
   } catch (error) {
     res.status(400).json({message :"error"})
-  }
+  }  
 }
 
 export default conversations

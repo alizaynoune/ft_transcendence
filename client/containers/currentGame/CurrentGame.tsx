@@ -22,18 +22,18 @@ const CurrentGame: React.FC = () => {
   const [loading, setLoading] = useState<boolean>(false);
   const [list, setList] = useState<DataType[] | []>([]);
   const loadMoreData = async () => {
-      console.log('load more data');
+//console.log('load more data');
     if (loading) {
       return;
     }
     setLoading(true);
     try {
         const res = await axios.get("api/fake/currentGames")
-        console.log(res.data);
+//console.log(res.data);
         setData(old => [...old, ...res.data])
         setLoading(false)
     } catch (error) {
-        console.log('error');
+//console.log('error');
         setLoading(false)
     }
   };
@@ -44,7 +44,7 @@ const CurrentGame: React.FC = () => {
 
   useEffect(() => {
     setList((old) => [...old, ...data]);
-    console.log(data);
+//console.log(data);
   }, [data]);
 
   return (

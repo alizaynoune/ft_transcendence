@@ -59,15 +59,14 @@
 
 .layoutContent {
   /* background-color: aqua !important; */
-  height: calc(100vh - 140px);
+  /* min-height: calc(100vh - 100px); */
 }
 
 .contentContainer {
-  /* background-color: blue; */
   padding: 10px;
   min-height: 100%;
-  /* height: calc(100vh - 300px); */
-  /* background-color: aqua; */
+  /* background-color: black; */
+  height: fit-content;
 }
 
 .layoutFooter{

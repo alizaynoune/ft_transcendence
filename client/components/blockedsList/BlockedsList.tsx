@@ -70,7 +70,7 @@ const BlockedsList: React.FC = () => {
         }}
         pagination={{
           onChange: (page) => {
-            console.log(page);
+//console.log(page);
           },
           total: 20,
           pageSize: 16,

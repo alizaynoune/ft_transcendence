@@ -6,8 +6,9 @@ import { MessageTextType } from "@/types/types";
 import {
   CheckOutlined,
   ExclamationOutlined,
-  ClockCircleOutlined,
+  FieldTimeOutlined,
 } from "@ant-design/icons";
+
 
 type PropsType = {
   message: MessageTextType;
@@ -38,7 +39,7 @@ const messageStatus = (status: string) => {
       return <ExclamationOutlined className={`${style.status} ${style.statusFailer}`} />;
     default:
       return (
-        <ClockCircleOutlined
+        <FieldTimeOutlined
           className={`${style.status} ${style.statusWaiting}`}
         />
       );

@@ -46,7 +46,7 @@ export default  NextAuth({
       return baseUrl
     },
     async session({ session, user, token }) {
-      console.log(token);
+//console.log(token);
       
       
       return session

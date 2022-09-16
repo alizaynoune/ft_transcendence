@@ -4,7 +4,7 @@ import Statistics from "@/components/userStatistics/Statistics";
 import UserData from "@/containers/userData/UserData";
 import axios from "@/config/axios";
 import { Spin } from "antd";
-import { LoadingOutlined } from '@ant-design/icons';
+import { LoadingOutlined } from "@ant-design/icons";
 // types
 import { ProfileType } from "@/types/types";
 import { useEffect, useState } from "react";
@@ -40,7 +40,10 @@ const Profile: React.FC<Props> = (props) => {
       // console.log(data);
     } catch (error) {
       setLoading(false);
-      console.log(error.message, "<<<<<<error");
+      let message;
+      if (error instanceof Error) message = error.message;
+      else message = String(error);
+//console.log(message, "<<<<<<error");
     }
   };
 
@@ -49,7 +52,7 @@ const Profile: React.FC<Props> = (props) => {
   }, []);
 
   useEffect(() => {
-    console.log(data, "<<<<<<<<<<");
+//console.log(data, "<<<<<<<<<<");
   }, [data]);
 
   return (

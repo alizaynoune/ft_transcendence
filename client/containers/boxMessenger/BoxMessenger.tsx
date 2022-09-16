@@ -70,7 +70,7 @@ const BoxMessenger: React.FC<PropsType> = ({ currentConversation }) => {
   }, [currentConversation]);
 
   const onSubmit = () => {
-    console.log(value);
+//console.log(value);
     setMessages((old) => [
       ...old,
       {
@@ -89,7 +89,7 @@ const BoxMessenger: React.FC<PropsType> = ({ currentConversation }) => {
   };
 
   const onEmojiClick = (event: any, emojiObject: any) => {
-    console.log(emojiObject);
+//console.log(emojiObject);
     setValue((old) => old.concat(emojiObject.emoji));
   };
 
@@ -105,7 +105,7 @@ const BoxMessenger: React.FC<PropsType> = ({ currentConversation }) => {
             />
           );
         })}
-        <div ref={bottomRef} />
+        <div ref={bottomRef} ></div>
       </div>
       {showEmoji && (
         <Picker

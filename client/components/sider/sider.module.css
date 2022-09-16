@@ -1,7 +1,8 @@
 .container {
     padding: 0 0 5px 5px;
     z-index: 999;
-    height: calc(100vh - 70px);
+    height: 100%;
+    min-height: calc(100vh - 100px);
 }
 
 .sider{
@@ -12,8 +13,6 @@
     color: var(--light-color);
     justify-items: center;
     box-shadow: 0px 0px 8px rgba(154, 154, 154, 0.8);
-
-    /* padding: 10px; */
 }
 
 .siderItems {

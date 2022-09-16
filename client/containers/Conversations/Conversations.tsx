@@ -50,10 +50,6 @@ const HistroyMessenger: React.FC<PropsType> = ({ setCurrentConversation }) => {
   };
 
   useEffect(() => {
-    data ? setCurrentConversation(data[0]) : null;
-  }, [initLoading]);
-
-  useEffect(() => {
     loadMoreData();
     //
   }, []);

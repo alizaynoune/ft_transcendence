@@ -21,7 +21,7 @@ const AccountPrivacy: React.FC = () => {
   const [towFAT, setTowFAT] = useState("Disabled");
 
   const onChange = (checkedValues: CheckboxValueType[]) => {
-    console.log("checked = ", checkedValues);
+//console.log("checked = ", checkedValues);
   };
 
   const options = [

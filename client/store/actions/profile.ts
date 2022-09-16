@@ -3,7 +3,7 @@ import { createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "@/config/axios";
 
 export const profileThunk = createAsyncThunk<ProfileType>("login", async () => {
-  console.log("login");
+//console.log("login");
 
   try {
     const res = await axios.get("api/fake/user");

@@ -43,7 +43,7 @@ export const ProfileSlice = createSlice({
   reducers: {
     login: (state, action) => {
       state.isAuth = true;
-      console.log(action, 'done');
+//console.log(action, 'done');
       
     },
     logout: (state) => {
@@ -59,7 +59,7 @@ export const ProfileSlice = createSlice({
     })
     .addCase(profileThunk.fulfilled, (state, {payload}) => {
       // ProfileSlice
-      console.log(payload, 'done');
+//console.log(payload, 'done');
       state.isLoading = false
       state.Profile = payload
     })
