@@ -4,6 +4,7 @@
 
 .tabIcon {display: none;}
 
+.tabText{color: var(--primary-color);}
 
 @media screen and (max-width: 576px){
     .tabIcon{display: inline-block;}

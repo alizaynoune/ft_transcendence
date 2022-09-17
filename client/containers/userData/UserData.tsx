@@ -18,7 +18,7 @@ import {
 
 const { TabPane } = Tabs;
 const UserData: React.FC = () => {
-  const [currentTab, setCurrentTab] = useState<string>("AccountSettings");
+  const [currentTab, setCurrentTab] = useState<string>("LastMatches");
   const router = useRouter();
 
   const handelUrlHash = () => {

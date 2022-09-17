@@ -26,7 +26,7 @@ const AccountSettingTab: React.FC = () => {
         <TabPane
           tab={
             <>
-              <Typography className={style.tabText}>{"Friends"}</Typography>
+              <Typography className={style.tabText}>{"Edit"}</Typography>
               <EditFilled className={style.tabIcon} />
             </>
           }
@@ -37,7 +37,7 @@ const AccountSettingTab: React.FC = () => {
         <TabPane
           tab={
             <>
-              <Typography className={style.tabText}>{"Friends"}</Typography>
+              <Typography className={style.tabText}>{"Privacy"}</Typography>
               <FileProtectOutlined className={style.tabIcon} />
             </>
           }
