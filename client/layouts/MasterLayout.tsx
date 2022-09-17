@@ -49,19 +49,8 @@ const MasterLayout: React.FC<Props> = (props) => {
   // console.log(isAuth);
   console.log(router.asPath);
 
-  // <Layout>
-  //     <Sider>Sider</Sider>
-  //     <Layout>
-  //       <Header>Header</Header>
-  //       <Content>Content</Content>
-  //       <Footer>Footer</Footer>
-  //     </Layout>
-  //   </Layout>
-
   return (
-    // Master layout
     <Layout className={style.layout}>
-      {/* Header */}
       <Affix>
         <Header className={style.header}>
           <div className={style.trigger}>
@@ -118,11 +107,7 @@ const MasterLayout: React.FC<Props> = (props) => {
           )}
         </Header>
       </Affix>
-      {/* Header end */}
-      {/* content Layout */}
-      <Layout className={style.layoutContent}>
-        {/* Sider */}
-        {/* {isAuth &&<Affix offsetTop={70}><SiderLayout /></Affix>} */}
+      <Layout>
         <Affix offsetTop={70}>
           <SiderLayout
             collapsed={collapsed}
@@ -131,50 +116,153 @@ const MasterLayout: React.FC<Props> = (props) => {
             }}
           />
         </Affix>
-        {/* Sider end */}
-        {/* content */}
-        <Content className={style.contentContainer}>{children}</Content>
-        {/* content end */}
-        {/* content Layout end */}
-      </Layout>
-      <Layout className={style.layoutFooter}>
-        {router.asPath === "/" && (
-          <div className={style.sectionGameInfo}>
-            <div className={style.sectionGameInfoLogo}>
-              <Link href="/">
-                <a>
-                  <Image src="/images/Logo.png" height={68} width={110} />
-                </a>
-              </Link>
-            </div>
-            <div className={style.sectionGameInfoText}>
-              <Typography.Title
-                level={3}
-                className={style.sectionGameInfoTettel}
-              >
-                About game
-              </Typography.Title>
-              <Typography.Text className={style.sectionGameInfoText}>
-                Ping-pong is a game in which two or four players hit a light,
-                hollow ball back and forth across a net stretched across the
-                center of a table. The game is more commonly known as table
-                tennis, reflecting its origin as an indoor modification of the
-                sport of lawn tennis. The term ping-pong is a federally
-                registered trademark for the game first issued to Parker
-                Brothers, Inc., in 1901, and now owned by Escalade Sports, of
-                Evansville, Indiana. Provide additional interactive capacity of
-                editable and copyable.
-              </Typography.Text>
-            </div>
+        <Layout className={style.contentContainer}>
+          <Content>{children}</Content>
+          <div className={style.layoutFooter}>
+            {router.asPath === "/" && (
+              <div className={style.sectionGameInfo}>
+                <div className={style.sectionGameInfoLogo}>
+                  <Link href="/">
+                    <a>
+                      <Image src="/images/Logo.png" height={68} width={110} />
+                    </a>
+                  </Link>
+                </div>
+                <div className={style.sectionGameInfoText}>
+                  <Typography.Title
+                    level={3}
+                    className={style.sectionGameInfoTettel}
+                  >
+                    About game
+                  </Typography.Title>
+                  <Typography.Text className={style.sectionGameInfoText}>
+                    Ping-pong is a game in which two or four players hit a
+                    light, hollow ball back and forth across a net stretched
+                    across the center of a table. The game is more commonly
+                    known as table tennis, reflecting its origin as an indoor
+                    modification of the sport of lawn tennis. The term ping-pong
+                    is a federally registered trademark for the game first
+                    issued to Parker Brothers, Inc., in 1901, and now owned by
+                    Escalade Sports, of Evansville, Indiana. Provide additional
+                    interactive capacity of editable and copyable.
+                  </Typography.Text>
+                </div>
+              </div>
+            )}
+            <Footer className={style.footer}>
+              <span>ft_transcendence</span>
+              <span>© 2022 1337. All rights reserved.</span>
+            </Footer>
           </div>
-        )}
-        <Footer className={style.footer}>
-          <span>ft_transcendence</span>
-          <span>© 2022 1337. All rights reserved.</span>
-        </Footer>
+        </Layout>
       </Layout>
     </Layout>
-    // Master layout end
+
+    //   <Layout className={style.layout}>
+    //   <Affix offsetTop={70}>
+    //           <SiderLayout
+    //             collapsed={collapsed}
+    //             setCollapsed={function (value: SetStateAction<boolean>): void {
+    //               setCollapsed(value);
+    //             }}
+    //           />
+    //         </Affix>
+    //   <Layout>
+    //     <Affix>
+    //         <Header className={style.header}>
+    //           <div className={style.trigger}>
+    //             <Icon
+    //               component={collapsed ? MenuOpenIcon : MenuCloseIcon}
+    //               style={{
+    //                 fontSize: "40px",
+    //                 color: "var(--light-color)",
+    //               }}
+    //               onClick={() => setCollapsed(!collapsed)}
+    //             />
+    //           </div>
+    //           <div className={style.leftDiv}>
+    //             <Link href="/">
+    //               <a className={style.logo}>
+    //                 <Image src="/images/Logo.png" height={68} width={110} />
+    //               </a>
+    //             </Link>
+    //             {isAuth && (
+    //               <Input
+    //                 className={style.search}
+    //                 size="large"
+    //                 placeholder="Search"
+    //                 suffix={
+    //                   <Icon
+    //                     component={SearchIcon}
+    //                     style={{ fontSize: "135%", color: "var(--light-color)" }}
+    //                   />
+    //                 }
+    //               />
+    //             )}
+    //           </div>
+    //           {!isAuth ? (
+    //             <Button>
+    //               <Link href="/auth/login">Login</Link>
+    //             </Button>
+    //           ) : (
+    //             <div className={style.rightDiv}>
+    //               <Badge count={3}>
+    //                 <BellFilled
+    //                   style={{
+    //                     fontSize: "180%",
+    //                     color: "var(--light-color)",
+    //                     fontWeight: "bold",
+    //                   }}
+    //                 />
+    //               </Badge>
+    //               <Link href={"/profile/me"}>
+    //                 <a>
+    //                   <Avatar src={avatar} size={55} />
+    //                 </a>
+    //               </Link>
+    //             </div>
+    //           )}
+    //         </Header>
+    //       </Affix>
+    //       <Content className={style.contentContainer}>{children}</Content>
+    //     <div className={style.layoutFooter}>
+    //         {router.asPath === "/" && (
+    //           <div className={style.sectionGameInfo}>
+    //             <div className={style.sectionGameInfoLogo}>
+    //               <Link href="/">
+    //                 <a>
+    //                   <Image src="/images/Logo.png" height={68} width={110} />
+    //                 </a>
+    //               </Link>
+    //             </div>
+    //             <div className={style.sectionGameInfoText}>
+    //               <Typography.Title
+    //                 level={3}
+    //                 className={style.sectionGameInfoTettel}
+    //               >
+    //                 About game
+    //               </Typography.Title>
+    //               <Typography.Text className={style.sectionGameInfoText}>
+    //                 Ping-pong is a game in which two or four players hit a light,
+    //                 hollow ball back and forth across a net stretched across the
+    //                 center of a table. The game is more commonly known as table
+    //                 tennis, reflecting its origin as an indoor modification of the
+    //                 sport of lawn tennis. The term ping-pong is a federally
+    //                 registered trademark for the game first issued to Parker
+    //                 Brothers, Inc., in 1901, and now owned by Escalade Sports, of
+    //                 Evansville, Indiana. Provide additional interactive capacity of
+    //                 editable and copyable.
+    //               </Typography.Text>
+    //             </div>
+    //           </div>
+    //         )}
+    //         <Footer className={style.footer}>
+    //           <span>ft_transcendence</span>
+    //           <span>© 2022 1337. All rights reserved.</span>
+    //         </Footer>
+    //       </div>
+    //   </Layout>
+    // </Layout>
   );
 };
 export default MasterLayout;

@@ -107,7 +107,7 @@ const BoxMessenger: React.FC<PropsType> = ({ currentConversation }) => {
         })}
         <div ref={bottomRef} ></div>
       </div>
-      {showEmoji && (
+      {/* {showEmoji && (
         <Picker
           onEmojiClick={onEmojiClick}
           disableSearchBar={true}
@@ -116,7 +116,7 @@ const BoxMessenger: React.FC<PropsType> = ({ currentConversation }) => {
             with: "100%",
           }}
         />
-      )}
+      )} */}
 
       <Form name="message" onFinish={onSubmit}>
         <Input.Group compact>
