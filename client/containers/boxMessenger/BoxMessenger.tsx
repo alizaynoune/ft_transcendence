@@ -136,6 +136,7 @@ const BoxMessenger: React.FC<PropsType> = ({ currentConversation }) => {
       <Form name="message" onFinish={onSubmit}>
         <Input.Group compact>
           <Input
+            placeholder="Input your message"
             className={style.Input}
             status={error ? "error" : undefined}
             size="large"
