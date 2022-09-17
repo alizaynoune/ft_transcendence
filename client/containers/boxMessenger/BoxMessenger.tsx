@@ -50,7 +50,9 @@ const BoxMessenger: React.FC<PropsType> = ({ currentConversation }) => {
   const [value, setValue] = useState<string>("sdfas");
   const [showEmoji, setShowEmoji] = useState<boolean>(false);
   useEffect(() => {
-    bottomRef.current?.scrollIntoView({ behavior: "smooth" });
+    bottomRef.current?.scroll({
+      top: bottomRef.current.scrollHeight,
+    });
   });
 
   useEffect(() => {
@@ -70,7 +72,7 @@ const BoxMessenger: React.FC<PropsType> = ({ currentConversation }) => {
   }, [currentConversation]);
 
   const onSubmit = () => {
-//console.log(value);
+    //console.log(value);
     setMessages((old) => [
       ...old,
       {
@@ -89,13 +91,13 @@ const BoxMessenger: React.FC<PropsType> = ({ currentConversation }) => {
   };
 
   const onEmojiClick = (event: any, emojiObject: any) => {
-//console.log(emojiObject);
+    //console.log(emojiObject);
     setValue((old) => old.concat(emojiObject.emoji));
   };
 
   return (
     <div className={style.container}>
-      <div className={style.box}>
+      <div ref={bottomRef} className={style.box}>
         {messages.map((m, key) => {
           return (
             <MessageText
@@ -105,7 +107,6 @@ const BoxMessenger: React.FC<PropsType> = ({ currentConversation }) => {
             />
           );
         })}
-        <div ref={bottomRef} ></div>
       </div>
       {/* {showEmoji && (
         <Picker
