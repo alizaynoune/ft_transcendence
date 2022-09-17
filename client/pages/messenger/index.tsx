@@ -5,10 +5,11 @@ import Conversations from "@/containers/Conversations/Conversations";
 import BoxMessenger from "@/containers/boxMessenger/BoxMessenger";
 import SettingMessenger from "@/containers/settingMessenger/SettingMessenger";
 import { SetStateAction, useEffect, useState } from "react";
-import { Tabs, Typography } from "antd";
+import { Tabs, Typography, Result, Button } from "antd";
 import { SettingIcon, Messager1Icon, MessageIcon, Settings2Icon } from "@/icons/index";
 import { ConversationsType } from "types/types";
 import Icon, {HistoryOutlined} from "@ant-design/icons";
+import Link from "next/link";
 
 const { TabPane } = Tabs;
 const Messanger: React.FC = () => {
@@ -65,9 +66,9 @@ const Messanger: React.FC = () => {
             key={"Message"}
             className={style.boxMessenger}
           >
-            {currentConversation && (
+            {currentConversation ? (
               <BoxMessenger currentConversation={currentConversation} />
-            )}
+            ):null}
           </TabPane>
           <TabPane
             key={"Settings"}
@@ -81,8 +82,13 @@ const Messanger: React.FC = () => {
               </>
             }
           >
-            {currentConversation && (
+            {currentConversation ? (
               <SettingMessenger conversation={currentConversation} />
+            ): (
+              <Result
+              status="warning"
+              title="No Conversation was selected."
+            />
             )}
           </TabPane>
         </Tabs>
@@ -99,8 +105,13 @@ const Messanger: React.FC = () => {
           />
         </div>
         <div className={style.boxMessenger}>
-          {currentConversation && (
+          {currentConversation ? (
             <BoxMessenger currentConversation={currentConversation} />
+          ): (
+            <Result
+            status="warning"
+            title="No Conversation was selected"
+          />
           )}
         </div>
         <div className={style.settingMessenger}>

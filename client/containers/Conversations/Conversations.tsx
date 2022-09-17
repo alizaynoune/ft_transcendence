@@ -8,6 +8,7 @@ import {
   Divider,
   Avatar,
   Typography,
+  Result
 } from "antd";
 import InfiniteScroll from "react-infinite-scroll-component";
 import Icon from "@ant-design/icons";
@@ -57,7 +58,6 @@ const HistroyMessenger: React.FC<PropsType> = ({ setCurrentConversation }) => {
   const changeConversation = (id: string) => {
     const conv = data.find((i) => i.id === id);
     conv && setCurrentConversation(conv);
-    // console.log(id, conv);
   };
 
   return (
