@@ -15,8 +15,10 @@ import {
   SpeakerIcon,
   MuteIcon,
   SettingIcon,
+  OutIcon,
 } from "@/icons/index";
 import type { UserType } from "@/types/types";
+import Item from "antd/lib/list/Item";
 type PropsType = {
   conversation: ConversationsType;
 };
@@ -38,7 +40,7 @@ const CardGrid = (
       key={key}
       hoverable={item.hoverable}
       onClick={(e) => {
-        console.log(item.lable, id);
+        if (item.hoverable) console.log(item.lable, id);
       }}
     >
       <Space>
@@ -66,11 +68,11 @@ const CardSettingText = [
     hoverable: true,
   },
 
-  {
-    lable: "Delete conversation",
-    icon: TrashIcon,
-    hoverable: true,
-  },
+  // {
+  //   lable: "Delete conversation",
+  //   icon: TrashIcon,
+  //   hoverable: true,
+  // },
   {
     lable: "Block",
     icon: BlockUserIcon,
@@ -78,7 +80,7 @@ const CardSettingText = [
   },
   {
     lable: "Mute",
-    icon: SpeakerIcon,
+    icon: MuteIcon,
     hoverable: true,
   },
 ];
@@ -99,7 +101,16 @@ const CardMembers = (members: UserType[]) => {
   return members.map((m, key) => (
     <Popover
       key={key}
-      content={getCardGridItem(m.id)}
+      content={
+        <>
+          {getCardGridItem(m.id)}
+          {CardGrid(
+            { lable: "Delete user", icon: TrashIcon, hoverable: true },
+            1,
+            m.id
+          )}
+        </>
+      }
       title={
         <Space>
           <Avatar src={m.avatar} size="large" />
@@ -164,7 +175,6 @@ const SettingMessenger: React.FC<PropsType> = ({ conversation }) => {
                 </Space>
               ) : (
                 <Typography.Text strong>
-                  {" "}
                   {conversation.members[1].name.username}
                 </Typography.Text>
               )}
@@ -177,13 +187,53 @@ const SettingMessenger: React.FC<PropsType> = ({ conversation }) => {
         }
         extra={
           conversation.type === "group" ? (
-            <Button type="link" icon={<Icon component={Settings2Icon} />} />
+            <Popover
+              placement="bottomRight"
+              content={
+                <>
+                  {CardGrid(
+                    { lable: "Leave group", icon: OutIcon, hoverable: true },
+                    0,
+                    conversation.id
+                  )}
+                  {CardGrid(
+                    {
+                      lable: "Delete conversation",
+                      icon: TrashIcon,
+                      hoverable: true,
+                    },
+                    1,
+                    conversation.id
+                  )}
+                </>
+              }
+              // title='title'
+              trigger="click"
+              onVisibleChange={(e) => {
+                console.log(e);
+              }}
+            >
+              <Button type="link" icon={<Icon component={Settings2Icon} />} />
+            </Popover>
           ) : null
         }
       >
-        {conversation.type === "group"
-          ? CardMembers(conversation.members)
-          : getCardGridItem(conversation.members[1].id)}
+        {conversation.type === "group" ? (
+          CardMembers(conversation.members)
+        ) : (
+          <>
+            {getCardGridItem(conversation.members[1].id)}
+            {CardGrid(
+              {
+                lable: "Delete conversation",
+                icon: TrashIcon,
+                hoverable: true,
+              },
+              1,
+              conversation.id
+            )}
+          </>
+        )}
       </Card>
     </div>
   );
