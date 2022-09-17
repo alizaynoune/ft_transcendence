@@ -2,7 +2,9 @@ import style from "./boxMessenger.module.css";
 import { Input, Button, List, message, Form } from "antd";
 import Icon from "@ant-design/icons";
 import type { FormInstance } from "antd/es/form";
-import Picker from "emoji-picker-react";
+// import Picker from "emoji-picker-react";
+
+// import InputEmoji from "react-input-emoji";
 
 import { LoremIpsum } from "lorem-ipsum"; //!delete it
 import MessageText from "@/components/messageText/MessageText";
@@ -29,8 +31,17 @@ type PropsType = {
   currentConversation: ConversationsType;
 };
 
-const messageStatus = ["send", "read", "delivered", "failer", "waiting"];
+import dynamic from "next/dynamic";
 
+const Picker = dynamic(
+    () => {
+        return import("emoji-picker-react");
+    },
+    { ssr: false }
+);
+
+const messageStatus = ["send", "read", "delivered", "failer", "waiting"];
+// const {} = Picker
 const fakeMessage = (id: string, sender: UserType): MessageTextType => {
   return {
     id: "message id",
@@ -47,7 +58,7 @@ const fakeMessage = (id: string, sender: UserType): MessageTextType => {
 const BoxMessenger: React.FC<PropsType> = ({ currentConversation }) => {
   const bottomRef = useRef<HTMLDivElement>(null);
   const [messages, setMessages] = useState<MessageTextType[]>([]);
-  const [value, setValue] = useState<string>("sdfas");
+  const [value, setValue] = useState<string>("");
   const [showEmoji, setShowEmoji] = useState<boolean>(false);
   useEffect(() => {
     bottomRef.current?.scroll({
@@ -72,13 +83,11 @@ const BoxMessenger: React.FC<PropsType> = ({ currentConversation }) => {
   }, [currentConversation]);
 
   const onSubmit = () => {
-    //console.log(value);
     setMessages((old) => [
       ...old,
       {
         id: "test",
         conversationID: currentConversation.id,
-        // read: false,
         content: value,
         date: new Date(),
         sender: currentConversation.members[0],
@@ -108,16 +117,20 @@ const BoxMessenger: React.FC<PropsType> = ({ currentConversation }) => {
           );
         })}
       </div>
-      {/* {showEmoji && (
-        <Picker
-          onEmojiClick={onEmojiClick}
-          disableSearchBar={true}
-          pickerStyle={{
-            margin: "5px",
-            with: "100%",
-          }}
-        />
-      )} */}
+      {showEmoji ? (
+        <div>
+          <Picker
+            onEmojiClick={onEmojiClick}
+            disableSearchBar={true}
+            disableAutoFocus={true}
+            native
+            pickerStyle={{
+              margin: "5px",
+              with: "100%",
+            }}
+          />
+        </div>
+      ) : null}
 
       <Form name="message" onFinish={onSubmit}>
         <Input.Group compact>
@@ -137,6 +150,14 @@ const BoxMessenger: React.FC<PropsType> = ({ currentConversation }) => {
               />
             }
           />
+          {/* <InputEmoji
+            value={value}
+            onChange={setValue}
+            className={style.Input}
+            cleanOnEnter
+            onEnter={onSubmit}
+            placeholder="Type a message"
+          /> */}
           <Button
             size="large"
             ghost
