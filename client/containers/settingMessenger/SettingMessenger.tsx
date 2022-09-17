@@ -29,9 +29,9 @@ const CardGridStyle: React.CSSProperties = {
   color: "var(--secondary-color)",
 };
 
-const CardGrid = (icon: any, label: string) => {
+const CardGrid = (icon: any, label: string, key: number) => {
   return (
-    <Card.Grid style={CardGridStyle}>
+    <Card.Grid style={CardGridStyle} key={key}>
       <Space>
         <Icon component={icon} style={{ fontSize: "130%" }} />
         <Typography.Text>{label}</Typography.Text>
@@ -68,7 +68,7 @@ const CardSettingText = [
 ];
 
 const getCardGridItem = () => {
-  return CardSettingText.map((i) => CardGrid(i.icon, i.lable));
+  return CardSettingText.map((i, key) => CardGrid(i.icon, i.lable, key));
 };
 
 const handelClick = (id: string) => {
