@@ -1,5 +1,6 @@
 import style from "./conversations.module.css";
 import React, { useState, useEffect } from "react";
+import NewGroupChat from "@/components/NewGroupChat/NewGroupChat";
 import {
   Input,
   Button,
@@ -8,20 +9,17 @@ import {
   Divider,
   Avatar,
   Typography,
-  Result
+  Popover
 } from "antd";
 import InfiniteScroll from "react-infinite-scroll-component";
-import Icon from "@ant-design/icons";
 import moment from "moment";
-
 // icons
+import Icon from "@ant-design/icons";
 import { SearchIcon, AddGroupIcon } from "@/icons/index";
-
 // Types
 import { ConversationsType } from "@/types/types";
 
 const { Paragraph } = Typography;
-
 type PropsType = {
   setCurrentConversation: React.Dispatch<
     React.SetStateAction<ConversationsType | undefined>
@@ -75,11 +73,18 @@ const HistroyMessenger: React.FC<PropsType> = ({ setCurrentConversation }) => {
           }
           placeholder="find friends"
         />
+        <Popover
+        className={style.popover}
+        trigger='click'
+        content={<NewGroupChat />}
+        placement='bottomRight'
+        >
         <Button
           type="primary"
           size="large"
           icon={<Icon component={AddGroupIcon} style={{ fontSize: "120%" }} />}
-        />
+          />
+          </Popover>
       </div>
       <div id="scrollableDiv" className={style.scrollableDiv}>
         <InfiniteScroll

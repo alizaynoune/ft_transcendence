@@ -1,20 +1,19 @@
 import style from "./messenger.module.css";
 import { useRouter } from "next/router";
-// containers
 import Conversations from "@/containers/Conversations/Conversations";
 import BoxMessenger from "@/containers/boxMessenger/BoxMessenger";
 import SettingMessenger from "@/containers/settingMessenger/SettingMessenger";
 import { SetStateAction, useEffect, useState } from "react";
-import { Tabs, Typography, Result, Button } from "antd";
-import { SettingIcon, Messager1Icon, MessageIcon, Settings2Icon } from "@/icons/index";
+import { Tabs, Typography, Empty } from "antd";
+import { SettingIcon, MessageIcon } from "@/icons/index";
 import { ConversationsType } from "types/types";
-import Icon, {HistoryOutlined} from "@ant-design/icons";
-import Link from "next/link";
+import Icon from "@ant-design/icons";
 
 const { TabPane } = Tabs;
 const Messanger: React.FC = () => {
-  const [currentConversation, setCurrentConversation] =
-    useState<ConversationsType | undefined>(undefined);
+  const [currentConversation, setCurrentConversation] = useState<
+    ConversationsType | undefined
+  >(undefined);
   const [currentTab, setCurrentTab] = useState<string>("Conversations");
   const router = useRouter();
 
@@ -36,7 +35,7 @@ const Messanger: React.FC = () => {
           className={style.tabsContainer}
           activeKey={currentTab}
           onChange={(key) => {
-            router.push(`#${key}`);            
+            router.push(`#${key}`);
             setCurrentTab(key);
           }}
         >
@@ -57,18 +56,15 @@ const Messanger: React.FC = () => {
                 value: SetStateAction<ConversationsType | undefined>
               ): void {
                 setCurrentConversation(value);
-                setCurrentTab('Message')
+                setCurrentTab("Message");
               }}
               {...setCurrentConversation}
             />
           </TabPane>
-          <TabPane
-            key={"Message"}
-            className={style.boxMessenger}
-          >
+          <TabPane key={"Message"} className={style.boxMessenger}>
             {currentConversation ? (
               <BoxMessenger currentConversation={currentConversation} />
-            ):null}
+            ) : null}
           </TabPane>
           <TabPane
             key={"Settings"}
@@ -84,11 +80,8 @@ const Messanger: React.FC = () => {
           >
             {currentConversation ? (
               <SettingMessenger conversation={currentConversation} />
-            ): (
-              <Result
-              status="warning"
-              title="No Conversation was selected."
-            />
+            ) : (
+              <Empty description="No Conversation was selected." />
             )}
           </TabPane>
         </Tabs>
@@ -107,11 +100,8 @@ const Messanger: React.FC = () => {
         <div className={style.boxMessenger}>
           {currentConversation ? (
             <BoxMessenger currentConversation={currentConversation} />
-          ): (
-            <Result
-            status="warning"
-            title="No Conversation was selected"
-          />
+          ) : (
+            <Empty description="No Conversation was selected." />
           )}
         </div>
         <div className={style.settingMessenger}>

@@ -1,8 +1,7 @@
 import style from "./settingMessenger.module.css";
 import { Avatar, Button, Card, Space, Typography, Popover } from "antd";
-
 import { ConversationsType } from "@/types/types";
-import { ReactNode, useEffect } from "react";
+import { useEffect } from "react";
 import Icon from "@ant-design/icons";
 
 import {
@@ -12,9 +11,7 @@ import {
   LevelIcon,
   TrashIcon,
   BlockUserIcon,
-  SpeakerIcon,
   MuteIcon,
-  SettingIcon,
   OutIcon,
 } from "@/icons/index";
 import type { UserType } from "@/types/types";
@@ -67,12 +64,6 @@ const CardSettingText = [
     icon: PlayGameIcon,
     hoverable: true,
   },
-
-  // {
-  //   lable: "Delete conversation",
-  //   icon: TrashIcon,
-  //   hoverable: true,
-  // },
   {
     lable: "Block",
     icon: BlockUserIcon,
@@ -89,10 +80,6 @@ const getCardGridItem = (id: string) => {
   return CardSettingText.map((i, key) => CardGrid(i, key, id));
 };
 
-/**
- * @param id string
- * @description handel click member's group chat
- */
 const handelClick = (id: string) => {
   console.log(id);
 };
@@ -139,9 +126,6 @@ const CardMembers = (members: UserType[]) => {
 };
 
 const SettingMessenger: React.FC<PropsType> = ({ conversation }) => {
-  useEffect(() => {
-    //console.log(conversation.id);
-  }, [conversation]);
 
   return (
     <div className={style.container}>
@@ -207,7 +191,6 @@ const SettingMessenger: React.FC<PropsType> = ({ conversation }) => {
                   )}
                 </>
               }
-              // title='title'
               trigger="click"
               onVisibleChange={(e) => {
                 console.log(e);
