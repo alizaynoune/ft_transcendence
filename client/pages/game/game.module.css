@@ -1,0 +1,9 @@
+.container{
+  width: 150em;
+  height: 60em;
+  background-color: black;
+}
+
+.canvas{
+  background-color: aqua;
+}
