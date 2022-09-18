@@ -14,7 +14,7 @@ import { UserOutlined } from "@ant-design/icons";
 import React, { useEffect, useState } from "react";
 import InfiniteScroll from "react-infinite-scroll-component";
 
-import {SendIcon, SearchIcon} from "@/icons/index"
+import { SendIcon, SearchIcon } from "@/icons/index";
 
 const { Text, Paragraph, Title } = Typography;
 
@@ -53,9 +53,10 @@ const NGameInvitFriends: React.FC = () => {
       });
   }, []);
 
-  const loadMoreData = () => {
+  const loadMoreData = async () => {
     setLoading(true);
-    setList(
+    try {
+          setList(
       data.concat(
         [...new Array(count)].map(() => ({
           name: {},
@@ -63,45 +64,62 @@ const NGameInvitFriends: React.FC = () => {
         }))
       )
     );
-    fetch(fakeDataUrl)
-      .then((res) => res.json())
-      .then((res) => {
-        const newData = data.concat(res.results);
-        setData(newData);
-        setList(newData);
-        setLoading(false);
-        window.dispatchEvent(new Event("resize"));
-      });
+    const res = await fetch(fakeDataUrl);
+    const res_1 = await res.json();
+    const newData = data.concat(res_1.results);
+    setData(newData);
+    setList(newData);
+    setLoading(false);
+    } catch (error) {
+      setLoading(false);
+      console.log(error);
+      
+    }
+
   };
 
-  // const loadMore =
-  //   !initLoading && loading ? (
-  //     <div
-  //       style={{
-  //         textAlign: "center",
-  //         marginTop: 12,
-  //         height: 32,
-  //         lineHeight: "32px",
-  //       }}
-  //     >
-  //       {/* <Button onClick={loadMoreData}>loading more</Button> */}
-  //     </div>
-  //   ) : null;
-
-  const filter = (
+  const filter = async (
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
   ) => {
     const value = e.target.value.toLowerCase();
-//console.log(value);
-
-    const newList = data.filter((item) => {
-      return (
-        item.email?.toLocaleLowerCase()?.includes(value) ||
-        item.name?.first?.toLocaleLowerCase()?.includes(value) ||
-        item.name?.last?.toLocaleLowerCase()?.includes(value)
-      );
-    });
-    setList(newList);
+    if (value.length > 3) {
+      setLoading(true);
+      try {
+        console.log('fetching');
+        
+        const res = await fetch(fakeDataUrl);
+        const res_1 = await res.json();
+        console.log([...res_1.results, ...data]);
+        const newData = data.concat(res_1.results);
+        // setList(old => [...old, ...res_1.results])
+        const newList = newData.filter((item) => {
+          return (
+            item.email?.toLocaleLowerCase()?.includes(value) ||
+            item.name?.first?.toLocaleLowerCase()?.includes(value) ||
+            item.name?.last?.toLocaleLowerCase()?.includes(value)
+          );
+        });
+        setList(newList);
+        console.log(newList);
+        
+        setLoading(false);
+      } catch (error) {
+        console.log('error');
+        
+        setLoading(false);
+      }
+    }
+    //console.log(value);
+    else {
+      const newList = data.filter((item) => {
+        return (
+          item.email?.toLocaleLowerCase()?.includes(value) ||
+          item.name?.first?.toLocaleLowerCase()?.includes(value) ||
+          item.name?.last?.toLocaleLowerCase()?.includes(value)
+        );
+      });
+      setList(newList);
+    }
   };
 
   return (
@@ -144,7 +162,7 @@ const NGameInvitFriends: React.FC = () => {
             className={style.FriendsList}
             loading={initLoading}
             itemLayout="horizontal"
-            // loadMore={loadMore}
+            // loadMore={}
             dataSource={list}
             renderItem={(item) => (
               <List.Item>
