@@ -1,91 +1,107 @@
 import style from "./layout.module.css";
-import React, { useState, useRef, SetStateAction } from "react";
+import React, { useState, useRef, SetStateAction, useEffect } from "react";
 import { useRouter } from "next/router";
 import Image from "next/image";
 import Icon, { BellFilled } from "@ant-design/icons";
 import { ReactNode } from "react";
-import { Layout, Button, Typography, Avatar, Input, Badge, Affix } from "antd";
+import { Layout, Typography, Affix } from "antd";
+import type { MenuProps } from "antd";
 import Link from "next/link";
 import SiderLayout from "@/components/sider/Sider";
+import Header from "@/components/header/Header";
 
 import { useAppSelector, useAppDispatch } from "@/hooks/reduxHooks";
 import { selectAuth } from "@/reducers/auth";
 
 import { SearchIcon, MenuCloseIcon, MenuOpenIcon } from "@/icons/index";
 
-const { Header, Footer, Content } = Layout;
+const { Footer, Content } = Layout;
 
 type Props = {
   children: ReactNode;
-  footer?: boolean;
+};
+
+interface NotifType {
+  id: string;
+  isRead: boolean;
+  content: string;
+  user: {
+    id: string;
+    name: { first: string; last: string };
+    username: string;
+    avatar: string;
+  };
+  createAt: Date;
+}
+
+interface UserType {
+  id: string;
+  username: string;
+  name: { first: string; last: string };
+  avatar: string;
+}
+
+type MenuItem = Required<MenuProps>["items"][number];
+function getItem(
+  label: React.ReactNode,
+  key?: React.Key | null,
+  icon?: React.ReactNode,
+  children?: MenuItem[]
+): MenuItem {
+  return {
+    key,
+    icon,
+    children,
+    label,
+  } as MenuItem;
+}
+
+async function fetchUserList(): Promise<UserType[]> {
+  return fetch("https://randomuser.me/api/?results=20")
+    .then((response) => response.json())
+    .then((body) =>
+      body.results.map(
+        (user: {
+          name: { first: string; last: string };
+          login: { username: string; uuid: string };
+          picture: { large: string };
+        }) => ({
+          id: user.login.uuid,
+          username: user.login.username,
+          name: user.name,
+          avatar: user.picture.large,
+        })
+      )
+    );
+}
+
+const randomNotif = () => {
+  fetchUserList().then((res) => {
+    console.log(res);
+  });
 };
 
 const MasterLayout: React.FC<Props> = (props) => {
   const [collapsed, setCollapsed] = useState<boolean>(true);
   const { children } = props;
   const router = useRouter();
-  const { isAuth, avatar, email, name } = useAppSelector(selectAuth);
-  const dispatch = useAppDispatch();
   // console.log(isAuth);
   console.log(router.asPath);
+
+  useEffect(() => {
+    randomNotif();
+  }, []);
 
   return (
     <Layout className={style.layout}>
       <Affix>
-        <Header className={style.header}>
-          <div className={style.trigger}>
-            <Icon
-              component={collapsed ? MenuOpenIcon : MenuCloseIcon}
-              style={{
-                fontSize: "40px",
-                color: "var(--light-color)",
-              }}
-              onClick={() => setCollapsed(!collapsed)}
-            />
-          </div>
-          <div className={style.leftDiv}>
-            <Link href="/">
-              <a className={style.logo}>
-                <Image src="/images/Logo.png" height={68} width={110} />
-              </a>
-            </Link>
-            {isAuth && (
-              <Input
-                className={style.search}
-                size="large"
-                placeholder="Search"
-                suffix={
-                  <Icon
-                    component={SearchIcon}
-                    style={{ fontSize: "135%", color: "var(--light-color)" }}
-                  />
-                }
-              />
-            )}
-          </div>
-          {!isAuth ? (
-            <Button>
-              <Link href="/auth/login">{"Login"}</Link>
-            </Button>
-          ) : (
-            <div className={style.rightDiv}>
-              <Badge count={3}>
-                <BellFilled
-                  style={{
-                    fontSize: "180%",
-                    color: "var(--light-color)",
-                    fontWeight: "bold",
-                  }}
-                />
-              </Badge>
-              <Link href={"/profile/me"}>
-                <a>
-                  <Avatar src={avatar} size={55} />
-                </a>
-              </Link>
-            </div>
-          )}
-        </Header>
+        <Header
+          collapsed={collapsed}
+          setCollapsed={function (value: SetStateAction<boolean>): void {
+            setCollapsed(value);
+          }}
+          isAuth={false}
+        />
       </Affix>
       <Layout>
         <Affix offsetTop={70}>

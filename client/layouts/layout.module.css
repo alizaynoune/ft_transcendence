@@ -3,59 +3,12 @@
   min-height: 100vh !important;
 }
 
-.header {
-  background-color: var(--primary-color) !important;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  margin: 0 5px 0 5px;
-  border-radius: 0 0 6px 6px;
-  /* width: 100%; */
-}
 
-.trigger {display: none;}
 
-.leftDiv {
-  width: 50%;
-  height: 100%;
-  /* background-color: aqua; */
-  display: flex;
-  gap: 20px;
-  align-items: center;
-  /* flex-direction: row; */
-  justify-content: left;
-}
 
-.rightDiv {
-  width: 50%;
-  height: 100%;
-  /* background-color: bisque; */
-  display: flex;
-  align-items: center;
-  gap: 30px;
-  /* justify-items: end; */
-  justify-content: right;
-}
 
-.search {
-  background: none !important;
-  border-radius: 6px !important;
-  max-width: 300px;
-}
 
-.search input {
-  background: none !important;
-  color: var(--light-color);
-}
 
-.search input::placeholder {
-  color: var(--light-color);
-}
-
-.logo {
-  height: 100%;
-  /* line-height: 0 !important; */
-}
 
 .layoutContent {
   /* background-color: aqua !important; */
@@ -131,9 +84,6 @@
 }
 
 @media screen and (max-width: 576px){
-  .header{padding: 0 5px !important;}
-  .leftDiv{display: none;}
-  .trigger{ display: block;}
   .contentContainer{padding: 5px;}
 }
 
