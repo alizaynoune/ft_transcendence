@@ -1,4 +1,4 @@
-import style from './newGroupChat.module.css'
+import style from './newConversation.module.css'
 import { Select, Spin, Button, Space } from 'antd';
 import type { SelectProps } from 'antd/es/select';
 import debounce from 'lodash/debounce';
@@ -27,7 +27,7 @@ async function fetchUserList(username: string): Promise<UserValue[]> {
     );
 }
 
-const NewGroupChat: React.FC = () =>{
+const NewConversation: React.FC = () =>{
   const [selectedItems, setSelectedItems] = useState<UserValue[]>([]);
   const [fetching, setFetching] = useState<boolean>(false)
   const [value, setValue] = useState<UserValue[]>([]);
@@ -60,7 +60,6 @@ const NewGroupChat: React.FC = () =>{
           .catch(e => {
             setFetching(false)
             console.log(e, 'error<<<<<<<');
-            
           })
           
         }}
@@ -75,4 +74,4 @@ const NewGroupChat: React.FC = () =>{
     );
 }
 
-export default NewGroupChat
+export default NewConversation

@@ -1,6 +1,6 @@
 import style from "./conversations.module.css";
 import React, { useState, useEffect } from "react";
-import NewGroupChat from "@/components/NewGroupChat/NewGroupChat";
+import NewConversation from "@/components/newConversation/NewConversation";
 import {
   Input,
   Button,
@@ -9,7 +9,9 @@ import {
   Divider,
   Avatar,
   Typography,
-  Popover
+  Popover,
+  Space,
+  Badge,
 } from "antd";
 import InfiniteScroll from "react-infinite-scroll-component";
 import moment from "moment";
@@ -74,17 +76,19 @@ const HistroyMessenger: React.FC<PropsType> = ({ setCurrentConversation }) => {
           placeholder="find friends"
         />
         <Popover
-        className={style.popover}
-        trigger='click'
-        content={<NewGroupChat />}
-        placement='bottomRight'
+          className={style.popover}
+          trigger="click"
+          content={<NewConversation />}
+          placement="bottomRight"
         >
-        <Button
-          type="primary"
-          size="large"
-          icon={<Icon component={AddGroupIcon} style={{ fontSize: "120%" }} />}
+          <Button
+            type="primary"
+            size="large"
+            icon={
+              <Icon component={AddGroupIcon} style={{ fontSize: "120%" }} />
+            }
           />
-          </Popover>
+        </Popover>
       </div>
       <div id="scrollableDiv" className={style.scrollableDiv}>
         <InfiniteScroll
@@ -135,9 +139,12 @@ const HistroyMessenger: React.FC<PropsType> = ({ setCurrentConversation }) => {
                     </Paragraph>
                   }
                 />
-                <Paragraph type="secondary">
-                  {moment(item.lastMessage.date).fromNow()}
-                </Paragraph>
+                <Space direction="vertical" style={{ alignItems: "flex-end" }}>
+                  <Badge count={3} style={{backgroundColor: 'var(--primary-color)'}} />
+                  <Paragraph type="secondary">
+                    {moment(item.lastMessage.date).fromNow()}
+                  </Paragraph>
+                </Space>
               </List.Item>
             )}
           />
