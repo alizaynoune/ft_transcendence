@@ -2,7 +2,6 @@ import style from "./layout.module.css";
 import React, { useState, useRef, SetStateAction, useEffect } from "react";
 import { useRouter } from "next/router";
 import Image from "next/image";
-import Icon, { BellFilled } from "@ant-design/icons";
 import { ReactNode } from "react";
 import { Layout, Typography, Affix } from "antd";
 import type { MenuProps } from "antd";
@@ -10,10 +9,6 @@ import Link from "next/link";
 import SiderLayout from "@/components/sider/Sider";
 import Header from "@/components/header/Header";
 
-import { useAppSelector, useAppDispatch } from "@/hooks/reduxHooks";
-import { selectAuth } from "@/reducers/auth";
-
-import { SearchIcon, MenuCloseIcon, MenuOpenIcon } from "@/icons/index";
 
 const { Footer, Content } = Layout;
 
@@ -21,76 +16,15 @@ type Props = {
   children: ReactNode;
 };
 
-interface NotifType {
-  id: string;
-  isRead: boolean;
-  content: string;
-  user: {
-    id: string;
-    name: { first: string; last: string };
-    username: string;
-    avatar: string;
-  };
-  createAt: Date;
-}
 
-interface UserType {
-  id: string;
-  username: string;
-  name: { first: string; last: string };
-  avatar: string;
-}
-
-type MenuItem = Required<MenuProps>["items"][number];
-function getItem(
-  label: React.ReactNode,
-  key?: React.Key | null,
-  icon?: React.ReactNode,
-  children?: MenuItem[]
-): MenuItem {
-  return {
-    key,
-    icon,
-    children,
-    label,
-  } as MenuItem;
-}
-
-async function fetchUserList(): Promise<UserType[]> {
-  return fetch("https://randomuser.me/api/?results=20")
-    .then((response) => response.json())
-    .then((body) =>
-      body.results.map(
-        (user: {
-          name: { first: string; last: string };
-          login: { username: string; uuid: string };
-          picture: { large: string };
-        }) => ({
-          id: user.login.uuid,
-          username: user.login.username,
-          name: user.name,
-          avatar: user.picture.large,
-        })
-      )
-    );
-}
-
-const randomNotif = () => {
-  fetchUserList().then((res) => {
-    console.log(res);
-  });
-};
 
 const MasterLayout: React.FC<Props> = (props) => {
   const [collapsed, setCollapsed] = useState<boolean>(true);
   const { children } = props;
   const router = useRouter();
-  // console.log(isAuth);
   console.log(router.asPath);
 
-  useEffect(() => {
-    randomNotif();
-  }, []);
+
 
   return (
     <Layout className={style.layout}>
@@ -100,7 +34,6 @@ const MasterLayout: React.FC<Props> = (props) => {
           setCollapsed={function (value: SetStateAction<boolean>): void {
             setCollapsed(value);
           }}
-          isAuth={false}
         />
       </Affix>
       <Layout>
