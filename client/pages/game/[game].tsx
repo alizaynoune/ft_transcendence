@@ -1,126 +1,116 @@
 import style from "./game.module.css";
 import { Suspense, useRef, useState, KeyboardEvent, useMemo } from "react";
-import { Canvas, useFrame, useLoader } from "@react-three/fiber";
-import { Stats, OrbitControls, Stars, Plane, Text, RoundedBox, Text3D } from "@react-three/drei";
+import { Canvas, useFrame } from "@react-three/fiber";
+import { Stats, OrbitControls, Stars, Plane } from "@react-three/drei";
 import * as THREE from "three";
 import React from "react";
-const doggos = "https://images.unsplash.com/photo-1494790108377-be9c29b29330?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1887&q=80";
-// import img from '@/images/Logo.png'
 
-const img = 'https://randomuser.me/api/portraits/women/45.jpg'
-
-const Cube = React.forwardRef((props: any, ref) => {
+const Racquet = (props: any) => {
   return (
-    <mesh ref={ref} {...props}>
+    <mesh {...props}>
       <boxGeometry attach="geometry" args={[2.4, 0.3, 0.1]} />
       <meshStandardMaterial attach="material" color="#0391BA" />
       {/* <meshBasicMaterial attach="material" color="#0391BA" /> */}
     </mesh>
   );
-});
+};
 
-const Sphere = (props: any) => {
+const Ball = React.forwardRef((props: any, ref) => {
   return (
-    <mesh position={[props.x, 0.15, props.y]}>
+    <mesh ref={ref} {...props}>
       <sphereGeometry attach="geometry" args={[0.15, 20, 20]} />
       <meshBasicMaterial attach="material" color="red" />
     </mesh>
   );
-};
+});
 
-
-
-const Texture = ({ texture, rotation, position }) => {
+const Wall = (props: any) => {
   return (
-    <mesh position={position} rotation={rotation}>
-      {/* <RoundedBox  args={[2, 2, 0]} radius={0.01}> */}
-      {/* <ringGeometry */}
-      <ringGeometry attach="geometry" args={[0, 1.5, 40]} />
-      <meshBasicMaterial attach="material" map={texture} />
-
-      {/* </RoundedBox> */}
-      {/* <sphereGeometry attach="geometry" args={[1.5, 20, 30]} /> */}
-    </mesh>
+    <Plane {...props.plane}>
+      <meshStandardMaterial
+        {...props.meshMaterial}
+        attach="material"
+        wireframe
+      />
+    </Plane>
   );
 };
-const Image = ({ url, position, rotation }) => {
-  const texture = useMemo(() => new THREE.TextureLoader().load(url), [url]);
-  return <Texture texture={texture} position={position} rotation={rotation} />;
-};
-
 
 const Scene = (props: any) => {
-  const racquet = useRef<THREE.Mesh>(null!);
-
+  // const racquet = useRef<THREE.Mesh>(null!);
+  const ball = useRef<THREE.Mesh>(null!);
+  // const [ballStep, setBallStep] = useState<number>(0.1)
+  const step = useRef<{x:number; y:number; z:number}>({x: 0.1, y: 0.01, z:0.05})
+  
   useFrame(() => {
-    // racquet.current!.rotation.x += 0.01;
-    // racquet.current!.rotation.y += 0.01;
+    // ball.current!.position.x += -0.01 // Left Right
+    // ball.current!.position.y += 0.01 // Up Down
+    // if (ball.current!.position.z >= 10) setBallStep(-0.1)
+    // else if (ball.current!.position.z <= -10) setBallStep(0.1)
+    // ballStep.current += 0.1
+    // console.log(ball.current.position.z + ballStep.current);
+    
+    // step.current.y += step.current.y > 0 ? -0.01 : 0.01;
+    if (Math.abs(ball.current!.position.z) >= 10) step.current.z *= -1
+    if (Math.abs(ball.current!.position.x) >= 7) step.current.x *= -1
+    // if (Math.abs(ball.current!.position.y) >= 7) ballStep.current.y *= -1
+    // if (!(Math.round(Math.abs(step.current.y)) % 3)) step.current.y *= -1
+    
+    ball.current!.position.z += step.current.z // Front Back
+    // $x = $r * Math.cos($step*$i);
+    // step.current.y += 0.01
+    // console.log(Math.cos(step.current.y));
+    // ball.current!.position.y += Math.sin(step.current.y) * Math.cos(step.current.y) 
+    // ball.current!.position.y += step.current.y
+    // console.log(Math.abs(ball.current!.position.z));
+    // console.log(ball.current!.position.z);
+    // console.log(ballStep.current);
+    
+    
+    
+    
+    // LeftRight=|7| UpDown |10|
   });
 
   return (
     <>
       <pointLight position={[10, 10, 10]} color={0xffffff} intensity={0.8} />
-      <Cube position={[0, 0.15, -9.8]} />
-      {/* <fog attach="fog" args={["green", -10, 5]} /> */}
-      <Sphere {...props.ball} />
-      <Cube position={[0 + props.position, 0.15, 9.8]} ref={racquet} />
-      {/* <Plane /> */}
+      <Racquet position={[0, 0.15, -10.2]} />
+      <Ball position={[0, 0.15, 0]} ref={ball} />
+      <Racquet position={[0 + props.position, 0.15, 10.2]} />
+      {/* Floor*/}
+      <Wall
+        plane={{
+          args: [14.4, 21, 40, 20],
+          rotation: [1.5 * Math.PI, 0, 0],
+          position: [0, 0, 0],
+        }}
+        meshMaterial={{ color: "#f9c74f" }}
+      />
 
-      <Plane
-        args={[14.4, 20, 40, 20]}
-        rotation={[1.5 * Math.PI, 0, 0]}
-        position={[0, 0, 0]}
-      >
-        <meshStandardMaterial attach="material" color="#f9c74f" wireframe />
-      </Plane>
-      <Plane
-        args={[14.4, 0.5, 10, 10]}
-        rotation={[0, 0, 0]}
-        position={[0, 0.25, 0]}
-      >
-        <meshStandardMaterial attach="material" color="pink" wireframe />
-      </Plane>
-
-      <Plane
-        args={[20, 1, 20, 20]}
-        rotation={[0, Math.PI / 2, 0]}
-        position={[7.2, 0.5, 0]}
-      >
-        <meshStandardMaterial attach="material" color="#80ffdb" wireframe />
-      </Plane>
-
-      <Plane
-        args={[20, 1, 20, 20]}
-        rotation={[0, Math.PI / 2, 0]}
-        position={[-7.2, 0.5, 0]}
-      >
-        <meshStandardMaterial attach="material" color="#80ffdb" wireframe />
-      </Plane>
-
-      <Suspense fallback={null}>
-      <Image url={doggos}  position={[0, 3, 12]} rotation={[0.5, Math.PI , 0]} />
-      <Image url={doggos}  position={[0, 3, -12]} rotation={[-0.5, 0 , 0]} />
-      </Suspense>
-      <mesh  position={[0, 0.5, -12]}>
-         <Text
-        scale={[5, 5, 0]}
-        color="green" // default
-        anchorX="center" // default
-        anchorY="middle" // default
-      >
-        HELLO WORLD
-      </Text>
-       </mesh>
-       <mesh  position={[0, 0.5, 12]}  rotation={[0.5, Math.PI , 0]} >
-         <Text
-        scale={[5, 5, 0]}
-        color="green" // default
-        anchorX="center" // default
-        anchorY="middle" // default
-      >
-        HELLO WORLD
-      </Text>
-       </mesh>
+      {/* Center Wall */}
+      <Wall
+        plane={{ args: [14.4, 0.5, 10, 10], position: [0, 0.25, 0] }}
+        meshMaterial={{ color: "pink" }}
+      />
+      {/* Right Wall */}
+      <Wall
+        plane={{
+          args: [21, 1, 20, 20],
+          rotation: [0, Math.PI / 2, 0],
+          position: [7.2, 0.5, 0],
+        }}
+        meshMaterial={{ color: "#80ffbd" }}
+      />
+      {/* Left Wall */}
+      <Wall
+        plane={{
+          args: [21, 1, 20, 20],
+          rotation: [0, Math.PI / 2, 0],
+          position: [-7.2, 0.5, 0],
+        }}
+        meshMaterial={{ color: "#80ffbd" }}
+      />
     </>
   );
 };
@@ -167,6 +157,3 @@ const Games: React.FC = () => {
 };
 
 export default Games;
-
-
-
