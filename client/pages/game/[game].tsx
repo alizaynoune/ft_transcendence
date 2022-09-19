@@ -1,7 +1,7 @@
 import style from "./game.module.css";
 import { Suspense, useRef, useState, KeyboardEvent, useMemo } from "react";
 import { Canvas, useFrame, useLoader } from "@react-three/fiber";
-import { Stats, OrbitControls, Stars, Plane, Text, RoundedBox } from "@react-three/drei";
+import { Stats, OrbitControls, Stars, Plane, Text, RoundedBox, Text3D } from "@react-three/drei";
 import * as THREE from "three";
 import React from "react";
 const doggos = "https://images.unsplash.com/photo-1494790108377-be9c29b29330?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1887&q=80";
@@ -97,12 +97,30 @@ const Scene = (props: any) => {
         <meshStandardMaterial attach="material" color="#80ffdb" wireframe />
       </Plane>
 
-      {/* <planeGeometry attach="geometry" args={[10, 10]} /> */}
       <Suspense fallback={null}>
       <Image url={doggos}  position={[0, 3, 12]} rotation={[0.5, Math.PI , 0]} />
       <Image url={doggos}  position={[0, 3, -12]} rotation={[-0.5, 0 , 0]} />
       </Suspense>
-      {/* <gridHelper args={[20, 80]} /> */}
+      <mesh  position={[0, 0.5, -12]}>
+         <Text
+        scale={[5, 5, 0]}
+        color="green" // default
+        anchorX="center" // default
+        anchorY="middle" // default
+      >
+        HELLO WORLD
+      </Text>
+       </mesh>
+       <mesh  position={[0, 0.5, 12]}  rotation={[0.5, Math.PI , 0]} >
+         <Text
+        scale={[5, 5, 0]}
+        color="green" // default
+        anchorX="center" // default
+        anchorY="middle" // default
+      >
+        HELLO WORLD
+      </Text>
+       </mesh>
     </>
   );
 };
