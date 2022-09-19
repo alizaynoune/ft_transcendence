@@ -10,6 +10,7 @@
   },
   "dependencies": {
     "@ant-design/icons": "^4.7.0",
+    "@react-three/drei": "^9.31.1",
     "@react-three/fiber": "^8.7.4",
     "@reduxjs/toolkit": "^1.8.3",
     "antd": "^4.21.2",
@@ -22,7 +23,8 @@
     "react": "18.1.0",
     "react-dom": "18.1.0",
     "react-infinite-scroll-component": "^6.1.0",
-    "react-redux": "^8.0.2"
+    "react-redux": "^8.0.2",
+    "three": "^0.144.0"
   },
   "devDependencies": {
     "@svgr/webpack": "^6.2.1",

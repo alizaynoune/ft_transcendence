@@ -1,43 +1,94 @@
 import style from "./game.module.css";
-import { useRef, useState } from "react";
+import { Suspense, useRef, useState, KeyboardEvent } from "react";
 import { Canvas, useFrame } from "@react-three/fiber";
+import { Stats, OrbitControls, Stars } from "@react-three/drei";
+import * as three from "three";
+import React from "react";
 
-function Box(props: any) {
-  // This reference gives us direct access to the THREE.Mesh object
-  const ref = useRef();
-  // Hold state for hovered and clicked events
-  const [hovered, hover] = useState(false);
-  const [clicked, click] = useState(false);
-  // Subscribe this component to the render-loop, rotate the mesh every frame
-    // useFrame((state, delta) => (ref.current.rotation.x  += delta));
-  // Return the view, these are regular Threejs elements expressed in JSX
+const Cube = React.forwardRef((props: any, ref) => {
   return (
-    <mesh
-      {...props}
-      ref={ref}
-      scale={clicked ? 1.5 : 1}
-      onClick={(event) => click(!clicked)}
-      onPointerOver={(event) => hover(true)}
-      onPointerOut={(event) => hover(false)}
-    >
-      <boxGeometry args={[1, 1, 1]} />
-      <meshStandardMaterial color={hovered ? "hotpink" : "orange"} />
+    <mesh ref={ref} {...props}>
+      <boxBufferGeometry attach="geometry" args={[2.4, 0.3, 0.1]} />
+      <meshStandardMaterial attach="material" color="#0391BA" />
+      {/* <meshBasicMaterial attach="material" color="#0391BA" /> */}
     </mesh>
   );
-}
+});
+
+const Plane = () => (
+  <mesh rotation={[-Math.PI / 2, 0, 0]} position={[0, -0.01, 0]} receiveShadow>
+    <planeBufferGeometry attach="geometry" args={[12.5, 19]} />
+    <meshBasicMaterial attach="material" color="#082444" />
+  </mesh>
+);
+
+const Sphere = () => {
+  return (
+    <mesh position={[0, 0.15, 0]}>
+      <sphereGeometry attach="geometry" args={[0.15, 20, 20]} />
+      <meshBasicMaterial attach="material" color="red" />
+    </mesh>
+  );
+};
+
+const Scene = (props: any) => {
+  const racquet = useRef<three.Mesh>(null!);
+
+  useFrame(() => {
+    // racquet.current!.rotation.x += 0.01;
+    // racquet.current!.rotation.y += 0.01;
+  });
+
+  return (
+    <>
+      <pointLight position={[10, 10, 10]} color={0xffffff} intensity={0.8} />
+      <Cube position={[0, 0.15, -9.3]} />
+      {/* <fog attach="fog" args={["green", -10, 5]} /> */}
+      <Sphere />
+      <Cube position={[0 + props.position, 0.15, 9.3]} ref={racquet} />
+      <Plane />
+      <planeBufferGeometry attach="geometry" args={[10, 10]} receiveShadow />
+      <gridHelper args={[20, 80]} />
+    </>
+  );
+};
 
 const Games: React.FC = () => {
+  const [position, setPosition] = useState<number>(0);
+  const handleKeyboardEvent = (e: KeyboardEvent<HTMLImageElement>) => {
+    console.log(position);
+    const { keyCode, code } = e;
+    // ArrowRight  ArrowLeft
+    const step = keyCode === 39 ? 1 : keyCode === 37 ? -1 : 0;
+    if ((Math.abs(position + step) <= 5)) setPosition((old) => old + step);
+  };
   // useEffect(() => {
   // }, [])
   return (
     <div className={style.container}>
-     <Canvas>
-      <ambientLight intensity={0.5} />
-      <spotLight position={[10, 10, 10]} angle={0.15} penumbra={1} />
-      <pointLight position={[-10, -10, -10]} />
-      <Box position={[-1.2, 0, 0]} />
-      <Box position={[1.2, 0, 0]} />
-    </Canvas>
+      <Canvas
+        onKeyDown={handleKeyboardEvent}
+        tabIndex={0}
+        camera={{ fov: 75, near: 0.1, far: 1000, position: [0, 5, 14] }}
+        onCreated={({ gl }) => {
+          gl.setClearColor("#252934");
+        }}
+      >
+        <Stats />
+        <OrbitControls />
+        <Suspense fallback={null}>
+          <Stars
+            radius={80}
+            depth={40}
+            count={9000}
+            factor={4}
+            saturation={0}
+            fade
+            speed={1}
+          />
+          <Scene position={position} />
+        </Suspense>
+      </Canvas>
     </div>
   );
 };
