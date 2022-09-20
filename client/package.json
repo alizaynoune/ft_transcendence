@@ -10,7 +10,6 @@
   },
   "dependencies": {
     "@ant-design/icons": "^4.7.0",
-    "@react-three/cannon": "^6.4.0",
     "@react-three/drei": "^9.31.1",
     "@react-three/fiber": "^8.7.4",
     "@reduxjs/toolkit": "^1.8.3",
