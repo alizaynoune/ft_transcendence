@@ -1,14 +1,8 @@
 import style from "./game.module.css";
-import {
-  Suspense,
-  useRef,
-  useState,
-  KeyboardEvent,
-  useMemo,
-  useEffect,
-} from "react";
+import { Suspense, useRef, KeyboardEvent, useEffect } from "react";
 import { Canvas, useFrame } from "@react-three/fiber";
 import { Stats, OrbitControls, Stars, Plane } from "@react-three/drei";
+// import { Physics, usePlane, useBox } from "@react-three/cannon";
 import * as THREE from "three";
 import React from "react";
 
@@ -38,22 +32,52 @@ const Wall = (props: any) => {
   );
 };
 
+// Content
 const Scene = React.forwardRef((props: any, ref) => {
   const ball = useRef<THREE.Mesh>(null!);
-  const step = useRef<{ x: number; z: number }>({ x: 0.0025, z: 0.2 });
+  const step = useRef<{ x: number; z: number }>({ x: 0.02, z: 0.2 });
+  const { racquet } = props;
 
   useFrame(() => {
-    if (Math.abs(ball.current.position.z) >= 15) step.current.z *= -1;
-    if (Math.abs(ball.current.position.x) >= 7) step.current.x *= -1;
-    // console.log(ref.current.position);
+    if (step.current.z && step.current.x) {
+      if (Math.abs(ball.current.position.z) >= 16) step.current.z *= -1;
+      if (Math.abs(ball.current.position.x) >= 7) step.current.x *= -1;
+      // console.log(ref.current.position);
 
-    // ball.current!.position.z += step.current.z; // Front Back
-    // ball.current.position.x += step.current.x; // Left Right
-    if (ball.current.position.z >= 15) {
-      // ball.current.position.z = Math.round(ball.current.position.z)
-      // console.log(`${props.racquet} ${ball.current.position.x}`);
+      ball.current.position.x += step.current.x; // Left Right
+      if (ball.current.position.z + step.current.z >= 15) {
+        // ball.current.position.z = Math.round(ball.current.position.z);
+        // console.log(`${racquet.current.position.x} ${ball.current.position.x}`);
+        // console.log(racquet.current.position, 'racquet');
+        // console.log(ball.current.position, 'ball')
+        if (
+          ball.current.position.x >= racquet.current.position.x - 1 &&
+          ball.current.position.x <= racquet.current.position.x + 1
+        ) {
+          step.current.z *= -1
+          ball.current!.position.z += step.current.z;
+          // console.log(((racquet.current.position.x - 1) + (racquet.current.position.x + 1)) / 2);
+          console.log("collision");
+          // step.current.x +=  ((((racquet.current.position.x - 1) + (racquet.current.position.x + 1)) / 2) - ball.current.position.x)
+          step.current.x +=
+            ((racquet.current.position.x -
+              1 +
+              (racquet.current.position.x + 1)) /
+              2 -
+              ball.current.position.x) /
+            10;
+          // console.log(Math.abs());
+        } else {
+          console.log("none");
+          ball.current!.position.z += step.current.z; // Front Back
+          step.current.x = 0;
+          step.current.z = 0;
+        }
+      } else ball.current!.position.z += step.current.z; // Front Back
     }
-    // console.log(ref &&  ref.current);
+    // console.log(ref.current);
+    // if (rq && rq.current)
+    // console.log(racquet.current);
 
     // console.log(props.handleKey);
 
@@ -70,21 +94,21 @@ const Scene = React.forwardRef((props: any, ref) => {
       {/* Raquet Player */}
       <Box
         mesh={{ position: [0, 0.15, -15.2] }}
-        box={{ args: [2.4, 0.3, 0.1] }}
+        box={{ args: [2, 0.3, 0.1] }}
         meshMaterial={{ color: "#50cd89" }}
       />
       {/* My Raquet */}
-      <Ball position={[7, 0.2, 15]} ref={ball} />
+      <Ball position={[6.8, 0.2, 0]} ref={ball} />
       <Box
         ref={ref}
         mesh={{ position: [0, 0.15, 15.2] }}
-        box={{ args: [2.4, 0.3, 0.1] }}
+        box={{ args: [2, 0.3, 0.1] }}
         meshMaterial={{ color: "#3699ff" }}
       />
       {/* Floor*/}
       <Wall
         plane={{
-          args: [14.4, 31, 100, 80],
+          args: [14, 31, 100, 80],
           rotation: [1.5 * Math.PI, 0, 0],
           position: [0, 0, 0],
         }}
@@ -101,7 +125,7 @@ const Scene = React.forwardRef((props: any, ref) => {
         plane={{
           args: [31, 3, 80, 30],
           rotation: [0, Math.PI / 2, 0],
-          position: [7.2, 1.5, 0],
+          position: [7, 1.5, 0],
         }}
         meshMaterial={{ color: "#ffffff", wireframe: true }}
       />
@@ -110,7 +134,7 @@ const Scene = React.forwardRef((props: any, ref) => {
         plane={{
           args: [31, 3, 80, 30],
           rotation: [0, Math.PI / 2, 0],
-          position: [-7.2, 1.5, 0],
+          position: [-7, 1.5, 0],
         }}
         meshMaterial={{ color: "#ffffff", wireframe: true }}
       />
@@ -119,17 +143,20 @@ const Scene = React.forwardRef((props: any, ref) => {
 });
 
 const Games: React.FC = () => {
-  // const [racquet, setRacquet] = useState<number>(0);
   const racquet = useRef<THREE.Mesh>(null!);
   const handleKeyboardEvent = (e: KeyboardEvent<HTMLImageElement>) => {
     const { code } = e;
-    const step = code === "ArrowRight" ? 1 : code === "ArrowLeft" ? -1 : 0;
-    console.log(racquet.current);
+    // console.log(code);
+
+    const step =
+      code === "ArrowRight" || code === "ArrowUp"
+        ? 1
+        : code === "ArrowLeft" || code === "ArrowDown"
+        ? -1
+        : 0;
+    // console.log(racquet.current);
     if (Math.abs(racquet.current.position.x + step) <= 6)
       racquet.current.position.x += step;
-    // return e
-
-    // if (Math.abs(racquet + step) <= 6) setRacquet((prev) => prev + step);
   };
   return (
     <div className={style.container}>
@@ -141,7 +168,6 @@ const Games: React.FC = () => {
           gl.setClearColor("#252934");
         }}
       >
-        {/* <fog attach="fog" args={["white", 30, 30]} /> */}
         <Stats />
         <OrbitControls />
         <Suspense fallback={null}>
@@ -154,7 +180,8 @@ const Games: React.FC = () => {
             fade
             speed={1}
           />
-          <Scene handleKey={handleKeyboardEvent} ref={racquet} />
+          <Scene racquet={racquet} ref={racquet} />
+          {/* <Scene2 /> */}
         </Suspense>
       </Canvas>
     </div>
