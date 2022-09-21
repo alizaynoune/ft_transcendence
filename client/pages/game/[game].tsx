@@ -1,5 +1,5 @@
 import style from "./game.module.css";
-import { Suspense, useRef, KeyboardEvent } from "react";
+import { Suspense, useRef, KeyboardEvent, useEffect } from "react";
 import { Canvas } from "@react-three/fiber";
 import { Stats, OrbitControls, Stars } from "@react-three/drei";
 import * as THREE from "three";
@@ -9,6 +9,7 @@ import Scene from "@/containers/scene/Scene";
 
 const Games: React.FC = () => {
   const racquet = useRef<THREE.Mesh>(null!);
+  const canvasRef = useRef<HTMLCanvasElement>(null!)
   const handleKeyboardEvent = (e: KeyboardEvent<HTMLImageElement>) => {
     const { code } = e;
     console.log(code);
@@ -23,10 +24,27 @@ const Games: React.FC = () => {
     if (Math.abs(racquet.current.position.x + step) <= 6)
       racquet.current.position.x += step;
   };
+
+  useEffect(() => {
+    // if (canvasRef.current) {
+      canvasRef.current.focus();
+    //   console.log(canvasRef);
+      
+    // }
+    // else{
+    //   console.log('no focus');
+    // }
+    // document.getElementById('canvas')?.focus()
+  }, [])
+
+
   return (
     <div className={style.container}>
       <Canvas
+      
+      ref={canvasRef}
         onKeyDown={handleKeyboardEvent}
+        id='canvas'
         tabIndex={0}
         camera={{ fov: 75, near: 0.1, far: 1000, position: [0, 5, 20] }}
         gl={{ toneMapping: NoToneMapping }}
