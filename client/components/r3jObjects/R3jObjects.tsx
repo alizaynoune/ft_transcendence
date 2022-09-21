@@ -16,6 +16,7 @@ export const Ball = React.forwardRef((props: any, ref) => {
       <sphereGeometry attach="geometry" args={[0.15, 20, 20]} />
       <meshBasicMaterial attach="material" color="red" />
     </mesh>
+
   );
 });
 
@@ -24,5 +25,6 @@ export const Wall = (props: any) => {
     <Plane {...props.plane}>
       <meshStandardMaterial {...props.meshMaterial} attach="material" />
     </Plane>
+
   );
 };

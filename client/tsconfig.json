@@ -25,7 +25,8 @@
       "@/reducers/*": ["store/reducers/*"],
       "@/actions/*": ["store/actionsTunk/*"],
       "@/config/*": ["config/*"],
-      "@/hooks/*": ["hooks/*"]
+      "@/hooks/*": ["hooks/*"],
+      "@/tools/*": ["tools/*"],
     }
   },
   "exclude": ["node_modules"],
