@@ -1,5 +1,9 @@
-import React from "react";
+import React, { useRef, useState } from "react";
 import { Plane, Text } from "@react-three/drei";
+import { useDrag } from "@use-gesture/react";
+import { animated, useSpring } from "@react-spring/three";
+import { useThree } from "@react-three/fiber";
+import * as THREE from "three";
 
 export const Box = React.forwardRef((props: any, ref) => {
   return (
@@ -11,7 +15,6 @@ export const Box = React.forwardRef((props: any, ref) => {
 });
 
 export const Ball = React.forwardRef((props: any, ref) => {
-
   return (
     <mesh ref={ref} {...props}>
       <sphereGeometry attach="geometry" args={[0.15, 20, 20]} />
