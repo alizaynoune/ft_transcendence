@@ -1,5 +1,5 @@
 import React from "react";
-import { Plane } from "@react-three/drei";
+import { Plane, Text } from "@react-three/drei";
 
 export const Box = React.forwardRef((props: any, ref) => {
   return (
@@ -11,12 +11,12 @@ export const Box = React.forwardRef((props: any, ref) => {
 });
 
 export const Ball = React.forwardRef((props: any, ref) => {
+
   return (
     <mesh ref={ref} {...props}>
       <sphereGeometry attach="geometry" args={[0.15, 20, 20]} />
       <meshBasicMaterial attach="material" color="red" />
     </mesh>
-
   );
 });
 
@@ -25,6 +25,21 @@ export const Wall = (props: any) => {
     <Plane {...props.plane}>
       <meshStandardMaterial {...props.meshMaterial} attach="material" />
     </Plane>
+  );
+};
 
+export const Message = (props: any) => {
+  const textProps = {
+    fontSize: props.fontSize || 10,
+    font:
+      props.font ||
+      "http://fonts.gstatic.com/s/modak/v5/EJRYQgs1XtIEskMA-hI.woff",
+  };
+  return (
+    <mesh {...props.mesh}>
+      <Text material-toneMapped={false} {...textProps}>
+        {props.text}
+      </Text>
+    </mesh>
   );
 };

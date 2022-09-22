@@ -1,21 +1,29 @@
 import { useFrame } from "@react-three/fiber";
-import { useRef } from "react";
+import React, { useRef } from "react";
 import {planeSize, racquetSize} from '@/tools/globalVariable'
 
-export const useGame = (racquet: any, gameSpeed: number) => {
+interface PropsType {
+  racquet: any
+  gameSpeed: number;
+  collided: boolean
+}
+
+export const useGame  = (props: PropsType) => {
+const {racquet, gameSpeed, collided} = props
+
   const planeHalfW = planeSize[0] / 2
   const planeHalfL = planeSize[1] / 2
   const racquetHalf = racquetSize[0] / 2
   // const deflaultSpeed = 
 
-  const collided = useRef<boolean>(false);
+  // const collided = useRef<boolean>(false);
   const ball = useRef<THREE.Mesh>(null!);
   const step = useRef<{ x: number; z: number }>({ x: 0, z: gameSpeed });
 
   useFrame((state) => {
     // if(racquet && "current" in racquet && racquet.current) return
     // console.log(racquet, "<<<<<<<<<<");
-    
+    console.log(state.mouse);
 
     if (Math.abs(ball.current.position.z) >= planeHalfL) step.current.z *= -1;
     if (Math.abs(ball.current.position.x) >= planeHalfW) step.current.x *= -1;
@@ -41,5 +49,5 @@ export const useGame = (racquet: any, gameSpeed: number) => {
     } else ball.current!.position.z += step.current.z; // Front Back
   });
 
-  return [ball, step, collided];
+  return [ball];
 };

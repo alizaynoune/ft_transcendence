@@ -8,7 +8,8 @@ import {planeSize, racquetSize} from "@/tools/globalVariable"
 
 const Scene = React.forwardRef((props: any, ref) => {
   const { gameSpeed } = props;
-  const [ball, step, collided] = useGame(ref, gameSpeed)
+
+  const [ball] = useGame({racquet: ref, gameSpeed, collided: false})
 
   useEffect(() => {
     console.log("rander2");
@@ -16,7 +17,7 @@ const Scene = React.forwardRef((props: any, ref) => {
 
   return (
     <>
-    <axesHelper />
+    {/* <axesHelper /> */}
       <pointLight position={[10, 10, 10]} color={0xffffff} intensity={0.8} />
       {/* Raquet Player */}
       <Box
@@ -38,6 +39,14 @@ const Scene = React.forwardRef((props: any, ref) => {
           args: planeSize,
           rotation: [1.5 * Math.PI, 0, 0],
           position: [0, 0, 0],
+        }}
+        meshMaterial={{ color: "#464E5F", flatShading: true }}
+      />
+      <Wall
+        plane={{
+          args: planeSize,
+          rotation: [-(1.5 * Math.PI) , 0, 0],
+          position: [0, -0.001, 0],
         }}
         meshMaterial={{ color: "#464E5F", flatShading: true }}
       />
