@@ -13,35 +13,7 @@ import {
   WildfireIcon as wildfire,
   WinnerIcon as winner,
 } from "@/icons/index";
-
-const achievementsStyle: { [key: string]: object } = {
-  silver: {
-    color: "#C0C0C0",
-    border: "2px solid #C0C0C0",
-    backgroundColor: "#464E5E",
-  },
-  bronze: {
-    color: "#CD7F32",
-    border: "2px solid #CD7F32",
-    backgroundColor: "#F3F6F9",
-  },
-  gold: {
-    color: "#FFDF00",
-    border: "2px solid #FFDF00",
-    backgroundColor: "#F3F6F9",
-  },
-  platinum: {
-    color: "#E5E4E2",
-    border: "2px solid #E5E4E2",
-    backgroundColor: "#000000",
-  },
-  maxStyle: {
-    color: "#FFFFFF",
-    border: "2px solid #FFFFFF",
-    backgroundColor: "#3699FF",
-    cursor: "pointer",
-  },
-};
+import { useRef } from "react";
 
 const achievementsIcons: { [key: string]: any } = {
   friendly,
@@ -67,11 +39,10 @@ interface Props {
 
 const { Text } = Typography;
 const Statistics: React.FC<Props> = (props) => {
-  // const { data: session } = useSession();
-
   const { avatar, achievements, matches, level } = props;
   const progress = ((level - Math.floor(level)) / 1) * 100;
   const WinRatio = parseInt(((matches.winne / matches.total) * 100).toFixed(2));
+  const lazyRoot = useRef(null)
 
   const mapAchievements = () => {
     return achievements.map((a, index) => {
@@ -94,11 +65,12 @@ const Statistics: React.FC<Props> = (props) => {
 
   return (
     <div className={style.container}>
-      <div className={style.progressContainer}>
+      <div className={style.progressContainer} ref={lazyRoot}>
         <Image
           className={style.progressImage}
+          lazyRoot={lazyRoot}
           loader={() => avatar}
-          src="me.png"
+          src="/images/ali.png"
           objectFit="cover"
           layout="fill"
         />

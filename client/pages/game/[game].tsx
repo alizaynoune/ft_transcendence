@@ -88,7 +88,7 @@ const Games: React.FC = () => {
                 padding: 10,
               }}
             >
-              <Tag icon={<EyeFilled />} color="var(--primary-color)" style={{padding: 6}}> {gameData?.watching}</Tag>
+              <Tag icon={<EyeFilled />} color="var(--primary-color)" style={{padding: '6px 8px'}}> {gameData?.watching}</Tag>
               <Button type="primary" danger icon={<Icon component={OutIcon} />} >Leave</Button>
             </div>
           </>

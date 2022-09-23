@@ -7,14 +7,12 @@ import { Spin } from "antd";
 import { LoadingOutlined } from "@ant-design/icons";
 // types
 import { ProfileType } from "@/types/types";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 
-interface Props {
-  data: ProfileType;
-}
 
-const Profile: React.FC<Props> = (props) => {
+const Profile: React.FC = () => {
   const [loading, setLoading] = useState<boolean>(false);
+  const lazyRoot = useRef(null)
   const [data, setData] = useState<ProfileType>({
     id: "",
     username: "",
@@ -51,18 +49,16 @@ const Profile: React.FC<Props> = (props) => {
     loadProfile();
   }, []);
 
-  useEffect(() => {
-//console.log(data, "<<<<<<<<<<");
-  }, [data]);
-
   return (
     <section className={style.container}>
       {loading ? (
         <Spin indicator={<LoadingOutlined />} />
       ) : (
         <>
-          <div className={style.cover}>
+          <div className={style.cover} ref={lazyRoot}>
             <Image
+              lazyRoot={lazyRoot}
+              loader={() => 'https://random.imagecdn.app/1800/800'}
               src="/images/defaultProfileCover.png"
               layout="fill"
               objectFit="cover"

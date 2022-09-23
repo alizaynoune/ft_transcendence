@@ -1,14 +1,13 @@
 import style from "./canvas.module.css";
 import { Suspense, useRef, KeyboardEvent, useEffect, useState } from "react";
 import { Canvas } from "@react-three/fiber";
-import { Stats, OrbitControls, Stars, Loader } from "@react-three/drei";
+import { Stats, OrbitControls, Stars } from "@react-three/drei";
 import * as THREE from "three";
 import React from "react";
 import { NoToneMapping } from "three";
 import Scene from "@/containers/scene/Scene";
 import { racquetSize, planeSize } from "@/tools/globalVariable";
 import { useInterval } from "@/hooks/useInterval";
-import { Message } from "@/components/r3jObjects/R3jObjects";
 
 const MyCanvas: React.FC = () => {
   const racquet = useRef<THREE.Mesh>(null!);
@@ -73,49 +72,46 @@ const MyCanvas: React.FC = () => {
   }, [collided]);
 
   return (
-    <Canvas
-      className={style.container}
-      frameloop="demand"
-      ref={canvasRef}
-      onKeyDown={handleKeyboardEvent}
-      id="canvas"
-      tabIndex={0}
-      camera={{ fov: 75, near: 0.1, far: 1000, position: [0, 5, 20] }}
-      gl={{ toneMapping: NoToneMapping }}
-      onCreated={({ gl }) => {
-        gl.setClearColor("#9a9a9a");
-      }}
-    >
-      <color attach="background" args={["#464E5F"]} />
-      <Stats />
-      <OrbitControls />
-      <ambientLight color={"#ffffff"} intensity={0.5} />
-      <Suspense fallback={null}>
-        <Stars
-          radius={80}
-          depth={40}
-          count={9000}
-          factor={4}
-          saturation={0}
-          fade
-          speed={1}
-        />
-        <Scene
-          ref={racquet}
-          gameSpeed={gameSpeed}
-          start={start}
-          setCollided={(value: boolean): void => {
-            setCollided(value);
-          }}
-        />
-        {count >= 0 && (
-          <Message
-            text={count ? count : "GO"}
-            mesh={{ position: [0, 3.3, 2], rotation: [-1, 0, 0] }}
+    <>
+      {count >= 0 && <span className={style.text}>{count ? count : "GO"}</span>}
+      <Canvas
+        className={style.container}
+        frameloop="demand"
+        ref={canvasRef}
+        onKeyDown={handleKeyboardEvent}
+        id="canvas"
+        tabIndex={0}
+        camera={{ fov: 75, near: 0.1, far: 1000, position: [0, 5, 20] }}
+        gl={{ toneMapping: NoToneMapping }}
+        onCreated={({ gl }) => {
+          gl.setClearColor("#ffffff");
+        }}
+      >
+        <color attach="background" args={["#464E5F"]} />
+        {/* <Stats /> */}
+        <OrbitControls />
+        <ambientLight color={"#ffffff"} intensity={0.5} />
+        <Suspense fallback={null}>
+          <Stars
+            radius={80}
+            depth={40}
+            count={9000}
+            factor={4}
+            saturation={0}
+            fade
+            speed={1}
           />
-        )}
-      </Suspense>
-    </Canvas>
+          <Scene
+            ref={racquet}
+            gameSpeed={gameSpeed}
+            start={start}
+            setCollided={(value: boolean): void => {
+              setCollided(value);
+            }}
+          />
+        </Suspense>
+      </Canvas>
+    </>
   );
 };
 

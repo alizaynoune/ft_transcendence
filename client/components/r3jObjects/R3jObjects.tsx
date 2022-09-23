@@ -1,9 +1,14 @@
-import React, { useRef, useState } from "react";
-import { Plane, Text } from "@react-three/drei";
-import { useDrag } from "@use-gesture/react";
-import { animated, useSpring } from "@react-spring/three";
-import { useThree } from "@react-three/fiber";
-import * as THREE from "three";
+import React, { useMemo, useRef } from "react";
+import { Plane, Text, Text3D } from "@react-three/drei";
+import { TextGeometry } from 'three/examples/jsm/geometries/TextGeometry'
+import { extend } from "@react-three/fiber";
+// @ts-ignore
+import boldUrl from './bold.blob'
+
+
+extend({ TextGeometry })
+
+
 
 export const Box = React.forwardRef((props: any, ref) => {
   return (
@@ -28,21 +33,5 @@ export const Wall = (props: any) => {
     <Plane {...props.plane}>
       <meshStandardMaterial {...props.meshMaterial} attach="material" />
     </Plane>
-  );
-};
-
-export const Message = (props: any) => {
-  const textProps = {
-    fontSize: props.fontSize || 10,
-    font:
-      props.font ||
-      "http://fonts.gstatic.com/s/modak/v5/EJRYQgs1XtIEskMA-hI.woff",
-  };
-  return (
-    <mesh {...props.mesh}>
-      <Text material-toneMapped={false} {...textProps}>
-        {props.text}
-      </Text>
-    </mesh>
   );
 };
