@@ -61,21 +61,21 @@ const Games: React.FC = () => {
         {!loading && (
           <>
             <Space className={style.header} split={<Title style={{
-              color: 'var(--primary-color)',
+              color: 'var(--error-color)',
               fontStyle: 'italic'
             }}>{'VS'}</Title>}>
               <Space>
                 <Space direction="vertical">
-                  <Avatar src={gameData?.players[0].avatar} size={45} />
-                  <Text>{gameData?.players[0].username}</Text>
+                  <Avatar src={gameData?.players[0].avatar} size={50} style={{border: 'solid var(--success-color) 4px'}}/>
+                  <Text className={style.username}strong   style={{color: 'var(--success-color)'}} >{gameData?.players[0].username}</Text>
                 </Space>
-                <Title level={1}>{gameData?.players[0].scor}</Title>
+                <Title  style={{color: 'var(--success-color)'}}>{gameData?.players[0].scor}</Title>
               </Space>
-              <Space>
-                <Title>{gameData?.players[1].scor}</Title>
+              <Space >
+                <Title style={{color: 'var(--primary-color)'}}>{gameData?.players[1].scor}</Title>
                 <Space direction="vertical" align="end">
-                  <Avatar src={gameData?.players[1].avatar} size={45} />
-                  <Text>{gameData?.players[1].username}</Text>
+                  <Avatar src={gameData?.players[1].avatar}  size={50} style={{border: 'solid var(--primary-color) 4px'}} />
+                  <Text className={style.username} strong  style={{color: 'var(--primary-color)'}} >{gameData?.players[1].username}</Text>
                 </Space>
               </Space>
             </Space>

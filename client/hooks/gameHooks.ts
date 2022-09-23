@@ -1,4 +1,4 @@
-import { useFrame } from "@react-three/fiber";
+import { invalidate, useFrame } from "@react-three/fiber";
 import React, { useRef } from "react";
 import { planeSize, racquetSize } from "@/tools/globalVariable";
 
@@ -21,6 +21,7 @@ export const useGame = (props: PropsType) => {
 
   useFrame((state) => {
     if (start) {
+      invalidate()
       if (Math.abs(ball.current.position.z) >= planeHalfL) step.current.z *= -1;
       if (Math.abs(ball.current.position.x) >= planeHalfW) step.current.x *= -1;
       ball.current.position.x += step.current.x; // Left Right

@@ -51,10 +51,10 @@ const MyCanvas: React.FC = () => {
     }
     if (Math.abs(racquet.current.position.x + step) <= racquetMaxStep)
       racquet.current.position.x += step;
-      else{
-        step = racquetMaxStep - Math.abs(racquet.current.position.x)
-        racquet.current.position.x += step;
-      }
+    else {
+      step = racquetMaxStep - Math.abs(racquet.current.position.x);
+      racquet.current.position.x += step;
+    }
   };
 
   useEffect(() => {
@@ -65,55 +65,57 @@ const MyCanvas: React.FC = () => {
   }, []);
 
   useEffect(() => {
-    if (!collided) return
-    setStart(false)
-    setCount(0)
-    setCollided(false)
+    if (!collided) return;
+    setStart(false);
+    setCount(0);
+    setCollided(false);
     setTimer(1000);
-  }, [collided])
+  }, [collided]);
 
   return (
-        <Canvas className={style.container}
-          ref={canvasRef}
-          onKeyDown={handleKeyboardEvent}
-          id="canvas"
-          tabIndex={0}
-          camera={{ fov: 75, near: 0.1, far: 1000, position: [0, 5, 20] }}
-          gl={{ toneMapping: NoToneMapping }}
-          onCreated={({ gl }) => {
-            gl.setClearColor("#9a9a9a");
+    <Canvas
+      className={style.container}
+      frameloop="demand"
+      ref={canvasRef}
+      onKeyDown={handleKeyboardEvent}
+      id="canvas"
+      tabIndex={0}
+      camera={{ fov: 75, near: 0.1, far: 1000, position: [0, 5, 20] }}
+      gl={{ toneMapping: NoToneMapping }}
+      onCreated={({ gl }) => {
+        gl.setClearColor("#9a9a9a");
+      }}
+    >
+      <color attach="background" args={["#464E5F"]} />
+      <Stats />
+      <OrbitControls />
+      <ambientLight color={"#ffffff"} intensity={0.5} />
+      <Suspense fallback={null}>
+        <Stars
+          radius={80}
+          depth={40}
+          count={9000}
+          factor={4}
+          saturation={0}
+          fade
+          speed={1}
+        />
+        <Scene
+          ref={racquet}
+          gameSpeed={gameSpeed}
+          start={start}
+          setCollided={(value: boolean): void => {
+            setCollided(value);
           }}
-        >
-          <color attach="background" args={["#464E5F"]} />
-          <Stats />
-          <OrbitControls />
-          <ambientLight color={"#ffffff"} intensity={0.5} />
-          <Suspense fallback={null}>
-            <Stars
-              radius={80}
-              depth={40}
-              count={9000}
-              factor={4}
-              saturation={0}
-              fade
-              speed={1}
-            />
-            <Scene
-              ref={racquet}
-              gameSpeed={gameSpeed}
-              start={start}
-              setCollided={(value: boolean): void => {
-                setCollided(value);
-              }}
-            />
-            {count >= 0 && (
-              <Message
-                text={count ? count : "GO"}
-                mesh={{ position: [0, 3.3, 2], rotation: [-1, 0, 0] }}
-              />
-            )}
-          </Suspense>
-        </Canvas>
+        />
+        {count >= 0 && (
+          <Message
+            text={count ? count : "GO"}
+            mesh={{ position: [0, 3.3, 2], rotation: [-1, 0, 0] }}
+          />
+        )}
+      </Suspense>
+    </Canvas>
   );
 };
 
