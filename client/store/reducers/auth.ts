@@ -30,6 +30,8 @@ export const AuthSlice = createSlice({
   initialState,
   reducers: {
     login: (state, { payload }) => {
+      console.log(payload, '<<<<<<<<<<<');
+      
       state.isLoading = false;
       state.isAuth = true
 //console.log(payload, "done");
@@ -46,9 +48,11 @@ export const AuthSlice = createSlice({
         state.error = null;
       })
       .addCase(AuthTunk.fulfilled, (state, { payload }) => {
-        state.isLoading = false;
-        state.isAuth = true;
-        Object.assign(state, { ...payload });
+        console.log(payload);
+        
+        // state.isLoading = false;
+        // state.isAuth = true;
+        // Object.assign(state, { ...payload });
         // saveSession(state)
         // AuthSlice.actions.login(payload);
       });

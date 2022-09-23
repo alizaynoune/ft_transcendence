@@ -14,11 +14,14 @@ import {
   Space,
   Menu,
   Typography,
+  Modal
 } from "antd";
 import type { MenuProps } from "antd";
 import { useAppSelector, useAppDispatch } from "@/hooks/reduxHooks";
+import { AuthTunk } from "@/store/actions/auth";
 import { selectAuth } from "@/reducers/auth";
 import { useEffect, useState } from "react";
+import axios from "@/config/axios";
 
 interface PropsType {
   collapsed: boolean;
@@ -51,7 +54,7 @@ function getItem(
   disabled: Boolean,
   key?: React.Key | null,
   icon?: React.ReactNode,
-  children?: MenuItem[],
+  children?: MenuItem[]
 ): MenuItem {
   return {
     key,
@@ -85,7 +88,30 @@ const Header: React.FC<PropsType> = (props) => {
   const { collapsed, setCollapsed } = props;
   const { isAuth, avatar, email, name } = useAppSelector(selectAuth);
   const [notif, setNotif] = useState<NotifType[]>([]);
+  const [loading, setLoading] = useState(false);
+  const dispatch = useAppDispatch();
+      const confirm = (data: undefined) => {
+        Modal.confirm({
+          title: 'Confirm',
+          content: data,
+          okText: '确认',
+          cancelText: '取消',
+        });
+      };
+  const handleLogin = async () => {
+    setLoading(true);
+    try {
+      // await dispatch(AuthTunk());
+      // const res = await axios.get("auth/login");
+      const res = await fetch('http://localhost:3000/auth/login')
+      console.log(res);
+      // confirm(res.data)
 
+      
+    } catch (error) {
+      console.log(error);
+    }
+  };
   const randomNotif = () => {
     fetchUserList()
       .then((res) => {
@@ -123,7 +149,7 @@ const Header: React.FC<PropsType> = (props) => {
       </Space>,
       i.isRead,
       i.user.id,
-      <Avatar src={i.user.avatar} />,
+      <Avatar src={i.user.avatar} />
       // [getItem("accept", false), getItem('delete', false)]
     )
   );
@@ -163,8 +189,9 @@ const Header: React.FC<PropsType> = (props) => {
         )}
       </div>
       {!isAuth ? (
-        <Button>
-          <Link href="/auth/login">{"Login"}</Link>
+        <Button onClick={handleLogin}>
+          {"Login 42"}
+          {/* <Link href="/auth/login">{"Login"}</Link> */}
         </Button>
       ) : (
         <div className={style.rightDiv}>
