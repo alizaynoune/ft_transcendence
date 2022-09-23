@@ -1,14 +1,14 @@
 import style from "./game.module.css";
 import React, { useEffect, useState } from "react";
-import { Avatar, Button, Space, Spin } from "antd";
+import { Avatar, Button, Divider, Space, Spin, Typography, Tag } from "antd";
 import Icon, { EyeFilled } from "@ant-design/icons";
-
 import Canvas from "@/containers/canvas/Canvas";
+import {OutIcon} from '@/icons/index'
 
 interface GameType {
   id: string;
   watching: number;
-  players: { id: string; username: string; avatar: string; point: number }[];
+  players: { id: string; username: string; avatar: string; scor: number }[];
 }
 
 async function fetchUserList() {
@@ -23,18 +23,19 @@ async function fetchUserList() {
           id: user.login.uuid,
           username: user.login.username,
           avatar: user.picture.large,
-          point: Math.floor(Math.random() * 10),
+          scor: Math.floor(Math.random() * 10),
         })
       )
     );
 }
 
+const { Text, Title } = Typography;
 const Games: React.FC = () => {
   const [gameData, setGameData] = useState<GameType>();
   const [loading, setLoading] = useState(false);
 
   useEffect(() => {
-    setLoading(true)
+    setLoading(true);
     fetchUserList()
       .then((res) => {
         console.log(res);
@@ -43,7 +44,7 @@ const Games: React.FC = () => {
           watching: Math.floor(Math.random() * 100),
           players: res,
         });
-        setLoading(false)
+        setLoading(false);
       })
       .catch((err) => {
         console.log(err, "error<<<<<<");
@@ -59,11 +60,36 @@ const Games: React.FC = () => {
       <div className={style.container}>
         {!loading && (
           <>
-          <div>Header</div>
+            <Space className={style.header} split={<Title style={{
+              color: 'var(--primary-color)',
+              fontStyle: 'italic'
+            }}>{'VS'}</Title>}>
+              <Space>
+                <Space direction="vertical">
+                  <Avatar src={gameData?.players[0].avatar} size={45} />
+                  <Text>{gameData?.players[0].username}</Text>
+                </Space>
+                <Title level={1}>{gameData?.players[0].scor}</Title>
+              </Space>
+              <Space>
+                <Title>{gameData?.players[1].scor}</Title>
+                <Space direction="vertical" align="end">
+                  <Avatar src={gameData?.players[1].avatar} size={45} />
+                  <Text>{gameData?.players[1].username}</Text>
+                </Space>
+              </Space>
+            </Space>
             <Canvas />
-            <div style={{width: '100%', display: 'flex', justifyContent: 'space-between', padding: 10}}>
-              <Button type="primary" icon={<EyeFilled />}>{gameData?.watching}</Button>
-              <Button type="primary">Leave</Button>
+            <div
+              style={{
+                width: "100%",
+                display: "flex",
+                justifyContent: "space-between",
+                padding: 10,
+              }}
+            >
+              <Tag icon={<EyeFilled />} color="var(--primary-color)" style={{padding: 6}}> {gameData?.watching}</Tag>
+              <Button type="primary" danger icon={<Icon component={OutIcon} />} >Leave</Button>
             </div>
           </>
         )}
