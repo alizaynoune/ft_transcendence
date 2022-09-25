@@ -1,20 +1,24 @@
-const KEY = "session";
-export function loadSession() {
+const KEY = "access_token";
+
+export const loadToken = () => {
   try {
     const serializedState = localStorage.getItem(KEY);
-    if (!serializedState) return '';
+    if (!serializedState) return "";
     return JSON.parse(serializedState);
   } catch (e) {
-    return '';
+    return "";
   }
-}
+};
 
-export async function saveSession(state: any) {
+export const saveToken = async (token: any) => {
   try {
-    const serializedState = JSON.stringify(state);
+    const serializedState = JSON.stringify(token);
     localStorage.setItem(KEY, serializedState);
   } catch (e) {
     // Ignore
   }
-}
+};
 
+export const deletToken = () => {
+  localStorage.removeItem(KEY);
+};

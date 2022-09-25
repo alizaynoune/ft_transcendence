@@ -1,9 +1,11 @@
 import axios, {AxiosInstance, AxiosRequestConfig} from "axios";
+import {loadToken} from '@/tools/localStorage'
 
-const baseURL = process.env.REACT_APP_API_URL || 'http://10.12.3.11:5000/'
-
+const baseURL =  'http://localhost:5000/'
+const token = loadToken()
 const config: AxiosRequestConfig = {
-    baseURL
+    baseURL,
+    headers: { Authorization: `Bearer ${token?.access_token || ''}` }
 };
 const client: AxiosInstance = axios.create(config);
 

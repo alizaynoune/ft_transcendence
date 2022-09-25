@@ -2,7 +2,7 @@ import { createSlice } from "@reduxjs/toolkit";
 import type { RootState } from "@/store/store";
 import type { AuthType } from "@/types/types";
 import { AuthTunk } from "@/store/actions/auth";
-import {loadSession} from 'tools/localStorage'
+import {deletToken} from '@/tools/localStorage'
 
 interface AuthSliceType extends AuthType {
   isLoading: boolean;
@@ -10,19 +10,20 @@ interface AuthSliceType extends AuthType {
   isAuth: boolean;
 }
 
+// username(pin):"alzaynou"
+// sub(pin):51111
+// first_name(pin):"Ali"
+// last_name(pin):"Zaynoune"
+// img_url(pin):"https://cdn.intra.42.fr/users/alzaynou.jpg"
+
 const initialState: AuthSliceType = {
   isLoading: false,
   error: null,
   isAuth: false,
-  id: "",
-  email: "",
-  avatar: "",
-  name: {
-    first: "",
-    last: "",
-  },
-  username: "",
-  token: "",
+  username: '',
+  first_name: '',
+  last_name: '',
+  img_url: ''
 };
 
 export const AuthSlice = createSlice({
@@ -39,6 +40,7 @@ export const AuthSlice = createSlice({
 
     logout: (state) => {
       Object.assign(state, { ...initialState });
+      deletToken()
     },
   },
   extraReducers: (builder) => {
@@ -48,11 +50,11 @@ export const AuthSlice = createSlice({
         state.error = null;
       })
       .addCase(AuthTunk.fulfilled, (state, { payload }) => {
-        console.log(payload);
+        // console.log(payload);
         
-        // state.isLoading = false;
-        // state.isAuth = true;
-        // Object.assign(state, { ...payload });
+        state.isLoading = false;
+        state.isAuth = true;
+        Object.assign(state, { ...payload });
         // saveSession(state)
         // AuthSlice.actions.login(payload);
       });

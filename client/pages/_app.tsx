@@ -6,12 +6,11 @@ import "antd/dist/antd.css";
 import React, { useEffect } from "react";
 import { Provider } from "react-redux";
 import { store } from "store/store";
-import { saveSession, loadSession } from "tools/localStorage";
 import {useAppDispatch} from '@/hooks/reduxHooks'
 
-store.subscribe(() => {
-  saveSession(store.getState().auth.token);
-});
+// store.subscribe(() => {
+//   saveSession(store.getState().auth.token);
+// });
 
 function MyApp({ Component, pageProps, ...appProps }: AppProps) {
   const isAuth = appProps.router.pathname.includes("/auth");

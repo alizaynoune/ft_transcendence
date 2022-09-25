@@ -14,7 +14,6 @@ import {
   Space,
   Menu,
   Typography,
-  Modal
 } from "antd";
 import type { MenuProps } from "antd";
 import { useAppSelector, useAppDispatch } from "@/hooks/reduxHooks";
@@ -22,6 +21,8 @@ import { AuthTunk } from "@/store/actions/auth";
 import { selectAuth } from "@/reducers/auth";
 import { useEffect, useState } from "react";
 import axios from "@/config/axios";
+// import axios from "axios";
+import { loadToken } from "@/tools/localStorage";
 
 interface PropsType {
   collapsed: boolean;
@@ -86,32 +87,22 @@ async function fetchUserList(): Promise<UserType[]> {
 const { Text } = Typography;
 const Header: React.FC<PropsType> = (props) => {
   const { collapsed, setCollapsed } = props;
-  const { isAuth, avatar, email, name } = useAppSelector(selectAuth);
+  const { isAuth, img_url } = useAppSelector(selectAuth);
   const [notif, setNotif] = useState<NotifType[]>([]);
   const [loading, setLoading] = useState(false);
   const dispatch = useAppDispatch();
-      const confirm = (data: undefined) => {
-        Modal.confirm({
-          title: 'Confirm',
-          content: data,
-          okText: '确认',
-          cancelText: '取消',
-        });
-      };
-  const handleLogin = async () => {
-    setLoading(true);
-    try {
-      // await dispatch(AuthTunk());
-      // const res = await axios.get("auth/login");
-      const res = await fetch('http://localhost:3000/auth/login')
-      console.log(res);
-      // confirm(res.data)
 
+  const login = async() => {
+    try {
+      console.log('done');
       
+      await dispatch(AuthTunk())
     } catch (error) {
       console.log(error);
+      
     }
-  };
+  }
+
   const randomNotif = () => {
     fetchUserList()
       .then((res) => {
@@ -131,7 +122,10 @@ const Header: React.FC<PropsType> = (props) => {
       });
   };
   useEffect(() => {
-    randomNotif();
+    if (loadToken()) {
+      login()
+      randomNotif();
+    }
   }, []);
 
   useEffect(() => {
@@ -189,10 +183,9 @@ const Header: React.FC<PropsType> = (props) => {
         )}
       </div>
       {!isAuth ? (
-        <Button onClick={handleLogin}>
-          {"Login 42"}
-          {/* <Link href="/auth/login">{"Login"}</Link> */}
-        </Button>
+        <form method="GET" action="http://localhost:5000/auth/login">
+          <Button htmlType="submit">Login</Button>
+        </form>
       ) : (
         <div className={style.rightDiv}>
           <Dropdown overlay={menu} trigger={["click"]}>
@@ -210,7 +203,7 @@ const Header: React.FC<PropsType> = (props) => {
 
           <Link href={"/profile/me"}>
             <a>
-              <Avatar src={avatar} size={55} />
+              <Avatar src={img_url} size={55} />
             </a>
           </Link>
         </div>

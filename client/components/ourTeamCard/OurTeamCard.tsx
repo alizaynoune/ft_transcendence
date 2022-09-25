@@ -85,7 +85,7 @@ const OurTeamCard: React.FC<Props> = (props) => {
         ]}
       />
       <div className={style.cardImage}>
-        <Image src={image} layout="fill" />
+        <Image src={image} layout="fill"  objectFit="cover" />
       </div>
     </div>
   );

@@ -5,6 +5,7 @@ import Icon, {HomeFilled} from "@ant-design/icons";
 import Link from "next/link";
 import { useAppDispatch } from "@/hooks/reduxHooks";
 import { logout } from "@/reducers/auth";
+import { useRouter } from "next/router";
 
 // Icons
 import {
@@ -102,6 +103,7 @@ const items: MenuItem[] = [
 const SiderLayout: React.FC<PropsType> = (props) => {
   const { collapsed, setCollapsed } = props;
   const dispatch = useAppDispatch();
+  const route = useRouter()
   return (
     <div className={`${style.container} ${!collapsed ? style.open : ''}`}>
       <Sider
@@ -127,7 +129,10 @@ const SiderLayout: React.FC<PropsType> = (props) => {
             mode="inline"
             items={items}
             onSelect={(e) => {
-              if (e.key === 'logout') dispatch(logout())
+              if (e.key === 'logout'){
+                dispatch(logout())
+                route.push('/')
+              }
             }}
           />
         </div>

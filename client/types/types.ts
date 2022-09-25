@@ -1,14 +1,8 @@
 export interface AuthType {
-  // isAuth: boolean;
-  id: string;
-  email: string;
-  avatar: string;
-  name: {
-    first: string;
-    last: string;
-  };
   username: string;
-  token: string;
+  first_name: string;
+  last_name: string;
+  img_url: string
 }
 
 export interface NotificationType {

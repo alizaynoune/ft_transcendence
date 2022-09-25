@@ -22,7 +22,7 @@ const MasterLayout: React.FC<Props> = (props) => {
   const [collapsed, setCollapsed] = useState<boolean>(true);
   const { children } = props;
   const router = useRouter();
-  console.log(router.asPath);
+  console.log(router);
 
 
 
@@ -48,7 +48,7 @@ const MasterLayout: React.FC<Props> = (props) => {
         <Layout className={style.contentContainer}>
           <Content>{children}</Content>
           <div className={style.layoutFooter}>
-            {router.asPath === "/" && (
+            {router.pathname === "/" && (
               <div className={style.sectionGameInfo}>
                 <div className={style.sectionGameInfoLogo}>
                   <Link href="/">

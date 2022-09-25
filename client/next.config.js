@@ -9,7 +9,7 @@ const nextConfig = {
     return config;
   },
   images: {
-    domains: [' https://randomuser.me']
+    domains: [' https://randomuser.me', 'media-exp1.licdn.com']
   },
   
 }
