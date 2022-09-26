@@ -1,7 +1,7 @@
 import style from "./sider.module.css";
-import React, { useState, useRef } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import { Layout, Menu, MenuProps, Badge } from "antd";
-import Icon, {HomeFilled} from "@ant-design/icons";
+import Icon, { HomeFilled } from "@ant-design/icons";
 import Link from "next/link";
 import { useAppDispatch } from "@/hooks/reduxHooks";
 import { logout } from "@/reducers/auth";
@@ -43,10 +43,12 @@ const items: MenuItem[] = [
   getItem(
     <Link href="/">{"Home"}</Link>,
     "Home",
-    <HomeFilled style={{
-      fontSize: 25,
-      color: "var(--light-color)"
-    }}/>
+    <HomeFilled
+      style={{
+        fontSize: 25,
+        color: "var(--light-color)",
+      }}
+    />
   ),
   getItem(
     <Link href="/profile/me">{"Profile"}</Link>,
@@ -102,10 +104,16 @@ const items: MenuItem[] = [
 
 const SiderLayout: React.FC<PropsType> = (props) => {
   const { collapsed, setCollapsed } = props;
+  const [currentPage, setCurrentPage] = useState<string>('/');
   const dispatch = useAppDispatch();
-  const route = useRouter()
+  const route = useRouter();
+
+  useEffect(() => {
+    // console.log(route.asPath.split('/'));
+    setCurrentPage(route.asPath.split('/')[1])
+  }, [route])
   return (
-    <div className={`${style.container} ${!collapsed ? style.open : ''}`}>
+    <div className={`${style.container} ${!collapsed ? style.open : ""}`}>
       <Sider
         className={style.sider}
         trigger={null}
@@ -124,14 +132,16 @@ const SiderLayout: React.FC<PropsType> = (props) => {
         </div>
         <div className={style.siderItems}>
           <Menu
+            defaultSelectedKeys={[currentPage]}
+            selectedKeys={[currentPage]}
             className={style.menu}
             theme="dark"
             mode="inline"
             items={items}
             onSelect={(e) => {
-              if (e.key === 'logout'){
-                dispatch(logout())
-                route.push('/')
+              if (e.key === "logout") {
+                dispatch(logout());
+                route.push("/");
               }
             }}
           />

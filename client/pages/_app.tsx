@@ -12,9 +12,9 @@ import { selectAuth, saveToken } from "@/store/reducers/auth";
 import { saveToken as saveTokenLocal } from "@/tools/localStorage";
 import { useRouter } from "next/router";
 
-store.subscribe(() => {
-  saveTokenLocal(store.getState().auth.access_token);
-});
+// store.subscribe(() => {
+//   saveTokenLocal(store.getState().auth.access_token);
+// });
 
 function MyApp({ Component, pageProps, ...appProps }: AppProps) {
   const isAuth = appProps.router.pathname.includes("/auth");

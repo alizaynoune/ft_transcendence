@@ -34,8 +34,7 @@ export const AuthSlice = createSlice({
   initialState,
   reducers: {
     login: (state, { payload }) => {
-      console.log(payload, "<<<<<<<<<<<");
-
+      // console.log(payload, "<<<<<<<<<<<");
       state.isLoading = false;
       state.isAuth = true;
       //console.log(payload, "done");

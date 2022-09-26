@@ -19,7 +19,7 @@ import type { MenuProps } from "antd";
 import { useAppSelector, useAppDispatch } from "@/hooks/reduxHooks";
 import { AuthTunk } from "@/store/actions/auth";
 import { selectAuth } from "@/reducers/auth";
-import {_42Icon} from '@/icons/index'
+import { _42Icon } from "@/icons/index";
 import { useEffect, useState } from "react";
 import { loadToken } from "@/tools/localStorage";
 
@@ -91,16 +91,15 @@ const Header: React.FC<PropsType> = (props) => {
   const [loading, setLoading] = useState(false);
   const dispatch = useAppDispatch();
 
-  const login = async() => {
+  const login = async () => {
     try {
-      console.log('done');
-      
-      await dispatch(AuthTunk())
+      console.log("done");
+
+      await dispatch(AuthTunk());
     } catch (error) {
       console.log(error);
-      
     }
-  }
+  };
 
   const randomNotif = () => {
     fetchUserList()
@@ -122,14 +121,10 @@ const Header: React.FC<PropsType> = (props) => {
   };
   useEffect(() => {
     if (loadToken()) {
-      if (!isAuth) login()
+      if (!isAuth) login();
       randomNotif();
     }
   }, []);
-
-  useEffect(() => {
-    console.log(notif, "notif");
-  }, [notif]);
 
   const items: MenuItem[] = notif.map((i) =>
     getItem(
@@ -183,7 +178,14 @@ const Header: React.FC<PropsType> = (props) => {
       </div>
       {!isAuth ? (
         <form method="GET" action="http://localhost:5000/auth/login">
-          <Button htmlType="submit" shape="round"  ghost icon={<Icon component={_42Icon} style={{fontSize: 20}} />}>Login</Button>
+          <Button
+            htmlType="submit"
+            shape="round"
+            ghost
+            icon={<Icon component={_42Icon} style={{ fontSize: 20 }} />}
+          >
+            Login
+          </Button>
         </form>
       ) : (
         <div className={style.rightDiv}>
