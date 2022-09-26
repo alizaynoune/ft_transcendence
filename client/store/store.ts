@@ -1,8 +1,9 @@
 import { Action, configureStore, ThunkAction } from "@reduxjs/toolkit";
 import ProfileSlice from '@/reducers/profile'
 import AuthSlice from '@/reducers/auth'
-import {loadSession} from 'tools/localStorage'
+import {loadToken} from 'tools/localStorage'
 import { combineReducers } from "@reduxjs/toolkit";
+import auth from "@/reducers/auth";
 
 const reducer = combineReducers({
   profile: ProfileSlice,
@@ -12,7 +13,14 @@ const reducer = combineReducers({
 export const store = configureStore({
   devTools: true,
   reducer,
-  
+  // preloadedState : {auth.access_token:  loadToken()}
+  preloadedState: {
+    // @ts-ignore
+    auth: {
+      ...AuthSlice,
+       access_token: loadToken(),
+    }
+  },
 });
 
 export type AppDispatch = typeof store.dispatch;

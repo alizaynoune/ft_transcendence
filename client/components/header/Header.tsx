@@ -19,9 +19,8 @@ import type { MenuProps } from "antd";
 import { useAppSelector, useAppDispatch } from "@/hooks/reduxHooks";
 import { AuthTunk } from "@/store/actions/auth";
 import { selectAuth } from "@/reducers/auth";
+import {_42Icon} from '@/icons/index'
 import { useEffect, useState } from "react";
-import axios from "@/config/axios";
-// import axios from "axios";
 import { loadToken } from "@/tools/localStorage";
 
 interface PropsType {
@@ -123,7 +122,7 @@ const Header: React.FC<PropsType> = (props) => {
   };
   useEffect(() => {
     if (loadToken()) {
-      login()
+      if (!isAuth) login()
       randomNotif();
     }
   }, []);
@@ -184,7 +183,7 @@ const Header: React.FC<PropsType> = (props) => {
       </div>
       {!isAuth ? (
         <form method="GET" action="http://localhost:5000/auth/login">
-          <Button htmlType="submit">Login</Button>
+          <Button htmlType="submit" shape="round"  ghost icon={<Icon component={_42Icon} style={{fontSize: 20}} />}>Login</Button>
         </form>
       ) : (
         <div className={style.rightDiv}>

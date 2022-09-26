@@ -4,6 +4,8 @@ export const loadToken = () => {
   try {
     const serializedState = localStorage.getItem(KEY);
     if (!serializedState) return "";
+    console.log(serializedState, 'localStorge');
+    
     return JSON.parse(serializedState);
   } catch (e) {
     return "";

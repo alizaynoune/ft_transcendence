@@ -2,12 +2,14 @@ import { createSlice } from "@reduxjs/toolkit";
 import type { RootState } from "@/store/store";
 import type { AuthType } from "@/types/types";
 import { AuthTunk } from "@/store/actions/auth";
-import {deletToken} from '@/tools/localStorage'
+import { deletToken, saveToken as saveTokenLocal, loadToken } from "@/tools/localStorage";
+import { useAppDispatch } from "@/hooks/reduxHooks";
 
 interface AuthSliceType extends AuthType {
   isLoading: boolean;
   error: unknown;
   isAuth: boolean;
+  access_token: string;
 }
 
 // username(pin):"alzaynou"
@@ -20,10 +22,11 @@ const initialState: AuthSliceType = {
   isLoading: false,
   error: null,
   isAuth: false,
-  username: '',
-  first_name: '',
-  last_name: '',
-  img_url: ''
+  access_token: '',
+  username: "",
+  first_name: "",
+  last_name: "",
+  img_url: "",
 };
 
 export const AuthSlice = createSlice({
@@ -31,16 +34,25 @@ export const AuthSlice = createSlice({
   initialState,
   reducers: {
     login: (state, { payload }) => {
-      console.log(payload, '<<<<<<<<<<<');
-      
+      console.log(payload, "<<<<<<<<<<<");
+
       state.isLoading = false;
-      state.isAuth = true
-//console.log(payload, "done");
+      state.isAuth = true;
+      //console.log(payload, "done");
     },
 
     logout: (state) => {
       Object.assign(state, { ...initialState });
-      deletToken()
+      state.access_token = ''
+      // deletToken()
+    },
+
+    saveToken: (state, { payload }) => {
+      // console.log(payload);
+      // const dispatch = useAppDispatch();
+      state.access_token = payload;
+      // dispatch(AuthTunk());
+      // saveTokenLocal(payload)
     },
   },
   extraReducers: (builder) => {
@@ -51,7 +63,7 @@ export const AuthSlice = createSlice({
       })
       .addCase(AuthTunk.fulfilled, (state, { payload }) => {
         // console.log(payload);
-        
+
         state.isLoading = false;
         state.isAuth = true;
         Object.assign(state, { ...payload });
@@ -61,6 +73,6 @@ export const AuthSlice = createSlice({
   },
 });
 
-export const { logout } = AuthSlice.actions;
+export const { logout, login, saveToken } = AuthSlice.actions;
 export const selectAuth = (state: RootState) => state.auth;
 export default AuthSlice.reducer;

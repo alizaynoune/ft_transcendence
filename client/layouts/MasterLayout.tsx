@@ -22,7 +22,7 @@ const MasterLayout: React.FC<Props> = (props) => {
   const [collapsed, setCollapsed] = useState<boolean>(true);
   const { children } = props;
   const router = useRouter();
-  console.log(router);
+  // console.log(router);
 
 
 
