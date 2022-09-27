@@ -5,6 +5,7 @@ import { AuthTunk } from "@/store/actions/auth";
 import { deletToken, saveToken as saveTokenLocal, loadToken } from "@/tools/localStorage";
 import { useAppDispatch } from "@/hooks/reduxHooks";
 
+
 interface AuthSliceType extends AuthType {
   isLoading: boolean;
   error: unknown;

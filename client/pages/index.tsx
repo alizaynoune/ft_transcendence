@@ -16,9 +16,15 @@ const Home: NextPage = () => {
   useEffect(() => {
     const { access_token } = route.query;
     if (access_token) {
-      dispatch(saveToken(route.query.access_token));
+      try {
+        dispatch(saveToken(route.query.access_token));
       dispatch(AuthTunk())
       route.push('/')
+      } catch (error) {
+        console.log(error);
+        
+      }
+      
     }
   }, [route]);
   return (

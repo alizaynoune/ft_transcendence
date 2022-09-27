@@ -16,36 +16,36 @@ const OurTeam: React.FC = () => {
       />
       <TeamCard
         name="Ali Zaynoune"
-        job="WebDev"
+        job="Full Stack developer"
         image="/images/ali.png"
         linkedin="https://linkedin.com"
         email="https://www.gmail.com"
         github="https://www.github.com"
       />
       <TeamCard
-        name="Achraf Kamel"
-        job="WebDev"
+        name="Nawfal Abouzaher"
+        job="Full Stack developer"
         image="/images/team.png"
         linkedin="https://linkedin.com"
         email="https://www.gmail.com"
         github="https://www.github.com"
       />
-      <TeamCard
+      {/* <TeamCard
         name="Ilyass Moumni"
         job="WebDev"
         image="/images/team.png"
         linkedin="https://linkedin.com"
         email="https://www.gmail.com"
         github="https://www.github.com"
-      />
-      <TeamCard
+      /> */}
+      {/* <TeamCard
         name="Anouar Essaid"
         job="WebDev"
         image="/images/team.png"
         linkedin="https://linkedin.com"
         email="https://www.gmail.com"
         github="https://www.github.com"
-      />
+      /> */}
     </div>
   );
 };

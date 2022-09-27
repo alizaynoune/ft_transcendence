@@ -1,20 +1,20 @@
 .container {
     /* width: 350px; */
     /* width: 100%; */
-    width: 300px;
+    width: 350px;
     /* min-width: 300px; */
-    height: 310px;
+    height: 370px;
     position: relative;
 }
 
 
 
 .cardImage {
-    height: 200px;
+    height: 250px;
     width: 90%;
-    object-fit: cover;
+    /* object-fit: cover; */
     position: absolute;
-    background-color: antiquewhite;
+    background-color: var(--light-color);
     top: 0;
     left: 5%;
     border-radius: 6px;
@@ -38,3 +38,18 @@
     justify-content: space-between;
     align-items: center;
 }
+
+@media screen and (max-width: 576px){
+    /* .container{width: 100%;} */
+}
+
+@media screen and (min-width: 576px){
+}
+
+@media screen and (min-width: 768px){}
+
+@media screen and (min-width: 992px){}
+
+@media screen and (min-width: 1200px) {}
+
+@media screen and (min-width: 1600px){}

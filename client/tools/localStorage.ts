@@ -6,16 +6,17 @@ export const loadToken = () => {
     if (!serializedState) return "";
     return JSON.parse(serializedState);
   } catch (e) {
-    return "";
+    return '';
   }
 };
 
-export const saveToken = async (token: any) => {
+export const saveToken =  (token: any) => {
   try {
-    const serializedState = JSON.stringify(token);
+    const serializedState =  JSON.stringify(token);
     localStorage.setItem(KEY, serializedState);
   } catch (e) {
     // Ignore
+    console.log(e);
   }
 };
 
