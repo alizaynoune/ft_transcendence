@@ -4,6 +4,7 @@ import { Avatar, Button, Divider, Space, Spin, Typography, Tag } from "antd";
 import Icon, { EyeFilled } from "@ant-design/icons";
 import Canvas from "@/containers/canvas/Canvas";
 import {OutIcon} from '@/icons/index'
+import authRoute from '@/tools/protectedRoutes'
 
 interface GameType {
   id: string;
@@ -98,4 +99,4 @@ const Games: React.FC = () => {
   );
 };
 
-export default Games;
+export default authRoute(Games)

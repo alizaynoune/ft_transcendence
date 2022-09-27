@@ -8,6 +8,7 @@ import { Tabs, Typography, Empty } from "antd";
 import { SettingIcon, MessageIcon } from "@/icons/index";
 import { ConversationsType } from "types/types";
 import Icon from "@ant-design/icons";
+import authRoute from "@/tools/protectedRoutes";
 
 const { TabPane } = Tabs;
 const Messanger: React.FC = () => {
@@ -114,4 +115,4 @@ const Messanger: React.FC = () => {
   );
 };
 
-export default Messanger;
+export default authRoute(Messanger);

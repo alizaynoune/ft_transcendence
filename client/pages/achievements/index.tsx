@@ -1,8 +1,7 @@
 import style from "./achievements.module.css";
 import AchievementsContainer from "@/containers/achievements/Achievements";
 import { AchievementType } from "@/types/types";
-import { Space } from "antd";
-
+import authRoute from "@/tools/protectedRoutes";
 const Achiev: AchievementType[] = [
   {
     name: "Legendary",
@@ -182,4 +181,5 @@ const Achievements: React.FC = () => {
   );
 };
 
-export default Achievements;
+// export default Achievements;
+export default authRoute(Achievements)

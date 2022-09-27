@@ -1,30 +1,26 @@
 import style from "./layout.module.css";
-import React, { useState, useRef, SetStateAction, useEffect } from "react";
+import React, { useState, SetStateAction } from "react";
 import { useRouter } from "next/router";
 import Image from "next/image";
 import { ReactNode } from "react";
 import { Layout, Typography, Affix } from "antd";
-import type { MenuProps } from "antd";
 import Link from "next/link";
 import SiderLayout from "@/components/sider/Sider";
 import Header from "@/components/header/Header";
-
+import { useAppSelector } from "@/hooks/reduxHooks";
+import { selectAuth } from "@/store/reducers/auth";
 
 const { Footer, Content } = Layout;
-
 type Props = {
   children: ReactNode;
 };
-
-
 
 const MasterLayout: React.FC<Props> = (props) => {
   const [collapsed, setCollapsed] = useState<boolean>(true);
   const { children } = props;
   const router = useRouter();
+  const { isAuth } = useAppSelector(selectAuth);
   // console.log(router);
-
-
 
   return (
     <Layout className={style.layout}>
@@ -37,14 +33,16 @@ const MasterLayout: React.FC<Props> = (props) => {
         />
       </Affix>
       <Layout>
-        <Affix offsetTop={70}>
-          <SiderLayout
-            collapsed={collapsed}
-            setCollapsed={function (value: SetStateAction<boolean>): void {
-              setCollapsed(value);
-            }}
-          />
-        </Affix>
+        {isAuth && (
+          <Affix offsetTop={70}>
+            <SiderLayout
+              collapsed={collapsed}
+              setCollapsed={function (value: SetStateAction<boolean>): void {
+                setCollapsed(value);
+              }}
+            />
+          </Affix>
+        )}
         <Layout className={style.contentContainer}>
           <Content>{children}</Content>
           <div className={style.layoutFooter}>
