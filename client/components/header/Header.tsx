@@ -14,6 +14,7 @@ import {
   Space,
   Menu,
   Typography,
+  message,
 } from "antd";
 import type { MenuProps } from "antd";
 import { useAppSelector, useAppDispatch } from "@/hooks/reduxHooks";
@@ -86,18 +87,17 @@ async function fetchUserList(): Promise<UserType[]> {
 const { Text } = Typography;
 const Header: React.FC<PropsType> = (props) => {
   const { collapsed, setCollapsed } = props;
-  const { isAuth, img_url } = useAppSelector(selectAuth);
+  const { isAuth, img_url, isLoading, error } = useAppSelector(selectAuth);
   const [notif, setNotif] = useState<NotifType[]>([]);
   const [loading, setLoading] = useState(false);
   const dispatch = useAppDispatch();
 
   const login = async () => {
     try {
-      console.log("done");
-
       await dispatch(AuthTunk());
+      console.log("from header", isAuth, isLoading, error);
     } catch (error) {
-      console.log(error);
+      console.log(error, "<<<<<<<<<<<<<<<<<<<<");
     }
   };
 
@@ -119,9 +119,13 @@ const Header: React.FC<PropsType> = (props) => {
         console.log(e);
       });
   };
+
+  useEffect(() => {
+    error && message.error(error.message);
+  }, [error]);
   useEffect(() => {
     if (loadToken()) {
-      if (!isAuth) login();
+      if (!isAuth && !isLoading && !error) login();
       randomNotif();
     }
   }, []);

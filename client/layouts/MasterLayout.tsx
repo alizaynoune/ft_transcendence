@@ -20,7 +20,6 @@ const MasterLayout: React.FC<Props> = (props) => {
   const { children } = props;
   const router = useRouter();
   const { isAuth } = useAppSelector(selectAuth);
-  // console.log(router);
 
   return (
     <Layout className={style.layout}>
