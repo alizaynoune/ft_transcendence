@@ -1,8 +1,7 @@
 import style from "./statistics.module.css";
-import { NextComponentType } from "next";
 import Image from "next/image";
-import { Progress, Avatar, Badge, Typography } from "antd";
-import Icon from "@ant-design/icons";
+import { Progress, Avatar, Badge, Typography, Upload, Button } from "antd";
+import Icon, { EditOutlined } from "@ant-design/icons";
 
 // Achievements Icons
 import {
@@ -82,6 +81,20 @@ const Statistics: React.FC<Props> = (props) => {
                     format={() => level.toFixed(2)}
                     trailColor="rgba(0, 0, 0, 0.2)"
                 />
+                <Upload>
+                    <Button
+                        icon={<EditOutlined size={1} />}
+                        shape="circle"
+                        size="large"
+                        style={{
+                            position: "absolute",
+                            bottom: '20%',
+                            right: '20%',
+                            backgroundColor: "rgba(0, 0, 0, 0.4)",
+                            color: 'var(--light-color)',
+                        }}
+                    />
+                </Upload>
             </div>
             {achievements.length > 0 && (
                 <div className={style.achievements}>
