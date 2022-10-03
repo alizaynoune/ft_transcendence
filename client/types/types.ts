@@ -18,6 +18,7 @@ export interface NotificationType {
 }
 
 export interface ProfileType {
+  img_url: string;
   id: string;
   username: string;
   name: {

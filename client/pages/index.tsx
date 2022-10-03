@@ -15,11 +15,12 @@ const Home: NextPage = () => {
   const {isAuth, isLoading, error} = useAppSelector(selectAuth)
 
   useEffect(() => {
-    const { access_token } = route.query;
-    if (access_token && !isAuth && !isLoading && !error) {
+    const { token} = route.query;
+    if (token) {
       try {
-        dispatch(saveToken(route.query.access_token));
-        dispatch(AuthTunk());
+        console.log('from home');
+        
+        dispatch(saveToken(token));
         route.push("/");
       } catch (error) {
         console.log(error, "catch");

@@ -23,6 +23,7 @@ const Profile: React.FC = () => {
     birthday: "",
     location: "",
     avatar: "",
+    img_url: '',
     level: 0,
     achievements: [{ name: "", types: [] }],
     matches: { total: 0, winne: 0 },
@@ -31,8 +32,8 @@ const Profile: React.FC = () => {
   const loadProfile = async () => {
     setLoading(true);
     try {
-      const res = await axios.get(`api/fake/user`);
-      // const data = await res.data.json();
+      const res = await axios.get(`profile`);
+      console.log(res);
       setData(res.data);
       setLoading(false);
       // console.log(data);
@@ -41,7 +42,7 @@ const Profile: React.FC = () => {
       let message;
       if (error instanceof Error) message = error.message;
       else message = String(error);
-      //console.log(message, "<<<<<<error");
+      console.log(message, "<<<<<<error");
     }
   };
 
@@ -58,7 +59,7 @@ const Profile: React.FC = () => {
           <div className={style.cover} ref={lazyRoot}>
             <Image
               lazyRoot={lazyRoot}
-              loader={() => "https://random.imagecdn.app/1800/800"}
+              loader={() => "https://random.imagecdn.app/1800/800"} // ! change it
               src="/images/defaultProfileCover.png"
               layout="fill"
               objectFit="cover"
@@ -67,10 +68,10 @@ const Profile: React.FC = () => {
           <div className={style.statisticsData}>
             <div className={style.statistics}>
               <Statistics
-                achievements={data.achievements}
-                avatar={data.avatar}
-                matches={data.matches}
-                level={data.level}
+                achievements={[]}
+                avatar={data.img_url}
+                matches={{total: 10, winne: 2}}
+                level={20.22}
               />
             </div>
             <div className={style.data}>

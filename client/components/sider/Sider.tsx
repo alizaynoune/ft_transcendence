@@ -1,6 +1,6 @@
 import style from "./sider.module.css";
 import React, { useState, useRef, useEffect } from "react";
-import { Layout, Menu, MenuProps, Badge } from "antd";
+import { Layout, Menu, MenuProps, Badge, message } from "antd";
 import Icon, { HomeFilled } from "@ant-design/icons";
 import Link from "next/link";
 import { useAppDispatch } from "@/hooks/reduxHooks";
@@ -109,7 +109,6 @@ const SiderLayout: React.FC<PropsType> = (props) => {
   const route = useRouter();
 
   useEffect(() => {
-    // console.log(route.asPath.split('/'));
     setCurrentPage(route.asPath.split('/')[1])
   }, [route])
   return (
@@ -142,6 +141,7 @@ const SiderLayout: React.FC<PropsType> = (props) => {
               if (e.key === "logout") {
                 dispatch(logout());
                 route.push("/");
+                message.warning('success logout')
               }
             }}
           />

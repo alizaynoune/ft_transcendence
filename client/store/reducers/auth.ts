@@ -16,12 +16,6 @@ interface AuthSliceType extends AuthType {
   access_token: string;
 }
 
-// username(pin):"alzaynou"
-// sub(pin):51111
-// first_name(pin):"Ali"
-// last_name(pin):"Zaynoune"
-// img_url(pin):"https://cdn.intra.42.fr/users/alzaynou.jpg"
-
 const initialState: AuthSliceType = {
   isLoading: false,
   error: null,
@@ -47,7 +41,7 @@ export const AuthSlice = createSlice({
       state.access_token = "";
     },
 
-    saveToken: (state, { payload }) => {
+    saveToken: (state, { payload }) =>  {
       state.access_token = payload;
     },
   },
@@ -64,6 +58,8 @@ export const AuthSlice = createSlice({
         state.isLoading = false;
       })
       .addCase(AuthTunk.fulfilled, (state, { payload }) => {
+        // console.log(payload);
+        
         state.isLoading = false;
         state.isAuth = true;
         Object.assign(state, { ...payload });

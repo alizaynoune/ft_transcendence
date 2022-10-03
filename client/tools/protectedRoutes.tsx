@@ -10,11 +10,14 @@ const authRoute = (Component: React.FC<any>) => {
 
   return (props: any) => {
     const { isAuth } = useAppSelector(selectAuth);
+    const data = useAppSelector(selectAuth)
     const router = useRouter();
     //console.log(isAuth);
 
     useEffect(() => {
-      if (!isAuth) router.push("/");
+      console.log(data);
+      
+      // if (!isAuth) router.push("/");
     }, []);
     if (isAuth) return <Component {...props} />;
     else return null;

@@ -92,15 +92,6 @@ const Header: React.FC<PropsType> = (props) => {
   const [loading, setLoading] = useState(false);
   const dispatch = useAppDispatch();
 
-  const login = async () => {
-    try {
-      await dispatch(AuthTunk());
-      console.log("from header", isAuth, isLoading, error);
-    } catch (error) {
-      console.log(error, "<<<<<<<<<<<<<<<<<<<<");
-    }
-  };
-
   const randomNotif = () => {
     fetchUserList()
       .then((res) => {
@@ -124,11 +115,8 @@ const Header: React.FC<PropsType> = (props) => {
     error && message.error(error.message);
   }, [error]);
   useEffect(() => {
-    if (loadToken()) {
-      if (!isAuth && !isLoading && !error) login();
       randomNotif();
-    }
-  }, []);
+  }, [isAuth]);
 
   const items: MenuItem[] = notif.map((i) =>
     getItem(
@@ -181,7 +169,7 @@ const Header: React.FC<PropsType> = (props) => {
         )}
       </div>
       {!isAuth ? (
-        <form method="GET" action="http://localhost:5000/auth/login">
+        <form method="GET" action={`${process.env.NEXT_PUBLIC_URL_API || 'http://localhost:5000'}/auth/login`}>
           <Button
             htmlType="submit"
             shape="round"
