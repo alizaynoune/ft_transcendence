@@ -154,7 +154,7 @@ const NGameInvitFriends: React.FC = () => {
           dataLength={data.length}
           next={loadMoreData}
           hasMore={data.length < 50} // ! change to length of result
-          loader={<Skeleton avatar paragraph={{ rows: 1 }} active />}
+          loader={<Skeleton avatar paragraph={{ rows: 3 }} active />}
           endMessage={<Divider plain>It is all, nothing more 🤐</Divider>}
           scrollableTarget="scrollableDiv"
         >
@@ -162,7 +162,6 @@ const NGameInvitFriends: React.FC = () => {
             className={style.FriendsList}
             loading={initLoading}
             itemLayout="horizontal"
-            // loadMore={}
             dataSource={list}
             renderItem={(item) => (
               <List.Item>

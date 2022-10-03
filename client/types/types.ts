@@ -32,7 +32,7 @@ export interface ProfileType {
   location: string;
   avatar: string;
   level: number;
-  achievements: {
+  achivements: {
     name: string;
     types: string[];
   }[];

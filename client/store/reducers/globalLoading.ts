@@ -23,7 +23,7 @@ export const LoadingSlice = createSlice({
           .addCase(AuthTunk.rejected, (state) => {
             state.Loading = false
           })
-          .addCase(AuthTunk.fulfilled, (state, { payload }) => {
+          .addCase(AuthTunk.fulfilled, (state) => {
             state.Loading = false
           });
       },

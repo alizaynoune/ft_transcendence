@@ -5,6 +5,8 @@ import UserData from "@/containers/userData/UserData";
 import axios from "@/config/axios";
 import { Spin } from "antd";
 import { LoadingOutlined } from "@ant-design/icons";
+import { useAppDispatch, useAppSelector } from "@/hooks/reduxHooks";
+import {selectLoading, changeLoading} from '@/reducers/globalLoading'
 // types
 import { ProfileType } from "@/types/types";
 import { useEffect, useRef, useState } from "react";
@@ -13,6 +15,7 @@ import authRoute from "@/tools/protectedRoutes";
 const Profile: React.FC = () => {
   const [loading, setLoading] = useState<boolean>(false);
   const lazyRoot = useRef(null);
+  const dispatch = useAppDispatch()
   const [data, setData] = useState<ProfileType>({
     id: "",
     username: "",
@@ -25,19 +28,22 @@ const Profile: React.FC = () => {
     avatar: "",
     img_url: '',
     level: 0,
-    achievements: [{ name: "", types: [] }],
+    achivements: [{ name: "", types: [] }],
     matches: { total: 0, winne: 0 },
   });
 
   const loadProfile = async () => {
     setLoading(true);
+    dispatch(changeLoading(true))
     try {
       const res = await axios.get(`profile`);
       console.log(res);
       setData(res.data);
       setLoading(false);
+      dispatch(changeLoading(false))
       // console.log(data);
     } catch (error) {
+      dispatch(changeLoading(false))
       setLoading(false);
       let message;
       if (error instanceof Error) message = error.message;
@@ -68,7 +74,7 @@ const Profile: React.FC = () => {
           <div className={style.statisticsData}>
             <div className={style.statistics}>
               <Statistics
-                achievements={[]}
+                achievements={data.achivements}
                 avatar={data.img_url}
                 matches={{total: 10, winne: 2}}
                 level={20.22}

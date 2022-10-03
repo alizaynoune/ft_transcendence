@@ -18,8 +18,6 @@ const Home: NextPage = () => {
     const { token} = route.query;
     if (token) {
       try {
-        console.log('from home');
-        
         dispatch(saveToken(token));
         route.push("/");
       } catch (error) {
