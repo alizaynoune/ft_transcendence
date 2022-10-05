@@ -22,13 +22,12 @@ const achievementsIcons: { [key: string]: any } = {
     wildfire,
     winner,
 };
-
 interface Props {
     avatar: string;
     level: number;
     achievements: {
         name: string;
-        types: string[];
+        level: string;
     }[];
     matches: {
         total: number;
@@ -47,18 +46,20 @@ const Statistics: React.FC<Props> = (props) => {
 
     const mapAchievements = () => {
         return achievements.map((a, index) => {
-            return a.types.map((t) => {
-                return (
-                    <Avatar
-                        key={index}
-                        icon={<Icon component={achievementsIcons[a.name]} />}
-                        size={80}
-                        className={`${style[t]} ${style.avatar}`}
-                    />
-                );
-            });
+            return (
+                <Avatar
+                    key={index}
+                    icon={<Icon component={achievementsIcons[a.name]} />}
+                    size={80}
+                    className={`${style[a.level.toLowerCase()]} ${
+                        style.avatar
+                    }`}
+                />
+            );
         });
     };
+
+    console.log(props.achievements);
 
     return (
         <div className={style.container}>
@@ -88,10 +89,10 @@ const Statistics: React.FC<Props> = (props) => {
                         size="large"
                         style={{
                             position: "absolute",
-                            bottom: '20%',
-                            right: '20%',
+                            bottom: "20%",
+                            right: "20%",
                             backgroundColor: "rgba(0, 0, 0, 0.4)",
-                            color: 'var(--light-color)',
+                            color: "var(--light-color)",
                         }}
                     />
                 </Upload>

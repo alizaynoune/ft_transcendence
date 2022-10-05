@@ -11,11 +11,13 @@ import { selectLoading, changeLoading } from "@/reducers/globalLoading";
 import { ProfileType } from "@/types/types";
 import { useEffect, useRef, useState } from "react";
 import authRoute from "@/tools/protectedRoutes";
+import { useRouter } from "next/router";
 
 const Profile: React.FC = () => {
     const [loading, setLoading] = useState<boolean>(false);
     const lazyRoot = useRef(null);
     const dispatch = useAppDispatch();
+    const router = useRouter()
     const [data, setData] = useState<ProfileType>({
         id: "",
         username: "",
@@ -25,17 +27,20 @@ const Profile: React.FC = () => {
         gender: "",
         birthday: "",
         location: "",
-        avatar: "",
         img_url: "",
         level: 0,
-        achivements: [{ name: "", types: [] }],
+        users_achievements: [],
         matches: { total: 0, winne: 0 },
+        cover: '',
     });
 
     const loadProfile = async () => {
         setLoading(true);
         dispatch(changeLoading(true));
         try {
+            const { profile } = router.query
+            console.log(router.query);
+            
             const res = await axios.get(`profile`);
             console.log(res);
             setData(res.data);
@@ -62,13 +67,11 @@ const Profile: React.FC = () => {
                 <Spin indicator={<LoadingOutlined />} />
             ) : (
                 <>
-                    <Badge.Ribbon text="Your Rank is 10" placement="start" >
+                    <Badge.Ribbon text="Your Rank is 10" placement="start">
                         <div className={style.cover} ref={lazyRoot}>
                             <Image
                                 lazyRoot={lazyRoot}
-                                loader={() =>
-                                    "https://random.imagecdn.app/1800/800"
-                                } // ! change it
+                                loader={() => data.cover} // ! change it
                                 src="/images/defaultProfileCover.png"
                                 layout="fill"
                                 objectFit="cover"
@@ -81,7 +84,6 @@ const Profile: React.FC = () => {
                                     style={{
                                         position: "absolute",
                                         top: "10px",
-                                        // bottom: "20%",
                                         right: "10px",
                                         backgroundColor: "rgba(0, 0, 0, 0.4)",
                                         color: "var(--light-color)",
@@ -93,7 +95,7 @@ const Profile: React.FC = () => {
                     <div className={style.statisticsData}>
                         <div className={style.statistics}>
                             <Statistics
-                                achievements={data.achivements}
+                                achievements={data.users_achievements}
                                 avatar={data.img_url}
                                 matches={{ total: 10, winne: 2 }}
                                 level={20.22}

@@ -5,7 +5,7 @@ import { setTimeout } from "timers";
 
 export const AuthTunk = createAsyncThunk<AuthType>("auth", async () => {
   try {
-    const res = await axios.get("profile");
+    const res = await axios.post("auth/login");
     return res.data
   } catch (error) {
     console.log("<<<<<<<<<<<", error);
