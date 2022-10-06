@@ -21,6 +21,20 @@ export interface NotificationType {
     createAt: Date;
 }
 
+export interface UserInfoType {
+    id: number;
+    intra_id: number;
+    username: string;
+    email: string;
+    first_name: string;
+    last_name: string;
+    img_url: string;
+    cover: string;
+    status: string;
+    created_at: string;
+    updated_at: string;
+}
+
 export interface ProfileType {
     id: number;
     intra_id: number;
@@ -32,7 +46,7 @@ export interface ProfileType {
     last_name: number;
     status: string;
     updated_at: Date;
-    username: string;
+    username: "ONLINE" | "OFFLINE" | "PLAYING";
     users_achievements: {
         name: string;
         level: string;
@@ -44,15 +58,24 @@ export interface ProfileType {
 }
 
 export interface UserType {
-    id: string;
-    name: {
-        first: string;
-        last: string;
+    id: number;
+    senderid: number;
+    receiverid: number;
+    created_at: string;
+    accepted: boolean;
+    userInfo: {
+        id: number;
+        intra_id: number;
         username: string;
+        email: string;
+        first_name: string;
+        last_name: string;
+        img_url: string;
+        cover: string;
+        status: string;
+        created_at: string;
+        updated_at: string;
     };
-    avatar: string;
-    email: string;
-    status: "online" | "offline" | "playing";
 }
 
 export interface ConversationsType {

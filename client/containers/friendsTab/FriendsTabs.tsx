@@ -42,7 +42,7 @@ const FriendsTabs: React.FC<PropsType> = ({ profileId }) => {
                     }
                     key="1"
                 >
-                    <FriendsList />
+                    <FriendsList profileId={profileId} />
                 </TabPane>
                 {intra_id === profileId && (
                     <TabPane

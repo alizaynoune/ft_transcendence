@@ -4,31 +4,11 @@ import { List } from "antd";
 import UserCard from "@/components/userCard/UserCard";
 import axios from "@/config/axios";
 import { message } from "antd";
-
-interface DataType {
-    id: number;
-    senderid: number;
-    receiverid: number;
-    created_at: string;
-    accepted: boolean;
-    userInfo: {
-        id: number;
-        intra_id: number;
-        username: string;
-        email: string;
-        first_name: string;
-        last_name: string;
-        img_url: string;
-        cover: string;
-        status: string;
-        created_at: string;
-        updated_at: string;
-    };
-}
+import { UserType } from "@/types/types";
 
 const FriendRequestList: React.FC = () => {
     const [loading, setLoading] = useState(false);
-    const [data, setData] = useState<DataType[]>([]);
+    const [data, setData] = useState<UserType[]>([]);
 
     const loadMoreData = async () => {
         if (loading) {
@@ -49,8 +29,7 @@ const FriendRequestList: React.FC = () => {
     const action = async (id: number, action: string) => {
         try {
             const res = await axios.post(`friends/${action}`, {
-                id
-                : id.toString(),
+                id: id.toString(),
             });
             setData((prev) => prev.filter((i) => i.senderid !== id));
             message.success(res.data.message);
@@ -84,13 +63,7 @@ const FriendRequestList: React.FC = () => {
                     total: data.length,
                     pageSize: 16,
                 }}
-                renderItem={(item) => (
-                    <UserCard
-                        user={item.userInfo}
-                        type="request"
-                        action={action}
-                    />
-                )}
+                renderItem={(item) => <UserCard user={item.userInfo} type="request" action={action} />}
             />
         </div>
     );
