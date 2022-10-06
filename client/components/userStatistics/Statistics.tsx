@@ -71,6 +71,7 @@ const Statistics: React.FC<Props> = (props) => {
                     src="/images/ali.png"
                     objectFit="cover"
                     layout="fill"
+                    priority
                 />
                 <Progress
                     className={style.progress}

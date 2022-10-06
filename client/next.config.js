@@ -11,7 +11,14 @@ const nextConfig = {
   images: {
     domains: [' https://randomuser.me', 'media-exp1.licdn.com', 'avatars.githubusercontent.com']
   },
-  
+  async rewrites() {
+    return [
+      {
+        source: '/profile',
+        destination: '/profile/me',
+      },
+    ]
+  },
 }
 
 module.exports = nextConfig
