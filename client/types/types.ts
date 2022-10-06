@@ -5,7 +5,7 @@ export interface AuthType {
     img_url: string;
     email: string;
     intra_id: number;
-    notifications: NotificationType[]
+    notifications: NotificationType[];
 }
 
 export interface NotificationType {
@@ -13,10 +13,10 @@ export interface NotificationType {
     isRead: boolean;
     content: string;
     user: {
-      id: string;
-      name: { first: string; last: string };
-      username: string;
-      avatar: string;
+        id: string;
+        name: { first: string; last: string };
+        username: string;
+        avatar: string;
     };
     createAt: Date;
 }
@@ -33,7 +33,10 @@ export interface ProfileType {
     status: string;
     updated_at: Date;
     username: string;
-    users_achievements: [];
+    users_achievements: {
+        name: string;
+        level: string;
+    }[];
     matches: {
         total: number;
         winne: number;

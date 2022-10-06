@@ -4,7 +4,7 @@
 
 .tabIcon {display: none;}
 
-.tabText{color: var(--primary-color);}
+.tabText{color: var(--light-color);}
 
 
 @media screen and (max-width: 576px){

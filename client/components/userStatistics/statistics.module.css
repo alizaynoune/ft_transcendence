@@ -51,14 +51,10 @@
   gap: 10px;
 }
 
-.gameRatioContainer * {
-  font-size: 15px !important;
-  font-weight: bold;
-}
-
 .badge span {
   width: 10px;
   height: 10px;
+  font-size: 15px
 }
 
 .silver {

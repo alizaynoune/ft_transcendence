@@ -1,65 +1,68 @@
 import style from "./RequestList.module.css";
 import React, { useEffect, useState } from "react";
 import { List } from "antd";
-import UserCard from '@/components/userCard/UserCard';
-
+import UserCard from "@/components/userCard/UserCard";
+import axios from "@/config/axios";
+import { message } from "antd";
 
 interface DataType {
-    gender: string;
-    name: {
-        title: string;
-        first: string;
-        last: string;
-    };
-    email: string;
-    picture: {
-        large: string;
-        medium: string;
-        thumbnail: string;
-    };
-    nat: string;
-    login: {
-        uuid: string;
+    id: number;
+    senderid: number;
+    receiverid: number;
+    created_at: string;
+    accepted: boolean;
+    userInfo: {
+        id: number;
+        intra_id: number;
         username: string;
-        password: string;
-        salt: string;
-        md5: string;
-        sha1: string;
-        sha256: string;
-    }
+        email: string;
+        first_name: string;
+        last_name: string;
+        img_url: string;
+        cover: string;
+        status: string;
+        created_at: string;
+        updated_at: string;
+    };
 }
-
 
 const FriendRequestList: React.FC = () => {
     const [loading, setLoading] = useState(false);
     const [data, setData] = useState<DataType[]>([]);
 
-    const loadMoreData = () => {
+    const loadMoreData = async () => {
         if (loading) {
             return;
         }
         setLoading(true);
-        fetch(
-            "https://randomuser.me/api/?results=16&inc=name,gender,email,nat,picture,login&noinfo"
-        )
-            .then((res) => res.json())
-            .then((body) => {
-                setData(body.results);
-                setLoading(false);
-            })
-            .catch(() => {
-                setLoading(false);
+        try {
+            const res = await axios.get("/friends/invites");
+            console.log(res.data);
+            setData(res.data.invites);
+            setLoading(false);
+        } catch (error) {
+            console.log(error);
+            setLoading(false);
+        }
+    };
+
+    const action = async (id: number, action: string) => {
+        try {
+            const res = await axios.post(`friends/${action}`, {
+                id
+                : id.toString(),
             });
+            setData((prev) => prev.filter((i) => i.senderid !== id));
+            message.success(res.data.message);
+        } catch (error: unknown) {
+            error instanceof Error && message.error(error.message);
+        }
     };
 
     useEffect(() => {
         loadMoreData();
     }, []);
 
-    const deleteFriend = (id: string) => {
-//console.log(id);
-
-    }
     return (
         <div className={style.container}>
             <List
@@ -76,17 +79,21 @@ const FriendRequestList: React.FC = () => {
                 }}
                 pagination={{
                     onChange: (page) => {
-//console.log(page);
+                        //console.log(page);
                     },
-                    total: 20,
+                    total: data.length,
                     pageSize: 16,
                 }}
                 renderItem={(item) => (
-                    <UserCard user={item} type='request' />
+                    <UserCard
+                        user={item.userInfo}
+                        type="request"
+                        action={action}
+                    />
                 )}
             />
         </div>
     );
-}
+};
 
 export default FriendRequestList;

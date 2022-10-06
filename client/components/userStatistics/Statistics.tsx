@@ -1,8 +1,23 @@
 import style from "./statistics.module.css";
 import Image from "next/image";
-import { Progress, Avatar, Badge, Typography, Upload, Button } from "antd";
-import Icon, { EditOutlined } from "@ant-design/icons";
-
+import {
+    Progress,
+    Avatar,
+    Badge,
+    Typography,
+    Upload,
+    Button,
+    Space,
+} from "antd";
+import Icon, {
+    EditOutlined,
+    SmileFilled,
+    SmileOutlined,
+} from "@ant-design/icons";
+import { useAppSelector } from "@/hooks/reduxHooks";
+import { selectAuth } from "@/store/reducers/auth";
+import { useRef } from "react";
+import { ProfileType } from "@/types/types";
 // Achievements Icons
 import {
     FriendlyIcon as friendly,
@@ -11,8 +26,13 @@ import {
     SharpshooterIcon as sharpshooter,
     WildfireIcon as wildfire,
     WinnerIcon as winner,
+    MessageIcon,
+    PlayGameIcon,
+    DeleteUserIcon,
+    BlockUserIcon,
+    UserIcon,
+    EmailIcon,
 } from "@/icons/index";
-import { useRef } from "react";
 
 const achievementsIcons: { [key: string]: any } = {
     friendly,
@@ -23,21 +43,15 @@ const achievementsIcons: { [key: string]: any } = {
     winner,
 };
 interface Props {
-    avatar: string;
-    level: number;
-    achievements: {
-        name: string;
-        level: string;
-    }[];
-    matches: {
-        total: number;
-        winne: number;
-    };
+    data: ProfileType;
 }
 
-const { Text } = Typography;
-const Statistics: React.FC<Props> = (props) => {
-    const { avatar, achievements, matches, level } = props;
+const { Text, Title, Paragraph } = Typography;
+const Statistics: React.FC<Props> = ({ data }) => {
+    const level = 12.25;
+    const matches = { total: 10, winne: 9 };
+    const { img_url, users_achievements } = data;
+    const { intra_id } = useAppSelector(selectAuth);
     const progress = ((level - Math.floor(level)) / 1) * 100;
     const WinRatio = parseInt(
         ((matches.winne / matches.total) * 100).toFixed(2)
@@ -45,7 +59,7 @@ const Statistics: React.FC<Props> = (props) => {
     const lazyRoot = useRef(null);
 
     const mapAchievements = () => {
-        return achievements.map((a, index) => {
+        return users_achievements.map((a, index) => {
             return (
                 <Avatar
                     key={index}
@@ -58,17 +72,14 @@ const Statistics: React.FC<Props> = (props) => {
             );
         });
     };
-
-    console.log(props.achievements);
-
     return (
         <div className={style.container}>
             <div className={style.progressContainer} ref={lazyRoot}>
                 <Image
                     className={style.progressImage}
                     lazyRoot={lazyRoot}
-                    loader={() => avatar}
-                    src="/images/ali.png"
+                    loader={() => img_url || '/images/defaultProfileAvatar.jpg'}
+                    src="/images/defaultProfileAvatar.jpg"
                     objectFit="cover"
                     layout="fill"
                     priority
@@ -83,22 +94,24 @@ const Statistics: React.FC<Props> = (props) => {
                     format={() => level.toFixed(2)}
                     trailColor="rgba(0, 0, 0, 0.2)"
                 />
-                <Upload>
-                    <Button
-                        icon={<EditOutlined size={1} />}
-                        shape="circle"
-                        size="large"
-                        style={{
-                            position: "absolute",
-                            bottom: "20%",
-                            right: "20%",
-                            backgroundColor: "rgba(0, 0, 0, 0.4)",
-                            color: "var(--light-color)",
-                        }}
-                    />
-                </Upload>
+                {intra_id === data.intra_id && (
+                    <Upload>
+                        <Button
+                            icon={<EditOutlined size={1} />}
+                            shape="circle"
+                            size="large"
+                            style={{
+                                position: "absolute",
+                                bottom: "20%",
+                                right: "20%",
+                                backgroundColor: "rgba(0, 0, 0, 0.4)",
+                                color: "var(--light-color)",
+                            }}
+                        />
+                    </Upload>
+                )}
             </div>
-            {achievements.length > 0 && (
+            {users_achievements.length > 0 && (
                 <div className={style.achievements}>
                     <Avatar.Group
                         className={style.avatarGroup}
@@ -119,38 +132,91 @@ const Statistics: React.FC<Props> = (props) => {
                 </div>
             )}
             <div className={style.gameRatioContainer}>
-                <Progress
-                    type="dashboard"
-                    percent={WinRatio}
-                    gapDegree={180}
-                    status="normal"
-                    width={200}
-                    trailColor="var(--error-color)"
-                    format={() => (
-                        <Text type="secondary">{`Win Ratio ${WinRatio}%`}</Text>
-                    )}
-                    style={{
-                        height: "120px",
-                    }}
-                />
-                <Badge
-                    className={style.badge}
-                    status="default"
-                    color={"var(--primary-color)"}
-                    text={
-                        <Text type="secondary">{`Wins ${matches.winne}`}</Text>
-                    }
-                />
-                <Badge
-                    className={style.badge}
-                    status="error"
-                    text={
-                        <Text type="secondary">
-                            {`Loses ${matches.total - matches.winne}`}
+                {intra_id === data.intra_id ? (
+                    <>
+                        <Progress
+                            success={{
+                                percent: WinRatio,
+                                strokeColor: "var(--success-color)",
+                            }}
+                            type="dashboard"
+                            gapDegree={180}
+                            status="normal"
+                            width={200}
+                            trailColor="var(--error-color)"
+                            format={() => (
+                                <Title
+                                    level={4}
+                                    type="secondary"
+                                    italic
+                                >{`Win Ratio ${WinRatio}%`}</Title>
+                            )}
+                            style={{
+                                height: "120px",
+                            }}
+                        />
+                        <Badge
+                            className={style.badge}
+                            status="default"
+                            color={"var(--success-color)"}
+                            text={
+                                <Text
+                                    type="success"
+                                    italic
+                                >{`Wins ${matches.winne}`}</Text>
+                            }
+                        />
+                        <Badge
+                            className={style.badge}
+                            status="error"
+                            text={
+                                <Text type="danger" italic>
+                                    {`Loses ${matches.total - matches.winne}`}
+                                </Text>
+                            }
+                            size="default"
+                        />
+                    </>
+                ) : (
+                    <Space direction="vertical">
+                        <Space>
+                            <Button
+                                type="primary"
+                                size="large"
+                                icon={<Icon component={MessageIcon} />}
+                            />
+                            <Button
+                                type="primary"
+                                size="large"
+                                icon={<Icon component={PlayGameIcon} />}
+                            />
+                            <Button
+                                type="primary"
+                                size="large"
+                                icon={<Icon component={DeleteUserIcon} />}
+                            />
+                            <Button
+                                type="primary"
+                                size="large"
+                                icon={<Icon component={BlockUserIcon} />}
+                            />
+                        </Space>
+                        <Text strong italic>
+                            <Icon
+                                component={UserIcon}
+                                style={{ fontSize: 17 }}
+                            />{" "}
+                            {` ${data.username}`}
                         </Text>
-                    }
-                    size="default"
-                />
+                        <Text strong italic>
+                            <Icon
+                                component={EmailIcon}
+                                style={{ fontSize: 17 }}
+                            />
+                            {` ${data.email}`}
+                        </Text>
+                    </Space>
+                )}
             </div>
         </div>
     );

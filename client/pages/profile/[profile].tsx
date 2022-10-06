@@ -21,7 +21,7 @@ const Profile: React.FC = () => {
     const router = useRouter();
     const { query, isReady } = router;
     const [data, setData] = useState<ProfileType>();
-    // const user = useAppSelector(selectAuth())
+    const { intra_id } = useAppSelector(selectAuth);
 
     const loadProfile = async (profile: string | string[]) => {
         setLoading(true);
@@ -68,39 +68,37 @@ const Profile: React.FC = () => {
                         <div className={style.cover} ref={lazyRoot}>
                             <Image
                                 lazyRoot={lazyRoot}
-                                loader={() => data.cover} // ! change it
+                                loader={() => data.cover ||"/images/defaultProfileCover.png" } // ! change it
                                 src="/images/defaultProfileCover.png"
                                 layout="fill"
                                 objectFit="cover"
                                 priority
                             />
-                            <Upload>
-                                <Button
-                                    icon={<EditOutlined size={1} />}
-                                    shape="circle"
-                                    size="large"
-                                    style={{
-                                        position: "absolute",
-                                        top: "10px",
-                                        right: "10px",
-                                        backgroundColor: "rgba(0, 0, 0, 0.4)",
-                                        color: "var(--light-color)",
-                                    }}
-                                />
-                            </Upload>
+                            {intra_id === data.intra_id && (
+                                <Upload>
+                                    <Button
+                                        icon={<EditOutlined size={1} />}
+                                        shape="circle"
+                                        size="large"
+                                        style={{
+                                            position: "absolute",
+                                            top: "10px",
+                                            right: "10px",
+                                            backgroundColor:
+                                                "rgba(0, 0, 0, 0.4)",
+                                            color: "var(--light-color)",
+                                        }}
+                                    />
+                                </Upload>
+                            )}
                         </div>
                     </Badge.Ribbon>
                     <div className={style.statisticsData}>
                         <div className={style.statistics}>
-                            <Statistics
-                                achievements={data.users_achievements}
-                                avatar={data.img_url}
-                                matches={{ total: 10, winne: 2 }}
-                                level={20.22}
-                            />
+                            <Statistics data={data} />
                         </div>
                         <div className={style.data}>
-                            <UserData />
+                            <UserData data={data} />
                         </div>
                     </div>
                 </>

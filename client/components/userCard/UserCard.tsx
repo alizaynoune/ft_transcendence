@@ -12,58 +12,48 @@ import {
 } from "@/icons/index";
 
 interface DataType {
-  gender: string;
-  name: {
-    title: string;
-    first: string;
-    last: string;
-  };
+  id: number,
+  intra_id: number;
+  username: string;
   email: string;
-  picture: {
-    large: string;
-    medium: string;
-    thumbnail: string;
-  };
-  nat: string;
-  login: {
-    uuid: string;
-    username: string;
-    password: string;
-    salt: string;
-    md5: string;
-    sha1: string;
-    sha256: string;
-  };
+  first_name: string;
+  last_name: string;
+  img_url: string;
+  cover: string;
+  status: string;
+  created_at: string;
+  updated_at: string;
 }
 
 interface Props {
   type: "friend" | "request" | "block";
   user: DataType;
+  action : (id: number, action: string) => void;
 }
 
-const deleteFriend = (id: string) => {
-//console.log(id);
+const deleteFriend = (id: number) => {
+console.log(id);
 };
 
-const RequestButtons = (id: string) => (
+const RequestButtons = (id: number, action: (id: number, action: string) => void) => (
   <div className={style.actionContainer}>
     <Button
       ghost
       danger
       type="primary"
       icon={<CloseOutlined />}
-      onClick={() => deleteFriend(id)}
+      onClick={() => action(id, 'rejectrequest')}
     />
     <Button
       ghost
       type="primary"
       icon={<CheckOutlined />}
-      onClick={() => deleteFriend(id)}
+      onClick={() => action(id, 'acceptrequest')}
     />
   </div>
 );
 
-const FriendButtons = (id: string) => (
+const FriendButtons = (id: number) => (
   <div className={style.actionContainer}>
     <Button
       ghost
@@ -92,10 +82,10 @@ const FriendButtons = (id: string) => (
   </div>
 );
 
-const BlockButtons = (id: string) => (
+const BlockButtons = (id: number) => (
   <div className={style.actionContainer}>
     <Button type="primary" onClick={() => deleteFriend(id)}>
-      Unblock
+      {"Unblock"}
     </Button>
   </div>
 );
@@ -106,15 +96,15 @@ const UserCard: React.FC<Props> = (props) => {
   return (
     <List.Item
       className={style.item}
-      key={user.login.uuid}
+      key={user.intra_id}
       actions={[
         <Popover
           content={
             type === "friend"
-              ? FriendButtons(user.login.uuid)
+              ? FriendButtons(user.intra_id)
               : type === "request"
-              ? RequestButtons(user.login.uuid)
-              : BlockButtons(user.login.uuid)
+              ? RequestButtons(user.intra_id, props.action)
+              : BlockButtons(user.intra_id)
           }
           trigger="click"
           placement="left"
@@ -124,9 +114,9 @@ const UserCard: React.FC<Props> = (props) => {
       ]}
     >
       <List.Item.Meta
-        avatar={<Avatar src={user.picture.large} size="large" />}
-        title={`${user.name.first} ${user.name.last}`}
-        description={user.login.username}
+        avatar={<Avatar src={user.img_url} size="large" />}
+        title={`${user.first_name} ${user.last_name}`}
+        description={user.username}
       />
     </List.Item>
   );
