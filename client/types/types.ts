@@ -3,39 +3,37 @@ export interface AuthType {
     first_name: string;
     last_name: string;
     img_url: string;
+    email: string;
+    intra_id: number;
+    notifications: NotificationType[]
 }
 
 export interface NotificationType {
     id: string;
-    type: string; // ! change it
-    user: {
-        name: string;
-        avatar: string;
-    };
-    read: boolean;
+    isRead: boolean;
     content: string;
-    date: Date;
+    user: {
+      id: string;
+      name: { first: string; last: string };
+      username: string;
+      avatar: string;
+    };
+    createAt: Date;
 }
 
 export interface ProfileType {
-    img_url: string;
+    id: number;
+    intra_id: number;
     cover: string;
-    id: string;
-    username: string;
-    name: {
-        first: string;
-        last: string;
-    };
+    created_at: Date;
     email: string;
-    phone: string;
-    gender: string;
-    birthday: string;
-    location: string;
-    level: number;
-    users_achievements: {
-      name: string;
-      level: string;
-    }[];
+    first_name: string;
+    img_url: string;
+    last_name: number;
+    status: string;
+    updated_at: Date;
+    username: string;
+    users_achievements: [];
     matches: {
         total: number;
         winne: number;

@@ -7,6 +7,7 @@ import { Badge, Button, Spin, Upload } from "antd";
 import { EditOutlined, LoadingOutlined } from "@ant-design/icons";
 import { useAppDispatch, useAppSelector } from "@/hooks/reduxHooks";
 import { selectLoading, changeLoading } from "@/reducers/globalLoading";
+import { selectAuth } from "@/store/reducers/auth";
 // types
 import { ProfileType } from "@/types/types";
 import { useEffect, useRef, useState } from "react";
@@ -19,35 +20,23 @@ const Profile: React.FC = () => {
     const dispatch = useAppDispatch();
     const router = useRouter();
     const { query, isReady } = router;
-    const [data, setData] = useState<ProfileType>({
-        id: "",
-        username: "",
-        name: { first: "", last: "" },
-        email: "",
-        phone: "",
-        gender: "",
-        birthday: "",
-        location: "",
-        img_url: "",
-        level: 0,
-        users_achievements: [],
-        matches: { total: 0, winne: 0 },
-        cover: "",
-    });
+    const [data, setData] = useState<ProfileType>();
+    // const user = useAppSelector(selectAuth())
 
     const loadProfile = async (profile: string | string[]) => {
         setLoading(true);
         dispatch(changeLoading(true));
         try {
-            // const { profile } = router.query;
-            // console.log(router.query);
-
             const res = await axios.get(`profile/${profile}`);
             console.log(res);
             setData(res.data);
+            const test = (({ id, username }) => ({ user: id, name: username }))(
+                res.data
+            );
+            console.log(test, "<<<<<done");
+
             setLoading(false);
             dispatch(changeLoading(false));
-            // console.log(data);
         } catch (error) {
             dispatch(changeLoading(false));
             setLoading(false);
@@ -65,9 +54,13 @@ const Profile: React.FC = () => {
         }
     }, [isReady, query.profile]);
 
+    useEffect(() => {
+        console.log(data);
+    }, [data]);
+
     return (
         <section className={style.container}>
-            {loading ? (
+            {loading || !data ? (
                 <Spin indicator={<LoadingOutlined />} />
             ) : (
                 <>

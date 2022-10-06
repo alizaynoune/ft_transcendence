@@ -3,7 +3,7 @@ import { createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "@/config/axios";
 import { setTimeout } from "timers";
 
-export const AuthTunk = createAsyncThunk<AuthType>("auth", async () => {
+export const AuthTunk = createAsyncThunk("auth", async () => {
   try {
     const res = await axios.post("auth/login");
     return res.data

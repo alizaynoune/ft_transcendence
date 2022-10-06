@@ -17,36 +17,14 @@ import {
   message,
 } from "antd";
 import type { MenuProps } from "antd";
-import { useAppSelector, useAppDispatch } from "@/hooks/reduxHooks";
-import { AuthTunk } from "@/store/actions/auth";
+import { useAppSelector } from "@/hooks/reduxHooks";
 import { selectAuth } from "@/reducers/auth";
 import { _42Icon } from "@/icons/index";
-import { useEffect, useState } from "react";
-import { loadToken } from "@/tools/localStorage";
+import { useEffect } from "react";
 
 interface PropsType {
   collapsed: boolean;
   setCollapsed: React.Dispatch<React.SetStateAction<boolean>>;
-}
-
-interface NotifType {
-  id: string;
-  isRead: boolean;
-  content: string;
-  user: {
-    id: string;
-    name: { first: string; last: string };
-    username: string;
-    avatar: string;
-  };
-  createAt: Date;
-}
-
-interface UserType {
-  id: string;
-  username: string;
-  name: { first: string; last: string };
-  avatar: string;
 }
 
 type MenuItem = Required<MenuProps>["items"][number];
@@ -66,59 +44,19 @@ function getItem(
   } as MenuItem;
 }
 
-async function fetchUserList(): Promise<UserType[]> {
-  return fetch("https://randomuser.me/api/?results=20")
-    .then((response) => response.json())
-    .then((body) =>
-      body.results.map(
-        (user: {
-          name: { first: string; last: string };
-          login: { username: string; uuid: string };
-          picture: { large: string };
-        }) => ({
-          id: user.login.uuid,
-          username: user.login.username,
-          name: user.name,
-          avatar: user.picture.large,
-        })
-      )
-    );
-}
 const { Text } = Typography;
 const Header: React.FC<PropsType> = (props) => {
   const { collapsed, setCollapsed } = props;
-  const { isAuth, img_url, isLoading, error } = useAppSelector(selectAuth);
-  const [notif, setNotif] = useState<NotifType[]>([]);
-  const [loading, setLoading] = useState(false);
-  const dispatch = useAppDispatch();
-
-  const randomNotif = () => {
-    fetchUserList()
-      .then((res) => {
-        const notif = res.map((i) => {
-          return {
-            id: "",
-            isRead: false,
-            content: "message",
-            user: i,
-            createAt: new Date(),
-          };
-        });
-        setNotif(notif);
-      })
-      .catch((e) => {
-        console.log(e);
-      });
-  };
+  const { isAuth, img_url, notifications, error} = useAppSelector(selectAuth);
 
   useEffect(() => {
     error && message.error(error.message);
   }, [error]);
   useEffect(() => {
-      randomNotif();
+      // randomNotif();
   }, [isAuth]);
 
-  const items: MenuItem[] = notif.map((i) =>
+  const items: MenuItem[] = notifications?.map((i) =>
     getItem(
       <Space>
         <Space direction="vertical">
@@ -181,8 +119,8 @@ const Header: React.FC<PropsType> = (props) => {
         </form>
       ) : (
         <div className={style.rightDiv}>
-          <Dropdown overlay={menu} trigger={["click"]}>
-            <Badge count={notif.length}>
+          <Dropdown overlay={menu} trigger={["click"]} disabled={notifications.length ? false :true}>
+            <Badge count={ notifications.length}>
               <BellFilled
                 style={{
                   fontSize: "180%",
