@@ -1,79 +1,65 @@
 import style from "./userCard.module.css";
 import { List, Avatar, Button, Popover } from "antd";
 import Icon, { CloseOutlined, CheckOutlined } from "@ant-design/icons";
-
+import Link from "next/link";
+import { useAppSelector } from "@/hooks/reduxHooks";
+import { selectAuth } from "@/store/reducers/auth";
 // Icons
-import {
-  DotsVIcon,
-  DeleteUserIcon,
-  BlockUserIcon,
-  MessageIcon,
-  PlayGameIcon,
-} from "@/icons/index";
-import { UserInfoType } from "@/types/types";
+import { DotsVIcon, DeleteUserIcon, BlockUserIcon, MessageIcon, PlayGameIcon } from "@/icons/index";
+import { UserType, FriendActions } from "@/types/types";
 
-type ActionType = (id: number, action: string) => void;
+// type ActionType = (id: number, action: string) => void;
+type ActionType = (user: UserType, action: string) => void;
 
 interface Props {
   type: "friend" | "request" | "block";
-  user: UserInfoType;
-  action: ActionType;
+  user: UserType;
+  action: FriendActions
 }
 
-const deleteFriend = (id: number) => {
-  console.log(id);
+const deleteFriend = (user: UserType) => {
+  console.log(user.id);
 };
 
-const RequestButtons = (id: number, action: ActionType) => (
+const RequestButtons = (user: UserType, action: FriendActions) => (
   <div className={style.actionContainer}>
-    <Button
-      ghost
-      danger
-      type="primary"
-      icon={<CloseOutlined />}
-      onClick={() => action(id, "rejectrequest")}
-    />
-    <Button
-      ghost
-      type="primary"
-      icon={<CheckOutlined />}
-      onClick={() => action(id, "acceptrequest")}
-    />
+    <Button ghost danger type="primary" icon={<CloseOutlined />} onClick={() => action && action(user, "rejectrequest")} />
+    <Button ghost type="primary" icon={<CheckOutlined />} onClick={() => action && action(user, "acceptrequest")} />
   </div>
 );
 
-const FriendButtons = (id: number, action: ActionType) => (
+const FriendButtons = (user: UserType, action: FriendActions) => (
   <div className={style.actionContainer}>
     <Button
       ghost
       type="primary"
       icon={<Icon component={MessageIcon} style={{ fontSize: "120%" }} />}
-      onClick={() => action(id, "message")}
+      onClick={() => action && action(user, "message")}
     />
     <Button
       ghost
       type="primary"
       icon={<Icon component={PlayGameIcon} style={{ fontSize: "120%" }} />}
-      onClick={() => action(id, "playeGame")}
+      onClick={() => action && action(user, "playeGame")}
     />
     <Button
       ghost
       type="primary"
       icon={<Icon component={BlockUserIcon} style={{ fontSize: "120%" }} />}
-      onClick={() => action(id, "blockfriend")}
+      onClick={() => action && action(user, "blockfriend")}
     />
     <Button
       ghost
       type="primary"
       icon={<Icon component={DeleteUserIcon} style={{ fontSize: "120%" }} />}
-      onClick={() => action(id, "deleteUser")}
+      onClick={() => action && action(user, "deleteUser")}
     />
   </div>
 );
 
-const BlockButtons = (id: number) => (
+const BlockButtons = (user: UserType) => (
   <div className={style.actionContainer}>
-    <Button type="primary" onClick={() => deleteFriend(id)}>
+    <Button type="primary" onClick={() => deleteFriend(user)}>
       {"Unblock"}
     </Button>
   </div>
@@ -86,26 +72,30 @@ const UserCard: React.FC<Props> = (props) => {
     <List.Item
       className={style.item}
       key={user.intra_id}
-      actions={[
-        <Popover
-          content={
-            type === "friend"
-              ? FriendButtons(user.intra_id, action)
-              : type === "request"
-              ? RequestButtons(user.intra_id, props.action)
-              : BlockButtons(user.intra_id)
-          }
-          trigger="click"
-          placement="left"
-        >
-          <Icon component={DotsVIcon} style={{ fontSize: "140%" }} />
-        </Popover>,
-      ]}
+      actions={
+        action && [
+          <Popover
+            content={
+              type === "friend" ? FriendButtons(user, action) : type === "request" ? RequestButtons(user, action) : BlockButtons(user)
+            }
+            trigger="click"
+            placement="left"
+          >
+            <Icon component={DotsVIcon} style={{ fontSize: "140%" }} />
+          </Popover>,
+        ]
+      }
     >
       <List.Item.Meta
-        avatar={<Avatar src={user.img_url} size="large" />}
-        title={`${user.first_name} ${user.last_name}`}
-        description={user.username}
+        avatar={
+          <Link href={`/profile/${user.username}`}>
+            <a>
+              <Avatar src={user.img_url} size="large" />
+            </a>
+          </Link>
+        }
+        title={<Link href={`/profile/${user.username}`}>{user.username}</Link>}
+        description={`${user.first_name} ${user.last_name}`}
       />
     </List.Item>
   );
