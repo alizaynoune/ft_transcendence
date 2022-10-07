@@ -1,6 +1,7 @@
 import style from "./userCard.module.css";
-import { List, Avatar, Button, Popover } from "antd";
-import Icon, { CloseOutlined, CheckOutlined } from "@ant-design/icons";
+import { List, Avatar, Button, Popover, Menu, Dropdown, Space } from "antd";
+import type { MenuProps, ButtonProps } from "antd";
+import Icon, { CloseOutlined, CheckOutlined, DownOutlined } from "@ant-design/icons";
 import Link from "next/link";
 import { useContext } from "react";
 import { ProfileContext } from "context/profileContext";
@@ -12,6 +13,14 @@ interface Props {
   type: "friend" | "request" | "block";
   user: UserType;
   action: FriendActions;
+}
+type MenuItem = Required<MenuProps>["items"][number];
+
+function getItem(label: React.ReactNode, key: React.Key): MenuItem {
+  return {
+    key,
+    label,
+  } as MenuItem;
 }
 
 const deleteFriend = (user: UserType) => {
@@ -62,6 +71,20 @@ const BlockButtons = (user: UserType) => (
   </div>
 );
 
+const actionsList = {
+  friend: [
+    { icon: <Icon component={MessageIcon} style={{ fontSize: "120%" }} />, action: "message" },
+    { icon: <Icon component={PlayGameIcon} style={{ fontSize: "120%" }} />, action: "playGame" },
+    { icon: <Icon component={BlockUserIcon} style={{ fontSize: "120%" }} />, action: "blockfriend" },
+    { icon: <Icon component={DeleteUserIcon} style={{ fontSize: "120%" }} />, action: "deletefriend" },
+  ],
+  request: [
+    { icon: <CloseOutlined />, action: "rejectrequest" },
+    { icon: <CheckOutlined />, action: "acceptrequest" },
+  ],
+  block: [{ icon: <Icon>{"Unblock"}</Icon>, action: "Unblock" }],
+};
+
 const UserCard: React.FC<Props> = (props) => {
   const { type, user } = props;
   const { loading, isMyProfile, actions } = useContext(ProfileContext) as ProfileContextType;
@@ -76,12 +99,16 @@ const UserCard: React.FC<Props> = (props) => {
           ? [
               <Popover
                 content={
-                  type === "friend" ? FriendButtons(user, action) : type === "request" ? RequestButtons(user, action) : BlockButtons(user)
+                  <div className={style.actionContainer}>
+                    {actionsList[type].map((i, key) => (
+                      <Button ghost type="primary" danger={i.action === "rejectrequest"} icon={i.icon} onClick={() => action && action(user, i.action)} />
+                    ))}
+                  </div>
                 }
-                trigger="click"
+                trigger={["click"]}
                 placement="left"
               >
-                <Icon component={DotsVIcon} style={{ fontSize: "140%" }} />
+                <Icon component={DotsVIcon} style={{ fontSize: 24 }} />
               </Popover>,
             ]
           : undefined
