@@ -2,19 +2,16 @@ import style from "./userCard.module.css";
 import { List, Avatar, Button, Popover } from "antd";
 import Icon, { CloseOutlined, CheckOutlined } from "@ant-design/icons";
 import Link from "next/link";
-import { useAppSelector } from "@/hooks/reduxHooks";
-import { selectAuth } from "@/store/reducers/auth";
+import { useContext } from "react";
+import { ProfileContext } from "context/profileContext";
 // Icons
 import { DotsVIcon, DeleteUserIcon, BlockUserIcon, MessageIcon, PlayGameIcon } from "@/icons/index";
-import { UserType, FriendActions } from "@/types/types";
-
-// type ActionType = (id: number, action: string) => void;
-type ActionType = (user: UserType, action: string) => void;
+import { UserType, FriendActions, ProfileContextType } from "@/types/types";
 
 interface Props {
   type: "friend" | "request" | "block";
   user: UserType;
-  action: FriendActions
+  action: FriendActions;
 }
 
 const deleteFriend = (user: UserType) => {
@@ -66,24 +63,28 @@ const BlockButtons = (user: UserType) => (
 );
 
 const UserCard: React.FC<Props> = (props) => {
-  const { type, user, action } = props;
+  const { type, user } = props;
+  const { loading, isMyProfile, actions } = useContext(ProfileContext) as ProfileContextType;
+  const action = isMyProfile ? actions : undefined;
 
   return (
     <List.Item
       className={style.item}
       key={user.intra_id}
       actions={
-        action && [
-          <Popover
-            content={
-              type === "friend" ? FriendButtons(user, action) : type === "request" ? RequestButtons(user, action) : BlockButtons(user)
-            }
-            trigger="click"
-            placement="left"
-          >
-            <Icon component={DotsVIcon} style={{ fontSize: "140%" }} />
-          </Popover>,
-        ]
+        isMyProfile
+          ? [
+              <Popover
+                content={
+                  type === "friend" ? FriendButtons(user, action) : type === "request" ? RequestButtons(user, action) : BlockButtons(user)
+                }
+                trigger="click"
+                placement="left"
+              >
+                <Icon component={DotsVIcon} style={{ fontSize: "140%" }} />
+              </Popover>,
+            ]
+          : undefined
       }
     >
       <List.Item.Meta

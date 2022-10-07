@@ -1,5 +1,5 @@
 import style from "./userData.module.css";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useContext } from "react";
 import { Tabs, Typography } from "antd";
 import { useRouter } from "next/router";
 import AccountSetting from "@/containers/accountSettingTab/AccountSettingTab";
@@ -7,22 +7,22 @@ import FriendsTabs from "@/containers/friendsTab/FriendsTabs";
 import BlockedsList from "@/components/blockedsList/BlockedsList";
 import LastMatches from "@/components/lastMatches/LastMatches";
 import Icon from "@ant-design/icons";
-import { UserType } from "@/types/types";
 import { useAppSelector } from "@/hooks/reduxHooks";
 import { selectAuth } from "@/store/reducers/auth";
-
 import { BlockUserIcon, SettingIcon, FriendsIcon, GameIcon } from "@/icons/index";
+import { ProfileContext } from "context/profileContext";
+import { UserType, ProfileContextType } from "@/types/types";
 
 interface PropsType {
-  data: UserType;
+  profileId: number;
 }
 
 const { TabPane } = Tabs;
-const UserData: React.FC<PropsType> = ({ data }) => {
+const UserData: React.FC<PropsType> = ({ profileId }) => {
   const [currentTab, setCurrentTab] = useState<string>("Friends");
   const router = useRouter();
   const { intra_id } = useAppSelector(selectAuth);
-
+  const { checkeIsMyProfile, isMyProfile } = useContext(ProfileContext) as ProfileContextType;
   const handelUrlHash = () => {
     const hashs = ["AccountSettings", "Friends", "Blockeds", "LastMatches"];
     const hash = router.asPath.split("#")[1];
@@ -34,12 +34,13 @@ const UserData: React.FC<PropsType> = ({ data }) => {
   }, [router.asPath]);
 
   useEffect(() => {
+    checkeIsMyProfile(profileId);
     handelUrlHash();
   }, []);
 
   return (
     <div className={style.container}>
-      {intra_id === data.intra_id ? (
+      {isMyProfile ? (
         <Tabs
           centered
           size="large"
@@ -57,7 +58,18 @@ const UserData: React.FC<PropsType> = ({ data }) => {
             }
             key="Friends"
           >
-            <FriendsTabs profileId={data.intra_id} />
+            <FriendsTabs />
+          </TabPane>
+          <TabPane
+            tab={
+              <>
+                <Typography.Text className={style.tabText}>{"Blockeds"}</Typography.Text>
+                <Icon className={style.tabIcon} component={BlockUserIcon} />
+              </>
+            }
+            key="Blockeds"
+          >
+            <BlockedsList />
           </TabPane>
           <TabPane
             tab={
@@ -74,17 +86,6 @@ const UserData: React.FC<PropsType> = ({ data }) => {
           <TabPane
             tab={
               <>
-                <Typography.Text className={style.tabText}>{"Blockeds"}</Typography.Text>
-                <Icon className={style.tabIcon} component={BlockUserIcon} />
-              </>
-            }
-            key="Blockeds"
-          >
-            <BlockedsList />
-          </TabPane>
-          <TabPane
-            tab={
-              <>
                 <Typography.Text className={style.tabText}>{"Account Settings"}</Typography.Text>
                 <Icon className={style.tabIcon} component={SettingIcon} />
               </>
@@ -95,7 +96,7 @@ const UserData: React.FC<PropsType> = ({ data }) => {
           </TabPane>
         </Tabs>
       ) : (
-        <FriendsTabs profileId={data.intra_id} />
+        <FriendsTabs />
       )}
     </div>
   );

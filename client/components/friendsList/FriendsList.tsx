@@ -1,22 +1,23 @@
 import style from "./friendsList.module.css";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useContext } from "react";
 import { Empty, List, message } from "antd";
 import UserCard from "@/components/userCard/UserCard";
-import { UserType, FriendActions } from "@/types/types";
+import { UserType, FriendActions, ProfileContextType } from "@/types/types";
+import { ProfileContext } from "context/profileContext";
+import { useAppSelector } from "@/hooks/reduxHooks";
 
-interface PropsType {
-  friends: UserType[];
-  action: FriendActions
-}
+const FriendsCard: React.FC = () => {
+  const { friendsList, loading, isMyProfile, loadFriends, actions } = useContext(ProfileContext) as ProfileContextType;
 
-const FriendsCard: React.FC<PropsType> = ({ friends, action }) => {
-  console.log(friends);
+  useEffect(() => {
+    loadFriends()
+  }, []);
 
   return (
     <div className={style.container}>
       <List
         className={style.list}
-        dataSource={friends}
+        dataSource={friendsList}
         itemLayout="horizontal"
         locale={{ emptyText: <Empty description={"You have no friends"} image={Empty.PRESENTED_IMAGE_SIMPLE} /> }}
         grid={{
@@ -29,15 +30,15 @@ const FriendsCard: React.FC<PropsType> = ({ friends, action }) => {
           xxl: 3,
         }}
         pagination={
-          friends.length < 17
+          friendsList.length < 17
             ? false
             : {
                 onChange: (page) => {},
-                total: friends.length,
+                total: friendsList.length,
                 pageSize: 16,
               }
         }
-        renderItem={(item) => <UserCard type="friend" user={item} action={action} />}
+        renderItem={(item) => <UserCard type="friend" user={item} action={isMyProfile ? actions: undefined} />}
       />
     </div>
   );

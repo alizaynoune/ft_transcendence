@@ -35,7 +35,18 @@ export interface UserType {
   updated_at: string;
 }
 
-export type FriendActions = ((user: UserType, action: string) => void) | undefined
+export type FriendActions = ((user: UserType, action: string) => void) | undefined;
+
+export interface ProfileContextType {
+  loading: boolean;
+  friendsList: UserType[];
+  invitesList: RequestFriendType[];
+  isMyProfile: boolean;
+  actions: FriendActions;
+  loadFriends: () => Promise<void>;
+  loadInvites: () => Promise<void>;
+  checkeIsMyProfile: (id:number) => void
+}
 
 export interface RequestFriendType {
   id: number;

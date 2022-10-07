@@ -6,65 +6,16 @@ import Request from "@/components/RequestList/RequestList";
 import { FriendsIcon, AddFriendIcon } from "@/icons/index";
 import { useAppSelector } from "@/hooks/reduxHooks";
 import { selectAuth } from "@/store/reducers/auth";
-import { useEffect, useState } from "react";
-import { UserType, FriendActions } from "@/types/types";
+import { useEffect, useState, useContext } from "react";
+import { UserType, FriendActions, ProfileContextType } from "@/types/types";
+import { ProfileContext } from "context/profileContext";
 import axios from "@/config/axios";
 
 const { TabPane } = Tabs;
-interface PropsType {
-  profileId: number;
-}
 
-const FriendsTabs: React.FC<PropsType> = ({ profileId }) => {
+const FriendsTabs: React.FC = () => {
   const { intra_id } = useAppSelector(selectAuth);
-  const [friends, setFriends] = useState<UserType[]>([]);
-  const [loading, setLoading] = useState(false);
-
-  const filterFriends = (id: number) => {
-    setFriends((prev) => prev.filter((f) => f.intra_id !== id));
-  };
-
-  const pushFriend = (user: UserType) => {
-    setFriends((prev) => [...prev, user]);
-  };
-
-  const loadMoreData = async () => {
-    if (loading) {
-      return;
-    }
-    setLoading(true);
-    try {
-      const res = await axios.get("friends"); //todo change to get list friends by username or id
-      if (res.data.friends) {
-        setFriends(res.data.friends.map((f: { userInfo: UserType }) => f.userInfo));
-      }
-      setLoading(false);
-    } catch (error) {
-      console.log(error);
-      error instanceof Error && message.error(error.message);
-    }
-  };
-
-  const action:FriendActions = async (user, action) => {
-    console.log(user);
-
-    try {
-      if (action === "blockfriend") {
-        //TODO: ['blockfriend', 'deletefriend'].include(actions)
-        const res = await axios.post(`friends/${action}`, {
-          id: user.intra_id.toString(),
-        });
-        message.success(res.data.message);
-        if (action === "blockfriend") filterFriends(user.intra_id);
-      } else console.log(action); //TODO: ['sendmessage', 'playgame'].include(action)
-    } catch (error) {
-      error instanceof Error && message.error(error.message);
-    }
-  };
-
-  useEffect(() => {
-    loadMoreData();
-  }, []);
+  const { isMyProfile } = useContext(ProfileContext) as ProfileContextType;
 
   return (
     <div className={style.container}>
@@ -90,9 +41,9 @@ const FriendsTabs: React.FC<PropsType> = ({ profileId }) => {
           }
           key="1"
         >
-          <FriendsList friends={friends} action={profileId === intra_id ? action : undefined} />
+          <FriendsList />
         </TabPane>
-        {intra_id === profileId && (
+        {isMyProfile && (
           <TabPane
             tab={
               <>
@@ -102,7 +53,7 @@ const FriendsTabs: React.FC<PropsType> = ({ profileId }) => {
             }
             key="2"
           >
-            <Request pushFriend={pushFriend} />
+            <Request />
           </TabPane>
         )}
       </Tabs>

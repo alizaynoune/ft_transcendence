@@ -4,7 +4,7 @@ import { Progress, Avatar, Badge, Typography, Upload, Button, Space } from "antd
 import Icon, { EditOutlined, CloseOutlined, CheckOutlined } from "@ant-design/icons";
 import { useAppSelector } from "@/hooks/reduxHooks";
 import { selectAuth } from "@/store/reducers/auth";
-import { useEffect, useRef } from "react";
+import { useRef } from "react";
 import { ProfileType, RelationshipType, UserType } from "@/types/types";
 // Achievements Icons
 import {
@@ -46,8 +46,6 @@ const Statistics: React.FC<Props> = ({ data }) => {
 
   const mapAchievements = () => {
     return users_achievements.map((a, index) => {
-      console.log(a);
-
       return (
         <Avatar
           key={index}

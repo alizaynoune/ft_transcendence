@@ -2,35 +2,11 @@ import style from "./blockedsList.module.css";
 import React, { useEffect, useState } from "react";
 import { List } from "antd";
 import UserCard from "@/components/userCard/UserCard";
-
-interface DataType {
-  gender: string;
-  name: {
-    title: string;
-    first: string;
-    last: string;
-  };
-  email: string;
-  picture: {
-    large: string;
-    medium: string;
-    thumbnail: string;
-  };
-  nat: string;
-  login: {
-    uuid: string;
-    username: string;
-    password: string;
-    salt: string;
-    md5: string;
-    sha1: string;
-    sha256: string;
-  };
-}
+import {UserType} from '@/types/types'
 
 const BlockedsList: React.FC = () => {
   const [loading, setLoading] = useState(false);
-  const [data, setData] = useState<DataType[]>([]);
+  const [data, setData] = useState<UserType[]>([]);
 
   const loadMoreData = () => {
     if (loading) {
@@ -50,9 +26,9 @@ const BlockedsList: React.FC = () => {
       });
   };
 
-  useEffect(() => {
-    loadMoreData();
-  }, []);
+  // useEffect(() => {
+  //   loadMoreData();
+  // }, []);
 
   return (
     <div className={style.container}>
@@ -75,7 +51,7 @@ const BlockedsList: React.FC = () => {
           total: 20,
           pageSize: 16,
         }}
-        renderItem={(item) => <UserCard type="block" user={item} />}
+        renderItem={(item) => <UserCard type="block" user={item} action={undefined}/>}
       />
     </div>
   );

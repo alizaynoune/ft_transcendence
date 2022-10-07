@@ -1,56 +1,27 @@
 import style from "./RequestList.module.css";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useContext } from "react";
 import { Empty, List } from "antd";
 import UserCard from "@/components/userCard/UserCard";
 import axios from "@/config/axios";
 import { message } from "antd";
-import { UserType, RequestFriendType } from "@/types/types";
+import { UserType, RequestFriendType, ProfileContextType } from "@/types/types";
+import { ProfileContext } from "context/profileContext";
 
-interface PropsType {
-  pushFriend: (user: UserType) => void;
-}
 
-const FriendRequestList: React.FC<PropsType> = ({ pushFriend }) => {
-  const [loading, setLoading] = useState(false);
+const FriendRequestList: React.FC= () => {
+//   const [loading, setLoading] = useState(false);
   const [data, setData] = useState<RequestFriendType[]>([]);
-
-  const loadMoreData = async () => {
-    if (loading) {
-      return;
-    }
-    setLoading(true);
-    try {
-      const res = await axios.get("/friends/invites");
-      console.log(res.data);
-      setData(res.data.invites);
-      setLoading(false);
-    } catch (error) {
-      console.log(error);
-      setLoading(false);
-    }
-  };
-
-  const action = async (user: UserType, action: string) => {
-    try {
-      const res = await axios.post(`friends/${action}`, {
-        id: user.intra_id.toString(),
-      });
-      setData((prev) => prev.filter((i) => i.senderid !== user.intra_id));
-      message.success(res.data.message);
-      if (action === "acceptrequest") pushFriend(user);
-    } catch (error: unknown) {
-      error instanceof Error && message.error(error.message);
-    }
-  };
+  const {invitesList, loadInvites, loading, actions} = useContext(ProfileContext) as ProfileContextType
 
   useEffect(() => {
-    loadMoreData();
+    // loadMoreData();
+    loadInvites()
   }, []);
 
   return (
     <div className={style.container}>
       <List
-        dataSource={data}
+        dataSource={invitesList}
         itemLayout="horizontal"
         locale={{ emptyText: <Empty description={"You have no friends"} image={Empty.PRESENTED_IMAGE_SIMPLE} /> }}
         grid={{
@@ -63,16 +34,16 @@ const FriendRequestList: React.FC<PropsType> = ({ pushFriend }) => {
           xxl: 3,
         }}
         pagination={
-          data.length < 17
+          invitesList.length < 17
             ? false
             : {
                 onChange: (page) => {
                 },
-                total: data.length,
+                total: invitesList.length,
                 pageSize: 16,
               }
         }
-        renderItem={(item) => <UserCard user={item.userInfo} type="request" action={action} />}
+        renderItem={(item) => <UserCard user={item.userInfo} type="request" action={actions} />}
       />
     </div>
   );
