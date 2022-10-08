@@ -10,6 +10,7 @@ import { reject } from "lodash";
 interface PropsType {
   children: React.ReactNode;
 }
+type fnsType = (user: UserType) => void
 
 export const ProfileContext = React.createContext<ProfileContextType | null>(null);
 
@@ -20,10 +21,22 @@ const ProfileProvider: React.FC<PropsType> = ({ children }) => {
   const [isMyProfile, setIsMyProfile] = useState<boolean>(false);
   const { intra_id } = useAppSelector(selectAuth);
 
-  const pushFriend = () => {};
-  const filterFriends = () => {};
-  const filterInvites = () => {};
+  const filterFriends:fnsType = (user) => {
+    setFriendsList(prev => prev.filter(f => f.intra_id !== user.intra_id))    
+  };
+  const pushFriend:fnsType = (user) => {
+    setFriendsList(prev => [user, ...prev])
+  };
+  const filterInvites:fnsType = (user) => {
+    setInvitesList(prev => prev.filter(i => i.userInfo.intra_id !== user.intra_id))
+  };
   const checkeIsMyProfile = (id: number) => setIsMyProfile(id === intra_id);
+  const fns: {[k: string]: fnsType[]} = {
+    rejectrequest: [filterInvites],
+    acceptrequest: [filterInvites, pushFriend],
+    blockfriend: [filterFriends]
+  }
+
 
   const actions: FriendActions = (user, action) => {
     setLoading(true);
@@ -31,7 +44,7 @@ const ProfileProvider: React.FC<PropsType> = ({ children }) => {
       try {
         const res = await axios.post(`friends/${action}`, { id: user.intra_id.toString() });
         setLoading(false);
-        console.log(res);
+        if (action in fns) fns[action].forEach(f => f(user))
         return resolve(res.data);
       } catch (error) {
         setLoading(false);

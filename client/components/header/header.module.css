@@ -8,7 +8,9 @@
   /* width: 100%; */
 }
 
-.trigger {display: none;}
+.trigger {
+  display: none;
+}
 .leftDiv {
   width: 50%;
   height: 100%;
@@ -50,32 +52,29 @@
   /* line-height: 0 !important; */
 }
 
-.notifList {
-  max-height: 400px;
-  overflow-x: hidden;
-  overflow-y: scroll;
-  border-radius: 6px;
-  padding: 5px !important;
+@media screen and (max-width: 576px) {
+  .header {
+    padding: 0 5px !important;
+  }
+  .leftDiv {
+    display: none;
+  }
+  .trigger {
+    display: block;
+  }
 }
 
-.notifList li:not(:last-child){
-  /* background-color: aqua !important; */
-  border-bottom: 1px solid rgba(0,0,0,.06)
+@media screen and (min-width: 576px) {
 }
 
-
-@media screen and (max-width: 576px){
-  .header{padding: 0 5px !important;}
-  .leftDiv{display: none;}
-  .trigger{ display: block;}
+@media screen and (min-width: 768px) {
 }
 
-@media screen and (min-width: 576px){}
+@media screen and (min-width: 992px) {
+}
 
-@media screen and (min-width: 768px){}
+@media screen and (min-width: 1200px) {
+}
 
-@media screen and (min-width: 992px){}
-
-@media screen and (min-width: 1200px) {}
-
-@media screen and (min-width: 1600px){}
+@media screen and (min-width: 1600px) {
+}

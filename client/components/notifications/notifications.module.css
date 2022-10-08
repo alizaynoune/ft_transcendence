@@ -1,0 +1,12 @@
+.notifList {
+  max-height: 400px;
+  overflow-x: hidden;
+  overflow-y: scroll;
+  border-radius: 6px;
+  padding: 5px !important;
+}
+
+.notifList li:not(:last-child){
+  /* background-color: aqua !important; */
+  border-bottom: 1px solid rgba(0,0,0,.06)
+}

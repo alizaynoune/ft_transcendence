@@ -1,9 +1,3 @@
-// export {};
-// declare global {
-//   interface Error {
-//     response?: { data: { message: string } };
-//   }
-// }
 type PromiseReturn = Error | { message: string };
 export type FriendActions = (user: UserType, action: string) => Promise<PromiseReturn>;
 
@@ -18,16 +12,20 @@ export interface AuthType {
 }
 
 export interface NotificationType {
-  id: string;
-  isRead: boolean;
+  id: number;
+  type: "FRIEND_REQUEST" | "GAME_INVITE" | "OTHER";
+  userid: number;
+  fromid: number;
+  targetid: number;
   content: string;
-  user: {
-    id: string;
-    name: { first: string; last: string };
+  read: boolean;
+  createdat: Date;
+  updatedat: Date;
+  users_notification_fromidTousers: {
     username: string;
-    avatar: string;
+    img_url: string;
+    intra_id: number;
   };
-  createAt: Date;
 }
 
 export interface UserType {
