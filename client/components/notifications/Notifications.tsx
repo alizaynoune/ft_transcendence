@@ -7,6 +7,7 @@ import { useAppSelector, useAppDispatch } from "@/hooks/reduxHooks";
 import { selectAuth, pushNotification, readNotification } from "@/reducers/auth";
 import { useEffect, useState } from "react";
 import { NotificationType } from "@/types/types";
+import Link from "next/link";
 
 type MenuItem = Required<MenuProps>["items"][number];
 function getItem(
@@ -28,7 +29,7 @@ const { Text } = Typography;
 const Notifications: React.FC = () => {
   const [notificationsList, setNotificationsList] = useState<NotificationType[]>([]);
   const { notifications } = useAppSelector(selectAuth);
-  const dispatch = useAppDispatch()
+  const dispatch = useAppDispatch();
 
   useEffect(() => {
     setNotificationsList(notifications);
@@ -36,11 +37,15 @@ const Notifications: React.FC = () => {
   const items: MenuItem[] = notificationsList?.map((i) =>
     getItem(
       <Space>
-        <Space direction="vertical">
-          <Text strong>{i.users_notification_fromidTousers.username}</Text>
-          <Text type="secondary">{"Invet you to play a game"}</Text>
-        </Space>
-        <Text type="secondary">{moment(i.createdat).fromNow()}</Text>
+        {/* <Link href={`/profile/${i.users_notification_fromidTousers.username}`}>
+          <a> */}
+            <Space direction="vertical">
+              <Text strong>{i.users_notification_fromidTousers.username}</Text>
+              <Text type="secondary">{"Invet you to play a game"}</Text>
+            </Space>
+            <Text type="secondary">{moment(i.createdat).fromNow()}</Text>
+          {/* </a>
+        </Link> */}
       </Space>,
       i.read,
       i.id,
@@ -52,7 +57,7 @@ const Notifications: React.FC = () => {
       className={style.notifList}
       items={items}
       onClick={(e) => {
-        dispatch(readNotification(e.key))
+        dispatch(readNotification(e.key));
       }}
     />
   );

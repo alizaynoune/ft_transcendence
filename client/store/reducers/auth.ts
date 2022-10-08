@@ -47,9 +47,7 @@ export const AuthSlice = createSlice({
     },
     readNotification: (state, { payload }) => {
       const index = state.notifications.findIndex((i) => i.id === Number(payload));
-      if (index > -1) state.notifications[index].read = true;
-      console.log(index, Number(payload));
-      
+      if (index > -1) state.notifications[index].read = true;      
     },
   },
 
@@ -60,13 +58,10 @@ export const AuthSlice = createSlice({
         state.error = null;
       })
       .addCase(AuthTunk.rejected, (state, { error }) => {
-        console.log(error, "payload error");
         state.error = error;
         state.isLoading = false;
       })
       .addCase(AuthTunk.fulfilled, (state, { payload }) => {
-        console.log(payload);
-
         state.isLoading = false;
         state.isAuth = true;
         Object.assign(

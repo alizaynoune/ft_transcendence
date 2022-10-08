@@ -30,11 +30,7 @@ const Profile: React.FC = () => {
     dispatch(changeLoading(true));
     try {
       const res = await axios.get(`profile/${profile}`);
-      console.log(res);
       setData(res.data);
-      const test = (({ id, username }) => ({ user: id, name: username }))(res.data);
-      console.log(test, "<<<<<done");
-
       setLoading(false);
       dispatch(changeLoading(false));
     } catch (error) {

@@ -46,6 +46,8 @@ a {
   width: 100%;
 }
 
+.ant-dropdown-menu-item-disabled {opacity: 0.5;}
+
 /* #components-form-demo-normal-login .login-form-button {
   width: 100%;
 } */

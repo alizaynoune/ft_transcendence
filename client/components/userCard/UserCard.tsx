@@ -12,7 +12,6 @@ import { UserType, FriendActions, ProfileContextType } from "@/types/types";
 interface Props {
   type: "friend" | "request" | "block";
   user: UserType;
-  // action: FriendActions;
 }
 
 const actionsList = {
@@ -32,7 +31,6 @@ const actionsList = {
 const UserCard: React.FC<Props> = (props) => {
   const { type, user } = props;
   const { loading, isMyProfile, actions } = useContext(ProfileContext) as ProfileContextType;
-  // const action = isMyProfile ? actions : undefined;
   return (
     <List.Item
       className={style.item}
@@ -63,7 +61,7 @@ const UserCard: React.FC<Props> = (props) => {
                     ))}
                   </div>
                 }
-                trigger={["hover"]}
+                trigger={["click"]}
                 placement="left"
               >
                 <Icon component={DotsVIcon} style={{ fontSize: 24 }} />
