@@ -1,10 +1,10 @@
 import style from "./statistics.module.css";
 import Image from "next/image";
-import { Progress, Avatar, Badge, Typography, Upload, Button, Space } from "antd";
+import { Progress, Avatar, Badge, Typography, Upload, Button, Space, Tooltip } from "antd";
 import Icon, { EditOutlined, CloseOutlined, CheckOutlined } from "@ant-design/icons";
 import { useAppSelector } from "@/hooks/reduxHooks";
 import { selectAuth } from "@/store/reducers/auth";
-import { useRef } from "react";
+import { ComponentType, SVGProps, useRef } from "react";
 import { ProfileType, RelationshipType, UserType } from "@/types/types";
 // Achievements Icons
 import {
@@ -20,9 +20,12 @@ import {
   BlockUserIcon,
   UserIcon,
   EmailIcon,
+  AddFriendIcon,
 } from "@/icons/index";
 
-const achievementsIcons: { [key: string]: any } = {
+const achievementsIcons: {
+  [key: string]: ComponentType<SVGProps<SVGSVGElement>>;
+} = {
   friendly,
   legendary,
   photogenic,
@@ -35,6 +38,30 @@ interface Props {
 }
 const { Text, Title } = Typography;
 
+const actionsList = {
+  friend: [
+    { icon: <Icon component={MessageIcon} />, tooltip: "Send message", action: "" },
+    { icon: <Icon component={PlayGameIcon} />, tooltip: "Invite to play game", action: "" },
+    { icon: <Icon component={DeleteUserIcon} />, tooltip: "unfriend", action: "" },
+    { icon: <Icon component={BlockUserIcon} />, tooltip: "Block", action: "" },
+  ],
+  inviteSender: [
+    { icon: <Icon component={PlayGameIcon} />, tooltip: "Invite to play game", action: "" },
+    { icon: <CloseOutlined />, tooltip: "Accept friend request", action: "" },
+    { icon: <CheckOutlined />, tooltip: "Reject friend request", action: "" },
+    { icon: <Icon component={BlockUserIcon} />, tooltip: "Block", action: "" },
+  ],
+  inviteReceiver: [
+    { icon: <Icon component={PlayGameIcon} />, tooltip: "Invite to play game", action: "" },
+    { icon: <Icon component={BlockUserIcon} />, tooltip: "Block", action: "" },
+  ],
+  other: [
+    { icon: <Icon component={PlayGameIcon} />, tooltip: "Invite to play game", action: "" },
+    { icon: <Icon component={AddFriendIcon} />, tooltip: "Send friend request", action: "" },
+    { icon: <Icon component={BlockUserIcon} />, tooltip: "Block", action: "" },
+  ],
+};
+
 const Statistics: React.FC<Props> = ({ data }) => {
   const level = 12.25;
   const matches = { total: 10, winne: 9 };
@@ -43,6 +70,13 @@ const Statistics: React.FC<Props> = ({ data }) => {
   const progress = ((level - Math.floor(level)) / 1) * 100;
   const WinRatio = parseInt(((matches.winne / matches.total) * 100).toFixed(2));
   const lazyRoot = useRef(null);
+  const actionIndex = data.relationship
+    ? data.relationship.isFriend
+      ? "friend"
+      : data.relationship.senderid === intra_id
+      ? "inviteReceiver"
+      : "inviteSender"
+    : "other";
 
   const mapAchievements = () => {
     return users_achievements.map((a, index) => {
@@ -120,19 +154,14 @@ const Statistics: React.FC<Props> = ({ data }) => {
         {intra_id === data.intra_id ? (
           <>
             <Progress
-              success={{
-                percent: WinRatio,
-                strokeColor: "var(--success-color)",
-              }}
+              success={{ percent: WinRatio, strokeColor: "var(--success-color)" }}
               type="dashboard"
               gapDegree={180}
               status="normal"
               width={200}
               trailColor="var(--error-color)"
               format={() => <Title level={4} type="secondary" italic>{`Win Ratio ${WinRatio}%`}</Title>}
-              style={{
-                height: "120px",
-              }}
+              style={{ height: "120px" }}
             />
             <Badge
               className={style.badge}
@@ -154,10 +183,11 @@ const Statistics: React.FC<Props> = ({ data }) => {
         ) : (
           <Space direction="vertical">
             <Space>
-              {data.isFriend && <Button type="primary" size="large" icon={<Icon component={MessageIcon} />} />}
-              <Button type="primary" size="large" icon={<Icon component={PlayGameIcon} />} />
-              {data.isFriend && <Button type="primary" size="large" icon={<Icon component={DeleteUserIcon} />} />}
-              <Button type="primary" size="large" icon={<Icon component={BlockUserIcon} />} />
+              {actionsList[actionIndex].map((i, key) => (
+                <Tooltip key={key} title={i.tooltip}>
+                  <Button type="primary" size="large" icon={i.icon} />
+                </Tooltip>
+              ))}
             </Space>
             <Text strong italic>
               <Icon component={UserIcon} style={{ fontSize: 17 }} /> {` ${data.username}`}

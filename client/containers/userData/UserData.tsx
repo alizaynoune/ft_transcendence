@@ -7,11 +7,9 @@ import FriendsTabs from "@/containers/friendsTab/FriendsTabs";
 import BlockedsList from "@/components/blockedsList/BlockedsList";
 import LastMatches from "@/components/lastMatches/LastMatches";
 import Icon from "@ant-design/icons";
-import { useAppSelector } from "@/hooks/reduxHooks";
-import { selectAuth } from "@/store/reducers/auth";
 import { BlockUserIcon, SettingIcon, FriendsIcon, GameIcon } from "@/icons/index";
 import { ProfileContext } from "context/profileContext";
-import { UserType, ProfileContextType } from "@/types/types";
+import { ProfileContextType } from "@/types/types";
 
 interface PropsType {
   profileId: number;
@@ -21,7 +19,6 @@ const { TabPane } = Tabs;
 const UserData: React.FC<PropsType> = ({ profileId }) => {
   const [currentTab, setCurrentTab] = useState<string>("Friends");
   const router = useRouter();
-  const { intra_id } = useAppSelector(selectAuth);
   const { checkeIsMyProfile, isMyProfile } = useContext(ProfileContext) as ProfileContextType;
   const handelUrlHash = () => {
     const hashs = ["AccountSettings", "Friends", "Blockeds", "LastMatches"];

@@ -51,7 +51,7 @@ const BlockedsList: React.FC = () => {
           total: 20,
           pageSize: 16,
         }}
-        renderItem={(item) => <UserCard type="block" user={item} action={undefined}/>}
+        renderItem={(item) => <UserCard type="block" user={item}/>}
       />
     </div>
   );

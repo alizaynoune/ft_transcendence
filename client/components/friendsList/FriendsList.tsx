@@ -38,7 +38,7 @@ const FriendsCard: React.FC = () => {
                 pageSize: 16,
               }
         }
-        renderItem={(item) => <UserCard type="friend" user={item} action={isMyProfile ? actions: undefined} />}
+        renderItem={(item) => <UserCard type="friend" user={item}/>}
       />
     </div>
   );

@@ -4,6 +4,8 @@ import { UserType, FriendActions, RequestFriendType, ProfileContextType } from "
 import { message } from "antd";
 import { useAppSelector } from "@/hooks/reduxHooks";
 import { selectAuth } from "@/store/reducers/auth";
+import { resolve } from "path";
+import { reject } from "lodash";
 
 interface PropsType {
   children: React.ReactNode;
@@ -24,7 +26,18 @@ const ProfileProvider: React.FC<PropsType> = ({ children }) => {
   const checkeIsMyProfile = (id: number) => setIsMyProfile(id === intra_id);
 
   const actions: FriendActions = (user, action) => {
-    console.log(user, action);
+    setLoading(true);
+    return new Promise(async (resolve, reject) => {
+      try {
+        const res = await axios.post(`friends/${action}`, { id: user.intra_id.toString() });
+        setLoading(false);
+        console.log(res);
+        return resolve(res.data);
+      } catch (error) {
+        setLoading(false);
+        return reject(error);
+      }
+    });
   };
 
   const loadFriends = async () => {
@@ -60,16 +73,11 @@ const ProfileProvider: React.FC<PropsType> = ({ children }) => {
     }
   };
 
-  useEffect(() => {
-    console.log('rrrrrrrrr');
-    
-  }, [])
-
   return (
     <ProfileContext.Provider
       value={{ loading, friendsList, invitesList, isMyProfile, actions, loadFriends, loadInvites, checkeIsMyProfile }}
     >
-      {children}
+      {[children]}
     </ProfileContext.Provider>
   );
 };

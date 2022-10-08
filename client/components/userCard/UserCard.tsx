@@ -1,5 +1,5 @@
 import style from "./userCard.module.css";
-import { List, Avatar, Button, Popover, Menu, Dropdown, Space } from "antd";
+import { List, Avatar, Button, Popover, Menu, Dropdown, Space, message } from "antd";
 import type { MenuProps, ButtonProps } from "antd";
 import Icon, { CloseOutlined, CheckOutlined, DownOutlined } from "@ant-design/icons";
 import Link from "next/link";
@@ -12,64 +12,8 @@ import { UserType, FriendActions, ProfileContextType } from "@/types/types";
 interface Props {
   type: "friend" | "request" | "block";
   user: UserType;
-  action: FriendActions;
+  // action: FriendActions;
 }
-type MenuItem = Required<MenuProps>["items"][number];
-
-function getItem(label: React.ReactNode, key: React.Key): MenuItem {
-  return {
-    key,
-    label,
-  } as MenuItem;
-}
-
-const deleteFriend = (user: UserType) => {
-  console.log(user.id);
-};
-
-const RequestButtons = (user: UserType, action: FriendActions) => (
-  <div className={style.actionContainer}>
-    <Button ghost danger type="primary" icon={<CloseOutlined />} onClick={() => action && action(user, "rejectrequest")} />
-    <Button ghost type="primary" icon={<CheckOutlined />} onClick={() => action && action(user, "acceptrequest")} />
-  </div>
-);
-
-const FriendButtons = (user: UserType, action: FriendActions) => (
-  <div className={style.actionContainer}>
-    <Button
-      ghost
-      type="primary"
-      icon={<Icon component={MessageIcon} style={{ fontSize: "120%" }} />}
-      onClick={() => action && action(user, "message")}
-    />
-    <Button
-      ghost
-      type="primary"
-      icon={<Icon component={PlayGameIcon} style={{ fontSize: "120%" }} />}
-      onClick={() => action && action(user, "playeGame")}
-    />
-    <Button
-      ghost
-      type="primary"
-      icon={<Icon component={BlockUserIcon} style={{ fontSize: "120%" }} />}
-      onClick={() => action && action(user, "blockfriend")}
-    />
-    <Button
-      ghost
-      type="primary"
-      icon={<Icon component={DeleteUserIcon} style={{ fontSize: "120%" }} />}
-      onClick={() => action && action(user, "deleteUser")}
-    />
-  </div>
-);
-
-const BlockButtons = (user: UserType) => (
-  <div className={style.actionContainer}>
-    <Button type="primary" onClick={() => deleteFriend(user)}>
-      {"Unblock"}
-    </Button>
-  </div>
-);
 
 const actionsList = {
   friend: [
@@ -88,8 +32,7 @@ const actionsList = {
 const UserCard: React.FC<Props> = (props) => {
   const { type, user } = props;
   const { loading, isMyProfile, actions } = useContext(ProfileContext) as ProfileContextType;
-  const action = isMyProfile ? actions : undefined;
-
+  // const action = isMyProfile ? actions : undefined;
   return (
     <List.Item
       className={style.item}
@@ -101,11 +44,26 @@ const UserCard: React.FC<Props> = (props) => {
                 content={
                   <div className={style.actionContainer}>
                     {actionsList[type].map((i, key) => (
-                      <Button ghost type="primary" danger={i.action === "rejectrequest"} icon={i.icon} onClick={() => action && action(user, i.action)} />
+                      <Button
+                        key={key}
+                        ghost
+                        type="primary"
+                        danger={i.action === "rejectrequest"}
+                        icon={i.icon}
+                        disabled={loading}
+                        onClick={async () => {
+                          try {
+                            const res = await actions(user, i.action);
+                            message.success(res.message);
+                          } catch (error) {
+                            error instanceof Error && message.error(error.message);
+                          }
+                        }}
+                      />
                     ))}
                   </div>
                 }
-                trigger={["click"]}
+                trigger={["hover"]}
                 placement="left"
               >
                 <Icon component={DotsVIcon} style={{ fontSize: 24 }} />

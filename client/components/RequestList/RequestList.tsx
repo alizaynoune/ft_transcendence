@@ -43,7 +43,7 @@ const FriendRequestList: React.FC= () => {
                 pageSize: 16,
               }
         }
-        renderItem={(item) => <UserCard user={item.userInfo} type="request" action={actions} />}
+        renderItem={(item) => <UserCard user={item.userInfo} type="request" />}
       />
     </div>
   );

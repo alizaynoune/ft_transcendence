@@ -1,3 +1,12 @@
+// export {};
+// declare global {
+//   interface Error {
+//     response?: { data: { message: string } };
+//   }
+// }
+type PromiseReturn = Error | { message: string };
+export type FriendActions = (user: UserType, action: string) => Promise<PromiseReturn>;
+
 export interface AuthType {
   username: string;
   first_name: string;
@@ -35,8 +44,6 @@ export interface UserType {
   updated_at: string;
 }
 
-export type FriendActions = ((user: UserType, action: string) => void) | undefined;
-
 export interface ProfileContextType {
   loading: boolean;
   friendsList: UserType[];
@@ -45,7 +52,7 @@ export interface ProfileContextType {
   actions: FriendActions;
   loadFriends: () => Promise<void>;
   loadInvites: () => Promise<void>;
-  checkeIsMyProfile: (id:number) => void
+  checkeIsMyProfile: (id: number) => void;
 }
 
 export interface RequestFriendType {
@@ -66,12 +73,14 @@ export interface AchievementType {
 }
 
 export interface RelationshipType {
-  id: number;
-  senderid: number;
-  receiverid: number;
-  created_at: Date;
-  accepted: boolean;
-  isFriend?: boolean;
+  relationship: {
+    id?: number;
+    senderid?: number;
+    receiverid?: number;
+    created_at?: Date;
+    accepted?: boolean;
+    isFriend?: boolean;
+  };
 }
 
 export interface ProfileType {
