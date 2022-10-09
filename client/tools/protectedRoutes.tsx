@@ -13,8 +13,7 @@ const authRoute = (Component: React.FC<any>) => {
     const router = useRouter();
 
     useEffect(() => {
-      if (!isAuth) redirect(307,'/')
-      // router.push("/");
+      if (!isAuth) router.push("/");
     }, []);
     if (isAuth) return <Component {...props} />;
     else return null;
