@@ -5,8 +5,9 @@ import { Progress, Avatar, Badge, Typography, Upload, Button, Space, Tooltip, me
 import Icon, { EditOutlined, CloseOutlined, CheckOutlined } from "@ant-design/icons";
 import { useAppSelector } from "@/hooks/reduxHooks";
 import { selectAuth } from "@/store/reducers/auth";
-import { ComponentType, SVGProps, useRef } from "react";
+import { ComponentType, SVGProps, useCallback, useEffect, useRef, useState } from "react";
 import { ProfileType, RelationshipType, UserType, FriendActions } from "@/types/types";
+import { useRouter } from "next/router";
 // Achievements Icons
 import {
   MessageIcon,
@@ -36,6 +37,7 @@ const achievementsIcons: {
 };
 interface Props {
   data: ProfileType & UserType & RelationshipType;
+  refresh: (profile: string) => Promise<void>;
 }
 const { Text, Title } = Typography;
 
@@ -63,14 +65,14 @@ const actionsList: { [key: string]: { icon: JSX.Element; tooltip: string; action
   ],
 };
 
-const Statistics: React.FC<Props> = ({ data }) => {
+const Statistics: React.FC<Props> = ({ data, refresh }) => {
   const level = 12.25;
   const matches = { total: 10, winne: 9 };
-  const { img_url, users_achievements } = data;
   const { intra_id } = useAppSelector(selectAuth);
   const progress = ((level - Math.floor(level)) / 1) * 100;
   const WinRatio = Number(((matches.winne / matches.total) * 100).toFixed(2));
   const lazyRoot = useRef(null);
+  const router = useRouter();
   const actionIndex = data.relationship
     ? data.relationship.isFriend
       ? "friend"
@@ -96,7 +98,7 @@ const Statistics: React.FC<Props> = ({ data }) => {
         <Image
           className={style.progressImage}
           lazyRoot={lazyRoot}
-          loader={() => img_url || "/images/defaultProfileAvatar.jpg"}
+          loader={() => data.img_url || "/images/defaultProfileAvatar.jpg"}
           src="/images/defaultProfileAvatar.jpg"
           objectFit="cover"
           layout="fill"
@@ -129,7 +131,7 @@ const Statistics: React.FC<Props> = ({ data }) => {
           </Upload>
         )}
       </div>
-      {users_achievements.length > 0 && (
+      {data.users_achievements.length > 0 && (
         <div className={style.achievements}>
           <Avatar.Group
             className={style.avatarGroup}
@@ -145,12 +147,11 @@ const Statistics: React.FC<Props> = ({ data }) => {
               marginLeft: "-40px",
             }}
           >
-            {users_achievements.map((a, key) => {
+            {data.users_achievements.map((a, key) => {
               return (
                 <Avatar
                   key={key}
                   icon={<Icon component={achievementsIcons[a.achievements.name]} />}
-                  // size={80}
                   className={`${style[a.achievements.level.toLowerCase()]} ${style.avatar}`}
                 />
               );
@@ -200,6 +201,7 @@ const Statistics: React.FC<Props> = ({ data }) => {
                     onClick={async () => {
                       try {
                         message.success((await actions(data, i.action)).message);
+                        refresh(data.username);
                       } catch (error) {
                         error instanceof Error && message.error(error.message);
                       }
@@ -223,3 +225,6 @@ const Statistics: React.FC<Props> = ({ data }) => {
 };
 
 export default Statistics;
+function updateState(arg0: {}): any {
+  throw new Error("Function not implemented.");
+}

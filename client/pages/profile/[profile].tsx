@@ -49,6 +49,11 @@ const Profile: React.FC = () => {
     }
   }, [isReady, query.profile]);
 
+  useEffect(() => {
+    console.log(data);
+    
+  }, [data])
+
   return (
     <section className={style.container}>
       {error !== 200 ? (
@@ -87,7 +92,7 @@ const Profile: React.FC = () => {
             </Badge.Ribbon>
             <div className={style.statisticsData}>
               <div className={style.statistics}>
-                <Statistics data={data} />
+                <Statistics data={data} refresh={loadProfile} />
               </div>
               <div className={style.data}>
                 <ProfileProvider>
