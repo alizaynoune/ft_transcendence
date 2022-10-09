@@ -3,6 +3,7 @@ import Image from "next/image";
 import Statistics from "@/components/userStatistics/Statistics";
 import UserData from "@/containers/userData/UserData";
 import axios from "@/config/axios";
+import PageError from "../_error";
 import { Badge, Button, message, Upload } from "antd";
 import { EditOutlined } from "@ant-design/icons";
 import { useAppDispatch, useAppSelector } from "@/hooks/reduxHooks";
@@ -20,24 +21,28 @@ const Profile: React.FC = () => {
   const dispatch = useAppDispatch();
   const router = useRouter();
   const { query, isReady } = router;
-  const [data, setData] = useState<ProfileType & UserType & RelationshipType>();
+  const [data, setData] = useState<(ProfileType & UserType & RelationshipType) | null>(null);
+  const [error, setError] = useState<number>(200);
   const { intra_id } = useAppSelector(selectAuth);
 
   const loadProfile = async (profile: string | string[]) => {
     dispatch(changeLoading(true));
     try {
+      setError(200);
       const res = await axios.get(`profile/${profile}`);
       setData(res.data);
       dispatch(changeLoading(false));
     } catch (error) {
       dispatch(changeLoading(false));
       if (error instanceof Error) {
-        error.message === "user not found" ? router.push("/404") : message.error(error.message);
+        message.error(error.message);
+        setError(error.status);
       }
     }
   };
 
   useEffect(() => {
+    setData(null);
     if (isReady && query.profile) {
       if (query.profile !== "me") loadProfile(query.profile);
       else loadProfile("");
@@ -46,50 +51,54 @@ const Profile: React.FC = () => {
 
   return (
     <section className={style.container}>
-      {!loading && data && (
-        <>
-          <Badge.Ribbon text="Ranked 10" placement="start">
-            <div className={style.cover} ref={lazyRoot}>
-              <Image
-                lazyRoot={lazyRoot}
-                loader={() => data.cover || "/images/defaultProfileCover.png"} // ! change it
-                src="/images/defaultProfileCover.png"
-                layout="fill"
-                objectFit="cover"
-                priority
-              />
-              {intra_id === data.intra_id && (
-                <Upload>
-                  <Button
-                    icon={<EditOutlined size={1} />}
-                    shape="circle"
-                    size="large"
-                    style={{
-                      position: "absolute",
-                      top: "10px",
-                      right: "10px",
-                      backgroundColor: "rgba(0, 0, 0, 0.4)",
-                      color: "var(--light-color)",
-                    }}
-                  />
-                </Upload>
-              )}
+      {error !== 200 ? (
+        <PageError statusCode={error} />
+      ) : (
+        !loading &&
+        data && (
+          <>
+            <Badge.Ribbon text="Ranked 10" placement="start">
+              <div className={style.cover} ref={lazyRoot}>
+                <Image
+                  lazyRoot={lazyRoot}
+                  loader={() => data.cover || "/images/defaultProfileCover.png"} // ! change it
+                  src="/images/defaultProfileCover.png"
+                  layout="fill"
+                  objectFit="cover"
+                  priority
+                />
+                {intra_id === data.intra_id && (
+                  <Upload>
+                    <Button
+                      icon={<EditOutlined size={1} />}
+                      shape="circle"
+                      size="large"
+                      style={{
+                        position: "absolute",
+                        top: "10px",
+                        right: "10px",
+                        backgroundColor: "rgba(0, 0, 0, 0.4)",
+                        color: "var(--light-color)",
+                      }}
+                    />
+                  </Upload>
+                )}
+              </div>
+            </Badge.Ribbon>
+            <div className={style.statisticsData}>
+              <div className={style.statistics}>
+                <Statistics data={data} />
+              </div>
+              <div className={style.data}>
+                <ProfileProvider>
+                  <UserData profileId={data.intra_id} />
+                </ProfileProvider>
+              </div>
             </div>
-          </Badge.Ribbon>
-          <div className={style.statisticsData}>
-            <div className={style.statistics}>
-              <Statistics data={data} />
-            </div>
-            <div className={style.data}>
-              <ProfileProvider>
-                <UserData profileId={data.intra_id} />
-              </ProfileProvider>
-            </div>
-          </div>
-        </>
+          </>
+        )
       )}
     </section>
   );
 };
-
 export default authRoute(Profile);

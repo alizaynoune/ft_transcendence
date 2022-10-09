@@ -1,3 +1,10 @@
+// import { AxiosError } from "axios";
+
+declare global {
+  interface Error {
+    status: number;
+  }
+}
 type PromiseReturn = Error | { message: string };
 export type FriendActions = (user: UserType, action: string) => Promise<PromiseReturn>;
 
