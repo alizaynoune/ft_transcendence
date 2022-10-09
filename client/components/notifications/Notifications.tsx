@@ -7,7 +7,7 @@ import { useAppSelector, useAppDispatch } from "@/hooks/reduxHooks";
 import { selectAuth, pushNotification, readNotification } from "@/reducers/auth";
 import { useEffect, useState } from "react";
 import { NotificationType } from "@/types/types";
-import Link from "next/link";
+import { useRouter } from "next/router";
 
 type MenuItem = Required<MenuProps>["items"][number];
 function getItem(
@@ -30,6 +30,7 @@ const Notifications: React.FC = () => {
   const [notificationsList, setNotificationsList] = useState<NotificationType[]>([]);
   const { notifications } = useAppSelector(selectAuth);
   const dispatch = useAppDispatch();
+  const router = useRouter()
 
   useEffect(() => {
     setNotificationsList(notifications);
@@ -37,15 +38,11 @@ const Notifications: React.FC = () => {
   const items: MenuItem[] = notificationsList?.map((i) =>
     getItem(
       <Space>
-        {/* <Link href={`/profile/${i.users_notification_fromidTousers.username}`}>
-          <a> */}
-            <Space direction="vertical">
-              <Text strong>{i.users_notification_fromidTousers.username}</Text>
-              <Text type="secondary">{"Invet you to play a game"}</Text>
-            </Space>
-            <Text type="secondary">{moment(i.createdat).fromNow()}</Text>
-          {/* </a>
-        </Link> */}
+        <Space direction="vertical">
+          <Text strong>{i.users_notification_fromidTousers.username}</Text>
+          <Text type="secondary">{"Invet you to play a game"}</Text>
+        </Space>
+        <Text type="secondary">{moment(i.createdat).fromNow()}</Text>
       </Space>,
       i.read,
       i.id,
@@ -57,14 +54,16 @@ const Notifications: React.FC = () => {
       className={style.notifList}
       items={items}
       onClick={(e) => {
+        const n = notifications.find((n) => n.id === Number(e.key));
+        if (n && n.type === "FRIEND_REQUEST") router.push(`/profile/${n.users_notification_fromidTousers.username}`)
         dispatch(readNotification(e.key));
       }}
     />
   );
 
   return (
-    <Dropdown overlay={menu} trigger={["click"]} disabled={notifications.length ? false : true}>
-      <Badge count={notifications.length}>
+    <Dropdown overlay={menu} trigger={["click"]} disabled={notifications.filter((n) => !n.read).length ? false : true}>
+      <Badge count={notifications.filter((n) => !n.read).length}>
         <BellFilled
           style={{
             fontSize: "180%",

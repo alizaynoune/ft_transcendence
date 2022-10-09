@@ -1,19 +1,14 @@
 import style from "./statistics.module.css";
 import Image from "next/image";
-import { Progress, Avatar, Badge, Typography, Upload, Button, Space, Tooltip } from "antd";
+import axios from "@/config/axios";
+import { Progress, Avatar, Badge, Typography, Upload, Button, Space, Tooltip, message } from "antd";
 import Icon, { EditOutlined, CloseOutlined, CheckOutlined } from "@ant-design/icons";
 import { useAppSelector } from "@/hooks/reduxHooks";
 import { selectAuth } from "@/store/reducers/auth";
 import { ComponentType, SVGProps, useRef } from "react";
-import { ProfileType, RelationshipType, UserType } from "@/types/types";
+import { ProfileType, RelationshipType, UserType, FriendActions } from "@/types/types";
 // Achievements Icons
 import {
-  FriendlyIcon as friendly,
-  LegendaryIcon as legendary,
-  PhotogenicIcon as photogenic,
-  SharpshooterIcon as sharpshooter,
-  WildfireIcon as wildfire,
-  WinnerIcon as winner,
   MessageIcon,
   PlayGameIcon,
   DeleteUserIcon,
@@ -21,44 +16,50 @@ import {
   UserIcon,
   EmailIcon,
   AddFriendIcon,
+  FriendlyIcon,
+  LegendaryIcon,
+  PhotogenicIcon,
+  SharpshooterIcon,
+  WildfireIcon,
+  WinnerIcon,
 } from "@/icons/index";
 
 const achievementsIcons: {
   [key: string]: ComponentType<SVGProps<SVGSVGElement>>;
 } = {
-  friendly,
-  legendary,
-  photogenic,
-  sharpshooter,
-  wildfire,
-  winner,
+  friendly: FriendlyIcon,
+  legendary: LegendaryIcon,
+  photogenic: PhotogenicIcon,
+  sharpshooter: SharpshooterIcon,
+  wildfire: WildfireIcon,
+  winner: WinnerIcon,
 };
 interface Props {
   data: ProfileType & UserType & RelationshipType;
 }
 const { Text, Title } = Typography;
 
-const actionsList = {
+const actionsList: { [key: string]: { icon: JSX.Element; tooltip: string; action: string }[] } = {
   friend: [
-    { icon: <Icon component={MessageIcon} />, tooltip: "Send message", action: "" },
-    { icon: <Icon component={PlayGameIcon} />, tooltip: "Invite to play game", action: "" },
-    { icon: <Icon component={DeleteUserIcon} />, tooltip: "unfriend", action: "" },
-    { icon: <Icon component={BlockUserIcon} />, tooltip: "Block", action: "" },
+    { icon: <Icon component={MessageIcon} />, tooltip: "Send message", action: "message" },
+    { icon: <Icon component={PlayGameIcon} />, tooltip: "Invite to play game", action: "playGame" },
+    { icon: <Icon component={DeleteUserIcon} />, tooltip: "unfriend", action: "unfriend" },
+    { icon: <Icon component={BlockUserIcon} />, tooltip: "Block", action: "blockfriend" },
   ],
   inviteSender: [
-    { icon: <Icon component={PlayGameIcon} />, tooltip: "Invite to play game", action: "" },
-    { icon: <CloseOutlined />, tooltip: "Accept friend request", action: "" },
-    { icon: <CheckOutlined />, tooltip: "Reject friend request", action: "" },
-    { icon: <Icon component={BlockUserIcon} />, tooltip: "Block", action: "" },
+    { icon: <Icon component={PlayGameIcon} />, tooltip: "Invite to play game", action: "playGame" },
+    { icon: <CloseOutlined />, tooltip: "Reject friend request", action: "rejectrequest" },
+    { icon: <CheckOutlined />, tooltip: "Accept friend request", action: "acceptrequest" },
+    { icon: <Icon component={BlockUserIcon} />, tooltip: "Block", action: "blockfriend" },
   ],
   inviteReceiver: [
-    { icon: <Icon component={PlayGameIcon} />, tooltip: "Invite to play game", action: "" },
-    { icon: <Icon component={BlockUserIcon} />, tooltip: "Block", action: "" },
+    { icon: <Icon component={PlayGameIcon} />, tooltip: "Invite to play game", action: "playGame" },
+    { icon: <Icon component={BlockUserIcon} />, tooltip: "Block", action: "blockfriend" },
   ],
   other: [
-    { icon: <Icon component={PlayGameIcon} />, tooltip: "Invite to play game", action: "" },
-    { icon: <Icon component={AddFriendIcon} />, tooltip: "Send friend request", action: "" },
-    { icon: <Icon component={BlockUserIcon} />, tooltip: "Block", action: "" },
+    { icon: <Icon component={PlayGameIcon} />, tooltip: "Invite to play game", action: "playGame" },
+    { icon: <Icon component={AddFriendIcon} />, tooltip: "Send friend request", action: "sendrequest" },
+    { icon: <Icon component={BlockUserIcon} />, tooltip: "Block", action: "blockfriend" },
   ],
 };
 
@@ -68,7 +69,7 @@ const Statistics: React.FC<Props> = ({ data }) => {
   const { img_url, users_achievements } = data;
   const { intra_id } = useAppSelector(selectAuth);
   const progress = ((level - Math.floor(level)) / 1) * 100;
-  const WinRatio = parseInt(((matches.winne / matches.total) * 100).toFixed(2));
+  const WinRatio = Number(((matches.winne / matches.total) * 100).toFixed(2));
   const lazyRoot = useRef(null);
   const actionIndex = data.relationship
     ? data.relationship.isFriend
@@ -78,16 +79,14 @@ const Statistics: React.FC<Props> = ({ data }) => {
       : "inviteSender"
     : "other";
 
-  const mapAchievements = () => {
-    return users_achievements.map((a, index) => {
-      return (
-        <Avatar
-          key={index}
-          icon={<Icon component={achievementsIcons[a.achievements.name]} />}
-          size={80}
-          className={`${style[a.achievements.level.toLowerCase()]} ${style.avatar}`}
-        />
-      );
+  const actions: FriendActions = (user, action) => {
+    return new Promise(async (resolve, reject) => {
+      try {
+        const res = await axios.post(`friends/${action}`, { id: user.intra_id.toString() });
+        return resolve(res.data);
+      } catch (error) {
+        return reject(error);
+      }
     });
   };
 
@@ -146,7 +145,16 @@ const Statistics: React.FC<Props> = ({ data }) => {
               marginLeft: "-40px",
             }}
           >
-            {mapAchievements()}
+            {users_achievements.map((a, key) => {
+              return (
+                <Avatar
+                  key={key}
+                  icon={<Icon component={achievementsIcons[a.achievements.name]} />}
+                  // size={80}
+                  className={`${style[a.achievements.level.toLowerCase()]} ${style.avatar}`}
+                />
+              );
+            })}
           </Avatar.Group>
         </div>
       )}
@@ -185,7 +193,18 @@ const Statistics: React.FC<Props> = ({ data }) => {
             <Space>
               {actionsList[actionIndex].map((i, key) => (
                 <Tooltip key={key} title={i.tooltip}>
-                  <Button type="primary" size="large" icon={i.icon} />
+                  <Button
+                    type="primary"
+                    size="large"
+                    icon={i.icon}
+                    onClick={async () => {
+                      try {
+                        message.success((await actions(data, i.action)).message);
+                      } catch (error) {
+                        error instanceof Error && message.error(error.message);
+                      }
+                    }}
+                  />
                 </Tooltip>
               ))}
             </Space>

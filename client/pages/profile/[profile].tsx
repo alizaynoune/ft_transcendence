@@ -56,7 +56,7 @@ const Profile: React.FC = () => {
         <Spin indicator={<LoadingOutlined />} />
       ) : (
         <>
-          <Badge.Ribbon text="Your Rank is 10" placement="start">
+          <Badge.Ribbon text="Ranked 10" placement="start">
             <div className={style.cover} ref={lazyRoot}>
               <Image
                 lazyRoot={lazyRoot}

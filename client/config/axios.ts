@@ -3,9 +3,9 @@ import { loadToken } from "@/tools/localStorage";
 const baseURL = process.env.NEXT_PUBLIC_URL_API || "http://localhost:5000/";
 
 axios.interceptors.request.use(
-  async (config) => {
+  (config) => {
     try {
-      const access_token = await loadToken();      
+      const access_token = loadToken();
       config.baseURL = baseURL;
       config.headers = {
         Authorization: `Bearer ${access_token}`,

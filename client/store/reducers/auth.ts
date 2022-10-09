@@ -2,19 +2,20 @@ import { createSlice } from "@reduxjs/toolkit";
 import type { RootState } from "@/store/store";
 import type { AuthType } from "@/types/types";
 import { AuthTunk } from "@/store/actions/auth";
+import { loadToken } from "@/tools/localStorage";
 
 interface AuthSliceType extends AuthType {
   isLoading: boolean;
   error: { message?: string } | null;
-  isAuth: boolean;
+  isAuth: boolean | undefined;
   access_token: string;
 }
 
 const initialState: AuthSliceType = {
   isLoading: false,
   error: null,
-  isAuth: false,
-  access_token: "",
+  isAuth: undefined,
+  access_token: loadToken(),
   username: "",
   first_name: "",
   last_name: "",
@@ -47,7 +48,7 @@ export const AuthSlice = createSlice({
     },
     readNotification: (state, { payload }) => {
       const index = state.notifications.findIndex((i) => i.id === Number(payload));
-      if (index > -1) state.notifications[index].read = true;      
+      if (index > -1) state.notifications[index].read = true;
     },
   },
 

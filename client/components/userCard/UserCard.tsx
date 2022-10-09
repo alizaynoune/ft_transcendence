@@ -51,8 +51,7 @@ const UserCard: React.FC<Props> = (props) => {
                         disabled={loading}
                         onClick={async () => {
                           try {
-                            const res = await actions(user, i.action);
-                            message.success(res.message);
+                            message.success((await actions(user, i.action)).message);
                           } catch (error) {
                             error instanceof Error && message.error(error.message);
                           }
