@@ -3,21 +3,19 @@ import Image from "next/image";
 import Statistics from "@/components/userStatistics/Statistics";
 import UserData from "@/containers/userData/UserData";
 import axios from "@/config/axios";
-import { Badge, Button, Spin, Upload } from "antd";
-import { EditOutlined, LoadingOutlined } from "@ant-design/icons";
+import { Badge, Button, message, Upload } from "antd";
+import { EditOutlined } from "@ant-design/icons";
 import { useAppDispatch, useAppSelector } from "@/hooks/reduxHooks";
-import { changeLoading } from "@/reducers/globalLoading";
+import { changeLoading, selectLoading } from "@/reducers/globalLoading";
 import { selectAuth } from "@/store/reducers/auth";
-// types
 import { ProfileType, UserType, RelationshipType } from "@/types/types";
 import { useEffect, useRef, useState } from "react";
 import authRoute from "@/tools/protectedRoutes";
 import { useRouter } from "next/router";
 import ProfileProvider from "context/profileContext";
 
-//
 const Profile: React.FC = () => {
-  const [loading, setLoading] = useState<boolean>(false);
+  const loading = useAppSelector(selectLoading).Loading;
   const lazyRoot = useRef(null);
   const dispatch = useAppDispatch();
   const router = useRouter();
@@ -26,20 +24,16 @@ const Profile: React.FC = () => {
   const { intra_id } = useAppSelector(selectAuth);
 
   const loadProfile = async (profile: string | string[]) => {
-    setLoading(true);
     dispatch(changeLoading(true));
     try {
       const res = await axios.get(`profile/${profile}`);
       setData(res.data);
-      setLoading(false);
       dispatch(changeLoading(false));
     } catch (error) {
       dispatch(changeLoading(false));
-      setLoading(false);
-      let message;
-      if (error instanceof Error) message = error.message;
-      else message = String(error);
-      console.log(message, "<<<<<<error");
+      if (error instanceof Error) {
+        error.message === "user not found" ? router.push("/404") : message.error(error.message);
+      }
     }
   };
 
@@ -52,9 +46,7 @@ const Profile: React.FC = () => {
 
   return (
     <section className={style.container}>
-      {loading || !data ? (
-        <Spin indicator={<LoadingOutlined />} />
-      ) : (
+      {!loading && data && (
         <>
           <Badge.Ribbon text="Ranked 10" placement="start">
             <div className={style.cover} ref={lazyRoot}>
