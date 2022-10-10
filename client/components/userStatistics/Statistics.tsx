@@ -83,13 +83,19 @@ const Statistics: React.FC<Props> = ({ data, refresh }) => {
 
   const actions: FriendActions = (user, action) => {
     console.log(action, 'done');
-    const objSend = action === 'sendrequest'? {requestedId: user.intra_id.toString()} : { id: user.intra_id.toString() }
+    // const objSend = action === 'sendrequest'? {requestedId: user.intra_id.toString()} : { id: user.intra_id.toString() }
+    // let objSend = {}
+
+    // switch(action) {
+    //   case 'sendrequest':
+    //     objSend = {id}
+    // }
     
     return new Promise(async (resolve, reject) => {
       try {
-        console.log('done>>>>>>>>>>>');
+        console.log('done>>>>>>>>>>>', action);
         
-        const res = await axios.post(`friends/${action}`, objSend);
+        const res = await axios.post(`friends/${action}`, { id: user.intra_id.toString() });
         console.log(res, '<<<<<<<<<<<<');
         
         return resolve(res.data);
