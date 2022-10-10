@@ -2,20 +2,24 @@ import style from "./achievements.module.css";
 import AchievementsCard from "@/components/achievementCard/AchievementCard";
 import { Space } from "antd";
 
-import { AchievementListType } from "@/types/types";
+import { AchievementType } from "@/types/types";
 
-const AchievMap = (achiv: AchievementListType) => {
-  return achiv.types.map((t, key) => {
+const AchievMap = (achiv: AchievementType[]) => {
+  return achiv.map((a, key) => {
     return (
       <div className={style.card} key={key}>
-        <AchievementsCard name={achiv.name} type={{ ...t }} />
+        <AchievementsCard achiv={a} />
       </div>
     );
   });
 };
 
-const Achievements: React.FC<AchievementListType> = (props) => {
-  return <div className={style.container}>{AchievMap(props)}</div>;
+interface PropsType {
+  achiv: AchievementType[];
+}
+
+const Achievements: React.FC<PropsType> = ({ achiv }) => {
+  return <div className={style.container}>{AchievMap(achiv)}</div>;
 };
 
 export default Achievements;
