@@ -51,7 +51,7 @@ const Header: React.FC<PropsType> = (props) => {
         )}
       </div>
       {!isAuth ? (
-        <form method="GET" action={`${process.env.NEXT_PUBLIC_URL_API || "http://localhost:5000"}/auth`}>
+        <form method="GET" action={`${process.env.NEXT_PUBLIC_URL_API || "http://localhost:5000"}/auth/login`}>
           <Button htmlType="submit" shape="round" ghost icon={<Icon component={_42Icon} style={{ fontSize: 20 }} />}>
             {"Login"}
           </Button>

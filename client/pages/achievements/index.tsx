@@ -1,31 +1,31 @@
 import style from "./achievements.module.css";
 import AchievementsContainer from "@/containers/achievements/Achievements";
-import { AchievementType } from "@/types/types";
+import { AchievementListType } from "@/types/types";
 import authRoute from "@/tools/protectedRoutes";
-const Achiev: AchievementType[] = [
+const Achiev: AchievementListType[] = [
   {
-    name: "Legendary",
+    name: "legendary",
     types: [
       {
-        name: "silver",
+        level: "SILVER",
         xp: 100,
         description: "win 1 matche with a max score",
         wind: true,
       },
       {
-        name: "bronze",
+        level: "BRONZE",
         xp: 250,
         description: "win 2 matche with a max score",
         wind: false,
       },
       {
-        name: "gold",
+        level: "GOLD",
         xp: 350,
         description: "win 3 matche with a max score",
         wind: false,
       },
       {
-        name: "platinum",
+        level: "PLATINUM",
         xp: 500,
         description: "win 4 matche with a max score",
         wind: false,
@@ -33,28 +33,28 @@ const Achiev: AchievementType[] = [
     ],
   },
   {
-    name: "Wildfire",
+    name: "wildfire",
     types: [
       {
-        name: "silver",
+        level: "SILVER",
         xp: 100,
         description: "win 1 matche with a max score",
         wind: true,
       },
       {
-        name: "bronze",
+        level: "BRONZE",
         xp: 250,
         description: "win 2 matche with a max score",
         wind: true,
       },
       {
-        name: "gold",
+        level: "GOLD",
         xp: 350,
         description: "win 3 matche with a max score",
         wind: false,
       },
       {
-        name: "platinum",
+        level: "PLATINUM",
         xp: 500,
         description: "win 4 matche with a max score",
         wind: false,
@@ -62,28 +62,28 @@ const Achiev: AchievementType[] = [
     ],
   },
   {
-    name: "Friendly",
+    name: "friendly",
     types: [
       {
-        name: "silver",
+        level: "SILVER",
         xp: 100,
         description: "win 1 matche with a max score",
         wind: true,
       },
       {
-        name: "bronze",
+        level: "BRONZE",
         xp: 250,
         description: "win 2 matche with a max score",
         wind: true,
       },
       {
-        name: "gold",
+        level: "GOLD",
         xp: 350,
         description: "win 3 matche with a max score",
         wind: false,
       },
       {
-        name: "platinum",
+        level: "PLATINUM",
         xp: 500,
         description: "win 4 matche with a max score",
         wind: false,
@@ -91,28 +91,28 @@ const Achiev: AchievementType[] = [
     ],
   },
   {
-    name: "Winner",
+    name: "winner",
     types: [
       {
-        name: "silver",
+        level: "SILVER",
         xp: 100,
         description: "win 1 matche with a max score",
         wind: true,
       },
       {
-        name: "bronze",
+        level: "BRONZE",
         xp: 250,
         description: "win 2 matche with a max score",
         wind: true,
       },
       {
-        name: "gold",
+        level: "GOLD",
         xp: 350,
         description: "win 3 matche with a max score",
         wind: true,
       },
       {
-        name: "platinum",
+        level: "PLATINUM",
         xp: 500,
         description: "win 4 matche with a max score",
         wind: false,
@@ -120,28 +120,28 @@ const Achiev: AchievementType[] = [
     ],
   },
   {
-    name: "Sharpshooter",
+    name: "sharpshooter",
     types: [
       {
-        name: "silver",
+        level: "SILVER",
         xp: 100,
         description: "win 1 matche with a max score",
         wind: true,
       },
       {
-        name: "bronze",
+        level: "BRONZE",
         xp: 250,
         description: "win 2 matche with a max score",
         wind: true,
       },
       {
-        name: "gold",
+        level: "GOLD",
         xp: 350,
         description: "win 3 matche with a max score",
         wind: true,
       },
       {
-        name: "platinum",
+        level: "PLATINUM",
         xp: 500,
         description: "win 4 matche with a max score",
         wind: true,
@@ -149,16 +149,16 @@ const Achiev: AchievementType[] = [
     ],
   },
   {
-    name: "Photogenic",
+    name: "photogenic",
     types: [
       {
-        name: "gold",
+        level: "GOLD",
         xp: 200,
         description: "change your avatar",
         wind: true,
       },
       {
-        name: "platinum",
+        level: "PLATINUM",
         xp: 300,
         description: "change your cover",
         wind: true,

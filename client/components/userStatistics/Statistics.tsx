@@ -82,14 +82,20 @@ const Statistics: React.FC<Props> = ({ data, refresh }) => {
     : "other";
 
   const actions: FriendActions = (user, action) => {
-    console.log(action);
+    console.log(action, 'done');
     const objSend = action === 'sendrequest'? {requestedId: user.intra_id.toString()} : { id: user.intra_id.toString() }
     
     return new Promise(async (resolve, reject) => {
       try {
+        console.log('done>>>>>>>>>>>');
+        
         const res = await axios.post(`friends/${action}`, objSend);
+        console.log(res, '<<<<<<<<<<<<');
+        
         return resolve(res.data);
       } catch (error) {
+        console.log(error);
+        
         return reject(error);
       }
     });

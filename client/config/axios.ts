@@ -35,7 +35,7 @@ axios.interceptors.response.use(
 
     if (axios.isAxiosError(error) && error.response) {
       //@ts-ignore
-      const err = new Error(error.response?.data.message);
+      const err = new Error(error.response?.data?.message || error.message);
       err.name = error.name;
       err.status = error.response.status;
       return Promise.reject(err);

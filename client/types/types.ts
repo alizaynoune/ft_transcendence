@@ -69,6 +69,16 @@ export interface RequestFriendType {
   userInfo: UserType;
 }
 
+export interface AchievementListType {
+  name: "winner" | "friendly" | "photogenic" | "wildfire" | "legendary" | "sharpshooter";
+  types: {
+    level: "BRONZE" | "SILVER" | "GOLD" | "PLATINUM";
+    xp: number;
+    description: string;
+    wind: boolean;
+  }[];
+}
+
 export interface AchievementType {
   id: number;
   name: string;
