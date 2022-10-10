@@ -14,7 +14,6 @@ import axios from "@/config/axios";
 const { TabPane } = Tabs;
 
 const FriendsTabs: React.FC = () => {
-  const { intra_id } = useAppSelector(selectAuth);
   const { isMyProfile } = useContext(ProfileContext) as ProfileContextType;
 
   return (

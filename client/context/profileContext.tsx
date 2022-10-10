@@ -42,6 +42,8 @@ const ProfileProvider: React.FC<PropsType> = ({ children }) => {
     setLoading(true);
     return new Promise(async (resolve, reject) => {
       try {
+        console.log(action);
+        
         const res = await axios.post(`friends/${action}`, { id: user.intra_id.toString() });
         setLoading(false);
         if (action in fns) fns[action].forEach(f => f(user))
