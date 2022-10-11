@@ -48,7 +48,7 @@ const ProfileProvider: React.FC<PropsType> = ({ children }) => {
     setLoading(true);
     return new Promise(async (resolve, reject) => {
       try {
-        const res = await axios.put("/profile/update", update);
+        const res = await axios.put("/users/update", update);
         const data = (({ username, email, first_name, last_name }) => ({ username, email, first_name, last_name }))(res.data) as
           | (ProfileType & UserType & RelationshipType)
           | null;
