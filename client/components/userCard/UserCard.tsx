@@ -6,8 +6,8 @@ import Link from "next/link";
 import { useContext } from "react";
 import { ProfileContext } from "context/profileContext";
 // Icons
-import { DotsVIcon, DeleteUserIcon, BlockUserIcon, MessageIcon, PlayGameIcon } from "@/icons/index";
-import { UserType, FriendActions, ProfileContextType } from "@/types/types";
+import { DotsVIcon, DeleteUserIcon, BlockUserIcon, MessageIcon, PlayGameIcon, UnblockUserIcon } from "@/icons/index";
+import { UserType, ProfileContextType, FriendActions } from "@/types/types";
 
 interface Props {
   type: "friend" | "request" | "block";
@@ -19,13 +19,13 @@ const actionsList = {
     { icon: <Icon component={MessageIcon} style={{ fontSize: "120%" }} />, action: "message" },
     { icon: <Icon component={PlayGameIcon} style={{ fontSize: "120%" }} />, action: "playGame" },
     { icon: <Icon component={BlockUserIcon} style={{ fontSize: "120%" }} />, action: "blockfriend" },
-    { icon: <Icon component={DeleteUserIcon} style={{ fontSize: "120%" }} />, action: "deletefriend" },
+    { icon: <Icon component={DeleteUserIcon} style={{ fontSize: "120%" }} />, action: "unfriend" },
   ],
   request: [
     { icon: <CloseOutlined />, action: "rejectrequest" },
     { icon: <CheckOutlined />, action: "acceptrequest" },
   ],
-  block: [{ icon: <Icon>{"Unblock"}</Icon>, action: "Unblock" }],
+  block: [{ icon: <Icon component={UnblockUserIcon} style={{fontSize: '120%'}} />, action: "Unblock" }],
 };
 
 const UserCard: React.FC<Props> = (props) => {

@@ -1,39 +1,26 @@
 import style from "./blockedsList.module.css";
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { List } from "antd";
 import UserCard from "@/components/userCard/UserCard";
-import {UserType} from '@/types/types'
+import { BlockedListType, ProfileContextType } from "@/types/types";
+import axios from "@/config/axios";
+import { ProfileContext } from "context/profileContext";
 
 const BlockedsList: React.FC = () => {
-  const [loading, setLoading] = useState(false);
-  const [data, setData] = useState<UserType[]>([]);
+  const { blockedsList, loadBlockeds } = useContext(ProfileContext) as ProfileContextType;
 
-  const loadMoreData = () => {
-    if (loading) {
-      return;
-    }
-    setLoading(true);
-    fetch(
-      "https://randomuser.me/api/?results=16&inc=name,gender,email,nat,picture,login&noinfo"
-    )
-      .then((res) => res.json())
-      .then((body) => {
-        setData(body.results);
-        setLoading(false);
-      })
-      .catch(() => {
-        setLoading(false);
-      });
-  };
+  useEffect(() => {
+    loadBlockeds();
+  }, []);
 
-  // useEffect(() => {
-  //   loadMoreData();
-  // }, []);
+  useEffect(() => {
+    console.log(blockedsList);
+  }, [blockedsList]);
 
   return (
     <div className={style.container}>
       <List
-        dataSource={data}
+        dataSource={blockedsList}
         itemLayout="horizontal"
         grid={{
           gutter: 16,
@@ -44,14 +31,16 @@ const BlockedsList: React.FC = () => {
           xl: 3,
           xxl: 3,
         }}
-        pagination={{
-          onChange: (page) => {
-//console.log(page);
-          },
-          total: 20,
-          pageSize: 16,
-        }}
-        renderItem={(item) => <UserCard type="block" user={item}/>}
+        pagination={
+          blockedsList.length < 17
+            ? false
+            : {
+                onChange: (page) => {},
+                total: BlockedsList.length,
+                pageSize: 16,
+              }
+        }
+        renderItem={(item) => <UserCard type="block" user={item} />}
       />
     </div>
   );

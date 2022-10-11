@@ -4,6 +4,9 @@ declare global {
   interface Error {
     status: number;
   }
+  // interface ObjectConstructor {
+  //   assign(...objects: Object[]): Object;
+  // }
 }
 type PromiseReturn = Error | { message: string };
 export type FriendActions = (user: UserType, action: string) => Promise<PromiseReturn>;
@@ -48,16 +51,28 @@ export interface UserType {
   created_at: string;
   updated_at: string;
 }
-
+export type updateProfileType = (update: { email: string; first_name: string; last_name: string; username: string }) => Promise<unknown>;
 export interface ProfileContextType {
   loading: boolean;
   friendsList: UserType[];
   invitesList: RequestFriendType[];
   isMyProfile: boolean;
+  blockedsList: UserType[];
+  profile: (ProfileType & UserType & RelationshipType) | null;
+  updateProfile: updateProfileType;
+  loadProfile: (profile: string | string[]) => Promise<unknown>;
   actions: FriendActions;
   loadFriends: () => Promise<void>;
   loadInvites: () => Promise<void>;
-  checkeIsMyProfile: (id: number) => void;
+  loadBlockeds: () => Promise<void>;
+}
+
+export interface BlockedListType {
+  id: number;
+  userid: number;
+  blockedid: number;
+  created_al: number;
+  users_blocked_blockedidTousers: UserType;
 }
 
 export interface RequestFriendType {

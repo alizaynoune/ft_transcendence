@@ -9,12 +9,9 @@ import { ProfileContext } from "context/profileContext";
 
 
 const FriendRequestList: React.FC= () => {
-//   const [loading, setLoading] = useState(false);
-  const [data, setData] = useState<RequestFriendType[]>([]);
   const {invitesList, loadInvites, loading, actions} = useContext(ProfileContext) as ProfileContextType
 
   useEffect(() => {
-    // loadMoreData();
     loadInvites()
   }, []);
 

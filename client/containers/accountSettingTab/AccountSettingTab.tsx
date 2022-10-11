@@ -7,6 +7,9 @@ import AccountEdit from "@/components/accountEdit/AccountEdit";
 import AccountPrivacy from "@/components/accountPrivacy/AccountPrivacy";
 
 const { TabPane } = Tabs;
+// interface PropsType{
+  
+// }
 const AccountSettingTab: React.FC = () => {
   return (
     <div className={style.container}>

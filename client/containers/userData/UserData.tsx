@@ -11,15 +11,11 @@ import { BlockUserIcon, SettingIcon, FriendsIcon, GameIcon } from "@/icons/index
 import { ProfileContext } from "context/profileContext";
 import { ProfileContextType } from "@/types/types";
 
-interface PropsType {
-  profileId: number;
-}
-
 const { TabPane } = Tabs;
-const UserData: React.FC<PropsType> = ({ profileId }) => {
+const UserData: React.FC = () => {
   const [currentTab, setCurrentTab] = useState<string>("Friends");
   const router = useRouter();
-  const { checkeIsMyProfile, isMyProfile } = useContext(ProfileContext) as ProfileContextType;
+  const { isMyProfile } = useContext(ProfileContext) as ProfileContextType;
   const handelUrlHash = () => {
     const hashs = ["AccountSettings", "Friends", "Blockeds", "LastMatches"];
     const hash = router.asPath.split("#")[1];
@@ -31,7 +27,6 @@ const UserData: React.FC<PropsType> = ({ profileId }) => {
   }, [router.asPath]);
 
   useEffect(() => {
-    checkeIsMyProfile(profileId);
     handelUrlHash();
   }, []);
 

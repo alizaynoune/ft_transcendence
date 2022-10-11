@@ -2,10 +2,6 @@ import axios from "axios";
 import { loadToken } from "@/tools/localStorage";
 const baseURL = process.env.NEXT_PUBLIC_URL_API || "http://localhost:5000/";
 
-// interface ServerError extends AxiosError {
-//   data:{message: string}
-// }
-
 axios.interceptors.request.use(
   (config) => {
     try {
@@ -31,17 +27,16 @@ axios.interceptors.response.use(
     return response;
   },
   (error) => {
-    console.log(error);
-
     if (axios.isAxiosError(error) && error.response) {
       //@ts-ignore
       const err = new Error(error.response?.data?.message || error.message);
       err.name = error.name;
-      err.status = error.response.status;
+      err.status = error.response?.status;
+      console.log(err);
       return Promise.reject(err);
     }
-
-    return Promise.reject(error);
+    
+    return Promise.reject(error.response);
   }
 );
 export default axios;

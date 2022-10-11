@@ -4,6 +4,7 @@ export {default as AttachmentIcon} from "./Attachment.svg"
 export {default as AttentionIcon} from "./Attention.svg"
 export {default as BellFillIcon} from "./BellFill.svg"
 export {default as BlockIcon} from "./Block.svg"
+export {default as UnblockUserIcon} from './unblock.svg'
 export {default as BlockUserIcon} from "./BlockUser.svg"
 export {default as CalenderIcon} from "./Calender.svg"
 export {default as CalenderEditIcon} from "./CalenderEdit.svg"

@@ -37,7 +37,7 @@ const achievementsIcons: {
 };
 interface Props {
   data: ProfileType & UserType & RelationshipType;
-  refresh: (profile: string) => Promise<void>;
+  refresh: () => Promise<unknown>;
 }
 const { Text, Title } = Typography;
 
@@ -72,7 +72,6 @@ const Statistics: React.FC<Props> = ({ data, refresh }) => {
   const progress = ((level - Math.floor(level)) / 1) * 100;
   const WinRatio = Number(((matches.winne / matches.total) * 100).toFixed(2));
   const lazyRoot = useRef(null);
-  const router = useRouter();
   const actionIndex = data.relationship
     ? data.relationship.isFriend
       ? "friend"
@@ -82,26 +81,11 @@ const Statistics: React.FC<Props> = ({ data, refresh }) => {
     : "other";
 
   const actions: FriendActions = (user, action) => {
-    console.log(action, 'done');
-    // const objSend = action === 'sendrequest'? {requestedId: user.intra_id.toString()} : { id: user.intra_id.toString() }
-    // let objSend = {}
-
-    // switch(action) {
-    //   case 'sendrequest':
-    //     objSend = {id}
-    // }
-    
     return new Promise(async (resolve, reject) => {
       try {
-        console.log('done>>>>>>>>>>>', action);
-        
         const res = await axios.post(`friends/${action}`, { id: user.intra_id.toString() });
-        console.log(res, '<<<<<<<<<<<<');
-        
         return resolve(res.data);
       } catch (error) {
-        console.log(error);
-        
         return reject(error);
       }
     });
@@ -215,10 +199,13 @@ const Statistics: React.FC<Props> = ({ data, refresh }) => {
                     icon={i.icon}
                     onClick={async () => {
                       try {
-                        message.success((await actions(data, i.action)).message);
-                        refresh(data.username);
+                        const res = await actions(data, i.action)
+                        message.success(res.message)
+                        refresh();
                       } catch (error) {
                         error instanceof Error && message.error(error.message);
+                        console.log(error);
+                        
                       }
                     }}
                   />
@@ -240,6 +227,3 @@ const Statistics: React.FC<Props> = ({ data, refresh }) => {
 };
 
 export default Statistics;
-function updateState(arg0: {}): any {
-  throw new Error("Function not implemented.");
-}
