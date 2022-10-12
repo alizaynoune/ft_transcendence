@@ -1,7 +1,6 @@
 import style from "./newGameInviteFriends.module.css";
-import { Avatar, Button, List, Skeleton, AutoComplete, Input, Divider, Typography } from "antd";
+import { Avatar, List, Skeleton, Input, Divider, Typography } from "antd";
 import Icon from "@ant-design/icons";
-import { UserOutlined } from "@ant-design/icons";
 import React, { useEffect, useState } from "react";
 import InfiniteScroll from "react-infinite-scroll-component";
 import axios from "@/config/axios";
@@ -68,6 +67,7 @@ const NGameInvitFriends: React.FC = () => {
             className={style.FriendsList}
             itemLayout="horizontal"
             dataSource={data}
+            loading={loading}
             renderItem={(item) => (
               <List.Item>
                 <Skeleton avatar title={false} loading={loading} active>
