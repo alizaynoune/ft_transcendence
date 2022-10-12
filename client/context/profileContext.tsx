@@ -9,7 +9,7 @@ import {
   RelationshipType,
   ProfileType,
   updateProfileType,
-  LastMachesType,
+  GameType,
 } from "@/types/types";
 import { message } from "antd";
 import { useAppSelector } from "@/hooks/reduxHooks";
@@ -28,7 +28,7 @@ const ProfileProvider: React.FC<PropsType> = ({ children }) => {
   const [friendsList, setFriendsList] = useState<UserType[]>([]);
   const [invitesList, setInvitesList] = useState<RequestFriendType[]>([]);
   const [blockedsList, setBlockedsList] = useState<UserType[]>([]);
-  const [lastMatches, setLastMatches] = useState<LastMachesType[]>([]);
+  const [lastMatches, setLastMatches] = useState<GameType[]>([]);
   const [loading, setLoading] = useState<boolean>(false);
   const [isMyProfile, setIsMyProfile] = useState<boolean>(false);
   const { intra_id } = useAppSelector(selectAuth);

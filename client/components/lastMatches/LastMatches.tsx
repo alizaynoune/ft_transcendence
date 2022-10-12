@@ -4,12 +4,12 @@ import type { ColumnsType } from "antd/lib/table";
 import React, { useContext } from "react";
 import moment from "moment";
 import Link from "next/link";
-import { LastMachesType, ProfileContextType } from "@/types/types";
+import { GameType, ProfileContextType } from "@/types/types";
 import { ProfileContext } from "context/profileContext";
 
 const LastMatches: React.FC = () => {
   const { lastMatches } = useContext(ProfileContext) as ProfileContextType;
-  const columns: ColumnsType<LastMachesType> = [
+  const columns: ColumnsType<GameType> = [
     {
       title: "User",
       dataIndex: "players",

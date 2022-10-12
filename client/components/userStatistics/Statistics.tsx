@@ -68,7 +68,7 @@ const actionsList: { [key: string]: { icon: JSX.Element; tooltip: string; action
 const Statistics: React.FC<Props> = ({ data, refresh }) => {
   const { lastMatches, isMyProfile } = useContext(ProfileContext) as ProfileContextType;
   const [matches, setMatches] = useState({ total: 0, winner: 0 });
-  const level = 0.3 * (Math.sqrt(data.xp)) || 0;
+  const level = 0.3 * Math.sqrt(data.xp) || 0;
   const { intra_id } = useAppSelector(selectAuth);
   const progress = ((level - Math.floor(level)) / 1) * 100;
   const WinRatio = Number(((matches.winner / matches.total) * 100).toFixed(2)) || 0;
@@ -93,21 +93,11 @@ const Statistics: React.FC<Props> = ({ data, refresh }) => {
   };
 
   useEffect(() => {
-    const l = 0.3 * (Math.sqrt(data.xp))
-    console.log(l, '.>>>>>>>>>>>level', data.xp);
-    
-    
-  }, [])
-
-  useEffect(() => {
-    // level = 0.07 * √XP
-    // console.log(data.xp, '<<<<<<<', lastMatches);
-    
     setMatches({
       total: lastMatches.length,
-      winner: lastMatches.filter(m => m.players[0].score > m.players[1].score).length
-    })
-  }, [lastMatches])
+      winner: lastMatches.filter((m) => m.players[0].score > m.players[1].score).length,
+    });
+  }, [lastMatches]);
 
   return (
     <div className={style.container}>

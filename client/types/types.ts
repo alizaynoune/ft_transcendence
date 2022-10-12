@@ -18,7 +18,7 @@ export interface AuthType {
   notifications: NotificationType[];
 }
 
-export interface LastMachesType {
+export interface GameType {
   id: number;
   status: "WAITING" | "PLAYING" | "END";
   level: "EASY" | "NORMAL" | "DIFFICULT";
@@ -71,7 +71,7 @@ export interface ProfileContextType {
   isMyProfile: boolean;
   blockedsList: UserType[];
   profile: (ProfileType & UserType & RelationshipType) | null;
-  lastMatches: LastMachesType[];
+  lastMatches: GameType[];
   updateProfile: updateProfileType;
   loadProfile: (profile: string | string[]) => Promise<unknown>;
   actions: FriendActions;

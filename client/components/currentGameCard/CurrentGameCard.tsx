@@ -1,5 +1,6 @@
 import { Avatar, Space, Typography, Divider } from "antd";
 import style from "./currentGameCard.module.css";
+import { GameType } from "@/types/types";
 
 interface UserType {
   id: string;
@@ -9,13 +10,13 @@ interface UserType {
 }
 interface PropsType {
   id: string;
-  users: UserType[];
+  players: UserType[];
 }
 
 const { Text, Title, Paragraph } = Typography;
-const CurrentGameCard: React.FC<PropsType> = (props) => {
-//console.log(props);
-  const { users, id } = props;
+const CurrentGameCard: React.FC<GameType> = (props) => {
+  //console.log(props);
+  const {id, players } = props;
 
   return (
     <Space
@@ -23,23 +24,23 @@ const CurrentGameCard: React.FC<PropsType> = (props) => {
       size={"large"}
       split={
         <Space>
-          <Title level={4}>{users[0].score}</Title>
+          <Title level={4}>{players[0].score}</Title>
           <Divider type="vertical" className={style.divider} />
-          <Title level={4}>{users[1].score}</Title>
+          <Title level={4}>{players[1].score}</Title>
         </Space>
       }
     >
       <div className={`${style.player} ${style.left}`}>
-        <Avatar src={users[0].avatar} size="large" />
+        <Avatar src={players[0].users.img_url} size="large" />
         <Text strong type="secondary" ellipsis>
-          {users[0].username}
+          {players[0].users.username}
         </Text>
       </div>
       {/* <Space className={style.user} align="end" direction="vertical"> */}
       <div className={`${style.player} ${style.right}`}>
-        <Avatar src={users[1].avatar} size="large" />
+        <Avatar src={players[1].users.img_url} size="large" />
         <Text strong type="secondary" ellipsis>
-          {users[0].username}
+          {players[0].users.username}
         </Text>
       </div>
       {/* </Space> */}
