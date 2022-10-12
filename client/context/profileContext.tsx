@@ -9,6 +9,7 @@ import {
   RelationshipType,
   ProfileType,
   updateProfileType,
+  LastMachesType,
 } from "@/types/types";
 import { message } from "antd";
 import { useAppSelector } from "@/hooks/reduxHooks";
@@ -26,23 +27,10 @@ const ProfileProvider: React.FC<PropsType> = ({ children }) => {
   const [friendsList, setFriendsList] = useState<UserType[]>([]);
   const [invitesList, setInvitesList] = useState<RequestFriendType[]>([]);
   const [blockedsList, setBlockedsList] = useState<UserType[]>([]);
+  const [lastMatches, setLastMatches] = useState<LastMachesType[]>([]);
   const [loading, setLoading] = useState<boolean>(false);
   const [isMyProfile, setIsMyProfile] = useState<boolean>(false);
   const { intra_id } = useAppSelector(selectAuth);
-
-  const loadProfile = async (profile: string | string[]) => {
-    return new Promise(async (resolve, reject) => {
-      try {
-        const res = await axios.get(`profile/${profile}`);
-        setIsMyProfile(res.data.intra_id === intra_id);
-        setProfile(res.data);
-        return resolve(200);
-      } catch (error) {
-        setProfile(null);
-        return reject(error);
-      }
-    });
-  };
 
   const updateProfile: updateProfileType = async (update) => {
     setLoading(true);
@@ -103,44 +91,95 @@ const ProfileProvider: React.FC<PropsType> = ({ children }) => {
     });
   };
 
+  const loadProfile = async (profile: string | string[]) => {
+    setLoading(true);
+    return new Promise(async (resolve, reject) => {
+      try {
+        const res = await axios.get(`profile/${profile}`);
+        setIsMyProfile(res.data.intra_id === intra_id);
+        setProfile(res.data);
+        setLoading(false);
+        return resolve(200);
+      } catch (error) {
+        setProfile(null);
+        setLoading(false);
+        return reject(error);
+      }
+    });
+  };
+
   const loadFriends = async () => {
     setLoading(true);
     setFriendsList([]);
-    const url = isMyProfile ? "/" : `/user/${profile?.username}`;
-    try {
-      const res = await axios.get(`friends${url}`);
-      if (res.data.friends) {
-        setFriendsList(res.data.friends.map((f: { userInfo: UserType }) => f.userInfo));
+    return new Promise(async (resolve, reject) => {
+      const url = isMyProfile ? "/" : `/user/${profile?.username}`;
+      try {
+        const res = await axios.get(`friends${url}`);
+        if (res.data.friends) {
+          setFriendsList(res.data.friends.map((f: { userInfo: UserType }) => f.userInfo));
+        }
+        setLoading(false);
+        return resolve(friendsList);
+      } catch (error) {
+        setLoading(false);
+        return reject(error);
       }
-      setLoading(false);
-    } catch (error) {
-      error instanceof Error && message.error(error.message);
-    }
+    });
   };
 
   const loadInvites = async () => {
     setLoading(true);
     setInvitesList([]);
-    try {
-      const res = await axios.get("/friends/invites");
-      setInvitesList(res.data.invites);
-      setLoading(false);
-    } catch (error) {
-      setLoading(false);
-    }
+    return new Promise(async (resolve, reject) => {
+      try {
+        const res = await axios.get("/friends/invites");
+        setInvitesList(res.data.invites);
+        setLoading(false);
+        return resolve(invitesList);
+      } catch (error) {
+        setLoading(false);
+        return reject(error);
+      }
+    });
   };
 
   const loadBlockeds = async () => {
     setLoading(true);
     setBlockedsList([]);
-    try {
-      const res = await axios.get("friends/blocked");
-      const data = res.data.map((i: { users_blocked_blockedidTousers: UserType }) => i.users_blocked_blockedidTousers);
-      setBlockedsList(data);
-      setLoading(false);
-    } catch (error) {
-      setLoading(false);
-    }
+    return new Promise(async (resolve, reject) => {
+      try {
+        const res = await axios.get("friends/blocked");
+        const data = res.data.map((i: { users_blocked_blockedidTousers: UserType }) => i.users_blocked_blockedidTousers);
+        setBlockedsList(data);
+        setLoading(false);
+        return resolve(blockedsList);
+      } catch (error) {
+        setLoading(false);
+        return reject(error);
+      }
+    });
+  };
+
+  const loadLastMatches = async () => {
+    setLoading(true);
+    setLastMatches([]);
+    return new Promise(async (resolve, reject) => {
+      try {
+        const res = await axios.get("game/history");
+        const data = res.data.map((d: { game: any }) => {
+          if (d.game.players[0] !== intra_id) {
+            [d.game.players[1], d.game.players[0]] = [d.game.players[0], d.game.players[1]];
+          }
+          return d.game;
+        });
+        setLoading(false);
+        setLastMatches(data);
+        return resolve(lastMatches);
+      } catch (error) {
+        setLoading(false);
+        return reject(error);
+      }
+    });
   };
 
   return (
@@ -152,12 +191,14 @@ const ProfileProvider: React.FC<PropsType> = ({ children }) => {
         isMyProfile,
         blockedsList,
         profile,
+        lastMatches,
         updateProfile,
         loadProfile,
         actions,
         loadFriends,
         loadInvites,
         loadBlockeds,
+        loadLastMatches,
       }}
     >
       {[children]}

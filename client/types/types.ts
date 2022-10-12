@@ -4,9 +4,6 @@ declare global {
   interface Error {
     status: number;
   }
-  // interface ObjectConstructor {
-  //   assign(...objects: Object[]): Object;
-  // }
 }
 type PromiseReturn = Error | { message: string };
 export type FriendActions = (user: UserType, action: string) => Promise<PromiseReturn>;
@@ -19,6 +16,20 @@ export interface AuthType {
   email: string;
   intra_id: number;
   notifications: NotificationType[];
+}
+
+export interface LastMachesType {
+  id: number;
+  status: "WAITING" | "PLAYING" | "END";
+  level: "EASY" | "NORMAL" | "DIFFICULT";
+  createdat: Date;
+  updatedat: Date;
+  players: {
+    id: number;
+    gameid: number;
+    score: number;
+    users: UserType;
+  }[];
 }
 
 export interface NotificationType {
@@ -59,12 +70,14 @@ export interface ProfileContextType {
   isMyProfile: boolean;
   blockedsList: UserType[];
   profile: (ProfileType & UserType & RelationshipType) | null;
+  lastMatches: LastMachesType[];
   updateProfile: updateProfileType;
   loadProfile: (profile: string | string[]) => Promise<unknown>;
   actions: FriendActions;
-  loadFriends: () => Promise<void>;
-  loadInvites: () => Promise<void>;
-  loadBlockeds: () => Promise<void>;
+  loadFriends: () => Promise<unknown>;
+  loadInvites: () => Promise<unknown>;
+  loadBlockeds: () => Promise<unknown>;
+  loadLastMatches: () => Promise<unknown>;
 }
 
 export interface BlockedListType {

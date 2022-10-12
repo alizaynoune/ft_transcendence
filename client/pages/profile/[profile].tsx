@@ -18,7 +18,7 @@ const MProfile: React.FC = () => {
   const [error, setError] = useState<number>(200);
   const [loading, setLoading] = useState<boolean>(false);
 
-  const { profile, loadProfile, isMyProfile } = useContext(ProfileContext) as ProfileContextType;
+  const { profile, isMyProfile, loadProfile, loadLastMatches } = useContext(ProfileContext) as ProfileContextType;
 
   const loadingProfile = async () => {
     setLoading(true);
@@ -39,9 +39,21 @@ const MProfile: React.FC = () => {
   };
 
   useEffect(() => {
-    console.log('url changed');
+    console.log("url changed");
     loadingProfile();
   }, [isReady, query.profile]);
+
+  const LastMatches = async () => {
+    try {
+      await loadLastMatches();
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  useEffect(() => {
+    if (isMyProfile) LastMatches();
+  }, [isMyProfile]);
 
   return (
     <section className={style.container}>
