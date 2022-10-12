@@ -14,6 +14,7 @@ import {
 import { message } from "antd";
 import { useAppSelector } from "@/hooks/reduxHooks";
 import { selectAuth } from "@/store/reducers/auth";
+import { read } from "fs";
 
 interface PropsType {
   children: React.ReactNode;
@@ -149,6 +150,8 @@ const ProfileProvider: React.FC<PropsType> = ({ children }) => {
     return new Promise(async (resolve, reject) => {
       try {
         const res = await axios.get("friends/blocked");
+        console.log(res.data);
+        if (res.data.constructor !== Array) return resolve([]);
         const data = res.data.map((i: { users_blocked_blockedidTousers: UserType }) => i.users_blocked_blockedidTousers);
         setBlockedsList(data);
         setLoading(false);

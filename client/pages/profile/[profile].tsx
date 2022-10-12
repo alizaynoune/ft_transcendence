@@ -52,6 +52,8 @@ const MProfile: React.FC = () => {
   };
 
   useEffect(() => {
+    console.log(isMyProfile);
+    
     if (isMyProfile) LastMatches();
   }, [isMyProfile]);
 

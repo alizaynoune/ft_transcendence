@@ -33,7 +33,9 @@
   /* opacity: 1; */
 }
 .progress * {
-  color: var(--light-color) !important;
+  color: var(--primary-color) !important;
+  font-weight: bold;
+  font-style: italic;
 }
 
 .achievements {

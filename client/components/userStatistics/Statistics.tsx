@@ -5,9 +5,9 @@ import { Progress, Avatar, Badge, Typography, Upload, Button, Space, Tooltip, me
 import Icon, { EditOutlined, CloseOutlined, CheckOutlined } from "@ant-design/icons";
 import { useAppSelector } from "@/hooks/reduxHooks";
 import { selectAuth } from "@/store/reducers/auth";
-import { ComponentType, SVGProps, useCallback, useEffect, useRef, useState } from "react";
-import { ProfileType, RelationshipType, UserType, FriendActions } from "@/types/types";
-import { useRouter } from "next/router";
+import { ComponentType, SVGProps, useRef, useContext, useState, useEffect } from "react";
+import { ProfileType, RelationshipType, UserType, FriendActions, ProfileContextType } from "@/types/types";
+import { ProfileContext } from "context/profileContext";
 // Achievements Icons
 import {
   MessageIcon,
@@ -66,11 +66,12 @@ const actionsList: { [key: string]: { icon: JSX.Element; tooltip: string; action
 };
 
 const Statistics: React.FC<Props> = ({ data, refresh }) => {
-  const level = 12.25;
-  const matches = { total: 10, winne: 9 };
+  const { lastMatches, isMyProfile } = useContext(ProfileContext) as ProfileContextType;
+  const [matches, setMatches] = useState({ total: 0, winner: 0 });
+  const level = 0.3 * (Math.sqrt(data.xp)) || 0;
   const { intra_id } = useAppSelector(selectAuth);
   const progress = ((level - Math.floor(level)) / 1) * 100;
-  const WinRatio = Number(((matches.winne / matches.total) * 100).toFixed(2));
+  const WinRatio = Number(((matches.winner / matches.total) * 100).toFixed(2)) || 0;
   const lazyRoot = useRef(null);
   const actionIndex = data.relationship
     ? data.relationship.isFriend
@@ -90,6 +91,23 @@ const Statistics: React.FC<Props> = ({ data, refresh }) => {
       }
     });
   };
+
+  useEffect(() => {
+    const l = 0.3 * (Math.sqrt(data.xp))
+    console.log(l, '.>>>>>>>>>>>level', data.xp);
+    
+    
+  }, [])
+
+  useEffect(() => {
+    // level = 0.07 * √XP
+    // console.log(data.xp, '<<<<<<<', lastMatches);
+    
+    setMatches({
+      total: lastMatches.length,
+      winner: lastMatches.filter(m => m.players[0].score > m.players[1].score).length
+    })
+  }, [lastMatches])
 
   return (
     <div className={style.container}>
@@ -113,7 +131,7 @@ const Statistics: React.FC<Props> = ({ data, refresh }) => {
           format={() => level.toFixed(2)}
           trailColor="rgba(0, 0, 0, 0.2)"
         />
-        {intra_id === data.intra_id && (
+        {isMyProfile && (
           <Upload>
             <Button
               icon={<EditOutlined size={1} />}
@@ -159,7 +177,7 @@ const Statistics: React.FC<Props> = ({ data, refresh }) => {
         </div>
       )}
       <div className={style.gameRatioContainer}>
-        {intra_id === data.intra_id ? (
+        {isMyProfile ? (
           <>
             <Progress
               success={{ percent: WinRatio, strokeColor: "var(--success-color)" }}
@@ -175,14 +193,14 @@ const Statistics: React.FC<Props> = ({ data, refresh }) => {
               className={style.badge}
               status="default"
               color={"var(--success-color)"}
-              text={<Text type="success" italic>{`Wins ${matches.winne}`}</Text>}
+              text={<Text type="success" italic>{`Wins ${matches.winner}`}</Text>}
             />
             <Badge
               className={style.badge}
               status="error"
               text={
                 <Text type="danger" italic>
-                  {`Loses ${matches.total - matches.winne}`}
+                  {`Loses ${matches.total - matches.winner}`}
                 </Text>
               }
               size="default"
@@ -199,13 +217,12 @@ const Statistics: React.FC<Props> = ({ data, refresh }) => {
                     icon={i.icon}
                     onClick={async () => {
                       try {
-                        const res = await actions(data, i.action)
-                        message.success(res.message)
+                        const res = await actions(data, i.action);
+                        message.success(res.message);
                         refresh();
                       } catch (error) {
                         error instanceof Error && message.error(error.message);
                         console.log(error);
-                        
                       }
                     }}
                   />

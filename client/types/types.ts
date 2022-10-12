@@ -57,8 +57,9 @@ export interface UserType {
   first_name: string;
   last_name: string;
   img_url: string;
-  cover: string;
   status: "ONLINE" | "OFFLINE" | "PLAYING";
+  xp: number;
+  cover: string;
   created_at: string;
   updated_at: string;
 }
