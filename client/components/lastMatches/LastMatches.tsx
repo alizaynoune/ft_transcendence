@@ -1,5 +1,5 @@
 import style from "./lastMatches.module.css";
-import { Table, Tag, Avatar } from "antd";
+import { Table, Tag, Avatar, Badge } from "antd";
 import type { ColumnsType } from "antd/lib/table";
 import React, { useContext } from "react";
 import moment from "moment";
@@ -17,7 +17,12 @@ const LastMatches: React.FC = () => {
       render: (players) => (
         <Link href={`/profile/${players[1].users.username}`}>
           <a className={style.avatar}>
-            <Avatar src={players[1].users.img_url} size="large" />
+            <Badge
+              dot
+              status={players[0].users.status === "ONLINE" ? "success" : players[0].users.status === "PLAYING" ? "warning" : "error"}
+            >
+              <Avatar src={players[1].users.img_url} size="large" />
+            </Badge>
             <span className={style.username}>{players[1].users.username}</span>
           </a>
         </Link>

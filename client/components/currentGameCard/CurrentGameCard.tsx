@@ -1,4 +1,4 @@
-import { Avatar, Space, Typography, Divider } from "antd";
+import { Avatar, Space, Typography, Divider, Badge } from "antd";
 import style from "./currentGameCard.module.css";
 import { GameType } from "@/types/types";
 
@@ -16,7 +16,7 @@ interface PropsType {
 const { Text, Title, Paragraph } = Typography;
 const CurrentGameCard: React.FC<GameType> = (props) => {
   //console.log(props);
-  const {id, players } = props;
+  const { id, players } = props;
 
   return (
     <Space
@@ -36,14 +36,12 @@ const CurrentGameCard: React.FC<GameType> = (props) => {
           {players[0].users.username}
         </Text>
       </div>
-      {/* <Space className={style.user} align="end" direction="vertical"> */}
       <div className={`${style.player} ${style.right}`}>
         <Avatar src={players[1].users.img_url} size="large" />
         <Text strong type="secondary" ellipsis>
-          {players[0].users.username}
+          {players[1].users.username}
         </Text>
       </div>
-      {/* </Space> */}
     </Space>
   );
 };

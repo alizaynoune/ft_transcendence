@@ -1,13 +1,12 @@
 import style from "./userCard.module.css";
-import { List, Avatar, Button, Popover, Menu, Dropdown, Space, message } from "antd";
-import type { MenuProps, ButtonProps } from "antd";
-import Icon, { CloseOutlined, CheckOutlined, DownOutlined } from "@ant-design/icons";
+import { List, Avatar, Button, Popover, message, Badge } from "antd";
+import Icon, { CloseOutlined, CheckOutlined } from "@ant-design/icons";
 import Link from "next/link";
 import { useContext } from "react";
 import { ProfileContext } from "context/profileContext";
 // Icons
 import { DotsVIcon, DeleteUserIcon, BlockUserIcon, MessageIcon, PlayGameIcon, UnblockUserIcon } from "@/icons/index";
-import { UserType, ProfileContextType, FriendActions } from "@/types/types";
+import { UserType, ProfileContextType } from "@/types/types";
 
 interface Props {
   type: "friend" | "request" | "block";
@@ -25,12 +24,13 @@ const actionsList = {
     { icon: <CloseOutlined />, action: "rejectrequest" },
     { icon: <CheckOutlined />, action: "acceptrequest" },
   ],
-  block: [{ icon: <Icon component={UnblockUserIcon} style={{fontSize: '120%'}} />, action: "Unblock" }],
+  block: [{ icon: <Icon component={UnblockUserIcon} style={{ fontSize: "120%" }} />, action: "Unblock" }],
 };
 
 const UserCard: React.FC<Props> = (props) => {
   const { type, user } = props;
   const { loading, isMyProfile, actions } = useContext(ProfileContext) as ProfileContextType;
+
   return (
     <List.Item
       className={style.item}
@@ -73,7 +73,9 @@ const UserCard: React.FC<Props> = (props) => {
         avatar={
           <Link href={`/profile/${user.username}`}>
             <a>
-              <Avatar src={user.img_url} size="large" />
+              <Badge dot status={user.status === "ONLINE" ? "success" : user.status === "PLAYING" ? "warning" : "error"}>
+                <Avatar src={user.img_url} size="large" />
+              </Badge>
             </a>
           </Link>
         }

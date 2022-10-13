@@ -30,7 +30,7 @@ const Notifications: React.FC = () => {
   const [notificationsList, setNotificationsList] = useState<NotificationType[]>([]);
   const { notifications } = useAppSelector(selectAuth);
   const dispatch = useAppDispatch();
-  const router = useRouter()
+  const router = useRouter();
 
   useEffect(() => {
     setNotificationsList(notifications);
@@ -46,7 +46,18 @@ const Notifications: React.FC = () => {
       </Space>,
       i.read,
       i.id,
-      <Avatar src={i.users_notification_fromidTousers.img_url} />
+      <Badge
+        dot
+        status={
+          i.users_notification_fromidTousers.status === "ONLINE"
+            ? "success"
+            : i.users_notification_fromidTousers.status === "PLAYING"
+            ? "warning"
+            : "error"
+        }
+      >
+        <Avatar src={i.users_notification_fromidTousers.img_url} />
+      </Badge>
     )
   );
   const menu = (
@@ -55,7 +66,7 @@ const Notifications: React.FC = () => {
       items={items}
       onClick={(e) => {
         const n = notifications.find((n) => n.id === Number(e.key));
-        if (n && n.type === "FRIEND_REQUEST") router.push(`/profile/${n.users_notification_fromidTousers.username}`)
+        if (n && n.type === "FRIEND_REQUEST") router.push(`/profile/${n.users_notification_fromidTousers.username}`);
         dispatch(readNotification(e.key));
       }}
     />

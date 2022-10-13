@@ -42,11 +42,7 @@ export interface NotificationType {
   read: boolean;
   createdat: Date;
   updatedat: Date;
-  users_notification_fromidTousers: {
-    username: string;
-    img_url: string;
-    intra_id: number;
-  };
+  users_notification_fromidTousers: UserType;
 }
 
 export interface UserType {

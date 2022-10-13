@@ -1,5 +1,5 @@
 import style from "./newGameInviteFriends.module.css";
-import { Avatar, List, Skeleton, Input, Divider, Typography } from "antd";
+import { Avatar, List, Skeleton, Input, Divider, Typography, Badge } from "antd";
 import Icon from "@ant-design/icons";
 import React, { useEffect, useState } from "react";
 import InfiniteScroll from "react-infinite-scroll-component";
@@ -84,7 +84,11 @@ const NGameInvitFriends: React.FC = () => {
                     }}
                   >
                     <List.Item.Meta
-                      avatar={<Avatar src={item.img_url} size="large" />}
+                      avatar={
+                        <Badge dot status={item.status === "ONLINE" ? "success" : item.status === "PLAYING" ? "warning" : "error"}>
+                          <Avatar src={item.img_url} size="large" />
+                        </Badge>
+                      }
                       title={`${item.first_name} ${item.last_name}`}
                       description={item.email}
                     />
