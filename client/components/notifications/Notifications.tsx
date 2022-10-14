@@ -40,7 +40,7 @@ const Notifications: React.FC = () => {
       <Space>
         <Space direction="vertical">
           <Text strong>{i.users_notification_fromidTousers.username}</Text>
-          <Text type="secondary">{"Invet you to play a game"}</Text>
+          <Text type="secondary">{i.content}</Text>
         </Space>
         <Text type="secondary">{moment(i.createdat).fromNow()}</Text>
       </Space>,
@@ -67,7 +67,7 @@ const Notifications: React.FC = () => {
       onClick={(e) => {
         const n = notifications.find((n) => n.id === Number(e.key));
         if (n && n.type === "FRIEND_REQUEST") router.push(`/profile/${n.users_notification_fromidTousers.username}`);
-        dispatch(readNotification(e.key));
+        // dispatch(readNotification(e.key));
       }}
     />
   );
