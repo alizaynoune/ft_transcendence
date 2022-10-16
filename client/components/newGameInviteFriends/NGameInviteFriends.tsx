@@ -8,17 +8,18 @@ import { SearchIcon } from "@/icons/index";
 import { UserType } from "@/types/types";
 
 const { Title } = Typography;
-
+const { Search } = Input;
 const NGameInvitFriends: React.FC = () => {
   const [loading, setLoading] = useState(false);
   const [data, setData] = useState<UserType[]>([]);
   const [hasMore, setHasMore] = useState<boolean>(false);
+  const [filter, setFilter] = useState<string>("");
 
   const loadMoreData = async () => {
     setLoading(true);
     try {
       const cursor = data.at(-1)?.id || 1;
-      const res = await axios.get(`/users/all?cursor=${cursor}`);
+      const res = await axios.get(`/users/all?status=ONLINE&findBy=${filter}&cursor=${cursor}`);
       setHasMore(res.data.length === 20);
       setData((prev) => [...prev, ...res.data]);
       setLoading(false);
@@ -31,6 +32,10 @@ const NGameInvitFriends: React.FC = () => {
   useEffect(() => {
     loadMoreData();
   }, []);
+
+  useEffect(() => {
+    loadMoreData()
+  }, [filter])
 
   return (
     <div className={style.container}>
@@ -50,7 +55,13 @@ const NGameInvitFriends: React.FC = () => {
           className={style.search}
           size="large"
           placeholder="Enter name or email"
-          // onChange={filter}
+          onChange={(e) => {
+            console.log(e.target.value);
+            if (e.target.value.length > 3){
+              setData([])
+              setFilter(e.target.value)
+            }
+          }}
           suffix={<Icon component={SearchIcon} style={{ fontSize: "135%", color: "var(--light-color)" }} />}
         />
       </div>
