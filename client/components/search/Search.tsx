@@ -37,12 +37,12 @@ const Search: React.FC = () => {
   const [filter, setFilter] = useState<string>("");
   const [hasMore, setHasMore] = useState<boolean>(false);
   const [loading, setLoading] = useState<boolean>(false);
-  const squareBoxRef = useRef<HTMLDivElement>(null);
+  const Ref = useRef<HTMLDivElement>(null);
 
   const clickOutsidehandler = () => {
     setVisible(false);
   };
-  useOnClickOutside(squareBoxRef, clickOutsidehandler);
+  useOnClickOutside(Ref, clickOutsidehandler);
 
   const loadMoreData = async () => {
     setLoading(true);
@@ -72,7 +72,7 @@ const Search: React.FC = () => {
   };
 
   return (
-    <div className={style.container} ref={squareBoxRef}>
+    <div className={style.container} ref={Ref}>
       <Input
         className={style.search}
         size="large"

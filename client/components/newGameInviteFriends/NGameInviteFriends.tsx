@@ -1,11 +1,12 @@
 import style from "./newGameInviteFriends.module.css";
-import { Avatar, List, Skeleton, Input, Divider, Typography, Badge } from "antd";
+import { Avatar, List, Skeleton, Input, Divider, Typography, Badge, message, Button } from "antd";
 import Icon from "@ant-design/icons";
 import React, { useEffect, useState } from "react";
 import InfiniteScroll from "react-infinite-scroll-component";
 import axios from "@/config/axios";
-import { SearchIcon } from "@/icons/index";
+import { PlayGameIcon, SearchIcon } from "@/icons/index";
 import { UserType } from "@/types/types";
+import Link from "next/link";
 
 const { Title } = Typography;
 const { Search } = Input;
@@ -25,6 +26,7 @@ const NGameInvitFriends: React.FC = () => {
       setLoading(false);
     } catch (error) {
       setLoading(false);
+      error instanceof Error && message.error(error.message);
       console.log(error);
     }
   };
@@ -36,6 +38,15 @@ const NGameInvitFriends: React.FC = () => {
   useEffect(() => {
     loadMoreData();
   }, [filter]);
+
+  const sendInvite = async (user: UserType) => {
+    try {
+      const res = await axios.post("game/invite", { userId: user.intra_id });
+      message.success(res.data.message);
+    } catch (error) {
+      error instanceof Error && message.error(error.message);
+    }
+  };
 
   return (
     <div className={style.container}>
@@ -56,7 +67,6 @@ const NGameInvitFriends: React.FC = () => {
           size="large"
           placeholder="Enter name or email"
           onChange={(e) => {
-            console.log(e.target.value);
             if (e.target.value.length > 3) {
               setData([]);
               setFilter(e.target.value);
@@ -80,12 +90,27 @@ const NGameInvitFriends: React.FC = () => {
             dataSource={data}
             loading={loading}
             renderItem={(item) => (
-              <List.Item>
+              <List.Item
+                extra={
+                  <Button
+                    type="primary"
+                    icon={<Icon component={PlayGameIcon} />}
+                    loading={loading}
+                    onClick={() => {
+                      sendInvite(item);
+                    }}
+                  />
+                }
+              >
                 <List.Item.Meta
                   avatar={
-                    <Badge dot status={item.status === "ONLINE" ? "success" : item.status === "PLAYING" ? "warning" : "error"}>
-                      <Avatar src={item.img_url} size="large" />
-                    </Badge>
+                    <Link href={`/profile/${item.username}`}>
+                      <a>
+                        <Badge dot status={item.status === "ONLINE" ? "success" : item.status === "PLAYING" ? "warning" : "error"}>
+                          <Avatar src={item.img_url} size="large" />
+                        </Badge>
+                      </a>
+                    </Link>
                   }
                   title={`${item.first_name} ${item.last_name}`}
                   description={item.email}
