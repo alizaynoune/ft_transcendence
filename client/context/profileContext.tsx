@@ -73,7 +73,7 @@ const ProfileProvider: React.FC<PropsType> = ({ children }) => {
     rejectrequest: [filterInvites],
     acceptrequest: [filterInvites, pushFriend],
     blockfriend: [filterFriends, pushBlocked],
-    Unblock: [filterBlockeds],
+    unblock: [filterBlockeds],
     unfriend: [filterFriends],
   };
 
@@ -81,9 +81,12 @@ const ProfileProvider: React.FC<PropsType> = ({ children }) => {
     setLoading(true);
     return new Promise(async (resolve, reject) => {
       try {
-        const res = await axios.post(`friends/${action}`, { id: user.intra_id.toString() });
+        const body = action.split("/")[0] === "game" ? { userId: user.intra_id } : { id: user.intra_id.toString() };
+        console.log(body, action.split("/"), action);
+        const res = await axios.post(action, body);
         setLoading(false);
-        if (action in fns) fns[action].forEach((f) => f(user));
+        const fnIndex = action.split("/")[1];
+        if (fnIndex in fns) fns[fnIndex].forEach((f) => f(user));
         return resolve(res.data);
       } catch (error) {
         setLoading(false);

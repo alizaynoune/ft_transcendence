@@ -16,15 +16,15 @@ interface Props {
 const actionsList = {
   friend: [
     { icon: <Icon component={MessageIcon} style={{ fontSize: "120%" }} />, action: "message" },
-    { icon: <Icon component={PlayGameIcon} style={{ fontSize: "120%" }} />, action: "playGame" },
-    { icon: <Icon component={BlockUserIcon} style={{ fontSize: "120%" }} />, action: "blockfriend" },
-    { icon: <Icon component={DeleteUserIcon} style={{ fontSize: "120%" }} />, action: "unfriend" },
+    { icon: <Icon component={PlayGameIcon} style={{ fontSize: "120%" }} />, action: "game/invite" },
+    { icon: <Icon component={BlockUserIcon} style={{ fontSize: "120%" }} />, action: "friends/blockfriend" },
+    { icon: <Icon component={DeleteUserIcon} style={{ fontSize: "120%" }} />, action: "friends/unfriend" },
   ],
   request: [
-    { icon: <CloseOutlined />, action: "rejectrequest" },
-    { icon: <CheckOutlined />, action: "acceptrequest" },
+    { icon: <CloseOutlined />, action: "friends/rejectrequest" },
+    { icon: <CheckOutlined />, action: "friends/acceptrequest" },
   ],
-  block: [{ icon: <Icon component={UnblockUserIcon} style={{ fontSize: "120%" }} />, action: "Unblock" }],
+  block: [{ icon: <Icon component={UnblockUserIcon} style={{ fontSize: "120%" }} />, action: "friends/unblock" }],
 };
 
 const UserCard: React.FC<Props> = (props) => {

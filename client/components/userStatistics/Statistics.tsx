@@ -44,24 +44,24 @@ const { Text, Title } = Typography;
 const actionsList: { [key: string]: { icon: JSX.Element; tooltip: string; action: string }[] } = {
   friend: [
     { icon: <Icon component={MessageIcon} />, tooltip: "Send message", action: "message" },
-    { icon: <Icon component={PlayGameIcon} />, tooltip: "Invite to play game", action: "playGame" },
-    { icon: <Icon component={DeleteUserIcon} />, tooltip: "unfriend", action: "unfriend" },
-    { icon: <Icon component={BlockUserIcon} />, tooltip: "Block", action: "blockfriend" },
+    { icon: <Icon component={PlayGameIcon} />, tooltip: "Invite to play game", action: "game/invite" },
+    { icon: <Icon component={DeleteUserIcon} />, tooltip: "unfriend", action: "friends/unfriend" },
+    { icon: <Icon component={BlockUserIcon} />, tooltip: "Block", action: "friends/blockfriend" },
   ],
   inviteSender: [
-    { icon: <Icon component={PlayGameIcon} />, tooltip: "Invite to play game", action: "playGame" },
-    { icon: <CloseOutlined />, tooltip: "Reject friend request", action: "rejectrequest" },
-    { icon: <CheckOutlined />, tooltip: "Accept friend request", action: "acceptrequest" },
-    { icon: <Icon component={BlockUserIcon} />, tooltip: "Block", action: "blockfriend" },
+    { icon: <Icon component={PlayGameIcon} />, tooltip: "Invite to play game", action: "game/invite" },
+    { icon: <CloseOutlined />, tooltip: "Reject friend request", action: "friends/rejectrequest" },
+    { icon: <CheckOutlined />, tooltip: "Accept friend request", action: "friends/acceptrequest" },
+    { icon: <Icon component={BlockUserIcon} />, tooltip: "Block", action: "friends/blockfriend" },
   ],
   inviteReceiver: [
-    { icon: <Icon component={PlayGameIcon} />, tooltip: "Invite to play game", action: "playGame" },
-    { icon: <Icon component={BlockUserIcon} />, tooltip: "Block", action: "blockfriend" },
+    { icon: <Icon component={PlayGameIcon} />, tooltip: "Invite to play game", action: "game/invite" },
+    { icon: <Icon component={BlockUserIcon} />, tooltip: "Block", action: "friends/blockfriend" },
   ],
   other: [
-    { icon: <Icon component={PlayGameIcon} />, tooltip: "Invite to play game", action: "playGame" },
-    { icon: <Icon component={AddFriendIcon} />, tooltip: "Send friend request", action: "sendrequest" },
-    { icon: <Icon component={BlockUserIcon} />, tooltip: "Block", action: "blockfriend" },
+    { icon: <Icon component={PlayGameIcon} />, tooltip: "Invite to play game", action: "game/invite" },
+    { icon: <Icon component={AddFriendIcon} />, tooltip: "Send friend request", action: "friends/sendrequest" },
+    { icon: <Icon component={BlockUserIcon} />, tooltip: "Block", action: "friends/blockfriend" },
   ],
 };
 
@@ -84,7 +84,10 @@ const Statistics: React.FC<Props> = ({ data, refresh }) => {
   const actions: FriendActions = (user, action) => {
     return new Promise(async (resolve, reject) => {
       try {
-        const res = await axios.post(`friends/${action}`, { id: user.intra_id.toString() });
+        console.log(action.split('/')[0]);
+        
+        const body = action.split('/')[0] === 'game' ? {userId: user.intra_id} : { id: user.intra_id.toString() }
+        const res = await axios.post(action, body);
         return resolve(res.data);
       } catch (error) {
         return reject(error);
