@@ -34,8 +34,8 @@ const NGameInvitFriends: React.FC = () => {
   }, []);
 
   useEffect(() => {
-    loadMoreData()
-  }, [filter])
+    loadMoreData();
+  }, [filter]);
 
   return (
     <div className={style.container}>
@@ -57,9 +57,9 @@ const NGameInvitFriends: React.FC = () => {
           placeholder="Enter name or email"
           onChange={(e) => {
             console.log(e.target.value);
-            if (e.target.value.length > 3){
-              setData([])
-              setFilter(e.target.value)
+            if (e.target.value.length > 3) {
+              setData([]);
+              setFilter(e.target.value);
             }
           }}
           suffix={<Icon component={SearchIcon} style={{ fontSize: "135%", color: "var(--light-color)" }} />}
@@ -70,7 +70,7 @@ const NGameInvitFriends: React.FC = () => {
           dataLength={data.length}
           next={loadMoreData}
           hasMore={hasMore}
-          loader={<Skeleton avatar paragraph={{ rows: 3 }} active />}
+          loader={<Skeleton avatar paragraph={{ rows: 1 }} active />}
           endMessage={<Divider plain>{"It is all, nothing more 🤐"}</Divider>}
           scrollableTarget="scrollableDiv"
         >
@@ -81,30 +81,15 @@ const NGameInvitFriends: React.FC = () => {
             loading={loading}
             renderItem={(item) => (
               <List.Item>
-                <Skeleton avatar title={false} loading={loading} active>
-                  <div
-                    onClick={() => {
-                      console.log(item.intra_id);
-                    }}
-                    style={{
-                      width: "100%",
-                      height: "100%",
-                      padding: 0,
-                      margin: 0,
-                      cursor: "pointer",
-                    }}
-                  >
-                    <List.Item.Meta
-                      avatar={
-                        <Badge dot status={item.status === "ONLINE" ? "success" : item.status === "PLAYING" ? "warning" : "error"}>
-                          <Avatar src={item.img_url} size="large" />
-                        </Badge>
-                      }
-                      title={`${item.first_name} ${item.last_name}`}
-                      description={item.email}
-                    />
-                  </div>
-                </Skeleton>
+                <List.Item.Meta
+                  avatar={
+                    <Badge dot status={item.status === "ONLINE" ? "success" : item.status === "PLAYING" ? "warning" : "error"}>
+                      <Avatar src={item.img_url} size="large" />
+                    </Badge>
+                  }
+                  title={`${item.first_name} ${item.last_name}`}
+                  description={item.email}
+                />
               </List.Item>
             )}
           />

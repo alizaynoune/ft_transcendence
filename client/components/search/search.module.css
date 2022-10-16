@@ -1,0 +1,32 @@
+.container {
+  position: relative;
+  width: 100%;
+}
+
+.search {
+  background: none !important;
+  border-radius: 6px !important;
+  max-width: 300px;
+}
+
+.search input {
+  background: none !important;
+  color: var(--light-color);
+}
+
+.search input::placeholder {
+  color: var(--light-color);
+}
+
+.scrollableDiv {
+  background-color: var(--background-color);
+  width: 300px;
+  overflow-y: scroll;
+  overflow-x: hidden;
+  max-height: 50em;
+  box-shadow: 0px 0px 8px rgba(154, 154, 154, 0.5);
+  border-radius: 6px;
+  position: absolute;
+  top: 110%;
+  z-index: 99;
+}

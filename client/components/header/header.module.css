@@ -31,21 +31,9 @@
   gap: 30px;
   /* justify-items: end; */
   justify-content: right;
-}
-.search {
-  background: none !important;
-  border-radius: 6px !important;
-  max-width: 300px;
+  
 }
 
-.search input {
-  background: none !important;
-  color: var(--light-color);
-}
-
-.search input::placeholder {
-  color: var(--light-color);
-}
 
 .logo {
   height: 100%;
