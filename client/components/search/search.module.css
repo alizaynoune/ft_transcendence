@@ -6,7 +6,7 @@
 .search {
   background: none !important;
   border-radius: 6px !important;
-  max-width: 300px;
+  max-width: 320px;
 }
 
 .search input {
@@ -20,7 +20,7 @@
 
 .scrollableDiv {
   background-color: var(--background-color);
-  width: 300px;
+  width: 320px;
   overflow-y: scroll;
   overflow-x: hidden;
   max-height: 50em;
