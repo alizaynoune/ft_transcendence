@@ -1,7 +1,7 @@
 import { Button } from "antd";
 import style from "./newGame.module.css";
 import ListFriends from "@/components/newGameInviteFriends/NGameInviteFriends";
-import { Menu, Dropdown, Select } from "antd";
+import { Menu, Dropdown, Select, Modal } from "antd";
 import { useState } from "react";
 import Link from "next/link";
 
@@ -10,9 +10,21 @@ const { Option } = Select;
 const NewGame: React.FC = () => {
   const [gameLevel, setGameLevel] = useState<1 | 2 | 3>(1);
   const onChange = (value: 1 | 2 | 3) => {
-//console.log(`selected ${value}`);
+    //console.log(`selected ${value}`);
     setGameLevel(value);
   };
+
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const showModal = () => {
+    setIsModalOpen(true);
+  };
+  const handleOk = () => {
+    setIsModalOpen(false);
+  };
+  const handleCancel = () => {
+    setIsModalOpen(false);
+  };
+
   return (
     <div className={style.container}>
       <Select
@@ -37,11 +49,17 @@ const NewGame: React.FC = () => {
           {/* racquet */}
           <div className={style.racquet}></div>
         </div>
-        <Link href="/game/id">
-          <Button type="primary" size="large">
-            {"Play with random user"}
-          </Button>
-        </Link>
+        {/* <Link href="/game/id"> */}
+        <Button type="primary" size="large"  onClick={showModal}>
+        {"Play with random user"}
+      </Button>
+      {/* @ts-ignore */}
+      <Modal title="Basic Modal" open={isModalOpen} onOk={handleOk} onCancel={handleCancel}>
+        <p>Some contents...</p>
+        <p>Some contents...</p>
+        <p>Some contents...</p>
+      </Modal>
+        {/* </Link> */}
       </div>
     </div>
   );
