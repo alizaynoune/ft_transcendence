@@ -1,16 +1,28 @@
 import style from "./newGameInviteFriends.module.css";
-import { Avatar, List, Skeleton, Input, Divider, Typography, Badge, message, Button } from "antd";
+import {
+  Avatar,
+  List,
+  Skeleton,
+  Input,
+  Divider,
+  Typography,
+  Badge,
+  message,
+  Button,
+} from "antd";
 import Icon from "@ant-design/icons";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useContext } from "react";
 import InfiniteScroll from "react-infinite-scroll-component";
 import axios from "@/config/axios";
 import { PlayGameIcon, SearchIcon } from "@/icons/index";
 import { UserType } from "@/types/types";
 import Link from "next/link";
+import { useAppSelector } from "@/hooks/reduxHooks";
+import { selectAuth } from "@/store/reducers/auth";
 
 const { Title } = Typography;
-const { Search } = Input;
 const NGameInvitFriends: React.FC = () => {
+  const { intra_id } = useAppSelector(selectAuth);
   const [loading, setLoading] = useState(false);
   const [data, setData] = useState<UserType[]>([]);
   const [hasMore, setHasMore] = useState<boolean>(false);
@@ -20,9 +32,14 @@ const NGameInvitFriends: React.FC = () => {
     setLoading(true);
     try {
       const cursor = data.at(-1)?.id || 1;
-      const res = await axios.get(`/users/all?status=ONLINE&findBy=${filter}&cursor=${cursor}`);
+      const res = await axios.get(
+        `/users/all?status=ONLINE&findBy=${filter}&cursor=${cursor}`
+      );
       setHasMore(res.data.length === 20);
-      setData((prev) => [...prev, ...res.data]);
+      setData((prev) => [
+        ...prev,
+        ...res.data.filter((d: UserType) => d.intra_id !== intra_id),
+      ]);
       setLoading(false);
     } catch (error) {
       setLoading(false);
@@ -72,7 +89,12 @@ const NGameInvitFriends: React.FC = () => {
               setFilter(e.target.value);
             }
           }}
-          suffix={<Icon component={SearchIcon} style={{ fontSize: "135%", color: "var(--light-color)" }} />}
+          suffix={
+            <Icon
+              component={SearchIcon}
+              style={{ fontSize: "135%", color: "var(--light-color)" }}
+            />
+          }
         />
       </div>
       <div id="scrollableDiv" className={style.scrollableDiv}>
@@ -88,14 +110,13 @@ const NGameInvitFriends: React.FC = () => {
             className={style.FriendsList}
             itemLayout="horizontal"
             dataSource={data}
-            loading={loading}
+            // loading={loading}
             renderItem={(item) => (
               <List.Item
                 extra={
                   <Button
                     type="primary"
                     icon={<Icon component={PlayGameIcon} />}
-                    loading={loading}
                     onClick={() => {
                       sendInvite(item);
                     }}
@@ -106,7 +127,16 @@ const NGameInvitFriends: React.FC = () => {
                   avatar={
                     <Link href={`/profile/${item.username}`}>
                       <a>
-                        <Badge dot status={item.status === "ONLINE" ? "success" : item.status === "PLAYING" ? "warning" : "error"}>
+                        <Badge
+                          dot
+                          status={
+                            item.status === "ONLINE"
+                              ? "success"
+                              : item.status === "PLAYING"
+                              ? "warning"
+                              : "error"
+                          }
+                        >
                           <Avatar src={item.img_url} size="large" />
                         </Badge>
                       </a>
