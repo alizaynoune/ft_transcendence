@@ -1,19 +1,25 @@
 import style from "./canvas.module.css";
 import { Suspense, useRef, KeyboardEvent, useEffect, useState } from "react";
 import { Canvas } from "@react-three/fiber";
-import { Stats, OrbitControls, Stars } from "@react-three/drei";
+import { OrbitControls, Stars } from "@react-three/drei";
 import * as THREE from "three";
 import React from "react";
 import { NoToneMapping } from "three";
 import Scene from "@/containers/scene/Scene";
 import { racquetSize, planeSize } from "@/tools/globalVariable";
 import { useInterval } from "@/hooks/useInterval";
+import { GameType } from "@/types/types";
 
-const MyCanvas: React.FC = () => {
+interface PropsType {
+  game: GameType;
+  IamPlayer: boolean;
+}
+
+const MyCanvas: React.FC<PropsType> = ({ game, IamPlayer }) => {
   const racquet = useRef<THREE.Mesh>(null!);
   const canvasRef = useRef<HTMLCanvasElement>(null!);
   const racquetMaxStep = planeSize[0] / 2 - racquetSize[0] / 2;
-  const [count, setCount] = useState<number>(3);
+  const [count, setCount] = useState<number>(0);
   const [timer, setTimer] = useState(1000);
   const [collided, setCollided] = useState<boolean>(false);
   const [start, setStart] = useState<boolean>(false);
@@ -57,6 +63,7 @@ const MyCanvas: React.FC = () => {
   };
 
   useEffect(() => {
+    if (!IamPlayer) return;
     canvasRef.current.focus();
     document.getElementById("canvas")?.focus();
     setCount(3);
@@ -77,8 +84,8 @@ const MyCanvas: React.FC = () => {
       <Canvas
         className={style.container}
         frameloop="demand"
-        ref={canvasRef}
-        onKeyDown={handleKeyboardEvent}
+        ref={IamPlayer ? canvasRef : undefined}
+        onKeyDown={IamPlayer ? handleKeyboardEvent : undefined}
         id="canvas"
         tabIndex={0}
         camera={{ fov: 75, near: 0.1, far: 1000, position: [0, 5, 20] }}

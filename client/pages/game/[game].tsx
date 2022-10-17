@@ -1,56 +1,61 @@
 import style from "./game.module.css";
 import React, { useEffect, useState } from "react";
-import { Avatar, Button, Divider, Space, Spin, Typography, Tag } from "antd";
+import { Avatar, Button, Space, Spin, Typography, Tag, message, Modal } from "antd";
 import Icon, { EyeFilled } from "@ant-design/icons";
 import Canvas from "@/containers/canvas/Canvas";
-import {OutIcon} from '@/icons/index'
-import authRoute from '@/tools/protectedRoutes'
-
-interface GameType {
-  id: string;
-  watching: number;
-  players: { id: string; username: string; avatar: string; scor: number }[];
-}
-
-async function fetchUserList() {
-  return fetch("https://randomuser.me/api/?results=2&inc=picture,login&noinfo")
-    .then((response) => response.json())
-    .then((body) =>
-      body.results.map(
-        (user: {
-          login: { username: string; uuid: string };
-          picture: { large: string };
-        }) => ({
-          id: user.login.uuid,
-          username: user.login.username,
-          avatar: user.picture.large,
-          scor: Math.floor(Math.random() * 10),
-        })
-      )
-    );
-}
+import { OutIcon } from "@/icons/index";
+import authRoute from "@/tools/protectedRoutes";
+import { useRouter } from "next/router";
+import { GameType } from "@/types/types";
+import axios from "@/config/axios";
+import { useAppSelector } from "@/hooks/reduxHooks";
+import { selectAuth } from "@/store/reducers/auth";
 
 const { Text, Title } = Typography;
 const Games: React.FC = () => {
   const [gameData, setGameData] = useState<GameType>();
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(true);
+  const router = useRouter();
+  const { query, isReady } = router;
+  const { intra_id } = useAppSelector(selectAuth);
+
+  const loadGame = async () => {
+    try {
+      const res = await axios.get<GameType>(`/game/?gameId=${query.game}`);
+      let { data } = res;
+      if (data.players[0].users.intra_id === intra_id)
+        data.players = [data.players[1], data.players[0]];
+      setGameData(data);
+      setLoading(false);
+    } catch (error) {
+      setLoading(false);
+      console.log(error);
+      error instanceof Error && message.error(error.message);
+    }
+  };
+
+  const leaveGame = async () => {
+    Modal.confirm({
+      title: "Are you sure to leave this game",
+      okButtonProps: { danger: true },
+      cancelButtonProps: { type: "primary" },
+      async onOk() {
+        try {
+          const res = await axios.put("/game/leaveGame", { gameId: gameData?.id });
+          message.success(res.data.message);
+          router.push("/game/new");
+        } catch (error) {
+          console.log(error);
+          error instanceof Error && message.error(error.message);
+        }
+      },
+    });
+  };
 
   useEffect(() => {
-    setLoading(true);
-    fetchUserList()
-      .then((res) => {
-        console.log(res);
-        setGameData({
-          id: "id",
-          watching: Math.floor(Math.random() * 100),
-          players: res,
-        });
-        setLoading(false);
-      })
-      .catch((err) => {
-        console.log(err, "error<<<<<<");
-      });
-  }, []);
+    console.log(query.game);
+    if (query.game) loadGame();
+  }, [isReady, query.game]);
 
   useEffect(() => {
     console.log(gameData);
@@ -59,28 +64,64 @@ const Games: React.FC = () => {
   return (
     <Spin spinning={loading} delay={500}>
       <div className={style.container}>
-        {!loading && (
+        {!loading && gameData && (
           <>
-            <Space className={style.header} split={<Title style={{
-              color: 'var(--error-color)',
-              fontStyle: 'italic'
-            }}>{'VS'}</Title>}>
+            <Space
+              className={style.header}
+              split={
+                <Title
+                  style={{
+                    color: "var(--error-color)",
+                    fontStyle: "italic",
+                  }}
+                >
+                  {"VS"}
+                </Title>
+              }
+            >
               <Space>
                 <Space direction="vertical">
-                  <Avatar src={gameData?.players[0].avatar} size={50} style={{border: 'solid var(--success-color) 4px'}}/>
-                  <Text className={style.username}strong   style={{color: 'var(--success-color)'}} >{gameData?.players[0].username}</Text>
+                  <Avatar
+                    src={gameData.players[0].users.img_url}
+                    size={50}
+                    style={{ border: "solid var(--success-color) 4px" }}
+                  />
+                  <Text
+                    className={style.username}
+                    strong
+                    style={{ color: "var(--success-color)" }}
+                  >
+                    {gameData.players[0].users.username}
+                  </Text>
                 </Space>
-                <Title  style={{color: 'var(--success-color)'}}>{gameData?.players[0].scor}</Title>
+                <Title style={{ color: "var(--success-color)" }}>
+                  {gameData?.players[0].score}
+                </Title>
               </Space>
-              <Space >
-                <Title style={{color: 'var(--primary-color)'}}>{gameData?.players[1].scor}</Title>
+              <Space>
+                <Title style={{ color: "var(--primary-color)" }}>
+                  {gameData.players[1].score}
+                </Title>
                 <Space direction="vertical" align="end">
-                  <Avatar src={gameData?.players[1].avatar}  size={50} style={{border: 'solid var(--primary-color) 4px'}} />
-                  <Text className={style.username} strong  style={{color: 'var(--primary-color)'}} >{gameData?.players[1].username}</Text>
+                  <Avatar
+                    src={gameData.players[1].users.img_url}
+                    size={50}
+                    style={{ border: "solid var(--primary-color) 4px" }}
+                  />
+                  <Text
+                    className={style.username}
+                    strong
+                    style={{ color: "var(--primary-color)" }}
+                  >
+                    {gameData.players[1].users.username}
+                  </Text>
                 </Space>
               </Space>
             </Space>
-            <Canvas />
+            <Canvas
+              game={gameData}
+              IamPlayer={intra_id === gameData.players[1].users.intra_id}
+            />
             <div
               style={{
                 width: "100%",
@@ -89,8 +130,24 @@ const Games: React.FC = () => {
                 padding: 10,
               }}
             >
-              <Tag icon={<EyeFilled />} color="var(--primary-color)" style={{padding: '6px 8px'}}> {gameData?.watching}</Tag>
-              <Button type="primary" danger icon={<Icon component={OutIcon} />} >Leave</Button>
+              <Tag
+                icon={<EyeFilled />}
+                color="var(--primary-color)"
+                style={{ padding: "6px 8px" }}
+              >
+                {" 10"}
+                {/* {gameData?.watching} */}
+              </Tag>
+              {gameData.players[1].users.intra_id === intra_id && (
+                <Button
+                  type="primary"
+                  danger
+                  icon={<Icon component={OutIcon} />}
+                  onClick={() => leaveGame()}
+                >
+                  {"Leave"}
+                </Button>
+              )}
             </div>
           </>
         )}
@@ -99,4 +156,4 @@ const Games: React.FC = () => {
   );
 };
 
-export default authRoute(Games)
+export default authRoute(Games);

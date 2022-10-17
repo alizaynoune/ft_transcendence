@@ -5,6 +5,7 @@ import { Menu, Dropdown, Select, Modal, Popconfirm, message } from "antd";
 import type { ModalProps } from "antd";
 import { useState } from "react";
 import axios from "@/config/axios";
+import { useRouter } from "next/router";
 
 const { Option } = Select;
 type PromiseReturn = Error | { message: string };
@@ -12,19 +13,10 @@ type PromiseReturn = Error | { message: string };
 const NewGame: React.FC = () => {
   const [gameLevel, setGameLevel] = useState<"EASY" | "NORMAL" | "DIFFICULT">("NORMAL");
   const [loading, setLoading] = useState<boolean>(false);
+  const router = useRouter();
 
   const handleGameLevel = (value: "EASY" | "NORMAL" | "DIFFICULT") => {
     setGameLevel(value);
-  };
-
-  const showModal = (type: ModalProps) => {
-    Modal.success({
-      title: "This is a warning message",
-      content: "some messages...some messages...",
-      okButtonProps: { danger: true },
-      okText: "Leave queue",
-      closable: true,
-    });
   };
 
   const leaveQueue: () => Promise<PromiseReturn> = async () => {
@@ -38,26 +30,50 @@ const NewGame: React.FC = () => {
     });
   };
 
+  const leaveGame: () => Promise<PromiseReturn> = async () => {
+    return new Promise(async (resolve, reject) => {
+      try {
+        const game = await axios.get("/game/");
+        const res = await axios.put("/game/leaveGame", { gameId: game.data.id });
+        return resolve(res.data);
+      } catch (error) {
+        return reject(error);
+      }
+    });
+  };
+
+  const backTogame: () => Promise<{ id: number } | Error> = async () => {
+    return new Promise(async (resolve, reject) => {
+      try {
+        const res = await axios.get("/game/");
+        return resolve(res.data);
+      } catch (error) {
+        return reject(error);
+      }
+    });
+  };
+
   const handleRegister = async () => {
     setLoading(true);
     try {
       const res = await axios.post("/game/registerqueue", { gameLevel });
-      console.log(res.data);
       setLoading(false);
-      Modal.success({
-        title: res.data.message,
-        content: "you be redirected automatically to game after find a new player",
-        okButtonProps: { danger: true },
-        okText: "Leave queue",
-        closable: true,
-        async onOk() {
-          try {
-            message.success((await leaveQueue()).message);
-          } catch (error) {
-            error instanceof Error && message.error(error.message);
-          }
-        },
-      });
+      if (res.data.game) router.push(`/game/${res.data.game.id}`);
+      else
+        Modal.success({
+          title: res.data.message,
+          content: "you be redirected automatically to game after find a new player",
+          okButtonProps: { danger: true },
+          okText: "Leave queue",
+          closable: true,
+          async onOk() {
+            try {
+              message.success((await leaveQueue()).message);
+            } catch (error) {
+              error instanceof Error && message.error(error.message);
+            }
+          },
+        });
     } catch (error) {
       console.log(error);
       if (error instanceof Error)
@@ -71,6 +87,35 @@ const NewGame: React.FC = () => {
             async onOk() {
               try {
                 message.success((await leaveQueue()).message);
+              } catch (error) {
+                error instanceof Error && message.error(error.message);
+              }
+            },
+          });
+        else if (
+          error.message ===
+          "you are already in a game please leave it befor register in other"
+        )
+          Modal.confirm({
+            title: error.message,
+            // content: "do you wante to leave game",
+            okButtonProps: { danger: true },
+            okText: "Leave game",
+            cancelText: "Back to game",
+            cancelButtonProps: { type: "primary" },
+            closable: true,
+            async onOk() {
+              try {
+                message.success((await leaveGame()).message);
+              } catch (error) {
+                error instanceof Error && message.error(error.message);
+              }
+            },
+            async onCancel() {
+              try {
+                const res = await backTogame();
+                // @ts-ignore
+                router.push(`/game/${res.id}`);
               } catch (error) {
                 error instanceof Error && message.error(error.message);
               }

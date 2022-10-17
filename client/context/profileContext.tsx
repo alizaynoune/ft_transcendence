@@ -180,8 +180,8 @@ const ProfileProvider: React.FC<PropsType> = ({ children }) => {
     return new Promise(async (resolve, reject) => {
       try {
         const res = await axios.get("game/history");
-        const data = res.data.map((d: { game: any }) => {
-          if (d.game.players[0] !== intra_id) {
+        const data = res.data.map((d: { game: GameType }) => {
+          if (d.game.players[0].users.intra_id !== intra_id) {
             [d.game.players[1], d.game.players[0]] = [
               d.game.players[0],
               d.game.players[1],

@@ -19,7 +19,13 @@ const LastMatches: React.FC = () => {
           <a className={style.avatar}>
             <Badge
               dot
-              status={players[0].users.status === "ONLINE" ? "success" : players[0].users.status === "PLAYING" ? "warning" : "error"}
+              status={
+                players[0].users.status === "ONLINE"
+                  ? "success"
+                  : players[0].users.status === "PLAYING"
+                  ? "warning"
+                  : "error"
+              }
             >
               <Avatar src={players[1].users.img_url} size="large" />
             </Badge>
@@ -33,8 +39,20 @@ const LastMatches: React.FC = () => {
       dataIndex: "players",
       key: "Result",
       render: (players) => (
-        <Tag color={players[0].score > players[1].score ? "var(--success-color)" : "var(--error-color)"}>
-          {players[0].score > players[1].score ? "WINNER" : "LOSSER"}
+        <Tag
+          color={
+            players[0].score > players[1].score
+              ? "var(--success-color)"
+              : players[0].score < players[1].score
+              ? "var(--error-color)"
+              : "var(--warning-color)"
+          }
+        >
+          {players[0].score > players[1].score
+            ? "WINNER"
+            : players[0].score < players[1].score
+            ? "LOSSER"
+            : "N/N"}
         </Tag>
       ),
     },
@@ -43,7 +61,9 @@ const LastMatches: React.FC = () => {
       dataIndex: "level",
       key: "Level",
       responsive: ["xl", "xxl"],
-      render: (level) => <span>{`${level.slice(0, 1)}${level.slice(1).toLowerCase()}`}</span>,
+      render: (level) => (
+        <span>{`${level.slice(0, 1)}${level.slice(1).toLowerCase()}`}</span>
+      ),
     },
     {
       title: "Date",
@@ -57,7 +77,11 @@ const LastMatches: React.FC = () => {
       // dataIndex: "",
       key: "duration",
       responsive: ["lg", "xl", "xxl"],
-      render: (_, game) => <span>{moment(moment(game.updatedat).diff(game.createdat)).format("mm[min]:ss[ss]")}</span>,
+      render: (_, game) => (
+        <span>
+          {moment(moment(game.updatedat).diff(game.createdat)).format("mm[min]:ss[ss]")}
+        </span>
+      ),
     },
   ];
 
@@ -65,7 +89,9 @@ const LastMatches: React.FC = () => {
     <div className={style.container}>
       <Table
         className={style.table}
-        rowClassName={(_, index) => (index % 2 === 0 ? style.tableRowLight : style.tableRowDark)}
+        rowClassName={(_, index) =>
+          index % 2 === 0 ? style.tableRowLight : style.tableRowDark
+        }
         columns={columns}
         dataSource={lastMatches}
         rowKey={(record) => record.id}
