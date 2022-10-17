@@ -116,16 +116,6 @@ const Search: React.FC = () => {
               loading={loading}
               renderItem={(item) => (
                 <List.Item
-                  // extra={
-                  //   <Button
-                  //     type="primary"
-                  //     icon={<Icon component={PlayGameIcon} />}
-                  //     loading={loading}
-                  //     onClick={() => {
-                  //       sendInvite(item);
-                  //     }}
-                  //   />
-                  // }
                 >
                   <List.Item.Meta
                     avatar={
