@@ -110,7 +110,6 @@ const NGameInvitFriends: React.FC = () => {
             className={style.FriendsList}
             itemLayout="horizontal"
             dataSource={data}
-            // loading={loading}
             renderItem={(item) => (
               <List.Item
                 extra={
