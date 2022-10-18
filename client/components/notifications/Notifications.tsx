@@ -1,6 +1,6 @@
 import style from "./notifications.module.css";
 import moment from "moment";
-import { Dropdown, Menu, Space, Typography, Avatar, Badge } from "antd";
+import { Dropdown, Menu, Space, Typography, Avatar, Badge, Modal, message } from "antd";
 import Icon, { BellFilled } from "@ant-design/icons";
 import type { MenuProps } from "antd";
 import { useAppSelector, useAppDispatch } from "@/hooks/reduxHooks";
@@ -8,6 +8,7 @@ import { selectAuth, pushNotification, readNotification } from "@/reducers/auth"
 import { useEffect, useState } from "react";
 import { NotificationType } from "@/types/types";
 import { useRouter } from "next/router";
+import axios from "@/config/axios";
 
 type MenuItem = Required<MenuProps>["items"][number];
 function getItem(
@@ -31,6 +32,33 @@ const Notifications: React.FC = () => {
   const { notifications } = useAppSelector(selectAuth);
   const dispatch = useAppDispatch();
   const router = useRouter();
+
+  const handelGameRequest = (request: NotificationType) => {
+    console.log(request);
+    Modal.confirm({
+      title: `${request.users_notification_fromidTousers.username} ${request.content}`,
+      okText: "Accepte",
+      okButtonProps: { type: "primary" },
+      cancelText: "Reject",
+      cancelButtonProps: { danger: true, type: "primary" },
+      async onOk() {
+        try {
+          const res = await axios.put("/game/invite/accepte", { inviteId: request.targetid });
+          router.push(`/game/${res.data.gameid}`);
+        } catch (error) {
+          error instanceof Error && message.error(error.message);
+        }
+      },
+      async onCancel() {
+        try {
+          const res = await axios.delete("/game/invite/reject", { data: { inviteId: request.targetid } });
+          message.success(res.data.message);
+        } catch (error) {
+          error instanceof Error && message.error(error.message);
+        }
+      },
+    });
+  };
 
   useEffect(() => {
     setNotificationsList(notifications);
@@ -68,6 +96,7 @@ const Notifications: React.FC = () => {
         const n = notifications.find((n) => n.id === Number(e.key));
         if (n && n.type === "FRIEND_REQUEST") router.push(`/profile/${n.users_notification_fromidTousers.username}`);
         // dispatch(readNotification(e.key));
+        else if (n && n.type === "GAME_INVITE") handelGameRequest(n);
       }}
     />
   );
