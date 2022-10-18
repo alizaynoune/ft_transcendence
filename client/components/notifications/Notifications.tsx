@@ -44,6 +44,7 @@ const Notifications: React.FC = () => {
       async onOk() {
         try {
           const res = await axios.put("/game/invite/accepte", { inviteId: request.targetid });
+          message.success('success accepted')
           router.push(`/game/${res.data.gameid}`);
         } catch (error) {
           error instanceof Error && message.error(error.message);
