@@ -1,19 +1,39 @@
 import style from "./accountSettingTab.module.css";
 import { Tabs, Typography } from "antd";
-import Icon, { EditFilled, FileProtectOutlined } from "@ant-design/icons";
+import { EditFilled, FileProtectOutlined } from "@ant-design/icons";
 
 // components
 import AccountEdit from "@/components/accountEdit/AccountEdit";
 import AccountPrivacy from "@/components/accountPrivacy/AccountPrivacy";
 
-const { TabPane } = Tabs;
-// interface PropsType{
-  
-// }
+const items = [
+  {
+    key: "1",
+    label: (
+      <>
+        <Typography className={style.tabText}>{"Edit"}</Typography>
+        <EditFilled className={style.tabIcon} />
+      </>
+    ),
+    children: <AccountEdit />,
+  },
+  {
+    key: "2",
+    label: (
+      <>
+        <Typography className={style.tabText}>{"Privacy"}</Typography>
+        <FileProtectOutlined className={style.tabIcon} />
+      </>
+    ),
+    children: <AccountPrivacy />,
+  },
+];
+
 const AccountSettingTab: React.FC = () => {
   return (
     <div className={style.container}>
       <Tabs
+        items={items}
         size="large"
         tabBarStyle={{
           backgroundColor: "#464E5F",
@@ -25,31 +45,7 @@ const AccountSettingTab: React.FC = () => {
           padding: "0 40px",
           color: "var(--light-color)",
         }}
-      >
-        <TabPane
-          tab={
-            <>
-              <Typography className={style.tabText}>{"Edit"}</Typography>
-              <EditFilled className={style.tabIcon} />
-            </>
-          }
-          key="1"
-        >
-          <AccountEdit />
-        </TabPane>
-        <TabPane
-          tab={
-            <>
-              <Typography className={style.tabText}>{"Privacy"}</Typography>
-              <FileProtectOutlined className={style.tabIcon} />
-            </>
-          }
-          key="2"
-        >
-          
-          <AccountPrivacy />
-        </TabPane>
-      </Tabs>
+      />
     </div>
   );
 };

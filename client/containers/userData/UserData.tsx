@@ -7,11 +7,53 @@ import FriendsTabs from "@/containers/friendsTab/FriendsTabs";
 import BlockedsList from "@/components/blockedsList/BlockedsList";
 import LastMatches from "@/components/lastMatches/LastMatches";
 import Icon from "@ant-design/icons";
-import { BlockUserIcon, SettingIcon, FriendsIcon, GameIcon } from "@/icons/index";
+import { BlockUserIcon, SettingIcon, FriendsIcon } from "@/icons/index";
 import { ProfileContext } from "context/profileContext";
 import { ProfileContextType } from "@/types/types";
 
-const { TabPane } = Tabs;
+const items = [
+  {
+    key: "Friends",
+    label: (
+      <>
+        <Typography.Text className={style.tabText}>{"Friends"}</Typography.Text>
+        <Icon className={style.tabIcon} component={FriendsIcon} />
+      </>
+    ),
+    children: <FriendsTabs />,
+  },
+  {
+    key: "Blockeds",
+    label: (
+      <>
+        <Typography.Text className={style.tabText}>{"Blockeds"}</Typography.Text>
+        <Icon className={style.tabIcon} component={BlockUserIcon} />
+      </>
+    ),
+    children: <BlockedsList />,
+  },
+  {
+    key: "LastMatches",
+    label: (
+      <>
+        <Typography.Text className={style.tabText}>{"Account Settings"}</Typography.Text>
+        <Icon className={style.tabIcon} component={SettingIcon} />
+      </>
+    ),
+    children: <LastMatches />,
+  },
+  {
+    key: "AccountSettings",
+    label: (
+      <>
+        <Typography.Text className={style.tabText}>{"Account Settings"}</Typography.Text>
+        <Icon className={style.tabIcon} component={SettingIcon} />
+      </>
+    ),
+    children: <AccountSetting />,
+  },
+];
+
 const UserData: React.FC = () => {
   const [currentTab, setCurrentTab] = useState<string>("Friends");
   const router = useRouter();
@@ -34,59 +76,14 @@ const UserData: React.FC = () => {
     <div className={style.container}>
       {isMyProfile ? (
         <Tabs
+          items={items}
           centered
           size="large"
           activeKey={currentTab}
           onChange={(key) => {
             router.push(`#${key}`);
           }}
-        >
-          <TabPane
-            tab={
-              <>
-                <Typography.Text className={style.tabText}>{"Friends"}</Typography.Text>
-                <Icon className={style.tabIcon} component={FriendsIcon} />
-              </>
-            }
-            key="Friends"
-          >
-            <FriendsTabs />
-          </TabPane>
-          <TabPane
-            tab={
-              <>
-                <Typography.Text className={style.tabText}>{"Blockeds"}</Typography.Text>
-                <Icon className={style.tabIcon} component={BlockUserIcon} />
-              </>
-            }
-            key="Blockeds"
-          >
-            <BlockedsList />
-          </TabPane>
-          <TabPane
-            tab={
-              <>
-                <Typography.Text className={style.tabText}>{"Last Matches"}</Typography.Text>
-                <Icon className={style.tabIcon} component={GameIcon} />
-              </>
-            }
-            key="LastMatches"
-          >
-            <LastMatches />
-          </TabPane>
-
-          <TabPane
-            tab={
-              <>
-                <Typography.Text className={style.tabText}>{"Account Settings"}</Typography.Text>
-                <Icon className={style.tabIcon} component={SettingIcon} />
-              </>
-            }
-            key="AccountSettings"
-          >
-            <AccountSetting />
-          </TabPane>
-        </Tabs>
+        />
       ) : (
         <FriendsTabs />
       )}

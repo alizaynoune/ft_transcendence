@@ -12,12 +12,51 @@ import authRoute from "@/tools/protectedRoutes";
 
 const { TabPane } = Tabs;
 const Messanger: React.FC = () => {
-  const [currentConversation, setCurrentConversation] = useState<
-    ConversationsType | undefined
-  >(undefined);
+  const [currentConversation, setCurrentConversation] = useState<ConversationsType | undefined>(undefined);
   const [currentTab, setCurrentTab] = useState<string>("Conversations");
   const router = useRouter();
-
+  const items = [
+    {
+      key: "Conversations",
+      className: style.historyMessenger,
+      label: (
+        <>
+          <Typography.Text className={style.tabText}>{"Conversations"}</Typography.Text>
+          <Icon className={style.tabIcon} component={MessageIcon} />
+        </>
+      ),
+      children: (
+        <Conversations
+          setCurrentConversation={function (value: SetStateAction<ConversationsType | undefined>): void {
+            setCurrentConversation(value);
+            setCurrentTab("Message");
+          }}
+          {...setCurrentConversation}
+        />
+      ),
+    },
+    {
+      key: "Message",
+      className: style.boxMessenger,
+      label: null,
+      children: currentConversation ? <BoxMessenger currentConversation={currentConversation} /> : null,
+    },
+    {
+      key: "Settings",
+      className: style.settingMessenger,
+      label: (
+        <>
+          <Typography.Text className={style.tabText}>{"Settings"}</Typography.Text>
+          <Icon className={style.tabIcon} component={SettingIcon} />
+        </>
+      ),
+      children: currentConversation ? (
+        <SettingMessenger conversation={currentConversation} />
+      ) : (
+        <Empty description="No Conversation was selected." />
+      ),
+    },
+  ];
   const handelUrlHash = () => {
     const hashs = ["Conversations", "Message", "Settings"];
     const hash = router.asPath.split("#")[1];
@@ -31,6 +70,7 @@ const Messanger: React.FC = () => {
     <>
       <div className={`${style.md} ${style.container}`}>
         <Tabs
+          items={items}
           centered
           size="large"
           className={style.tabsContainer}
@@ -39,60 +79,12 @@ const Messanger: React.FC = () => {
             router.push(`#${key}`);
             setCurrentTab(key);
           }}
-        >
-          <TabPane
-            key={"Conversations"}
-            className={style.historyMessenger}
-            tab={
-              <>
-                <Typography.Text className={style.tabText}>
-                  {"Conversations"}
-                </Typography.Text>
-                <Icon className={style.tabIcon} component={MessageIcon} />
-              </>
-            }
-          >
-            <Conversations
-              setCurrentConversation={function (
-                value: SetStateAction<ConversationsType | undefined>
-              ): void {
-                setCurrentConversation(value);
-                setCurrentTab("Message");
-              }}
-              {...setCurrentConversation}
-            />
-          </TabPane>
-          <TabPane key={"Message"} className={style.boxMessenger}>
-            {currentConversation ? (
-              <BoxMessenger currentConversation={currentConversation} />
-            ) : null}
-          </TabPane>
-          <TabPane
-            key={"Settings"}
-            className={style.settingMessenger}
-            tab={
-              <>
-                <Typography.Text className={style.tabText}>
-                  {"Settings"}
-                </Typography.Text>
-                <Icon className={style.tabIcon} component={SettingIcon} />
-              </>
-            }
-          >
-            {currentConversation ? (
-              <SettingMessenger conversation={currentConversation} />
-            ) : (
-              <Empty description="No Conversation was selected." />
-            )}
-          </TabPane>
-        </Tabs>
+        />
       </div>
       <div className={`${style.xxl} ${style.container}`}>
         <div className={style.historyMessenger}>
           <Conversations
-            setCurrentConversation={function (
-              value: SetStateAction<ConversationsType | undefined>
-            ): void {
+            setCurrentConversation={function (value: SetStateAction<ConversationsType | undefined>): void {
               setCurrentConversation(value);
             }}
             {...setCurrentConversation}
@@ -106,9 +98,7 @@ const Messanger: React.FC = () => {
           )}
         </div>
         <div className={style.settingMessenger}>
-          {currentConversation && (
-            <SettingMessenger conversation={currentConversation} />
-          )}
+          {currentConversation && <SettingMessenger conversation={currentConversation} />}
         </div>
       </div>
     </>

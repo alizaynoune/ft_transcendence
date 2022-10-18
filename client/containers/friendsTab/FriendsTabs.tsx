@@ -4,22 +4,43 @@ import Icon, { EditFilled } from "@ant-design/icons";
 import FriendsList from "@/components/friendsList/FriendsList";
 import Request from "@/components/RequestList/RequestList";
 import { FriendsIcon, AddFriendIcon } from "@/icons/index";
-import { useAppSelector } from "@/hooks/reduxHooks";
-import { selectAuth } from "@/store/reducers/auth";
-import { useEffect, useState, useContext } from "react";
-import { UserType, FriendActions, ProfileContextType } from "@/types/types";
+import { useContext } from "react";
+import { ProfileContextType } from "@/types/types";
 import { ProfileContext } from "context/profileContext";
-import axios from "@/config/axios";
-
-const { TabPane } = Tabs;
 
 const FriendsTabs: React.FC = () => {
   const { isMyProfile } = useContext(ProfileContext) as ProfileContextType;
+
+  const items = [
+    {
+      key: "1",
+      label: (
+        <>
+          <Typography className={style.tabText}>{"Friends"}</Typography>
+          <Icon component={FriendsIcon} className={style.tabIcon} />
+        </>
+      ),
+      children: <FriendsList />,
+    },
+  ];
+
+  if (isMyProfile)
+    items.push({
+      key: "2",
+      label: (
+        <>
+          <Typography className={style.tabText}>{"Friend requests"}</Typography>
+          <Icon component={AddFriendIcon} className={style.tabIcon} />
+        </>
+      ),
+      children: <Request />,
+    });
 
   return (
     <div className={style.container}>
       <Tabs
         size="large"
+        items={items}
         tabBarStyle={{
           backgroundColor: "#464E5F",
           width: "100%",
@@ -30,32 +51,7 @@ const FriendsTabs: React.FC = () => {
           padding: "0 40px",
           color: "var(--light-color)",
         }}
-      >
-        <TabPane
-          tab={
-            <>
-              <Typography className={style.tabText}>{"Friends"}</Typography>
-              <Icon component={FriendsIcon} className={style.tabIcon} />
-            </>
-          }
-          key="1"
-        >
-          <FriendsList />
-        </TabPane>
-        {isMyProfile && (
-          <TabPane
-            tab={
-              <>
-                <Typography className={style.tabText}>{"Friend requests"}</Typography>
-                <Icon component={AddFriendIcon} className={style.tabIcon} />
-              </>
-            }
-            key="2"
-          >
-            <Request />
-          </TabPane>
-        )}
-      </Tabs>
+      />
     </div>
   );
 };

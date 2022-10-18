@@ -108,7 +108,7 @@ const CardMembers = (members: UserType[]) => {
         </Space>
       }
       trigger="click"
-      onVisibleChange={(e) => {
+      onOpenChange={(e) => {
         console.log(e);
       }}
     >
@@ -192,7 +192,7 @@ const SettingMessenger: React.FC<PropsType> = ({ conversation }) => {
                 </>
               }
               trigger="click"
-              onVisibleChange={(e) => {
+              onOpenChange={(e) => {
                 console.log(e);
               }}
             >
