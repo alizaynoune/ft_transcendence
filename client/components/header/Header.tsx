@@ -12,52 +12,28 @@ import { useEffect, useState } from "react";
 import Notifications from "@/components/notifications/Notifications";
 import { UserType } from "@/types/types";
 import axios from "@/config/axios";
+import socket from "@/config/socket";
 import Search from "../search/Search";
 
 interface PropsType {
   collapsed: boolean;
   setCollapsed: React.Dispatch<React.SetStateAction<boolean>>;
 }
-const { Option } = Select;
-
 const Header: React.FC<PropsType> = (props) => {
   const { collapsed, setCollapsed } = props;
   const { isAuth, img_url, error } = useAppSelector(selectAuth);
-  const [data, setData] = useState<UserType[]>([]);
-  const [filter, setFilter] = useState<string>("");
-  const [loading, setLoading] = useState<boolean>(false);
-  const [hasMore, setHasMore] = useState<boolean>(false);
 
-  // const children: React.ReactNode[] = [];
-  // for (let i = 10; i < data.length; i++) {
-  //   children.push(<Option key={i.toString(36) + i}>{i.toString(36) + i}</Option>);
-  // }
-
-  const children = () => {
-    return data.map((d) => (
-      <Option key={d.intra_id} value={d.username} lable={d.username}>
-        {
-          <Badge dot status={d.status === "ONLINE" ? "success" : d.status === "PLAYING" ? "warning" : "error"}>
-            <Avatar src={d.img_url} size="large" />
-          </Badge>
-        }
-      </Option>
-    ));
-  };
-
-  const loadMoreData = async () => {
-    setLoading(true);
-    try {
-      const cursor = data.at(-1)?.id || 1;
-      const res = await axios.get(`/users/all?status=ONLINE&findBy=${filter}&cursor=${cursor}`);
-      setHasMore(res.data.length === 20);
-      setData((prev) => [...prev, ...res.data]);
-      setLoading(false);
-    } catch (error) {
-      setLoading(false);
-      console.log(error);
+  useEffect(() => {
+    if (isAuth) {
+      socket.emit("events", { message: "emit from client" });
+      socket.on("userChangeStatus", (data) => {
+        console.log(data);
+      });
+      return () => {
+        socket.off("userChangeStatus");
+      };
     }
-  };
+  }, [isAuth]);
 
   useEffect(() => {
     error && message.error(error.message);
@@ -81,19 +57,7 @@ const Header: React.FC<PropsType> = (props) => {
             <Image src="/images/Logo.png" height={68} width={110} />
           </a>
         </Link>
-        {isAuth && (
-            <Search />
-          // <Select
-          //   className={style.search}
-          //   size="large"
-          //   placeholder="Search"
-          //   showSearch
-          //   onFocus={() => loadMoreData()}
-          //   suffixIcon={<Icon component={SearchIcon} style={{ fontSize: "135%", color: "var(--light-color)" }} />}
-          // >
-          //   {children()}
-          // </Select>
-        )}
+        {isAuth && <Search />}
       </div>
       {!isAuth ? (
         <form method="GET" action={`${process.env.NEXT_PUBLIC_URL_API || "http://localhost:5000"}/auth/login`}>

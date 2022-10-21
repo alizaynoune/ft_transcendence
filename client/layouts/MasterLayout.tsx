@@ -13,7 +13,6 @@ import { selectAuth } from "@/store/reducers/auth";
 import { selectLoading } from "@/store/reducers/globalLoading";
 import Spin from "@/components/spin/Spin";
 import socket from "@/config/socket";
-import { loadToken } from "@/tools/localStorage";
 
 const { Footer, Content } = Layout;
 interface Props {
@@ -39,12 +38,11 @@ const MasterLayout: React.FC<Props> = (props) => {
   useEffect(() => {
     if (isAuth) {
       socket.connect();
-      socket.on("Error", (error) => {
-        console.log(error);
+      socket.on("error", (error) => {
         message.error(`Socket ${error.message}`);
       });
       return () => {
-        socket.off("Error");
+        socket.off("error");
       };
     }
   }, [isAuth]);

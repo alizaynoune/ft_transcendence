@@ -6,6 +6,7 @@ import Link from "next/link";
 import { useAppDispatch } from "@/hooks/reduxHooks";
 import { logout } from "@/reducers/auth";
 import { useRouter } from "next/router";
+import Socket from "@/config/socket";
 
 // Icons
 import {
@@ -140,6 +141,7 @@ const SiderLayout: React.FC<PropsType> = (props) => {
             onSelect={(e) => {
               if (e.key === "logout") {
                 dispatch(logout());
+                Socket.disconnect()
                 route.push("/");
                 message.warning('success logout')
               }
