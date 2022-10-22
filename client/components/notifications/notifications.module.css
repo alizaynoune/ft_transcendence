@@ -1,7 +1,7 @@
 .notifList {
   max-height: 400px;
   overflow-x: hidden;
-  overflow-y: scroll;
+  overflow-y: auto;
   border-radius: 6px;
   padding: 5px !important;
 }

@@ -42,8 +42,8 @@ const Notifications: React.FC = () => {
       message.error(error.message);
     });
     socket.on("newNotification", (data: NotificationType) => {
-      message.info(`${data.users_notification_fromidTousers.username} ${data.content}`, 4)
-      dispatch(pushNotification(data))
+      message.info(`${data.users_notification_fromidTousers.username} ${data.content}`, 4);
+      dispatch(pushNotification(data));
     });
     return () => {
       socket.off("error_notification");
@@ -122,6 +122,11 @@ const Notifications: React.FC = () => {
           dispatch(readNotification(n.id));
           router.push(`/profile/${n.users_notification_fromidTousers.username}`);
         } else if (n && n.type === "GAME_INVITE") handelGameRequest(n);
+        else if (n && n.type === "GAME_ACCEPTE") {
+          socket.emit("readNotification", { id: n.id });
+          dispatch(readNotification(n.id));
+          router.push(`/game/${n.targetid}`);
+        }
       }}
     />
   );
