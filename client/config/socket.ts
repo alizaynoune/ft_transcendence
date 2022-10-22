@@ -4,11 +4,10 @@ import { useAppSelector } from "@/hooks/reduxHooks";
 import { selectAuth } from "@/store/reducers/auth";
 
 const socket = io("http://localhost:5000/", {
-  transports: ["polling", "websocket"],
+   transports: ["websocket"],
   autoConnect: false,
-  extraHeaders: {
-    //@ts-ignore
-    authorization: (cb => {cb(loadToken())}),
+  auth: (cb) => {
+    return cb({ token: loadToken() });
   },
 });
 

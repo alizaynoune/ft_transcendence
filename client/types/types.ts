@@ -34,7 +34,7 @@ export interface GameType {
 
 export interface NotificationType {
   id: number;
-  type: "FRIEND_REQUEST" | "GAME_INVITE" | "OTHER";
+  type: "FRIEND_REQUEST" | "GAME_INVITE" | "GAME_ACCEPTE" | "OTHER";
   userid: number;
   fromid: number;
   targetid: number;

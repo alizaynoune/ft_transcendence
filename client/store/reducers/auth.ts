@@ -43,12 +43,15 @@ export const AuthSlice = createSlice({
       state.access_token = payload;
     },
 
+    setNotifications: (state, { payload }) => {
+      state.notifications = payload;
+    },
+
     pushNotification: (state, { payload }) => {
       state.notifications.unshift(payload);
     },
     readNotification: (state, { payload }) => {
-      const index = state.notifications.findIndex((i) => i.id === Number(payload));
-      if (index > -1) state.notifications[index].read = true;
+      state.notifications = state.notifications.filter((n) => n.id !== payload);
     },
   },
 
@@ -67,20 +70,19 @@ export const AuthSlice = createSlice({
         state.isAuth = true;
         Object.assign(
           state,
-          (({ username, img_url, email, intra_id, first_name, last_name, notification_notification_useridTousers }) => ({
+          (({ username, img_url, email, intra_id, first_name, last_name }) => ({
             username,
             img_url,
             email,
             intra_id,
             first_name,
             last_name,
-            notifications: notification_notification_useridTousers,
           }))(payload)
         );
       });
   },
 });
 
-export const { logout, login, saveToken, pushNotification, readNotification } = AuthSlice.actions;
+export const { logout, login, saveToken, pushNotification, readNotification, setNotifications } = AuthSlice.actions;
 export const selectAuth = (state: RootState) => state.auth;
 export default AuthSlice.reducer;
