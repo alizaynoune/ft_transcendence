@@ -19,6 +19,7 @@ const Games: React.FC = () => {
   const router = useRouter();
   const { query, isReady } = router;
   const { intra_id } = useAppSelector(selectAuth);
+  const [watchers, setWatchers] = useState<number>(0);
 
   const loadGame = async () => {
     try {
@@ -59,7 +60,7 @@ const Games: React.FC = () => {
   }, [isReady, query.game]);
 
   useEffect(() => {
-    console.log(gameData);
+    if (gameData) Socket.emit("joinWatcher", { gameId: gameData.id });
   }, [gameData]);
 
   useEffect(() => {
@@ -69,8 +70,15 @@ const Games: React.FC = () => {
       if (data.players[0].users.intra_id === intra_id) data.players = [data.players[1], data.players[0]];
       setGameData(data);
     });
+    Socket.on("countWatchers", (data) => {
+      console.log(data, "watchers>>>>>");
+
+      setWatchers(data.total);
+    });
     return () => {
       Socket.off("updateGame");
+      Socket.off("countWatchers");
+      if (gameData) Socket.emit("leaveWatcher", { gameId: gameData.id });
     };
   }, []);
 
@@ -94,7 +102,11 @@ const Games: React.FC = () => {
             >
               <Space>
                 <Space direction="vertical">
-                  <Avatar src={gameData.players[0].users.img_url} size={50} style={{ border: "solid var(--success-color) 4px" }} />
+                  <Avatar
+                    src={gameData.players[0].users.img_url}
+                    size={50}
+                    style={{ border: "solid var(--success-color) 4px" }}
+                  />
                   <Text className={style.username} strong style={{ color: "var(--success-color)" }}>
                     {gameData.players[0].users.username}
                   </Text>
@@ -104,7 +116,11 @@ const Games: React.FC = () => {
               <Space>
                 <Title style={{ color: "var(--primary-color)" }}>{gameData.players[1].score}</Title>
                 <Space direction="vertical" align="end">
-                  <Avatar src={gameData.players[1].users.img_url} size={50} style={{ border: "solid var(--primary-color) 4px" }} />
+                  <Avatar
+                    src={gameData.players[1].users.img_url}
+                    size={50}
+                    style={{ border: "solid var(--primary-color) 4px" }}
+                  />
                   <Text className={style.username} strong style={{ color: "var(--primary-color)" }}>
                     {gameData.players[1].users.username}
                   </Text>
@@ -122,7 +138,7 @@ const Games: React.FC = () => {
                 }}
               >
                 <Tag icon={<EyeFilled />} color="var(--primary-color)" style={{ padding: "6px 8px" }}>
-                  {" 10"}
+                  {watchers}
                   {/* {gameData?.watching} */}
                 </Tag>
                 {gameData.players[1].users.intra_id === intra_id && (

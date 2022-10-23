@@ -1,9 +1,8 @@
 import style from "./canvas.module.css";
-import { Suspense, useRef, KeyboardEvent, useEffect, useState } from "react";
+import React, { Suspense, useRef, KeyboardEvent, useEffect, useState } from "react";
 import { Canvas } from "@react-three/fiber";
 import { OrbitControls, Stars } from "@react-three/drei";
 import * as THREE from "three";
-import React from "react";
 import { NoToneMapping } from "three";
 import Scene from "@/containers/scene/Scene";
 import { racquetSize, planeSize } from "@/tools/globalVariable";
@@ -20,27 +19,29 @@ const MyCanvas: React.FC<PropsType> = ({ game, IamPlayer }) => {
   const racquet = useRef<THREE.Mesh>(null!);
   const canvasRef = useRef<HTMLCanvasElement>(null!);
   const racquetMaxStep = planeSize[0] / 2 - racquetSize[0] / 2;
-  const [count, setCount] = useState<number>(4);
+  const [count, setCount] = useState<number>(5);
   const [timer, setTimer] = useState(0);
   const [collided, setCollided] = useState<boolean>(false);
   const [start, setStart] = useState<boolean>(false);
-  const [ready, setReady] = useState<boolean>(game.players[0].ready && game.players[1].ready);
 
-  const gameSpeed = 0.25;
+  const gameSpeed: {[k:string]: number} = {
+    EASY: 0.25,
+    NORMAL: 0.5,
+    DIFFICULT: 1,
+  };
 
   useInterval(() => setCount((count) => count - 1), timer);
   useEffect(() => {
     console.log(count);
-    if (count < 0 && ready) {
+    if (count < 0 && game.status === "PLAYING") {
       setTimer(0);
       setStart(true);
     }
   }, [count]);
 
   const handleKeyboardEvent = (e: KeyboardEvent<HTMLImageElement>) => {
-    if (count !== -1) return;
+    if (game.status !== 'PLAYING') return;
     const { code } = e;
-    console.log(code);
     let step = 0;
     switch (code) {
       case "ArrowRight":
@@ -64,16 +65,16 @@ const MyCanvas: React.FC<PropsType> = ({ game, IamPlayer }) => {
   };
 
   useEffect(() => {
-    console.log(ready, 'ready>>>>>>>>>>');
-    
+    console.log("enter");
+
     if (!IamPlayer) return;
     Socket.emit("playerReady", { gameId: game.id });
-    if (!ready) return;
+    if (game.status !== "PLAYING") return;
     canvasRef.current.focus();
     document.getElementById("canvas")?.focus();
-    setCount(3);
+    setCount(5);
     setTimer(1000);
-  }, []);
+  }, [game.status]);
 
   useEffect(() => {
     if (!collided) return;
@@ -84,10 +85,12 @@ const MyCanvas: React.FC<PropsType> = ({ game, IamPlayer }) => {
   }, [collided]);
 
   return game.status !== "PLAYING" ? (
-    <span className={style.text}>{game.status}</span>
+    <div className={style.container}>
+      <span className={style.text}>{game.status}</span>
+    </div>
   ) : (
     <>
-      {count >= 0 && <span className={style.text}>{count === 4 ? "Waiting" : count ? count : "GO"}</span>}
+      {count >= 0 && <span className={style.text}>{count ? count : "GO"}</span>}
       <Canvas
         className={style.container}
         frameloop="demand"
@@ -108,7 +111,7 @@ const MyCanvas: React.FC<PropsType> = ({ game, IamPlayer }) => {
           <Stars radius={80} depth={40} count={9000} factor={4} saturation={0} fade speed={1} />
           <Scene
             ref={racquet}
-            gameSpeed={gameSpeed}
+            gameSpeed={gameSpeed[game.status]}
             start={start}
             setCollided={(value: boolean): void => {
               setCollided(value);
