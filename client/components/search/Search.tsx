@@ -55,7 +55,7 @@ const Search: React.FC = () => {
     try {
       const cursor = data.at(-1)?.id || 1;
       const res = await axios.get(
-        `/users/all?status=ONLINE&findBy=${filter}&cursor=${cursor}`
+        `/users/all?findBy=${filter}&cursor=${cursor}`
       );
       setHasMore(res.data.length === 20);
       setData((prev) => [
@@ -121,7 +121,7 @@ const Search: React.FC = () => {
                     avatar={
                       <Link href={`/profile/${item.username}`}>
                         <a>
-                          <Badge dot status="success">
+                          <Badge dot status={item.status === 'ONLINE' ? "success" : item.status === 'PLAYING' ? "warning" : "error"}>
                             <Avatar src={item.img_url} size="large" />
                           </Badge>
                         </a>

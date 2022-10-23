@@ -10,6 +10,7 @@ import { GameType } from "@/types/types";
 import axios from "@/config/axios";
 import { useAppSelector } from "@/hooks/reduxHooks";
 import { selectAuth } from "@/store/reducers/auth";
+import Socket from "@/config/socket";
 
 const { Text, Title } = Typography;
 const Games: React.FC = () => {
@@ -23,8 +24,7 @@ const Games: React.FC = () => {
     try {
       const res = await axios.get<GameType>(`/game/?gameId=${query.game}`);
       let { data } = res;
-      if (data.players[0].users.intra_id === intra_id)
-        data.players = [data.players[1], data.players[0]];
+      if (data.players[0].users.intra_id === intra_id) data.players = [data.players[1], data.players[0]];
       setGameData(data);
       setLoading(false);
     } catch (error) {
@@ -42,6 +42,7 @@ const Games: React.FC = () => {
       async onOk() {
         try {
           const res = await axios.put("/game/leaveGame", { gameId: gameData?.id });
+          Socket.emit("leaveGame", { gameId: gameData?.id });
           message.success(res.data.message);
           router.push("/game/new");
         } catch (error) {
@@ -60,6 +61,18 @@ const Games: React.FC = () => {
   useEffect(() => {
     console.log(gameData);
   }, [gameData]);
+
+  useEffect(() => {
+    Socket.on("updateGame", (game) => {
+      console.log(game, "<<<<<<<<<game update>>>>>>>");
+      let data = game;
+      if (data.players[0].users.intra_id === intra_id) data.players = [data.players[1], data.players[0]];
+      setGameData(data);
+    });
+    return () => {
+      Socket.off("updateGame");
+    };
+  }, []);
 
   return (
     <Spin spinning={loading} delay={500}>
@@ -81,74 +94,44 @@ const Games: React.FC = () => {
             >
               <Space>
                 <Space direction="vertical">
-                  <Avatar
-                    src={gameData.players[0].users.img_url}
-                    size={50}
-                    style={{ border: "solid var(--success-color) 4px" }}
-                  />
-                  <Text
-                    className={style.username}
-                    strong
-                    style={{ color: "var(--success-color)" }}
-                  >
+                  <Avatar src={gameData.players[0].users.img_url} size={50} style={{ border: "solid var(--success-color) 4px" }} />
+                  <Text className={style.username} strong style={{ color: "var(--success-color)" }}>
                     {gameData.players[0].users.username}
                   </Text>
                 </Space>
-                <Title style={{ color: "var(--success-color)" }}>
-                  {gameData?.players[0].score}
-                </Title>
+                <Title style={{ color: "var(--success-color)" }}>{gameData?.players[0].score}</Title>
               </Space>
               <Space>
-                <Title style={{ color: "var(--primary-color)" }}>
-                  {gameData.players[1].score}
-                </Title>
+                <Title style={{ color: "var(--primary-color)" }}>{gameData.players[1].score}</Title>
                 <Space direction="vertical" align="end">
-                  <Avatar
-                    src={gameData.players[1].users.img_url}
-                    size={50}
-                    style={{ border: "solid var(--primary-color) 4px" }}
-                  />
-                  <Text
-                    className={style.username}
-                    strong
-                    style={{ color: "var(--primary-color)" }}
-                  >
+                  <Avatar src={gameData.players[1].users.img_url} size={50} style={{ border: "solid var(--primary-color) 4px" }} />
+                  <Text className={style.username} strong style={{ color: "var(--primary-color)" }}>
                     {gameData.players[1].users.username}
                   </Text>
                 </Space>
               </Space>
             </Space>
-            <Canvas
-              game={gameData}
-              IamPlayer={intra_id === gameData.players[1].users.intra_id}
-            />
-            <div
-              style={{
-                width: "100%",
-                display: "flex",
-                justifyContent: "space-between",
-                padding: 10,
-              }}
-            >
-              <Tag
-                icon={<EyeFilled />}
-                color="var(--primary-color)"
-                style={{ padding: "6px 8px" }}
+            <Canvas game={gameData} IamPlayer={intra_id === gameData.players[1].users.intra_id} />
+            {gameData.status !== "END" && (
+              <div
+                style={{
+                  width: "100%",
+                  display: "flex",
+                  justifyContent: "space-between",
+                  padding: 10,
+                }}
               >
-                {" 10"}
-                {/* {gameData?.watching} */}
-              </Tag>
-              {gameData.players[1].users.intra_id === intra_id && (
-                <Button
-                  type="primary"
-                  danger
-                  icon={<Icon component={OutIcon} />}
-                  onClick={() => leaveGame()}
-                >
-                  {"Leave"}
-                </Button>
-              )}
-            </div>
+                <Tag icon={<EyeFilled />} color="var(--primary-color)" style={{ padding: "6px 8px" }}>
+                  {" 10"}
+                  {/* {gameData?.watching} */}
+                </Tag>
+                {gameData.players[1].users.intra_id === intra_id && (
+                  <Button type="primary" danger icon={<Icon component={OutIcon} />} onClick={() => leaveGame()}>
+                    {"Leave"}
+                  </Button>
+                )}
+              </div>
+            )}
           </>
         )}
       </div>

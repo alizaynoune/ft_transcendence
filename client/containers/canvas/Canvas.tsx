@@ -9,6 +9,7 @@ import Scene from "@/containers/scene/Scene";
 import { racquetSize, planeSize } from "@/tools/globalVariable";
 import { useInterval } from "@/hooks/useInterval";
 import { GameType } from "@/types/types";
+import Socket from "@/config/socket";
 
 interface PropsType {
   game: GameType;
@@ -19,17 +20,18 @@ const MyCanvas: React.FC<PropsType> = ({ game, IamPlayer }) => {
   const racquet = useRef<THREE.Mesh>(null!);
   const canvasRef = useRef<HTMLCanvasElement>(null!);
   const racquetMaxStep = planeSize[0] / 2 - racquetSize[0] / 2;
-  const [count, setCount] = useState<number>(0);
-  const [timer, setTimer] = useState(1000);
+  const [count, setCount] = useState<number>(4);
+  const [timer, setTimer] = useState(0);
   const [collided, setCollided] = useState<boolean>(false);
   const [start, setStart] = useState<boolean>(false);
+  const [ready, setReady] = useState<boolean>(game.players[0].ready && game.players[1].ready);
 
   const gameSpeed = 0.25;
 
   useInterval(() => setCount((count) => count - 1), timer);
   useEffect(() => {
     console.log(count);
-    if (count < 0) {
+    if (count < 0 && ready) {
       setTimer(0);
       setStart(true);
     }
@@ -54,8 +56,7 @@ const MyCanvas: React.FC<PropsType> = ({ game, IamPlayer }) => {
       default:
         step = 0;
     }
-    if (Math.abs(racquet.current.position.x + step) <= racquetMaxStep)
-      racquet.current.position.x += step;
+    if (Math.abs(racquet.current.position.x + step) <= racquetMaxStep) racquet.current.position.x += step;
     else {
       step = racquetMaxStep - Math.abs(racquet.current.position.x);
       racquet.current.position.x += step;
@@ -63,7 +64,11 @@ const MyCanvas: React.FC<PropsType> = ({ game, IamPlayer }) => {
   };
 
   useEffect(() => {
+    console.log(ready, 'ready>>>>>>>>>>');
+    
     if (!IamPlayer) return;
+    Socket.emit("playerReady", { gameId: game.id });
+    if (!ready) return;
     canvasRef.current.focus();
     document.getElementById("canvas")?.focus();
     setCount(3);
@@ -78,9 +83,11 @@ const MyCanvas: React.FC<PropsType> = ({ game, IamPlayer }) => {
     setTimer(1000);
   }, [collided]);
 
-  return (
+  return game.status !== "PLAYING" ? (
+    <span className={style.text}>{game.status}</span>
+  ) : (
     <>
-      {count >= 0 && <span className={style.text}>{count ? count : "GO"}</span>}
+      {count >= 0 && <span className={style.text}>{count === 4 ? "Waiting" : count ? count : "GO"}</span>}
       <Canvas
         className={style.container}
         frameloop="demand"
@@ -95,19 +102,10 @@ const MyCanvas: React.FC<PropsType> = ({ game, IamPlayer }) => {
         }}
       >
         <color attach="background" args={["#464E5F"]} />
-        {/* <Stats /> */}
         <OrbitControls />
         <ambientLight color={"#ffffff"} intensity={0.5} />
         <Suspense fallback={null}>
-          <Stars
-            radius={80}
-            depth={40}
-            count={9000}
-            factor={4}
-            saturation={0}
-            fade
-            speed={1}
-          />
+          <Stars radius={80} depth={40} count={9000} factor={4} saturation={0} fade speed={1} />
           <Scene
             ref={racquet}
             gameSpeed={gameSpeed}

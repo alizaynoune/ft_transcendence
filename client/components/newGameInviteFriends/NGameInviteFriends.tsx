@@ -33,7 +33,7 @@ const NGameInvitFriends: React.FC = () => {
     try {
       const cursor = data.at(-1)?.id || 1;
       const res = await axios.get(
-        `/users/all?status=ONLINE&findBy=${filter}&cursor=${cursor}`
+        `/users/all?findBy=${filter}&cursor=${cursor}`
       );
       setHasMore(res.data.length === 20);
       setData((prev) => [
@@ -141,7 +141,7 @@ const NGameInvitFriends: React.FC = () => {
                       </a>
                     </Link>
                   }
-                  title={`${item.first_name} ${item.last_name}`}
+                  title={item.username}
                   description={item.email}
                 />
               </List.Item>

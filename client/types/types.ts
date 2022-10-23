@@ -28,6 +28,7 @@ export interface GameType {
     id: number;
     gameid: number;
     score: number;
+    ready: boolean;
     users: UserType;
   }[];
 }
