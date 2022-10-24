@@ -126,7 +126,7 @@ const MyCanvas: React.FC<PropsType> = ({ game, IamPlayer }) => {
             gl.setClearColor("#464E5F");
           }}
         >
-          {/* <color attach="background" args={["#464E5F"]} />
+          <color attach="background" args={["#464E5F"]} />
           <OrbitControls dispose={null} />
           <ambientLight color={"#ffffff"} intensity={0.5} />
           <Suspense fallback={null}>
@@ -139,7 +139,7 @@ const MyCanvas: React.FC<PropsType> = ({ game, IamPlayer }) => {
                 setCollided(value);
               }}
             />
-          </Suspense> */}
+          </Suspense>
         </Canvas>
       )}
     </>
