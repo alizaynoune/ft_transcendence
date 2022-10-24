@@ -22,6 +22,7 @@ export interface GameType {
   id: number;
   status: "WAITING" | "PLAYING" | "END";
   level: "EASY" | "NORMAL" | "DIFFICULT";
+  started: boolean;
   createdat: Date;
   updatedat: Date;
   players: {

@@ -1,18 +1,9 @@
-import React, { useMemo, useRef } from "react";
-import { Plane, Text, Text3D } from "@react-three/drei";
-import { TextGeometry } from 'three/examples/jsm/geometries/TextGeometry'
-import { extend } from "@react-three/fiber";
-// @ts-ignore
-import boldUrl from './bold.blob'
-
-
-extend({ TextGeometry })
-
-
+import React from "react";
+import { Plane } from "@react-three/drei";
 
 export const Box = React.forwardRef((props: any, ref) => {
   return (
-    <mesh {...props.mesh} ref={ref}>
+    <mesh {...props.mesh} ref={ref} dispose={null}>
       <boxGeometry attach="geometry" {...props.box} />
       <meshStandardMaterial attach="material" {...props.meshMaterial} />
     </mesh>
@@ -21,7 +12,7 @@ export const Box = React.forwardRef((props: any, ref) => {
 
 export const Ball = React.forwardRef((props: any, ref) => {
   return (
-    <mesh ref={ref} {...props}>
+    <mesh ref={ref} {...props} dispose={null}>
       <sphereGeometry attach="geometry" args={[0.15, 20, 20]} />
       <meshBasicMaterial attach="material" color="red" />
     </mesh>
@@ -30,7 +21,7 @@ export const Ball = React.forwardRef((props: any, ref) => {
 
 export const Wall = (props: any) => {
   return (
-    <Plane {...props.plane}>
+    <Plane {...props.plane} dispose={null}>
       <meshStandardMaterial {...props.meshMaterial} attach="material" />
     </Plane>
   );

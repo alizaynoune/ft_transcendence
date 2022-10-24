@@ -1,5 +1,5 @@
 import { invalidate, useFrame } from "@react-three/fiber";
-import React, { useRef } from "react";
+import React, { useEffect, useRef } from "react";
 import { planeSize, racquetSize } from "@/tools/globalVariable";
 
 interface PropsType {
@@ -18,6 +18,12 @@ export const useGame = (props: PropsType) => {
 
   const ball = useRef<THREE.Mesh>(null!);
   const step = useRef<{ x: number; z: number }>({ x: 0, z: gameSpeed });
+
+  // useEffect(() => {
+  //   return () => {
+  //     ball?.current?.remove()
+  //   }
+  // }, [])
 
   useFrame((state) => {
     if (start) {
@@ -49,6 +55,9 @@ export const useGame = (props: PropsType) => {
         }
       } else ball.current!.position.z += step.current.z; // Front Back
     }
+    // return () => {
+    //   state.rem
+    // }
   });
 
   return [ball];

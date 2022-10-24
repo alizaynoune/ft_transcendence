@@ -19,12 +19,12 @@ const MyCanvas: React.FC<PropsType> = ({ game, IamPlayer }) => {
   const racquet = useRef<THREE.Mesh>(null!);
   const canvasRef = useRef<HTMLCanvasElement>(null!);
   const racquetMaxStep = planeSize[0] / 2 - racquetSize[0] / 2;
-  const [count, setCount] = useState<number>(5);
+  const [count, setCount] = useState<number>(-1);
   const [timer, setTimer] = useState(0);
   const [collided, setCollided] = useState<boolean>(false);
   const [start, setStart] = useState<boolean>(false);
 
-  const gameSpeed: {[k:string]: number} = {
+  const gameSpeed: { [k: string]: number } = {
     EASY: 0.25,
     NORMAL: 0.5,
     DIFFICULT: 1,
@@ -32,15 +32,14 @@ const MyCanvas: React.FC<PropsType> = ({ game, IamPlayer }) => {
 
   useInterval(() => setCount((count) => count - 1), timer);
   useEffect(() => {
-    console.log(count);
-    if (count < 0 && game.status === "PLAYING") {
-      setTimer(0);
-      setStart(true);
+    console.log(count, game);
+    if (IamPlayer && count < 0 && game.status === "PLAYING" && !game.started) {
+      Socket.emit("startGame", { gameId: game.id });
     }
   }, [count]);
 
   const handleKeyboardEvent = (e: KeyboardEvent<HTMLImageElement>) => {
-    if (game.status !== 'PLAYING') return;
+    if (game.status !== "PLAYING") return;
     const { code } = e;
     let step = 0;
     switch (code) {
@@ -65,24 +64,42 @@ const MyCanvas: React.FC<PropsType> = ({ game, IamPlayer }) => {
   };
 
   useEffect(() => {
-    console.log("enter");
+    console.log(game);
 
     if (!IamPlayer) return;
-    Socket.emit("playerReady", { gameId: game.id });
+    if (!game.players[1].ready) Socket.emit("playerReady", { gameId: game.id });
     if (game.status !== "PLAYING") return;
-    canvasRef.current.focus();
-    document.getElementById("canvas")?.focus();
     setCount(5);
     setTimer(1000);
   }, [game.status]);
 
   useEffect(() => {
-    if (!collided) return;
-    setStart(false);
-    setCount(0);
-    setCollided(false);
-    setTimer(1000);
-  }, [collided]);
+    console.log(start, "<<<<<<<<<start");
+  }, [start]);
+
+  useEffect(() => {
+    if (game.started && game.status === 'PLAYING') {
+      setTimer(0);
+      setStart(true);
+      canvasRef.current.focus();
+      document.getElementById("canvas")?.focus();
+    }
+  }, [game.started]);
+
+  // useEffect(() => {
+  //   if (!collided) return;
+  //   setStart(false);
+  //   setCount(0);
+  //   setCollided(false);
+  //   setTimer(1000);
+  // }, [collided]);
+
+  useEffect(() => {
+    console.log("rendare");
+    return () => {
+      
+    }
+  }, []);
 
   return game.status !== "PLAYING" ? (
     <div className={style.container}>
@@ -90,35 +107,41 @@ const MyCanvas: React.FC<PropsType> = ({ game, IamPlayer }) => {
     </div>
   ) : (
     <>
-      {count >= 0 && <span className={style.text}>{count ? count : "GO"}</span>}
-      <Canvas
-        className={style.container}
-        frameloop="demand"
-        ref={IamPlayer ? canvasRef : undefined}
-        onKeyDown={IamPlayer ? handleKeyboardEvent : undefined}
-        id="canvas"
-        tabIndex={0}
-        camera={{ fov: 75, near: 0.1, far: 1000, position: [0, 5, 20] }}
-        gl={{ toneMapping: NoToneMapping }}
-        onCreated={({ gl }) => {
-          gl.setClearColor("#ffffff");
-        }}
-      >
-        <color attach="background" args={["#464E5F"]} />
-        <OrbitControls />
-        <ambientLight color={"#ffffff"} intensity={0.5} />
-        <Suspense fallback={null}>
-          <Stars radius={80} depth={40} count={9000} factor={4} saturation={0} fade speed={1} />
-          <Scene
-            ref={racquet}
-            gameSpeed={gameSpeed[game.status]}
-            start={start}
-            setCollided={(value: boolean): void => {
-              setCollided(value);
-            }}
-          />
-        </Suspense>
-      </Canvas>
+      {count >= 0 && IamPlayer && !game.started && (
+        <div className={style.container}>
+          <span className={style.text}>{count ? count : "GO"}</span>
+        </div>
+      )}
+      {game.started && game.status === "PLAYING" && (
+        <Canvas
+          className={style.container}
+          // frameloop="demand"
+          ref={IamPlayer ? canvasRef : undefined}
+          onKeyDown={IamPlayer ? handleKeyboardEvent : undefined}
+          id="canvas"
+          tabIndex={0}
+          camera={{ fov: 75, near: 0.1, far: 1000, position: [0, 5, 20] }}
+          gl={{ toneMapping: NoToneMapping }}
+          onCreated={({ gl }) => {
+            gl.setClearColor("#464E5F");
+          }}
+        >
+          {/* <color attach="background" args={["#464E5F"]} />
+          <OrbitControls dispose={null} />
+          <ambientLight color={"#ffffff"} intensity={0.5} />
+          <Suspense fallback={null}>
+            <Stars radius={80} depth={40} count={9000} factor={4} saturation={0} fade speed={1} />
+            <Scene
+              ref={racquet}
+              gameSpeed={gameSpeed[game.level]}
+              start={start}
+              setCollided={(value: boolean): void => {
+                setCollided(value);
+              }}
+            />
+          </Suspense> */}
+        </Canvas>
+      )}
     </>
   );
 };

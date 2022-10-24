@@ -4,20 +4,22 @@ import {Box, Ball, Wall} from '@/components/r3jObjects/R3jObjects'
 import React from "react";
 import { useGame } from "@/hooks/gameHooks";
 import {planeSize, racquetSize} from "@/tools/globalVariable"
-import { DragControls } from 'three/examples/jsm/controls/DragControls'
 
 
 
 const Scene = React.forwardRef((props: any, ref) => {
   const { gameSpeed, start, setCollided } = props;
-  console.log(props.collided, 'collided');
+  console.log(props.collided, start, 'collided');
   
 
   const [ball] = useGame({racquet: ref, gameSpeed, start, setCollided})
 
-  useEffect(() => {
-    console.log("rander2");
-  }, []);
+  // useEffect(() => {
+  //   console.log("rander2");
+  //   return () => {
+  //     ball?.current?.remove()
+  //   }
+  // }, []);
 
   return (
     <>
