@@ -3,25 +3,23 @@ import Icon from "@ant-design/icons";
 import Image from "next/image";
 import Link from "next/link";
 import style from "./header.module.css";
-import { Layout, Input, Button, Badge, Avatar, message, Select, Dropdown, Menu } from "antd";
-import type { MenuProps } from "antd";
+import { Layout, Button, Avatar, message, Typography } from "antd";
 import { useAppSelector } from "@/hooks/reduxHooks";
 import { selectAuth } from "@/reducers/auth";
 import { _42Icon } from "@/icons/index";
 import { useEffect, useState } from "react";
 import Notifications from "@/components/notifications/Notifications";
-import { UserType } from "@/types/types";
-import axios from "@/config/axios";
 import socket from "@/config/socket";
 import Search from "../search/Search";
 
+const { Text } = Typography;
 interface PropsType {
   collapsed: boolean;
   setCollapsed: React.Dispatch<React.SetStateAction<boolean>>;
 }
 const Header: React.FC<PropsType> = (props) => {
   const { collapsed, setCollapsed } = props;
-  const { isAuth, img_url, error } = useAppSelector(selectAuth);
+  const { isAuth, img_url, error, username } = useAppSelector(selectAuth);
 
   useEffect(() => {
     if (isAuth) {
@@ -68,6 +66,7 @@ const Header: React.FC<PropsType> = (props) => {
       ) : (
         <div className={style.rightDiv}>
           <Notifications />
+          <Text strong >{username}</Text>
           <Link href={"/profile/me"}>
             <a>
               <Avatar src={img_url} size={55} />
