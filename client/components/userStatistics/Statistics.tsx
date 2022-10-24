@@ -1,7 +1,7 @@
 import style from "./statistics.module.css";
 import Image from "next/image";
 import axios from "@/config/axios";
-import { Progress, Avatar, Badge, Typography, Upload, Button, Space, Tooltip, message } from "antd";
+import { Progress, Avatar, Badge, Typography, Upload, Button, Space, Tooltip, message, Modal, Select } from "antd";
 import Icon, { EditOutlined, CloseOutlined, CheckOutlined } from "@ant-design/icons";
 import { useAppSelector } from "@/hooks/reduxHooks";
 import { selectAuth } from "@/store/reducers/auth";
@@ -40,6 +40,7 @@ interface Props {
   refresh: () => Promise<unknown>;
 }
 const { Text, Title } = Typography;
+const { Option } = Select;
 
 const actionsList: { [key: string]: { icon: JSX.Element; tooltip: string; action: string }[] } = {
   friend: [
@@ -73,6 +74,7 @@ const Statistics: React.FC<Props> = ({ data, refresh }) => {
   const progress = ((level - Math.floor(level)) / 1) * 100;
   const WinRatio = Number(((matches.winner / matches.total) * 100).toFixed(2)) || 0;
   const lazyRoot = useRef(null);
+  const [gameLevel, setGameLevel] = useState<"EASY" | "NORMAL" | "DIFFICULT">("NORMAL");
   const actionIndex = data.relationship
     ? data.relationship.isFriend
       ? "friend"
@@ -81,14 +83,50 @@ const Statistics: React.FC<Props> = ({ data, refresh }) => {
       : "inviteSender"
     : "other";
 
+  const gameLevelOptions = () => {
+    return (
+      <>
+        <Text strong>{"Please select game level"}</Text>
+        <Select
+          className={style.selectLevel}
+          showSearch={false}
+          placeholder="Select level of game"
+          onChange={(value) => {
+            setGameLevel(value);
+          }}
+          size="large"
+          defaultValue={gameLevel}
+        >
+          <Option value={"EASY"}>{" Easir "}</Option>
+          <Option value={"NORMAL"}>{"Normal"}</Option>
+          <Option value={"DIFFICULT"}>{"Difficult"}</Option>
+        </Select>
+      </>
+    );
+  };
+
   const actions: FriendActions = (user, action) => {
     return new Promise(async (resolve, reject) => {
       try {
-        console.log(action.split('/')[0]);
-        
-        const body = action.split('/')[0] === 'game' ? {userId: user.intra_id} : { id: user.intra_id.toString() }
-        const res = await axios.post(action, body);
-        return resolve(res.data);
+        const body = action.split("/")[0] === "game" ? { userId: user.intra_id } : { id: user.intra_id.toString() };
+        if (action.split("/")[0] !== "game") {
+          const res = await axios.post(action, { id: user.intra_id.toString() });
+          return resolve(res.data);
+        } else {
+          Modal.confirm({
+            title: gameLevelOptions(),
+            content: <Text type="secondary">{`you will send game invitation to ${user.username}`}</Text>,
+            okText: "send",
+            async onOk() {
+              try {
+                const res = await axios.post("game/invite", { userId: user.intra_id, gameLevel });
+                message.success(res.data.message);
+              } catch (error) {
+                error instanceof Error && message.error(error.message);
+              }
+            },
+          });
+        }
       } catch (error) {
         return reject(error);
       }
