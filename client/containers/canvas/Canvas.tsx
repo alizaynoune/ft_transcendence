@@ -127,7 +127,7 @@ const MyCanvas: React.FC<PropsType> = ({ game, IamPlayer }) => {
           }}
         >
           <color attach="background" args={["#464E5F"]} />
-          <OrbitControls dispose={null} />
+          <OrbitControls />
           <ambientLight color={"#ffffff"} intensity={0.5} />
           <Suspense fallback={null}>
             <Stars radius={80} depth={40} count={9000} factor={4} saturation={0} fade speed={1} />
