@@ -60,7 +60,7 @@ const ModalInviteGame: React.FC<PropsType> = (props) => {
         />
       </Tooltip>
       <Modal open={openModal} title={selectGameLevel()} onOk={handleOk} onCancel={() => setOpenModal(false)}>
-        <Text type="secondary">{`you will send game invitation to ${user.username} ${gameLevel}`}</Text>
+        <Text type="secondary">{`you will send game invitation to ${user.username}`}</Text>
       </Modal>
     </>
   );

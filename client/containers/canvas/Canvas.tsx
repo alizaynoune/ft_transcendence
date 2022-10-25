@@ -9,12 +9,13 @@ import { racquetSize, planeSize } from "@/tools/globalVariable";
 import { useInterval } from "@/hooks/useInterval";
 import { GameType } from "@/types/types";
 import Socket from "@/config/socket";
+import { message, Typography } from "antd";
 
 interface PropsType {
   game: GameType;
   IamPlayer: boolean;
 }
-
+const { Text } = Typography;
 const MyCanvas: React.FC<PropsType> = ({ game, IamPlayer }) => {
   const racquet = useRef<THREE.Mesh>(null!);
   const canvasRef = useRef<HTMLCanvasElement>(null!);
@@ -23,6 +24,7 @@ const MyCanvas: React.FC<PropsType> = ({ game, IamPlayer }) => {
   const [timer, setTimer] = useState(0);
   const [collided, setCollided] = useState<boolean>(false);
   const [start, setStart] = useState<boolean>(false);
+  const [pause, setPause] = useState<boolean>(false);
 
   const gameSpeed: { [k: string]: number } = {
     EASY: 0.25,
@@ -68,6 +70,7 @@ const MyCanvas: React.FC<PropsType> = ({ game, IamPlayer }) => {
 
     if (!IamPlayer) return;
     if (!game.players[1].ready) Socket.emit("playerReady", { gameId: game.id });
+    else Socket.emit("reConnection", { gameId: game.id });
     if (game.status !== "PLAYING") return;
     setCount(5);
     setTimer(1000);
@@ -78,7 +81,7 @@ const MyCanvas: React.FC<PropsType> = ({ game, IamPlayer }) => {
   }, [start]);
 
   useEffect(() => {
-    if (game.started && game.status === 'PLAYING') {
+    if (game.started && game.status === "PLAYING") {
       setTimer(0);
       setStart(true);
       canvasRef.current.focus();
@@ -95,10 +98,23 @@ const MyCanvas: React.FC<PropsType> = ({ game, IamPlayer }) => {
   // }, [collided]);
 
   useEffect(() => {
-    console.log("rendare");
+    if (!IamPlayer) return;
+    Socket.on("ProblemConnection", () => {
+      console.log("problem connection");
+      message.warning("problem connection");
+
+      setPause(true);
+    });
+    Socket.on("ReConnection", () => {
+      console.log("reconnection");
+
+      setPause(false);
+    });
+
     return () => {
-      
-    }
+      Socket.off("ProblemConnection");
+      Socket.off("ReConnection");
+    };
   }, []);
 
   return game.status !== "PLAYING" ? (
@@ -112,6 +128,7 @@ const MyCanvas: React.FC<PropsType> = ({ game, IamPlayer }) => {
           <span className={style.text}>{count ? count : "GO"}</span>
         </div>
       )}
+      {pause && <Text type="danger">{`${game.players[0].users.username} has problem connection`}</Text>}
       {game.started && game.status === "PLAYING" && (
         <Canvas
           className={style.container}
@@ -134,7 +151,7 @@ const MyCanvas: React.FC<PropsType> = ({ game, IamPlayer }) => {
             <Scene
               ref={racquet}
               gameSpeed={gameSpeed[game.level]}
-              start={start}
+              start={start && !pause}
               setCollided={(value: boolean): void => {
                 setCollided(value);
               }}

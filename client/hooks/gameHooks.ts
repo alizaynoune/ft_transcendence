@@ -1,6 +1,8 @@
 import { invalidate, useFrame } from "@react-three/fiber";
-import React, { useEffect, useRef } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { planeSize, racquetSize } from "@/tools/globalVariable";
+import Socket from "@/config/socket";
+import {message} from 'antd'
 
 interface PropsType {
   racquet: any;
@@ -11,23 +13,18 @@ interface PropsType {
 
 export const useGame = (props: PropsType) => {
   const { racquet, gameSpeed, start, setCollided } = props;
-
   const planeHalfW = planeSize[0] / 2;
   const planeHalfL = planeSize[1] / 2;
   const racquetHalf = racquetSize[0] / 2;
-
   const ball = useRef<THREE.Mesh>(null!);
   const step = useRef<{ x: number; z: number }>({ x: 0, z: gameSpeed });
+  const [pause, setPause] = useState<boolean>(false);
 
-  // useEffect(() => {
-  //   return () => {
-  //     ball?.current?.remove()
-  //   }
-  // }, [])
 
   useFrame((state) => {
+    if (pause) return;
     if (start) {
-      invalidate()
+      invalidate();
       if (Math.abs(ball.current.position.z) >= planeHalfL) step.current.z *= -1;
       if (Math.abs(ball.current.position.x) >= planeHalfW) step.current.x *= -1;
       ball.current.position.x += step.current.x; // Left Right
@@ -40,10 +37,7 @@ export const useGame = (props: PropsType) => {
           ball.current!.position.z += step.current.z;
           console.log("collision"); //! add sockit to emit current position
           step.current.x +=
-            ((racquet.current.position.x -
-              racquetHalf +
-              (racquet.current.position.x + racquetHalf)) /
-              2 -
+            ((racquet.current.position.x - racquetHalf + (racquet.current.position.x + racquetHalf)) / 2 -
               ball.current.position.x) /
             10;
         } else {
@@ -55,9 +49,6 @@ export const useGame = (props: PropsType) => {
         }
       } else ball.current!.position.z += step.current.z; // Front Back
     }
-    // return () => {
-    //   state.rem
-    // }
   });
 
   return [ball];

@@ -30,7 +30,6 @@ const Games: React.FC = () => {
       setLoading(false);
     } catch (error) {
       setLoading(false);
-      console.log(error);
       error instanceof Error && message.error(error.message);
     }
   };
@@ -55,32 +54,40 @@ const Games: React.FC = () => {
   };
 
   useEffect(() => {
-    console.log(query.game);
     if (query.game) loadGame();
   }, [isReady, query.game]);
 
   useEffect(() => {
-    if (gameData) Socket.emit("joinWatcher", { gameId: gameData.id });
+    if (gameData) {
+      Socket.emit("joinWatcher", { gameId: gameData.id });
+    }
   }, [gameData]);
 
-  useEffect(() => {
-    Socket.on("updateGame", (game) => {
-      console.log(game, "<<<<<<<<<game update>>>>>>>");
-      let data = game;
-      if (data.players[0].users.intra_id === intra_id) data.players = [data.players[1], data.players[0]];
-      setGameData(data);
-    });
-    Socket.on("countWatchers", (data) => {
-      console.log(data, "watchers>>>>>");
+  // useEffect(() => {
+  //   console.log("done");
+  //   // return () => {
+  //     router.beforePopState((state) => {
+  //       console.log(state);
+        
+  //       return false;
+  //     });
+  //   // };
+  // }, []);
 
-      setWatchers(data.total);
-    });
-    return () => {
-      Socket.off("updateGame");
-      Socket.off("countWatchers");
-      if (gameData) Socket.emit("leaveWatcher", { gameId: gameData.id });
-    };
-  }, []);
+  // useEffect(() => {
+  //   router.beforePopState(({ url, as, options }) => {
+  //     console.log(`App is changing to ${url}`);
+
+  //     // I only want to allow these two routes!
+  //     if (as !== "/" && as !== "/other") {
+  //       // Have SSR render bad routes as a 404.
+  //       window.location.href = as;
+  //       return false;
+  //     }
+
+  //     return true;
+  //   });
+  // }, []);
 
   return (
     <Spin spinning={loading} delay={500}>
