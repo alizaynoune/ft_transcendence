@@ -5,7 +5,7 @@ import Icon, { EyeFilled } from "@ant-design/icons";
 import Canvas from "@/containers/canvas/Canvas";
 import { OutIcon } from "@/icons/index";
 import authRoute from "@/tools/protectedRoutes";
-import { useRouter } from "next/router";
+import { Router, useRouter } from "next/router";
 import { GameType } from "@/types/types";
 import axios from "@/config/axios";
 import { useAppSelector } from "@/hooks/reduxHooks";
@@ -63,31 +63,33 @@ const Games: React.FC = () => {
     }
   }, [gameData]);
 
-  // useEffect(() => {
-  //   console.log("done");
-  //   // return () => {
-  //     router.beforePopState((state) => {
-  //       console.log(state);
-        
-  //       return false;
-  //     });
-  //   // };
-  // }, []);
+  useEffect(() => {
+    console.log(query.game);
+    
+    if (query.game) {
+      const confirmationMessage = "You will leave this game are you sure";
+      const beforeUnloadHandler = (e: BeforeUnloadEvent) => {
+        (e || window.event).returnValue = confirmationMessage;
+        return confirmationMessage; // Gecko + Webkit, Safari, Chrome etc.
+      };
+      const beforeRouteHandler = (url: string) => {
+        console.log(url, router, "<<<<<<<<<<<<<<");
 
-  // useEffect(() => {
-  //   router.beforePopState(({ url, as, options }) => {
-  //     console.log(`App is changing to ${url}`);
-
-  //     // I only want to allow these two routes!
-  //     if (as !== "/" && as !== "/other") {
-  //       // Have SSR render bad routes as a 404.
-  //       window.location.href = as;
-  //       return false;
-  //     }
-
-  //     return true;
-  //   });
-  // }, []);
+        if (router.asPath !== url && !confirm(confirmationMessage)) {
+          // to inform NProgress or something ...
+          router.events.emit("routeChangeError");
+          console.log(router);
+          throw 'Abort';
+        }
+      };
+      window.addEventListener("beforeunload", beforeUnloadHandler);
+      router.events.on("routeChangeStart", beforeRouteHandler);
+      return () => {
+        window.removeEventListener("beforeunload", beforeUnloadHandler);
+        router.events.off("routeChangeStart", beforeRouteHandler);
+      };
+    }
+  }, [isReady, query.game]);
 
   return (
     <Spin spinning={loading} delay={500}>
