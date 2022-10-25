@@ -36,7 +36,7 @@ const items = [
     key: "LastMatches",
     label: (
       <>
-        <Typography.Text className={style.tabText}>{"Account Settings"}</Typography.Text>
+        <Typography.Text className={style.tabText}>{"Last Matches"}</Typography.Text>
         <Icon className={style.tabIcon} component={SettingIcon} />
       </>
     ),

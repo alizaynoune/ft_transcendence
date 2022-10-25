@@ -1,24 +1,23 @@
 import style from "./newGameInviteFriends.module.css";
-import { Avatar, List, Skeleton, Input, Divider, Typography, Badge, message, Button, Modal, Select } from "antd";
+import { Avatar, List, Skeleton, Input, Divider, Typography, Badge, message } from "antd";
 import Icon from "@ant-design/icons";
 import React, { useEffect, useState } from "react";
 import InfiniteScroll from "react-infinite-scroll-component";
 import axios from "@/config/axios";
-import { PlayGameIcon, SearchIcon } from "@/icons/index";
+import { SearchIcon } from "@/icons/index";
 import { UserType } from "@/types/types";
 import Link from "next/link";
 import { useAppSelector } from "@/hooks/reduxHooks";
 import { selectAuth } from "@/store/reducers/auth";
+import ModalInviteGame from "../modalInviteGame/ModalInviteGame";
 
-const { Title, Text } = Typography;
-const { Option } = Select;
+const { Title } = Typography;
 const NGameInvitFriends: React.FC = () => {
   const { intra_id } = useAppSelector(selectAuth);
   const [loading, setLoading] = useState(false);
   const [data, setData] = useState<UserType[]>([]);
   const [hasMore, setHasMore] = useState<boolean>(false);
   const [filter, setFilter] = useState<string>("");
-  const [gameLevel, setGameLevel] = useState<"EASY" | "NORMAL" | "DIFFICULT">("NORMAL");
 
   const loadMoreData = async () => {
     setLoading(true);
@@ -42,44 +41,6 @@ const NGameInvitFriends: React.FC = () => {
   useEffect(() => {
     loadMoreData();
   }, [filter]);
-
-  const gameLevelOptions = () => {
-    return (
-      <>
-        <Text strong>{"Please select game level"}</Text>
-        <Select
-          className={style.selectLevel}
-          showSearch={false}
-          placeholder="Select level of game"
-          onChange={(value) => {
-            setGameLevel(value);
-          }}
-          size="large"
-          defaultValue={gameLevel}
-        >
-          <Option value={"EASY"}>{" Easir "}</Option>
-          <Option value={"NORMAL"}>{"Normal"}</Option>
-          <Option value={"DIFFICULT"}>{"Difficult"}</Option>
-        </Select>
-      </>
-    );
-  };
-
-  const sendInvite = async (user: UserType) => {
-    Modal.confirm({
-      title: gameLevelOptions(),
-      content: <Text type="secondary">{`you will send game invitation to ${user.username}`}</Text>,
-      okText: "send",
-      async onOk() {
-        try {
-          const res = await axios.post("game/invite", { userId: user.intra_id, gameLevel });
-          message.success(res.data.message);
-        } catch (error) {
-          error instanceof Error && message.error(error.message);
-        }
-      },
-    });
-  };
 
   return (
     <div className={style.container}>
@@ -122,22 +83,17 @@ const NGameInvitFriends: React.FC = () => {
             itemLayout="horizontal"
             dataSource={data}
             renderItem={(item) => (
-              <List.Item
-                extra={
-                  <Button
-                    type="primary"
-                    icon={<Icon component={PlayGameIcon} />}
-                    onClick={() => {
-                      sendInvite(item);
-                    }}
-                  />
-                }
-              >
+              <List.Item extra={<ModalInviteGame user={item} />}>
                 <List.Item.Meta
                   avatar={
                     <Link href={`/profile/${item.username}`}>
                       <a>
-                        <Badge dot status={item.status === "ONLINE" ? "success" : item.status === "PLAYING" ? "warning" : "error"}>
+                        <Badge
+                          dot
+                          status={
+                            item.status === "ONLINE" ? "success" : item.status === "PLAYING" ? "warning" : "error"
+                          }
+                        >
                           <Avatar src={item.img_url} size="large" />
                         </Badge>
                       </a>
