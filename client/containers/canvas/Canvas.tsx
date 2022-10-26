@@ -2,10 +2,8 @@ import style from "./canvas.module.css";
 import React, { Suspense, useRef, KeyboardEvent, useEffect, useState, SetStateAction } from "react";
 import { Canvas } from "@react-three/fiber";
 import { OrbitControls, Stars } from "@react-three/drei";
-import * as THREE from "three";
 import { NoToneMapping } from "three";
 import Scene from "@/containers/scene/Scene";
-import { racquetSize, planeSize } from "@/tools/globalVariable";
 import { useInterval } from "@/hooks/useInterval";
 import { GameType } from "@/types/types";
 import Socket from "@/config/socket";
@@ -19,16 +17,11 @@ interface PropsType {
 }
 const { Text } = Typography;
 const MyCanvas: React.FC<PropsType> = ({ game, IamPlayer, intraId }) => {
-  const racquet = useRef<THREE.Mesh>(null!);
-  // const playerX = useRef<THREE.Mesh>(null!);
-  // const playerY = useRef<THREE.Mesh>(null!);
   const canvasRef = useRef<HTMLCanvasElement>(null!);
-  const racquetMaxStep = planeSize[0] / 2 - racquetSize[0] / 2;
   const [count, setCount] = useState<number>(-1);
   const [timer, setTimer] = useState(0);
   const [collided, setCollided] = useState<boolean>(false);
   const [playerIndex, setPlayerIndex] = useState<number>(-1);
-  const [start, setStart] = useState<boolean>(false);
   const [pause, setPause] = useState<boolean>(false);
   const [playerX, playerY, moveRaquet] = useRaquets({ playerIndex, game });
 
@@ -50,7 +43,6 @@ const MyCanvas: React.FC<PropsType> = ({ game, IamPlayer, intraId }) => {
     if (game.status !== "PLAYING" || !IamPlayer || pause) return;
     const { code } = e;
     let action: "RIGHT" | "LEFT" | "" = "";
-    let step = 0;
     switch (code) {
       case "ArrowRight":
       case "ArrowUp":
@@ -69,8 +61,6 @@ const MyCanvas: React.FC<PropsType> = ({ game, IamPlayer, intraId }) => {
   };
 
   useEffect(() => {
-    console.log(game);
-
     if (!IamPlayer) return;
     let player = game.players[0].users.intra_id === intraId ? 0 : 1;
     setPlayerIndex(player);
@@ -80,10 +70,6 @@ const MyCanvas: React.FC<PropsType> = ({ game, IamPlayer, intraId }) => {
     setCount(5);
     setTimer(1000);
   }, [game.status]);
-
-  useEffect(() => {
-    console.log(start, "<<<<<<<<<start");
-  }, [start]);
 
   useEffect(() => {
     console.log(IamPlayer, ",,,,,,,,,,,,,");
@@ -113,7 +99,7 @@ const MyCanvas: React.FC<PropsType> = ({ game, IamPlayer, intraId }) => {
     });
     Socket.on("ReConnection", () => {
       console.log("reconnection");
-
+      // emit ball possition
       setPause(false);
     });
 

@@ -1,39 +1,34 @@
 import style from "./scene.module.css";
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Box, Ball, Wall } from "@/components/r3jObjects/R3jObjects";
 import React from "react";
 import { useGame } from "@/hooks/gameHooks";
 import { planeSize, racquetSize } from "@/tools/globalVariable";
-import Socket from '@/config/socket'
+import Socket from "@/config/socket";
 
 interface PropsType {
   gameSpeed: number;
   start: boolean;
   playerIndex: number;
   setCollided: React.Dispatch<React.SetStateAction<boolean>>;
-  refs: refType
+  refs: refType;
 }
 
-interface refType{
-  playerX: React.Ref<THREE.Mesh>
-  playerY: React.Ref<THREE.Mesh>
+interface refType {
+  playerX: React.Ref<THREE.Mesh>;
+  playerY: React.Ref<THREE.Mesh>;
 }
 
 const Scene = React.forwardRef((props: PropsType) => {
   const { gameSpeed, start, setCollided, playerIndex, refs } = props;
-  const {playerX, playerY} = refs
-
-  const [ball] = useGame({ racquet: playerX, gameSpeed, start, setCollided, playerIndex });
-  console.log(refs, 'racquet');
-  
-
-
+  const { playerX, playerY } = refs;
+  const [ball] = useGame({ racquet: !playerIndex ? playerX : playerY, gameSpeed, start, setCollided, playerIndex });
 
   return (
     <>
       {/* <axesHelper /> */}
       <pointLight position={[10, 10, 10]} color={0xffffff} intensity={0.8} />
-      {/* Raquet */}
+      {/* Raquet playerX */}
       <Box
         ref={playerX}
         mesh={{ position: [0, 0.15, (planeSize[1] / 2 - 0.2) * -1] }}
@@ -41,7 +36,7 @@ const Scene = React.forwardRef((props: PropsType) => {
         meshMaterial={{ color: "#50cd89" }}
       />
       <Ball position={[0, 0.2, 0]} ref={ball} />
-      {/* Raquet */}
+      {/* Raquet playerY */}
       <Box
         ref={playerY}
         mesh={{ position: [0, 0.15, planeSize[1] / 2 - 0.2] }}
