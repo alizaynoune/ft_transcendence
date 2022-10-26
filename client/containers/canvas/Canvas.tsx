@@ -1,5 +1,5 @@
 import style from "./canvas.module.css";
-import React, { Suspense, useRef, KeyboardEvent, useEffect, useState } from "react";
+import React, { Suspense, useRef, KeyboardEvent, useEffect, useState, SetStateAction } from "react";
 import { Canvas } from "@react-three/fiber";
 import { OrbitControls, Stars } from "@react-three/drei";
 import * as THREE from "three";
@@ -14,15 +14,17 @@ import { message, Typography } from "antd";
 interface PropsType {
   game: GameType;
   IamPlayer: boolean;
+  intraId: number;
 }
 const { Text } = Typography;
-const MyCanvas: React.FC<PropsType> = ({ game, IamPlayer }) => {
+const MyCanvas: React.FC<PropsType> = ({ game, IamPlayer, intraId }) => {
   const racquet = useRef<THREE.Mesh>(null!);
   const canvasRef = useRef<HTMLCanvasElement>(null!);
   const racquetMaxStep = planeSize[0] / 2 - racquetSize[0] / 2;
   const [count, setCount] = useState<number>(-1);
   const [timer, setTimer] = useState(0);
   const [collided, setCollided] = useState<boolean>(false);
+  const [playerIndex, setPlayerIndex] = useState<number>(-1);
   const [start, setStart] = useState<boolean>(false);
   const [pause, setPause] = useState<boolean>(false);
 
@@ -48,12 +50,12 @@ const MyCanvas: React.FC<PropsType> = ({ game, IamPlayer }) => {
       case "ArrowRight":
       case "ArrowUp":
       case "KeyL":
-        step = 0.8;
+        step = playerIndex ? 0.8: -0.8;
         break;
       case "ArrowLeft":
       case "ArrowDown":
       case "KeyJ":
-        step = -0.8;
+        step = playerIndex ? -0.8: 0.8;
         break;
       default:
         step = 0;
@@ -69,8 +71,10 @@ const MyCanvas: React.FC<PropsType> = ({ game, IamPlayer }) => {
     console.log(game);
 
     if (!IamPlayer) return;
-    if (!game.players[1].ready) Socket.emit("playerReady", { gameId: game.id });
-    else Socket.emit("reConnection", { gameId: game.id });
+    let player = game.players[0].users.intra_id === intraId ? 0 : 1
+    setPlayerIndex(player)
+    if (!game.players[player].ready) Socket.emit("playerReady", { gameId: game.id });
+    else if (game.started) Socket.emit("reConnection", { gameId: game.id });
     if (game.status !== "PLAYING") return;
     setCount(5);
     setTimer(1000);
@@ -81,9 +85,12 @@ const MyCanvas: React.FC<PropsType> = ({ game, IamPlayer }) => {
   }, [start]);
 
   useEffect(() => {
+    console.log(IamPlayer, ",,,,,,,,,,,,,");
+    if (!IamPlayer) return;
     if (game.started && game.status === "PLAYING") {
       setTimer(0);
-      setStart(true);
+      // setStart(true);
+      
       canvasRef.current.focus();
       document.getElementById("canvas")?.focus();
     }
@@ -137,7 +144,8 @@ const MyCanvas: React.FC<PropsType> = ({ game, IamPlayer }) => {
           onKeyDown={IamPlayer ? handleKeyboardEvent : undefined}
           id="canvas"
           tabIndex={0}
-          camera={{ fov: 75, near: 0.1, far: 1000, position: [0, 5, 20] }}
+          // camera={{ fov: 75, near: 0.1, far: 1000, position: [0, 5, 20] }}
+          camera={{ fov: 75, near: 0.1, far: 1000, position: [0, 5, playerIndex ? 20 : -20] }}
           gl={{ toneMapping: NoToneMapping }}
           onCreated={({ gl }) => {
             gl.setClearColor("#464E5F");
@@ -151,8 +159,9 @@ const MyCanvas: React.FC<PropsType> = ({ game, IamPlayer }) => {
             <Scene
               ref={racquet}
               gameSpeed={gameSpeed[game.level]}
-              start={start && !pause}
-              setCollided={(value: boolean): void => {
+              playerIndex={playerIndex}
+              start={game.started && !pause}
+              setCollided={function (value: SetStateAction<boolean>): void {
                 setCollided(value);
               }}
             />
