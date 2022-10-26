@@ -10,6 +10,7 @@ import { useInterval } from "@/hooks/useInterval";
 import { GameType } from "@/types/types";
 import Socket from "@/config/socket";
 import { message, Typography } from "antd";
+import { useRaquets } from "@/hooks/racquetHooks";
 
 interface PropsType {
   game: GameType;
@@ -19,6 +20,8 @@ interface PropsType {
 const { Text } = Typography;
 const MyCanvas: React.FC<PropsType> = ({ game, IamPlayer, intraId }) => {
   const racquet = useRef<THREE.Mesh>(null!);
+  // const playerX = useRef<THREE.Mesh>(null!);
+  // const playerY = useRef<THREE.Mesh>(null!);
   const canvasRef = useRef<HTMLCanvasElement>(null!);
   const racquetMaxStep = planeSize[0] / 2 - racquetSize[0] / 2;
   const [count, setCount] = useState<number>(-1);
@@ -27,6 +30,7 @@ const MyCanvas: React.FC<PropsType> = ({ game, IamPlayer, intraId }) => {
   const [playerIndex, setPlayerIndex] = useState<number>(-1);
   const [start, setStart] = useState<boolean>(false);
   const [pause, setPause] = useState<boolean>(false);
+  const [playerX, playerY, moveRaquet] = useRaquets({ playerIndex, game });
 
   const gameSpeed: { [k: string]: number } = {
     EASY: 0.25,
@@ -43,36 +47,33 @@ const MyCanvas: React.FC<PropsType> = ({ game, IamPlayer, intraId }) => {
   }, [count]);
 
   const handleKeyboardEvent = (e: KeyboardEvent<HTMLImageElement>) => {
-    if (game.status !== "PLAYING") return;
+    if (game.status !== "PLAYING" || !IamPlayer || pause) return;
     const { code } = e;
+    let action: "RIGHT" | "LEFT" | "" = "";
     let step = 0;
     switch (code) {
       case "ArrowRight":
       case "ArrowUp":
       case "KeyL":
-        step = playerIndex ? 0.8: -0.8;
+        action = "RIGHT";
         break;
       case "ArrowLeft":
       case "ArrowDown":
       case "KeyJ":
-        step = playerIndex ? -0.8: 0.8;
+        action = "LEFT";
         break;
       default:
-        step = 0;
+        action = "";
     }
-    if (Math.abs(racquet.current.position.x + step) <= racquetMaxStep) racquet.current.position.x += step;
-    else {
-      step = racquetMaxStep - Math.abs(racquet.current.position.x);
-      racquet.current.position.x += step;
-    }
+    moveRaquet(action);
   };
 
   useEffect(() => {
     console.log(game);
 
     if (!IamPlayer) return;
-    let player = game.players[0].users.intra_id === intraId ? 0 : 1
-    setPlayerIndex(player)
+    let player = game.players[0].users.intra_id === intraId ? 0 : 1;
+    setPlayerIndex(player);
     if (!game.players[player].ready) Socket.emit("playerReady", { gameId: game.id });
     else if (game.started) Socket.emit("reConnection", { gameId: game.id });
     if (game.status !== "PLAYING") return;
@@ -89,8 +90,6 @@ const MyCanvas: React.FC<PropsType> = ({ game, IamPlayer, intraId }) => {
     if (!IamPlayer) return;
     if (game.started && game.status === "PLAYING") {
       setTimer(0);
-      // setStart(true);
-      
       canvasRef.current.focus();
       document.getElementById("canvas")?.focus();
     }
@@ -157,7 +156,8 @@ const MyCanvas: React.FC<PropsType> = ({ game, IamPlayer, intraId }) => {
           <Suspense fallback={null}>
             <Stars radius={80} depth={40} count={9000} factor={4} saturation={0} fade speed={1} />
             <Scene
-              ref={racquet}
+              //@ts-ignore
+              refs={{ playerX, playerY }}
               gameSpeed={gameSpeed[game.level]}
               playerIndex={playerIndex}
               start={game.started && !pause}

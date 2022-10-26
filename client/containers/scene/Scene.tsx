@@ -1,28 +1,33 @@
 import style from "./scene.module.css";
-import { useEffect } from "react";
+import { useEffect, useRef } from "react";
 import { Box, Ball, Wall } from "@/components/r3jObjects/R3jObjects";
 import React from "react";
 import { useGame } from "@/hooks/gameHooks";
 import { planeSize, racquetSize } from "@/tools/globalVariable";
+import Socket from '@/config/socket'
 
 interface PropsType {
   gameSpeed: number;
   start: boolean;
   playerIndex: number;
   setCollided: React.Dispatch<React.SetStateAction<boolean>>;
+  refs: refType
 }
 
-const Scene = React.forwardRef((props: PropsType, ref) => {
-  const { gameSpeed, start, setCollided, playerIndex } = props;
+interface refType{
+  playerX: React.Ref<THREE.Mesh>
+  playerY: React.Ref<THREE.Mesh>
+}
 
-  const [ball] = useGame({ racquet: ref, gameSpeed, start, setCollided, playerIndex });
+const Scene = React.forwardRef((props: PropsType) => {
+  const { gameSpeed, start, setCollided, playerIndex, refs } = props;
+  const {playerX, playerY} = refs
 
-  // useEffect(() => {
-  //   console.log("rander2");
-  //   return () => {
-  //     ball?.current?.remove()
-  //   }
-  // }, []);
+  const [ball] = useGame({ racquet: playerX, gameSpeed, start, setCollided, playerIndex });
+  console.log(refs, 'racquet');
+  
+
+
 
   return (
     <>
@@ -30,7 +35,7 @@ const Scene = React.forwardRef((props: PropsType, ref) => {
       <pointLight position={[10, 10, 10]} color={0xffffff} intensity={0.8} />
       {/* Raquet */}
       <Box
-        ref={!playerIndex ? ref : undefined}
+        ref={playerX}
         mesh={{ position: [0, 0.15, (planeSize[1] / 2 - 0.2) * -1] }}
         box={{ args: racquetSize }}
         meshMaterial={{ color: "#50cd89" }}
@@ -38,7 +43,7 @@ const Scene = React.forwardRef((props: PropsType, ref) => {
       <Ball position={[0, 0.2, 0]} ref={ball} />
       {/* Raquet */}
       <Box
-        ref={playerIndex > 0 ? ref : undefined}
+        ref={playerY}
         mesh={{ position: [0, 0.15, planeSize[1] / 2 - 0.2] }}
         box={{ args: racquetSize }}
         meshMaterial={{ color: "#3699ff" }}

@@ -2,7 +2,7 @@ import { invalidate, useFrame } from "@react-three/fiber";
 import React, { useEffect, useRef, useState } from "react";
 import { planeSize, racquetSize } from "@/tools/globalVariable";
 import Socket from "@/config/socket";
-import {message} from 'antd'
+import { message } from "antd";
 
 interface PropsType {
   racquet: any;
@@ -20,42 +20,36 @@ export const useGame = (props: PropsType) => {
   const ball = useRef<THREE.Mesh>(null!);
   const step = useRef<{ x: number; z: number }>({ x: 0, z: gameSpeed });
   const [pause, setPause] = useState<boolean>(false);
-  const playerPossition = playerIndex !== -1 ? playerIndex ? 1: -1 : 0;
-
+  const playerPossition = playerIndex !== -1 ? (playerIndex ? 1 : -1) : 0;
 
   useFrame((state) => {
-    console.log(pause, start, '<<<<<<<<<<<<<<<<<<<<<<');
-    
+    console.log(pause, start, "<<<<<<<<<<<<<<<<<<<<<<");
+
     if (pause) return;
-    if (start) {
-      invalidate();
-      if (Math.abs(ball.current.position.z) >= planeHalfL) step.current.z *= -1;
-      if (Math.abs(ball.current.position.x) >= planeHalfW) step.current.x *= -1;
-      ball.current.position.x += step.current.x; // Left Right
-      if (((ball.current.position.z + step.current.z) * -1) >= planeHalfL - 0.3)
-      console.log(ball.current.position.z + step.current.z , planeHalfL);
-      
-      if (playerPossition && ((ball.current.position.z + step.current.z) * playerPossition) >= planeHalfL - 0.3) {
-        if (
-          ball.current.position.x >= racquet.current.position.x - racquetHalf &&
-          ball.current.position.x <= racquet.current.position.x + racquetHalf
-        ) {
-          step.current.z *= -1;
-          ball.current!.position.z += step.current.z;
-          console.log("collision"); //! add sockit to emit current position
-          step.current.x +=
-            ((racquet.current.position.x - racquetHalf + (racquet.current.position.x + racquetHalf)) / 2 -
-              ball.current.position.x) /
-            10;
-        } else {
-          console.log("none"); //! add sockit emit to current position
-          setCollided(true);
-          ball.current!.position.z = 0; // Front Back
-          ball.current.position.x = 0;
-          step.current.x = 0;
-        }
-      } else ball.current!.position.z += step.current.z; // Front Back
-    }
+    // if (start) {
+    //   invalidate();
+    //   if (Math.abs(ball.current.position.z) >= planeHalfL) step.current.z *= -1;
+    //   if (Math.abs(ball.current.position.x) >= planeHalfW) step.current.x *= -1;
+    //   ball.current.position.x += step.current.x; // Left Right
+    //   if (playerPossition && (ball.current.position.z + step.current.z) * playerPossition >= planeHalfL - 0.3) {
+    //     if (
+    //       ball.current.position.x >= racquet.current.position.x - racquetHalf &&
+    //       ball.current.position.x <= racquet.current.position.x + racquetHalf
+    //     ) {
+    //       step.current.z *= -1;
+    //       ball.current!.position.z += step.current.z;
+    //       console.log("collision"); //! add sockit to emit current position
+    //       step.current.x +=
+    //         ((racquet.current.position.x - racquetHalf + (racquet.current.position.x + racquetHalf)) / 2 - ball.current.position.x) / 10;
+    //     } else {
+    //       console.log("none"); //! add sockit emit to current position
+    //       setCollided(true);
+    //       ball.current!.position.z = 0; // Front Back
+    //       ball.current.position.x = 0;
+    //       step.current.x = 0;
+    //     }
+    //   } else ball.current!.position.z += step.current.z; // Front Back
+    // }
   });
 
   return [ball];
