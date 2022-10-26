@@ -10,6 +10,7 @@ interface PropsType {
   gameSpeed: number;
   start: boolean;
   playerIndex: number;
+  gameId: number;
   setCollided: React.Dispatch<React.SetStateAction<boolean>>;
   refs: refType;
 }
@@ -19,10 +20,10 @@ interface refType {
   playerY: React.Ref<THREE.Mesh>;
 }
 
-const Scene = React.forwardRef((props: PropsType) => {
-  const { gameSpeed, start, setCollided, playerIndex, refs } = props;
+const Scene = React.forwardRef((props: PropsType, ref) => {
+  const { gameSpeed, start, setCollided, playerIndex, refs, gameId } = props;
   const { playerX, playerY } = refs;
-  const [ball] = useGame({ racquet: !playerIndex ? playerX : playerY, gameSpeed, start, setCollided, playerIndex });
+  const [ball] = useGame({ racquet: !playerIndex ? playerX : playerY, gameSpeed, start, setCollided, playerIndex, gameId });
 
   return (
     <>

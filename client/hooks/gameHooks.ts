@@ -8,30 +8,68 @@ interface PropsType {
   racquet: any;
   gameSpeed: number;
   start: boolean;
+  gameId: number;
   playerIndex: number;
   setCollided: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
 export const useGame = (props: PropsType) => {
-  const { racquet, gameSpeed, start, setCollided, playerIndex } = props;
+  const { racquet, gameSpeed, start, setCollided, playerIndex, gameId } = props;
   const planeHalfW = planeSize[0] / 2;
   const planeHalfL = planeSize[1] / 2;
   const racquetHalf = racquetSize[0] / 2;
   const ball = useRef<THREE.Mesh>(null!);
   const step = { x: 0, z: gameSpeed };
-  const [pause, setPause] = useState<boolean>(false);
+  const [pause, setPause] = useState<boolean>(true);
   const playerPossition = playerIndex !== -1 ? (playerIndex ? 1 : -1) : 0;
 
   useEffect(() => {
+    Socket.emit("Connection", { gameId });
     Socket.on("ballPosition", (data) => {
+      console.log(data, "<<<<<<<<<done");
+
+      const { ballPosition, currentStep } = data;
       console.log(data);
-      ball.current.position.x = data.x;
-      ball.current.position.y = data.y;
+      ball.current.position.x = ballPosition.x;
+      ball.current.position.z = ballPosition.y;
+      step.x *= currentStep.x;
+      step.z *= currentStep.y;
+      setPause(false);
+    });
+    Socket.on("ProblemConnection", () => {
+      console.log('problem connetion from game hooks');
+      
+      setPause(true);
+    });
+    Socket.on("Connection", () => {
+      console.log('emit ballRacquetPosition done');
+      
+      Socket.emit("ballRacquetPosition", {
+        ballPosition: { x: ball.current.position.x, y: ball.current.position.z },
+        currentStep: { x: step.x < 0 ? -1 : 1, y: step.z < 0 ? -1 : 1 },
+        racquetPosition: { x: racquet.current.position.x, y: racquet.current.position.z },
+        gameId,
+      });
+      setPause(false);
     });
     return () => {
       Socket.off("ballPosition");
+      Socket.off("ProblemConnection");
+      Socket.off("Connection");
     };
   }, []);
+
+  // useEffect(() => {
+  //   if (!pause) {
+  //     console.log("emit done");
+  //     Socket.emit("ballRacquetPosition", {
+  //       ballPosition: { x: ball.current.position.x, y: ball.current.position.z },
+  //       currentStep: { x: step.x < 0 ? -1 : 1, y: step.z < 0 ? -1 : 1 },
+  //       racquetPosition: { x: racquet.current.position.x, y: racquet.current.position.z },
+  //       gameId,
+  //     });
+  //   }
+  // }, [pause]);
 
   useFrame((state) => {
     console.log(pause, start, "<<<<<<<<<<<<<<<<<<<<<<");

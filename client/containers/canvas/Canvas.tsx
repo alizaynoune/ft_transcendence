@@ -65,7 +65,7 @@ const MyCanvas: React.FC<PropsType> = ({ game, IamPlayer, intraId }) => {
     let player = game.players[0].users.intra_id === intraId ? 0 : 1;
     setPlayerIndex(player);
     if (!game.players[player].ready) Socket.emit("playerReady", { gameId: game.id });
-    else if (game.started) Socket.emit("reConnection", { gameId: game.id });
+    // else if (game.started) Socket.emit("reConnection", { gameId: game.id });
     if (game.status !== "PLAYING") return;
     setCount(5);
     setTimer(1000);
@@ -90,22 +90,21 @@ const MyCanvas: React.FC<PropsType> = ({ game, IamPlayer, intraId }) => {
   // }, [collided]);
 
   useEffect(() => {
-    if (!IamPlayer) return;
+    // if (!IamPlayer) return;
     Socket.on("ProblemConnection", () => {
       console.log("problem connection");
       message.warning("problem connection");
-
       setPause(true);
     });
-    Socket.on("ReConnection", () => {
-      console.log("reconnection");
+    Socket.on("Connection", () => {
+      console.log("connection");
       // emit ball possition
       setPause(false);
     });
 
     return () => {
       Socket.off("ProblemConnection");
-      Socket.off("ReConnection");
+      Socket.off("Connection");
     };
   }, []);
 
@@ -115,13 +114,9 @@ const MyCanvas: React.FC<PropsType> = ({ game, IamPlayer, intraId }) => {
     </div>
   ) : (
     <>
-      {count >= 0 && IamPlayer && !game.started && (
-        <div className={style.container}>
-          <span className={style.text}>{count ? count : "GO"}</span>
-        </div>
-      )}
-      {pause && <Text type="danger">{`${game.players[0].users.username} has problem connection`}</Text>}
-      {game.started && game.status === "PLAYING" && (
+      {count >= 0 && IamPlayer && !game.started && <span className={style.text}>{count ? count : "GO"}</span>}
+      {pause && <Text type="danger">{'problem connection'}</Text>}
+      {game.status === "PLAYING" && (
         <Canvas
           className={style.container}
           // frameloop="demand"
@@ -129,7 +124,6 @@ const MyCanvas: React.FC<PropsType> = ({ game, IamPlayer, intraId }) => {
           onKeyDown={IamPlayer ? handleKeyboardEvent : undefined}
           id="canvas"
           tabIndex={0}
-          // camera={{ fov: 75, near: 0.1, far: 1000, position: [0, 5, 20] }}
           camera={{ fov: 75, near: 0.1, far: 1000, position: [0, 5, playerIndex ? 20 : -20] }}
           gl={{ toneMapping: NoToneMapping }}
           onCreated={({ gl }) => {
@@ -142,11 +136,11 @@ const MyCanvas: React.FC<PropsType> = ({ game, IamPlayer, intraId }) => {
           <Suspense fallback={null}>
             <Stars radius={80} depth={40} count={9000} factor={4} saturation={0} fade speed={1} />
             <Scene
-              //@ts-ignore
               refs={{ playerX, playerY }}
+              gameId={game.id}
               gameSpeed={gameSpeed[game.level]}
               playerIndex={playerIndex}
-              start={game.started && !pause}
+              start={game.started}
               setCollided={function (value: SetStateAction<boolean>): void {
                 setCollided(value);
               }}
