@@ -26,9 +26,9 @@ const MyCanvas: React.FC<PropsType> = ({ game, IamPlayer, intraId }) => {
   const [playerX, playerY, moveRaquet] = useRaquets({ playerIndex, game });
 
   const gameSpeed: { [k: string]: number } = {
-    EASY: 0.25,
-    NORMAL: 0.5,
-    DIFFICULT: 1,
+    EASY: 0.252,
+    NORMAL: 0.52,
+    DIFFICULT: 12,
   };
 
   useInterval(() => setCount((count) => count - 1), timer);
