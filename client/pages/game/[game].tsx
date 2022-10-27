@@ -56,18 +56,14 @@ const Games: React.FC = () => {
   };
 
   useEffect(() => {
-    Socket.on("updateGame", (data: React.SetStateAction<GameType | undefined>) => {
+    Socket.on("updateGame", (data) => {
       setGameData(data);
       console.log(data, "game update");
     });
     Socket.on("updateScore", (data: any) => {
-      // console.log(data, "score update");
-      let players = data;
-      // if (players[0].id !== gameData?.players[0].id) players.splice(0, 2, [...data[1], ...data[0]]);
-      console.log(players, 'score update');
-      
+      console.log(data, "score update");
       setGameData((prev) => {
-        if (prev) return { ...prev, players: players };
+        if (prev) return { ...prev, players: data };
       });
     });
     return () => {
