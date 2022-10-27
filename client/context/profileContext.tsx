@@ -21,9 +21,7 @@ type fnsType = (user: UserType) => void;
 export const ProfileContext = React.createContext<ProfileContextType | null>(null);
 
 const ProfileProvider: React.FC<PropsType> = ({ children }) => {
-  const [profile, setProfile] = useState<
-    (ProfileType & UserType & RelationshipType) | null
-  >(null);
+  const [profile, setProfile] = useState<(ProfileType & UserType & RelationshipType) | null>(null);
   const [friendsList, setFriendsList] = useState<UserType[]>([]);
   const [invitesList, setInvitesList] = useState<RequestFriendType[]>([]);
   const [blockedsList, setBlockedsList] = useState<UserType[]>([]);
@@ -83,10 +81,7 @@ const ProfileProvider: React.FC<PropsType> = ({ children }) => {
     setLoading(true);
     return new Promise(async (resolve, reject) => {
       try {
-        const body =
-          action.split("/")[0] === "game"
-            ? { userId: user.intra_id }
-            : { id: user.intra_id.toString() };
+        const body = action.split("/")[0] === "game" ? { userId: user.intra_id } : { id: user.intra_id.toString() };
         console.log(body, action.split("/"), action);
         const res = await axios.post(action, body);
         setLoading(false);
@@ -161,8 +156,7 @@ const ProfileProvider: React.FC<PropsType> = ({ children }) => {
         console.log(res.data);
         if (res.data.constructor !== Array) return resolve([]);
         const data = res.data.map(
-          (i: { users_blocked_blockedidTousers: UserType }) =>
-            i.users_blocked_blockedidTousers
+          (i: { users_blocked_blockedidTousers: UserType }) => i.users_blocked_blockedidTousers
         );
         setBlockedsList(data);
         setLoading(false);
@@ -180,14 +174,11 @@ const ProfileProvider: React.FC<PropsType> = ({ children }) => {
     return new Promise(async (resolve, reject) => {
       try {
         const res = await axios.get("game/history");
-        const data = res.data.map((d: { game: GameType }) => {
-          if (d.game.players[0].users.intra_id !== intra_id) {
-            [d.game.players[1], d.game.players[0]] = [
-              d.game.players[0],
-              d.game.players[1],
-            ];
+        const data = res.data.map((game: GameType) => {
+          if (game.players[0].users.intra_id !== intra_id) {
+            [game.players[1], game.players[0]] = [game.players[0], game.players[1]];
           }
-          return d.game;
+          return game;
         });
         setLoading(false);
         setLastMatches(data);
