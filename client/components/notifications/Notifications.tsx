@@ -1,6 +1,6 @@
 import style from "./notifications.module.css";
 import moment from "moment";
-import { Dropdown, Menu, Space, Typography, Avatar, Badge, Modal, message } from "antd";
+import { Dropdown, Menu, Space, Typography, Avatar, Badge, Modal, message, notification } from "antd";
 import Icon, { BellFilled } from "@ant-design/icons";
 import type { MenuProps } from "antd";
 import { useAppSelector, useAppDispatch } from "@/hooks/reduxHooks";
@@ -22,8 +22,7 @@ function getItem(label: React.ReactNode, disabled: Boolean, key?: React.Key | nu
 }
 const { Text } = Typography;
 const Notifications: React.FC = () => {
-  const [notificationsList, setNotificationsList] = useState<NotificationType[]>([]);
-  const { notifications } = useAppSelector(selectAuth);
+  const notificationsList = useAppSelector(selectAuth).notifications;
   const router = useRouter();
   const dispatch = useAppDispatch();
 
@@ -35,21 +34,6 @@ const Notifications: React.FC = () => {
       error instanceof Error && message.error(error.message);
     }
   };
-
-  useEffect(() => {
-    getNotifications();
-    socket.on("error_notification", (error) => {
-      message.error(error.message);
-    });
-    socket.on("newNotification", (data: NotificationType) => {
-      message.info(`${data.users_notification_fromidTousers.username} ${data.content}`, 4);
-      dispatch(pushNotification(data));
-    });
-    return () => {
-      socket.off("error_notification");
-      socket.off("newNotification");
-    };
-  }, []);
 
   const handelGameRequest = (request: NotificationType) => {
     console.log(request);
@@ -83,9 +67,42 @@ const Notifications: React.FC = () => {
     });
   };
 
+  const openNotification = (notif: NotificationType) => {
+    if (notif.type === "FRIEND_REQUEST") {
+      socket.emit("readNotification", { id: notif.id });
+      dispatch(readNotification(notif.id));
+      router.push(`/profile/${notif.users_notification_fromidTousers.username}`);
+    } else if (notif.type === "GAME_INVITE") handelGameRequest(notif);
+    else if (notif.type === "GAME_ACCEPTE") {
+      socket.emit("readNotification", { id: notif.id });
+      dispatch(readNotification(notif.id));
+      router.push(`/game/${notif.targetid}`);
+    }
+  };
+
   useEffect(() => {
-    setNotificationsList(notifications);
-  }, [notifications]);
+    getNotifications();
+    socket.on("error_notification", (error) => {
+      message.error(error.message);
+    });
+    socket.on("newNotification", (data: NotificationType) => {
+      dispatch(pushNotification(data));
+      notification.open({
+        key: data.id.toString(),
+        message: data.type,
+        description: `${data.users_notification_fromidTousers.username} ${data.content}`,
+        onClick: () => {
+          openNotification(data);
+          notification.close(data.id.toString());
+        },
+      });
+    });
+    return () => {
+      socket.off("error_notification");
+      socket.off("newNotification");
+    };
+  }, []);
+
   const items: MenuItem[] = notificationsList?.map((i) =>
     getItem(
       <Space>
@@ -116,24 +133,15 @@ const Notifications: React.FC = () => {
       className={style.notifList}
       items={items}
       onClick={(e) => {
-        const n = notifications.find((n) => n.id === Number(e.key));
-        if (n && n.type === "FRIEND_REQUEST") {
-          socket.emit("readNotification", { id: n.id });
-          dispatch(readNotification(n.id));
-          router.push(`/profile/${n.users_notification_fromidTousers.username}`);
-        } else if (n && n.type === "GAME_INVITE") handelGameRequest(n);
-        else if (n && n.type === "GAME_ACCEPTE") {
-          socket.emit("readNotification", { id: n.id });
-          dispatch(readNotification(n.id));
-          router.push(`/game/${n.targetid}`);
-        }
+        const n = notificationsList.find((n) => n.id === Number(e.key));
+        if (n) openNotification(n);
       }}
     />
   );
 
   return (
-    <Dropdown overlay={menu} trigger={["click"]} disabled={notifications.length ? false : true}>
-      <Badge count={notifications.filter((n) => !n.read).length}>
+    <Dropdown overlay={menu} trigger={["click"]} disabled={notificationsList.length ? false : true}>
+      <Badge count={notificationsList.filter((n) => !n.read).length}>
         <BellFilled
           style={{
             fontSize: "180%",
