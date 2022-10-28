@@ -1,29 +1,28 @@
 import style from "./scene.module.css";
-import { useEffect, useRef, useState } from "react";
 import { Box, Ball, Wall } from "@/components/r3jObjects/R3jObjects";
 import React from "react";
 import { useGame } from "@/hooks/gameHooks";
 import { planeSize, racquetSize } from "@/tools/globalVariable";
-import Socket from "@/config/socket";
+import { Mesh, BufferGeometry, Material } from "three";
 
 interface PropsType {
   gameSpeed: number;
   start: boolean;
   playerIndex: number;
   gameId: number;
-  setCollided: React.Dispatch<React.SetStateAction<boolean>>;
+  // setCollided: React.Dispatch<React.SetStateAction<boolean>>;
   refs: refType;
 }
 
 interface refType {
-  playerX: React.Ref<THREE.Mesh>;
-  playerY: React.Ref<THREE.Mesh>;
+  playerX: React.MutableRefObject<Mesh<BufferGeometry, Material | Material[]>>;
+  playerY: React.MutableRefObject<Mesh<BufferGeometry, Material | Material[]>>;
 }
 
 const Scene = React.forwardRef((props: PropsType, ref) => {
-  const { gameSpeed, start, setCollided, playerIndex, refs, gameId } = props;
+  const { gameSpeed, start, playerIndex, refs, gameId } = props;
   const { playerX, playerY } = refs;
-  const [ball] = useGame({ racquet: !playerIndex ? playerX : playerY, gameSpeed, start, setCollided, playerIndex, gameId });
+  const [ball] = useGame({ racquet: !playerIndex ? playerX : playerY, gameSpeed, start, playerIndex, gameId });
 
   return (
     <>

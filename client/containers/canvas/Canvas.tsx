@@ -81,30 +81,13 @@ const MyCanvas: React.FC<PropsType> = ({ game, IamPlayer, intraId }) => {
     }
   }, [game.started]);
 
-  // useEffect(() => {
-  //   if (!collided) return;
-  //   setStart(false);
-  //   setCount(0);
-  //   setCollided(false);
-  //   setTimer(1000);
-  // }, [collided]);
-
   useEffect(() => {
-    // if (!IamPlayer) return;
-    Socket.on("ProblemConnection", () => {
-      console.log("problem connection");
-      message.warning("problem connection");
-      setPause(true);
-    });
-    Socket.on("Connection", () => {
-      console.log("connection");
-      // emit ball possition
+    Socket.on("playeGame", () => {
       setPause(false);
     });
 
     return () => {
-      Socket.off("ProblemConnection");
-      Socket.off("Connection");
+      Socket.off("playeGame");
     };
   }, []);
 
@@ -115,7 +98,7 @@ const MyCanvas: React.FC<PropsType> = ({ game, IamPlayer, intraId }) => {
   ) : (
     <>
       {count >= 0 && IamPlayer && !game.started && <span className={style.text}>{count ? count : "GO"}</span>}
-      {pause && <Text type="danger">{'problem connection'}</Text>}
+      {pause && <Text type="danger">{"problem connection"}</Text>}
       {game.status === "PLAYING" && (
         <Canvas
           className={style.container}
@@ -141,9 +124,6 @@ const MyCanvas: React.FC<PropsType> = ({ game, IamPlayer, intraId }) => {
               gameSpeed={gameSpeed[game.level]}
               playerIndex={playerIndex}
               start={game.started}
-              setCollided={function (value: SetStateAction<boolean>): void {
-                setCollided(value);
-              }}
             />
           </Suspense>
         </Canvas>
