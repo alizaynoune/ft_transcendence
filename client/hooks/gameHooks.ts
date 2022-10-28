@@ -1,8 +1,9 @@
 import { invalidate, useFrame } from "@react-three/fiber";
-import React, { Ref, RefObject, useEffect, useRef } from "react";
+import React, { Ref, RefObject, useEffect, useRef, useState } from "react";
 import { planeSize } from "@/tools/globalVariable";
 import Socket from "@/config/socket";
 import { Mesh, BufferGeometry, Material } from "three";
+import { useInterval } from "./useInterval";
 
 interface PropsType {
   racquet: React.MutableRefObject<Mesh<BufferGeometry, Material | Material[]>>;
@@ -10,7 +11,6 @@ interface PropsType {
   start: boolean;
   gameId: number;
   playerIndex: number;
-  // setCollided: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
 export const useGame = (props: PropsType) => {
@@ -25,8 +25,6 @@ export const useGame = (props: PropsType) => {
   useEffect(() => {
     Socket.emit("playeGame", { gameId });
     Socket.on("ballPosition", (data: { ballPosition: any; currentStep: any }) => {
-      // console.log(data, "<<<<<<<<<done");
-
       const { ballPosition, currentStep } = data;
       ball.current.position.x = ballPosition.x;
       ball.current.position.z = ballPosition.y;

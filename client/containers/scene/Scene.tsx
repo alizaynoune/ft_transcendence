@@ -4,13 +4,13 @@ import React from "react";
 import { useGame } from "@/hooks/gameHooks";
 import { planeSize, racquetSize } from "@/tools/globalVariable";
 import { Mesh, BufferGeometry, Material } from "three";
+import { invalidate, useFrame } from "@react-three/fiber";
 
 interface PropsType {
   gameSpeed: number;
   start: boolean;
   playerIndex: number;
   gameId: number;
-  // setCollided: React.Dispatch<React.SetStateAction<boolean>>;
   refs: refType;
 }
 

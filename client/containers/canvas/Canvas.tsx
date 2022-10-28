@@ -7,7 +7,7 @@ import Scene from "@/containers/scene/Scene";
 import { useInterval } from "@/hooks/useInterval";
 import { GameType } from "@/types/types";
 import Socket from "@/config/socket";
-import { message, Typography } from "antd";
+import { Typography } from "antd";
 import { useRaquets } from "@/hooks/racquetHooks";
 
 interface PropsType {
@@ -20,9 +20,7 @@ const MyCanvas: React.FC<PropsType> = ({ game, IamPlayer, intraId }) => {
   const canvasRef = useRef<HTMLCanvasElement>(null!);
   const [count, setCount] = useState<number>(-1);
   const [timer, setTimer] = useState(0);
-  const [collided, setCollided] = useState<boolean>(false);
   const [playerIndex, setPlayerIndex] = useState<number>(-1);
-  const [pause, setPause] = useState<boolean>(false);
   const [playerX, playerY, moveRaquet] = useRaquets({ playerIndex, game });
 
   const gameSpeed: { [k: string]: number } = {
@@ -40,7 +38,7 @@ const MyCanvas: React.FC<PropsType> = ({ game, IamPlayer, intraId }) => {
   }, [count]);
 
   const handleKeyboardEvent = (e: KeyboardEvent<HTMLImageElement>) => {
-    if (game.status !== "PLAYING" || !IamPlayer || pause) return;
+    if (game.status !== "PLAYING" || !IamPlayer) return;
     const { code } = e;
     let action: "RIGHT" | "LEFT" | "" = "";
     switch (code) {
@@ -61,18 +59,16 @@ const MyCanvas: React.FC<PropsType> = ({ game, IamPlayer, intraId }) => {
   };
 
   useEffect(() => {
-    if (!IamPlayer) return;
+    if (!IamPlayer || game.status === "END") return;
     let player = game.players[0].users.intra_id === intraId ? 0 : 1;
     setPlayerIndex(player);
-    if (!game.players[player].ready) Socket.emit("playerReady", { gameId: game.id });
-    // else if (game.started) Socket.emit("reConnection", { gameId: game.id });
+    Socket.emit("playerReady", { gameId: game.id });
     if (game.status !== "PLAYING") return;
     setCount(5);
     setTimer(1000);
   }, [game.status]);
 
   useEffect(() => {
-    console.log(IamPlayer, ",,,,,,,,,,,,,");
     if (!IamPlayer) return;
     if (game.started && game.status === "PLAYING") {
       setTimer(0);
@@ -81,16 +77,6 @@ const MyCanvas: React.FC<PropsType> = ({ game, IamPlayer, intraId }) => {
     }
   }, [game.started]);
 
-  useEffect(() => {
-    Socket.on("playeGame", () => {
-      setPause(false);
-    });
-
-    return () => {
-      Socket.off("playeGame");
-    };
-  }, []);
-
   return game.status !== "PLAYING" ? (
     <div className={style.container}>
       <span className={style.text}>{game.status}</span>
@@ -98,7 +84,6 @@ const MyCanvas: React.FC<PropsType> = ({ game, IamPlayer, intraId }) => {
   ) : (
     <>
       {count >= 0 && IamPlayer && !game.started && <span className={style.text}>{count ? count : "GO"}</span>}
-      {pause && <Text type="danger">{"problem connection"}</Text>}
       {game.status === "PLAYING" && (
         <Canvas
           className={style.container}
