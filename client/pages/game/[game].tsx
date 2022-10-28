@@ -76,14 +76,22 @@ const Games: React.FC = () => {
   }, [isReady, query.game]);
 
   useEffect(() => {
-    if (
-      gameData &&
-      intra_id !== gameData.players[1].users.intra_id &&
-      intra_id !== gameData.players[0].users.intra_id
-    ) {
+    if (gameData && !IamPlayer) {
       Socket.emit("joinWatcher", { gameId: gameData.id });
+      return () => {
+        Socket.emit("leaveWatcher", { gameId: gameData.id });
+      };
     }
   }, [gameData]);
+
+  useEffect(() => {
+    Socket.on("countWatchers", (data) => {
+      setWatchers(data.total);
+    });
+    return () => {
+      Socket.off("countWatchers");
+    };
+  }, []);
 
   // useEffect(() => {
   //   console.log(query.game);

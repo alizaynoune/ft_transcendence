@@ -15,7 +15,6 @@ interface PropsType {
   IamPlayer: boolean;
   intraId: number;
 }
-const { Text } = Typography;
 const MyCanvas: React.FC<PropsType> = ({ game, IamPlayer, intraId }) => {
   const canvasRef = useRef<HTMLCanvasElement>(null!);
   const [count, setCount] = useState<number>(-1);
@@ -38,7 +37,7 @@ const MyCanvas: React.FC<PropsType> = ({ game, IamPlayer, intraId }) => {
   }, [count]);
 
   const handleKeyboardEvent = (e: KeyboardEvent<HTMLImageElement>) => {
-    if (game.status !== "PLAYING" || !IamPlayer) return;
+    if (!IamPlayer || game.status !== "PLAYING") return;
     const { code } = e;
     let action: "RIGHT" | "LEFT" | "" = "";
     switch (code) {
@@ -69,12 +68,10 @@ const MyCanvas: React.FC<PropsType> = ({ game, IamPlayer, intraId }) => {
   }, [game.status]);
 
   useEffect(() => {
-    if (!IamPlayer) return;
-    if (game.started && game.status === "PLAYING") {
-      setTimer(0);
-      canvasRef.current.focus();
-      document.getElementById("canvas")?.focus();
-    }
+    if (!IamPlayer || !game.started || game.status !== "PLAYING") return;
+    setTimer(0);
+    canvasRef.current.focus();
+    document.getElementById("canvas")?.focus();
   }, [game.started]);
 
   return game.status !== "PLAYING" ? (

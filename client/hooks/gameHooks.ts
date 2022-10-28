@@ -23,7 +23,7 @@ export const useGame = (props: PropsType) => {
   const playerPosition = playerIndex !== -1 ? (playerIndex ? 1 : -1) : 0;
 
   useEffect(() => {
-    Socket.emit("playeGame", { gameId });
+    Socket.emit("streamGame", { gameId });
     Socket.on("ballPosition", (data: { ballPosition: any; currentStep: any }) => {
       const { ballPosition, currentStep } = data;
       ball.current.position.x = ballPosition.x;
@@ -32,7 +32,7 @@ export const useGame = (props: PropsType) => {
       step.current.z *= currentStep.y;
       pause.current = false;
     });
-    Socket.on("playeGame", () => {
+    Socket.on("streamGame", () => {
       Socket.emit("ballRacquetPosition", {
         ballPosition: { x: ball.current.position.x, y: ball.current.position.z },
         currentStep: { x: step.current.x < 0 ? -1 : 1, y: step.current.z < 0 ? -1 : 1 },
@@ -43,7 +43,7 @@ export const useGame = (props: PropsType) => {
     });
     return () => {
       Socket.off("ballPosition");
-      Socket.off("playeGame");
+      Socket.off("streamGame");
     };
   }, []);
 
