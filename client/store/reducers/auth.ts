@@ -23,6 +23,8 @@ const initialState: AuthSliceType = {
   email: "",
   notifications: [],
   intra_id: 0,
+  created_at: null,
+  updated_at: null,
 };
 
 export const AuthSlice = createSlice({
@@ -70,13 +72,15 @@ export const AuthSlice = createSlice({
         state.isAuth = true;
         Object.assign(
           state,
-          (({ username, img_url, email, intra_id, first_name, last_name }) => ({
+          (({ username, img_url, email, intra_id, first_name, last_name, created_at, updated_at }) => ({
             username,
             img_url,
             email,
             intra_id,
             first_name,
             last_name,
+            created_at,
+            updated_at,
           }))(payload)
         );
       });

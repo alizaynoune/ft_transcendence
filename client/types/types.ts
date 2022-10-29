@@ -15,6 +15,8 @@ export interface AuthType {
   img_url: string;
   email: string;
   intra_id: number;
+  updated_at: Date | null;
+  created_at: Date | null;
   notifications: NotificationType[];
 }
 
@@ -61,7 +63,12 @@ export interface UserType {
   created_at: string;
   updated_at: string;
 }
-export type updateProfileType = (update: { email: string; first_name: string; last_name: string; username: string }) => Promise<unknown>;
+export type updateProfileType = (update: {
+  email: string;
+  first_name: string;
+  last_name: string;
+  username: string;
+}) => Promise<unknown>;
 export interface ProfileContextType {
   loading: boolean;
   friendsList: UserType[];

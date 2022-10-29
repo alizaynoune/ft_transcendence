@@ -3,7 +3,7 @@ import React, { useState, SetStateAction, useEffect } from "react";
 import { useRouter } from "next/router";
 import Image from "next/image";
 import { ReactNode } from "react";
-import { Layout, Typography, Affix, message } from "antd";
+import { Layout, Typography, Affix, message, Modal, Steps, Button } from "antd";
 import Link from "next/link";
 import SiderLayout from "@/components/sider/Sider";
 import Header from "@/components/header/Header";
@@ -18,14 +18,23 @@ const { Footer, Content } = Layout;
 interface Props {
   children: ReactNode;
 }
+interface updateType {
+  username: string;
+  img_url: string;
+}
+
+const { Step } = Steps;
 
 const MasterLayout: React.FC<Props> = (props) => {
   const [collapsed, setCollapsed] = useState<boolean>(true);
   const { children } = props;
   const router = useRouter();
   const dispatch = useAppDispatch();
-  const { isAuth, access_token } = useAppSelector(selectAuth);
+  const { isAuth, access_token, updated_at, created_at, username, img_url } = useAppSelector(selectAuth);
   const { Loading } = useAppSelector(selectLoading);
+  const [currentStep, setCurrentStep] = useState(0);
+  const [openModal, setOpenModal] = useState(false);
+  const [updateData, setUpdateData] = useState<updateType>();
 
   const login = async () => {
     try {
@@ -35,13 +44,81 @@ const MasterLayout: React.FC<Props> = (props) => {
     }
   };
 
+  const steps = [
+    {
+      title: "First",
+      content: "First-content",
+    },
+    {
+      title: "Second",
+      content: "Second-content",
+    },
+    {
+      title: "Last",
+      content: "Last-content",
+    },
+  ];
+
+  const modal = () => {
+    return (
+      <Modal
+        open={openModal}
+        title={
+          <Steps current={currentStep}>
+            {steps.map((item) => (
+              <Step key={item.title} />
+            ))}
+          </Steps>
+        }
+        footer={
+          <Button
+            type="primary"
+            onClick={() => {
+              currentStep < steps.length - 1 ? setCurrentStep((prev) => prev + 1) : setOpenModal(false);
+            }}
+          >
+            {currentStep < steps.length - 1 ? "Next" : "finish"}
+          </Button>
+        }
+        width={"90%"}
+        closable={false}
+      >
+        {steps[currentStep].content}
+      </Modal>
+    );
+  };
+
   useEffect(() => {
     if (isAuth) {
+      if (updated_at && updated_at === created_at) {
+        setOpenModal(true);
+        //   Modal.info({
+        //     title: (
+        //       <>
+
+        //         {currentStep < steps.length - 1 && (
+        //           <Button type="primary" onClick={() => setCurrentStep((prev) => prev + 1)}>
+        //             {"next"}
+        //           </Button>
+        //         )}
+        //       </>
+        //     ),
+        //     content: steps[currentStep].content,
+        //     width: "100%",
+        //     okText: "finish",
+        //     onOk() {},
+        //   });
+      }
       socket.connect();
       socket.on("error", (error) => {
         message.error(`Socket ${error.message}`);
       });
+      socket.on("connect_error", (error) => {
+        message.error(error?.message);
+      });
+
       return () => {
+        socket.off("connect_error");
         socket.off("error");
       };
     }
@@ -54,6 +131,7 @@ const MasterLayout: React.FC<Props> = (props) => {
   return (
     <Layout className={style.layout}>
       {Loading && <Spin />}
+      {modal()}
       <Affix>
         <Header
           collapsed={collapsed}

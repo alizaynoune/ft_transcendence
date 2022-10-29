@@ -20,7 +20,6 @@ const ModalInviteGame: React.FC<PropsType> = (props) => {
       <>
         <Text strong>{"Please select game level"}</Text>
         <Select
-          // className={style.selectLevel}
           showSearch={false}
           placeholder="Select level of game"
           onChange={(value) => {
