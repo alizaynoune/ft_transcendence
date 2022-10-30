@@ -110,7 +110,7 @@ const Notifications: React.FC = () => {
           <Text strong>{i.users_notification_fromidTousers.username}</Text>
           <Text type="secondary">{i.content}</Text>
         </Space>
-        <Text type="secondary">{moment(i.createdat).fromNow()}</Text>
+        <Text type="secondary">{moment(i.created_at).fromNow()}</Text>
       </Space>,
       i.read,
       i.id,

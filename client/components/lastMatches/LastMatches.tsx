@@ -67,10 +67,10 @@ const LastMatches: React.FC = () => {
     },
     {
       title: "Date",
-      dataIndex: "updatedat",
+      dataIndex: "updated_at",
       key: "Date",
       responsive: ["md", "lg", "xl", "xxl"],
-      render: (updatedat) => <span>{moment(updatedat).fromNow()}</span>,
+      render: (updated_at) => <span>{moment(updated_at).fromNow()}</span>,
     },
     {
       title: "Duration",
@@ -79,7 +79,7 @@ const LastMatches: React.FC = () => {
       responsive: ["lg", "xl", "xxl"],
       render: (_, game) => (
         <span>
-          {moment(moment(game.updatedat).diff(game.createdat)).format("mm[min]:ss[ss]")}
+          {moment(moment(game.updated_at).diff(game.created_at)).format("mm[min]:ss[ss]")}
         </span>
       ),
     },

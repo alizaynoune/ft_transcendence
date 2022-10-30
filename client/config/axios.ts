@@ -9,8 +9,8 @@ axios.interceptors.request.use(
       config.baseURL = baseURL;
       config.headers = {
         Authorization: `Bearer ${access_token}`,
-        Accept: "application/json",
-        "Content-Type": "application/json",
+        Accept: "application/json, text/plain, */*",
+        "Content-Type": "multipart/form-data",
       };
       return config;
     } catch (error) {

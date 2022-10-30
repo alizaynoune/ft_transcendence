@@ -3,7 +3,6 @@ import { Form, Input, Button, Col, Row, DatePicker, Select } from "antd";
 import Icon from "@ant-design/icons";
 import axios from "@/config/axios";
 import { useAppDispatch, useAppSelector } from "@/hooks/reduxHooks";
-import { selectLoading, changeLoading } from "@/reducers/globalLoading";
 import _ from "lodash";
 // Icons
 import { UserIcon, EmailIcon, PhoneIcon, LocationIcon, CalenderEditIcon } from "@/icons/index";
@@ -12,18 +11,8 @@ import { UserType, ProfileContextType } from "@/types/types";
 import { ProfileContext } from "context/profileContext";
 
 const { Option } = Select;
-interface PropsType {
-  profile: UserType;
-}
 const AccountSetting: React.FC = () => {
   const { profile, updateProfile } = useContext(ProfileContext) as ProfileContextType;
-  const [data, setData] = useState<{
-    email: string;
-    first_name: string;
-    last_name: string;
-    username: string;
-  }>();
-  const dispatch = useAppDispatch();
   const [form] = Form.useForm();
   useEffect(() => {
     form.setFieldsValue({
@@ -49,31 +38,13 @@ const AccountSetting: React.FC = () => {
     if (Object.keys(diff).length) {
       console.log(diff);
       try {
-        const d = await updateProfile(diff as { email: string; first_name: string; last_name: string; username: string } )
+        const d = await updateProfile(
+          diff as { email: string; first_name: string; last_name: string; username: string }
+        );
         console.log(d);
-        
       } catch (error) {
         console.log(error);
-        
       }
-
-      // dispatch(changeLoading(true));
-      // try {
-      //     const res = await axios.put("users/update", {...diff});
-      //     console.log(res.data, '<<<<<<<<<<<<');
-      //     setData(
-      //         (({ email, first_name, last_name, username }) => ({
-      //             email,
-      //             first_name,
-      //             last_name,
-      //             username
-      //         }))(res.data)
-      //     );
-      //     dispatch(changeLoading(false));
-      // } catch (error) {
-      //     dispatch(changeLoading(false));
-      //     console.log(error);
-      // }
     }
   };
 
@@ -126,7 +97,9 @@ const AccountSetting: React.FC = () => {
             optionFilterProp="children"
             // onChange={onChange}
             // onSearch={onSearch}
-            filterOption={(input, option) => (option!.children as unknown as string).toLowerCase().includes(input.toLowerCase())}
+            filterOption={(input, option) =>
+              (option!.children as unknown as string).toLowerCase().includes(input.toLowerCase())
+            }
           >
             <Option value="Male">Male</Option>
             <Option value="Female">Female</Option>

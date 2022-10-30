@@ -3,7 +3,7 @@ import React, { useState, SetStateAction, useEffect } from "react";
 import { useRouter } from "next/router";
 import Image from "next/image";
 import { ReactNode } from "react";
-import { Layout, Typography, Affix, message, Modal, Steps, Button } from "antd";
+import { Layout, Typography, Affix, message, Modal, Button, Input, Upload, UploadProps, Form } from "antd";
 import Link from "next/link";
 import SiderLayout from "@/components/sider/Sider";
 import Header from "@/components/header/Header";
@@ -13,6 +13,9 @@ import { selectAuth } from "@/store/reducers/auth";
 import { selectLoading } from "@/store/reducers/globalLoading";
 import Spin from "@/components/spin/Spin";
 import socket from "@/config/socket";
+import { RcFile, UploadChangeParam, UploadFile } from "antd/lib/upload";
+import { LoadingOutlined, PlusOutlined } from "@ant-design/icons";
+import axios from "@/config/axios";
 
 const { Footer, Content } = Layout;
 interface Props {
@@ -23,7 +26,11 @@ interface updateType {
   img_url: string;
 }
 
-const { Step } = Steps;
+const getBase64 = (img: RcFile, callback: (url: string) => void) => {
+  const reader = new FileReader();
+  reader.addEventListener("load", () => callback(reader.result as string));
+  reader.readAsDataURL(img);
+};
 
 const MasterLayout: React.FC<Props> = (props) => {
   const [collapsed, setCollapsed] = useState<boolean>(true);
@@ -32,9 +39,10 @@ const MasterLayout: React.FC<Props> = (props) => {
   const dispatch = useAppDispatch();
   const { isAuth, access_token, updated_at, created_at, username, img_url } = useAppSelector(selectAuth);
   const { Loading } = useAppSelector(selectLoading);
-  const [currentStep, setCurrentStep] = useState(0);
   const [openModal, setOpenModal] = useState(false);
-  const [updateData, setUpdateData] = useState<updateType>();
+  const [updatedData, setupdatedData] = useState<updateType>({ username: "", img_url: "" });
+  const [loadingImg, setLoadingImg] = useState(false);
+  const [form] = Form.useForm();
 
   const login = async () => {
     try {
@@ -44,71 +52,100 @@ const MasterLayout: React.FC<Props> = (props) => {
     }
   };
 
-  const steps = [
-    {
-      title: "First",
-      content: "First-content",
-    },
-    {
-      title: "Second",
-      content: "Second-content",
-    },
-    {
-      title: "Last",
-      content: "Last-content",
-    },
-  ];
+  const handleChange: UploadProps["onChange"] = (info: UploadChangeParam<UploadFile>) => {
+    console.log(info);
+
+    if (info.file.status === "uploading") {
+      setLoadingImg(true);
+      return;
+    }
+    if (info.file.status === "done") {
+      // Get this url from response in real world.
+      getBase64(info.file.originFileObj as RcFile, (url: string) => {
+        // setLoading(false);
+        console.log(info.file.originFileObj, '<<<<<<<<<<<info');
+        
+        setLoadingImg(false);
+        setupdatedData((prev) => {
+          return { ...prev, img_url: url };
+        });
+      });
+    }
+  };
+
+  const onFinish = async (values: any) => {
+    console.log(values);
+    try {
+      const res = await axios.put("/users/update", values);
+      // dispatch new data
+      console.log(res);
+    } catch (error) {
+      error instanceof Error && message.error(error.message);
+    }
+    setOpenModal(false);
+  };
+
+  const uploadAvatar: (file: RcFile) => Promise<unknown> = (file) => {
+    return new Promise((reject, resolv) => {
+      return reject("test");
+    });
+  };
 
   const modal = () => {
     return (
-      <Modal
-        open={openModal}
-        title={
-          <Steps current={currentStep}>
-            {steps.map((item) => (
-              <Step key={item.title} />
-            ))}
-          </Steps>
-        }
-        footer={
-          <Button
-            type="primary"
-            onClick={() => {
-              currentStep < steps.length - 1 ? setCurrentStep((prev) => prev + 1) : setOpenModal(false);
-            }}
-          >
-            {currentStep < steps.length - 1 ? "Next" : "finish"}
-          </Button>
-        }
-        width={"90%"}
-        closable={false}
-      >
-        {steps[currentStep].content}
+      <Modal open={openModal} title={"please update your data"} footer={null} closable={false}>
+        <Form form={form} onFinish={onFinish}>
+          <Form.Item name="username" rules={[{ required: true, message: "Please input your username!" }]}>
+            <Input placeholder="username" size="large" />
+          </Form.Item>
+          <Form.Item valuePropName="fileList">
+            <Upload
+              name="avatar"
+              listType="picture-card"
+              accept="image/*"
+              showUploadList={false}
+              onChange={handleChange}
+
+              action={async (file) => {
+                console.log(file, '<<<<<file');
+                
+                try {
+                  const res = await axios.post('/users/updateAvatar', {...file})
+                  return Promise.resolve('')
+                } catch (error) {
+                  return Promise.reject(error)
+                }
+              }}
+            >
+              {updatedData.img_url ? (
+                <img src={updatedData.img_url} alt="avatar" style={{ width: "100%" }} />
+              ) : (
+                <div>
+                  {loadingImg ? <LoadingOutlined /> : <PlusOutlined />}
+                  <div style={{ marginTop: 8 }}>{"Upload"}</div>
+                </div>
+              )}
+            </Upload>
+          </Form.Item>
+          <Form.Item>
+            <Button type="primary" htmlType="submit">
+              {"Submit"}
+            </Button>
+          </Form.Item>
+        </Form>
       </Modal>
     );
   };
 
   useEffect(() => {
     if (isAuth) {
-      if (updated_at && updated_at === created_at) {
-        setOpenModal(true);
-        //   Modal.info({
-        //     title: (
-        //       <>
-
-        //         {currentStep < steps.length - 1 && (
-        //           <Button type="primary" onClick={() => setCurrentStep((prev) => prev + 1)}>
-        //             {"next"}
-        //           </Button>
-        //         )}
-        //       </>
-        //     ),
-        //     content: steps[currentStep].content,
-        //     width: "100%",
-        //     okText: "finish",
-        //     onOk() {},
-        //   });
-      }
+      // if (updated_at && updated_at === created_at) {
+      setupdatedData({ username, img_url });
+      form.setFieldsValue({
+        username,
+      });
+      setOpenModal(true);
+      // }
       socket.connect();
       socket.on("error", (error) => {
         message.error(`Socket ${error.message}`);

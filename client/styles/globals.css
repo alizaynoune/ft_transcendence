@@ -47,6 +47,7 @@ a {
 }
 
 .ant-dropdown-menu-item-disabled {opacity: 0.5;}
+.ant-upload.ant-upload-select-picture-card{width: 200px !important; height: 200px !important;}
 
 /* #components-form-demo-normal-login .login-form-button {
   width: 100%;

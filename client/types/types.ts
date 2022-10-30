@@ -25,8 +25,8 @@ export interface GameType {
   status: "WAITING" | "PLAYING" | "END";
   level: "EASY" | "NORMAL" | "DIFFICULT";
   started: boolean;
-  createdat: Date;
-  updatedat: Date;
+  created_at: Date;
+  updated_at: Date;
   players: {
     id: number;
     gameid: number;
@@ -44,8 +44,8 @@ export interface NotificationType {
   targetid: number;
   content: string;
   read: boolean;
-  createdat: Date;
-  updatedat: Date;
+  created_at: Date;
+  updated_at: Date;
   users_notification_fromidTousers: UserType;
 }
 
