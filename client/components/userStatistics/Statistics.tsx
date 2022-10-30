@@ -1,10 +1,22 @@
 import style from "./statistics.module.css";
 import Image from "next/image";
 import axios from "@/config/axios";
-import { Progress, Avatar, Badge, Typography, Upload, Button, Space, Tooltip, message } from "antd";
+import {
+  Progress,
+  Avatar,
+  Badge,
+  Typography,
+  Upload,
+  Button,
+  Space,
+  Tooltip,
+  message,
+  UploadProps,
+  UploadFile,
+} from "antd";
 import Icon, { EditOutlined, CloseOutlined, CheckOutlined } from "@ant-design/icons";
-import { useAppSelector } from "@/hooks/reduxHooks";
-import { selectAuth } from "@/store/reducers/auth";
+import { useAppSelector, useAppDispatch } from "@/hooks/reduxHooks";
+import { selectAuth, updateInfo } from "@/store/reducers/auth";
 import { ComponentType, SVGProps, useRef, useContext, useState, useEffect } from "react";
 import { ProfileType, RelationshipType, UserType, FriendActions, ProfileContextType } from "@/types/types";
 import { ProfileContext } from "context/profileContext";
@@ -24,6 +36,7 @@ import {
   WildfireIcon,
   WinnerIcon,
 } from "@/icons/index";
+import { UploadChangeParam, RcFile } from "antd/lib/upload";
 
 const achievementsIcons: {
   [key: string]: ComponentType<SVGProps<SVGSVGElement>>;
@@ -67,6 +80,8 @@ const Statistics: React.FC<Props> = ({ data, refresh }) => {
   const progress = ((level - Math.floor(level)) / 1) * 100;
   const WinRatio = Number(((matches.winner / matches.total) * 100).toFixed(2)) || 0;
   const lazyRoot = useRef(null);
+  const [avatar, setAvatar] = useState<string>(data.img_url);
+  const dispatch = useAppDispatch();
 
   const actionIndex = data.relationship
     ? data.relationship.isFriend
@@ -87,6 +102,18 @@ const Statistics: React.FC<Props> = ({ data, refresh }) => {
     });
   };
 
+  const handleChange: UploadProps["onChange"] = async (info: UploadChangeParam<UploadFile>) => {
+    if (info.file.status === "uploading") return;
+    try {
+      const res = (await axios.put("/users/update", { avatar: info.file.originFileObj })) as { data: UserType };
+      dispatch(updateInfo(res.data));
+      setAvatar(res.data.img_url);
+      message.success("success update");
+    } catch (error) {
+      error instanceof Error && message.error(error.message);
+    }
+  };
+
   useEffect(() => {
     setMatches({
       total: lastMatches.length,
@@ -100,8 +127,7 @@ const Statistics: React.FC<Props> = ({ data, refresh }) => {
         <Image
           className={style.progressImage}
           lazyRoot={lazyRoot}
-          loader={() => `${process.env.API_URL}${data.img_url}` || "/images/defaultProfileAvatar.jpg"}
-          src="/images/defaultProfileAvatar.jpg"
+          src={avatar || "/images/defaultProfileAvatar.jpg"}
           objectFit="cover"
           layout="fill"
           priority
@@ -117,7 +143,7 @@ const Statistics: React.FC<Props> = ({ data, refresh }) => {
           trailColor="rgba(0, 0, 0, 0.2)"
         />
         {isMyProfile && (
-          <Upload>
+          <Upload accept="image/*" showUploadList={false} onChange={handleChange}>
             <Button
               icon={<EditOutlined size={1} />}
               shape="circle"

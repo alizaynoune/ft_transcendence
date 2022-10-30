@@ -58,7 +58,7 @@ const Header: React.FC<PropsType> = (props) => {
         {isAuth && <Search />}
       </div>
       {!isAuth ? (
-        <form method="GET" action={`${process.env.NEXT_PUBLIC_URL_API || "http://localhost:5000"}/auth/login`}>
+        <form method="GET" action={`${process.env.API_URL || "http://localhost:5000"}/auth/login`}>
           <Button htmlType="submit" shape="round" ghost icon={<Icon component={_42Icon} style={{ fontSize: 20 }} />}>
             {"Login"}
           </Button>
@@ -69,7 +69,7 @@ const Header: React.FC<PropsType> = (props) => {
           <Text strong >{username}</Text>
           <Link href={"/profile/me"}>
             <a>
-              <Avatar src={`${process.env.API_URL}${img_url}`} size={55} />
+              <Avatar src={img_url} size={55} />
             </a>
           </Link>
         </div>

@@ -3,13 +3,15 @@ import Image from "next/image";
 import Statistics from "@/components/userStatistics/Statistics";
 import UserData from "@/containers/userData/UserData";
 import PageError from "../_error";
-import { Badge, Button, message, Upload } from "antd";
+import { Badge, Button, message, Upload, UploadFile, UploadProps } from "antd";
 import { EditOutlined } from "@ant-design/icons";
-import { ProfileContextType } from "@/types/types";
+import { ProfileContextType, UserType } from "@/types/types";
 import React, { useContext, useEffect, useRef, useState } from "react";
 import authRoute from "@/tools/protectedRoutes";
 import { useRouter } from "next/router";
 import ProfileProvider, { ProfileContext } from "context/profileContext";
+import { UploadChangeParam } from "antd/lib/upload";
+import axios from "@/config/axios";
 
 const MProfile: React.FC = () => {
   const lazyRoot = useRef(null);
@@ -17,6 +19,7 @@ const MProfile: React.FC = () => {
   const { query, isReady } = router;
   const [error, setError] = useState<number>(200);
   const [loading, setLoading] = useState<boolean>(false);
+  const [cover, setCover] = useState<string>();
 
   const { profile, isMyProfile, loadProfile, loadLastMatches } = useContext(ProfileContext) as ProfileContextType;
 
@@ -38,6 +41,17 @@ const MProfile: React.FC = () => {
     }
   };
 
+  const handleChange: UploadProps["onChange"] = async (info: UploadChangeParam<UploadFile>) => {
+    if (info.file.status === "uploading") return;
+    try {
+      const res = (await axios.put("/users/update", { cover: info.file.originFileObj })) as { data: UserType };
+      setCover(res.data.cover);
+      message.success('success update')
+    } catch (error) {
+      error instanceof Error && message.error(error.message);
+    }
+  };
+
   useEffect(() => {
     console.log("url changed");
     loadingProfile();
@@ -53,9 +67,9 @@ const MProfile: React.FC = () => {
 
   useEffect(() => {
     console.log(isMyProfile);
-    
+    setCover(profile?.cover);
     if (isMyProfile) LastMatches();
-  }, [isMyProfile]);
+  }, [isMyProfile, profile]);
 
   return (
     <section className={style.container}>
@@ -69,14 +83,16 @@ const MProfile: React.FC = () => {
               <div className={style.cover} ref={lazyRoot}>
                 <Image
                   lazyRoot={lazyRoot}
-                  loader={() => profile.cover || "/images/defaultProfileCover.png"} // ! change it
-                  src="/images/defaultProfileCover.png"
+                  // loader={() => cover || '/images/defaultProfileCover.png' } // ! change it
+                  src={cover || "/images/defaultProfileCover.png"}
                   layout="fill"
                   objectFit="cover"
                   priority
+                  // width={300}
+                  // unoptimized
                 />
                 {isMyProfile && (
-                  <Upload>
+                  <Upload accept="image/*" showUploadList={false} onChange={handleChange}>
                     <Button
                       icon={<EditOutlined size={1} />}
                       shape="circle"

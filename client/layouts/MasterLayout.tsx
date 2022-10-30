@@ -61,7 +61,6 @@ const MasterLayout: React.FC<Props> = (props) => {
       return;
     }
     if (info.file.status === "done") {
-      // Get this url from response in real world.
       getBase64(info.file.originFileObj as RcFile, (url: string) => {
         setLoadingImg(false);
         setupdatedData((prev) => {
@@ -74,20 +73,16 @@ const MasterLayout: React.FC<Props> = (props) => {
 
   const handleChangeUsername = (value: any) => {
     console.log(value.target.value);
-    // emit to check if username already taken
     setupdatedData((prev) => {
       return { ...prev, username: value.target.value };
     });
   };
 
   const onFinish = async (values: any) => {
-    console.log(values);
     try {
-      // const files['img_url'] = updatedData.file
       const res = await axios.put("/users/update", updatedData);
-      // dispatch new data
-      console.log(res.data);
       dispatch(updateInfo(res.data));
+      message.success('success update')
     } catch (error) {
       error instanceof Error && message.error(error.message);
     }
@@ -102,9 +97,15 @@ const MasterLayout: React.FC<Props> = (props) => {
             <Input placeholder="username" size="large" onChange={handleChangeUsername} />
           </Form.Item>
           <Form.Item valuePropName="fileList">
-            <Upload name="avatar" listType="picture-card" accept="image/*" showUploadList={false} onChange={handleChange}>
+            <Upload
+              name="avatar"
+              listType="picture-card"
+              accept="image/*"
+              showUploadList={false}
+              onChange={handleChange}
+            >
               {imageBase64 || img_url ? (
-                <img src={imageBase64 || `${process.env.API_URL}${img_url}`} alt="avatar" style={{ width: "100%" }} />
+                <img src={imageBase64 || img_url} alt="avatar" style={{ width: "100%" }} />
               ) : (
                 <div>
                   {loadingImg ? <LoadingOutlined /> : <PlusOutlined />}
@@ -125,13 +126,13 @@ const MasterLayout: React.FC<Props> = (props) => {
 
   useEffect(() => {
     if (isAuth) {
-      // if (updated_at && updated_at === created_at) {
-      setupdatedData({ username, avatar: undefined });
-      form.setFieldsValue({
-        username,
-      });
-      setOpenModal(true);
-      // }
+      if (updated_at && updated_at === created_at) {
+        setupdatedData({ username, avatar: undefined });
+        form.setFieldsValue({
+          username,
+        });
+        setOpenModal(true);
+      }
       socket.connect();
       socket.on("error", (error) => {
         message.error(`Socket ${error.message}`);

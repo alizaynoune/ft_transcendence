@@ -9,7 +9,7 @@ const nextConfig = {
     return config;
   },
   images: {
-    domains: [' https://randomuser.me', 'media-exp1.licdn.com', 'avatars.githubusercontent.com']
+    domains: [' https://randomuser.me', 'media-exp1.licdn.com', 'avatars.githubusercontent.com', 'localhost']
   },
   async rewrites() {
     return [
@@ -20,7 +20,7 @@ const nextConfig = {
     ]
   },
   env: {
-    API_URL: 'http://localhost:5000/'
+    API_URL: 'http://localhost:5000'
   }
 }
 
