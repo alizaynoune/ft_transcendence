@@ -9,7 +9,7 @@ import SiderLayout from "@/components/sider/Sider";
 import Header from "@/components/header/Header";
 import { useAppSelector, useAppDispatch } from "@/hooks/reduxHooks";
 import { AuthTunk } from "@/store/actions/auth";
-import { selectAuth } from "@/store/reducers/auth";
+import { selectAuth, updateInfo } from "@/store/reducers/auth";
 import { selectLoading } from "@/store/reducers/globalLoading";
 import Spin from "@/components/spin/Spin";
 import socket from "@/config/socket";
@@ -23,7 +23,7 @@ interface Props {
 }
 interface updateType {
   username: string;
-  img_url: string;
+  avatar: RcFile | undefined;
 }
 
 const getBase64 = (img: RcFile, callback: (url: string) => void) => {
@@ -40,7 +40,8 @@ const MasterLayout: React.FC<Props> = (props) => {
   const { isAuth, access_token, updated_at, created_at, username, img_url } = useAppSelector(selectAuth);
   const { Loading } = useAppSelector(selectLoading);
   const [openModal, setOpenModal] = useState(false);
-  const [updatedData, setupdatedData] = useState<updateType>({ username: "", img_url: "" });
+  const [updatedData, setupdatedData] = useState<updateType>({ username: "", avatar: undefined });
+  const [imageBase64, setImageBase64] = useState<string>();
   const [loadingImg, setLoadingImg] = useState(false);
   const [form] = Form.useForm();
 
@@ -62,33 +63,35 @@ const MasterLayout: React.FC<Props> = (props) => {
     if (info.file.status === "done") {
       // Get this url from response in real world.
       getBase64(info.file.originFileObj as RcFile, (url: string) => {
-        // setLoading(false);
-        console.log(info.file.originFileObj, '<<<<<<<<<<<info');
-        
         setLoadingImg(false);
         setupdatedData((prev) => {
-          return { ...prev, img_url: url };
+          return { ...prev, avatar: info.file.originFileObj };
         });
+        setImageBase64(url);
       });
     }
+  };
+
+  const handleChangeUsername = (value: any) => {
+    console.log(value.target.value);
+    // emit to check if username already taken
+    setupdatedData((prev) => {
+      return { ...prev, username: value.target.value };
+    });
   };
 
   const onFinish = async (values: any) => {
     console.log(values);
     try {
-      const res = await axios.put("/users/update", values);
+      // const files['img_url'] = updatedData.file
+      const res = await axios.put("/users/update", updatedData);
       // dispatch new data
-      console.log(res);
+      console.log(res.data);
+      dispatch(updateInfo(res.data));
     } catch (error) {
       error instanceof Error && message.error(error.message);
     }
     setOpenModal(false);
-  };
-
-  const uploadAvatar: (file: RcFile) => Promise<unknown> = (file) => {
-    return new Promise((reject, resolv) => {
-      return reject("test");
-    });
   };
 
   const modal = () => {
@@ -96,29 +99,12 @@ const MasterLayout: React.FC<Props> = (props) => {
       <Modal open={openModal} title={"please update your data"} footer={null} closable={false}>
         <Form form={form} onFinish={onFinish}>
           <Form.Item name="username" rules={[{ required: true, message: "Please input your username!" }]}>
-            <Input placeholder="username" size="large" />
+            <Input placeholder="username" size="large" onChange={handleChangeUsername} />
           </Form.Item>
           <Form.Item valuePropName="fileList">
-            <Upload
-              name="avatar"
-              listType="picture-card"
-              accept="image/*"
-              showUploadList={false}
-              onChange={handleChange}
-
-              action={async (file) => {
-                console.log(file, '<<<<<file');
-                
-                try {
-                  const res = await axios.post('/users/updateAvatar', {...file})
-                  return Promise.resolve('')
-                } catch (error) {
-                  return Promise.reject(error)
-                }
-              }}
-            >
-              {updatedData.img_url ? (
-                <img src={updatedData.img_url} alt="avatar" style={{ width: "100%" }} />
+            <Upload name="avatar" listType="picture-card" accept="image/*" showUploadList={false} onChange={handleChange}>
+              {imageBase64 || img_url ? (
+                <img src={imageBase64 || `${process.env.API_URL}${img_url}`} alt="avatar" style={{ width: "100%" }} />
               ) : (
                 <div>
                   {loadingImg ? <LoadingOutlined /> : <PlusOutlined />}
@@ -140,7 +126,7 @@ const MasterLayout: React.FC<Props> = (props) => {
   useEffect(() => {
     if (isAuth) {
       // if (updated_at && updated_at === created_at) {
-      setupdatedData({ username, img_url });
+      setupdatedData({ username, avatar: undefined });
       form.setFieldsValue({
         username,
       });

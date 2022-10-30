@@ -1,6 +1,6 @@
 import axios from "axios";
 import { loadToken } from "@/tools/localStorage";
-const baseURL = process.env.NEXT_PUBLIC_URL_API || "http://localhost:5000/";
+const baseURL = process.env.API_URL || "http://localhost:5000/";
 
 axios.interceptors.request.use(
   (config) => {
@@ -35,7 +35,7 @@ axios.interceptors.response.use(
       console.log(err);
       return Promise.reject(err);
     }
-    
+
     return Promise.reject(error.response);
   }
 );

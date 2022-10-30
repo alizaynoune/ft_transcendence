@@ -100,7 +100,7 @@ const Statistics: React.FC<Props> = ({ data, refresh }) => {
         <Image
           className={style.progressImage}
           lazyRoot={lazyRoot}
-          loader={() => data.img_url || "/images/defaultProfileAvatar.jpg"}
+          loader={() => `${process.env.API_URL}${data.img_url}` || "/images/defaultProfileAvatar.jpg"}
           src="/images/defaultProfileAvatar.jpg"
           objectFit="cover"
           layout="fill"

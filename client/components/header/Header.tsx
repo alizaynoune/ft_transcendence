@@ -69,7 +69,7 @@ const Header: React.FC<PropsType> = (props) => {
           <Text strong >{username}</Text>
           <Link href={"/profile/me"}>
             <a>
-              <Avatar src={img_url} size={55} />
+              <Avatar src={`${process.env.API_URL}${img_url}`} size={55} />
             </a>
           </Link>
         </div>

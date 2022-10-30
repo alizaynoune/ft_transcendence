@@ -41,6 +41,22 @@ export const AuthSlice = createSlice({
       state.access_token = "";
     },
 
+    updateInfo: (state, { payload }) => {
+      Object.assign(
+        state,
+        (({ username, img_url, email, intra_id, first_name, last_name, created_at, updated_at }) => ({
+          username,
+          img_url,
+          email,
+          intra_id,
+          first_name,
+          last_name,
+          created_at,
+          updated_at,
+        }))(payload)
+      );
+    },
+
     saveToken: (state, { payload }) => {
       state.access_token = payload;
     },
@@ -87,6 +103,6 @@ export const AuthSlice = createSlice({
   },
 });
 
-export const { logout, login, saveToken, pushNotification, readNotification, setNotifications } = AuthSlice.actions;
+export const { logout, login, saveToken, pushNotification, readNotification, setNotifications, updateInfo } = AuthSlice.actions;
 export const selectAuth = (state: RootState) => state.auth;
 export default AuthSlice.reducer;
