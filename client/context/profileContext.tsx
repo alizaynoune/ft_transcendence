@@ -180,6 +180,8 @@ const ProfileProvider: React.FC<PropsType> = ({ children }) => {
           }
           return game;
         });
+        console.log(data);
+        
         setLoading(false);
         setLastMatches(data);
         return resolve(lastMatches);

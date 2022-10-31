@@ -9,7 +9,14 @@ const nextConfig = {
     return config;
   },
   images: {
-    domains: [' https://randomuser.me', 'media-exp1.licdn.com', 'avatars.githubusercontent.com', 'localhost', 'cdn.intra.42.fr']
+    domains: [
+      'randomuser.me',
+      'media-exp1.licdn.com',
+      'avatars.githubusercontent.com',
+      'localhost',
+      'cdn.intra.42.fr',
+      'random.imagecdn.app',
+      'joeschmoe.io']
   },
   async rewrites() {
     return [

@@ -1,19 +1,8 @@
 import style from "./statistics.module.css";
 import Image from "next/image";
-import axios from "@/config/axios";
-import {
-  Progress,
-  Avatar,
-  Badge,
-  Typography,
-  Upload,
-  Button,
-  Space,
-  Tooltip,
-  message,
-  UploadProps,
-  UploadFile,
-} from "antd";
+import axios, { AxiosFormData } from "@/config/axios";
+import OriginAxios from "axios";
+import { Progress, Avatar, Badge, Typography, Upload, Button, Space, Tooltip, message, UploadProps, UploadFile } from "antd";
 import Icon, { EditOutlined, CloseOutlined, CheckOutlined } from "@ant-design/icons";
 import { useAppSelector, useAppDispatch } from "@/hooks/reduxHooks";
 import { selectAuth, updateInfo } from "@/store/reducers/auth";
@@ -37,6 +26,7 @@ import {
   WinnerIcon,
 } from "@/icons/index";
 import { UploadChangeParam, RcFile } from "antd/lib/upload";
+import { loadToken } from "@/tools/localStorage";
 
 const achievementsIcons: {
   [key: string]: ComponentType<SVGProps<SVGSVGElement>>;
@@ -105,12 +95,13 @@ const Statistics: React.FC<Props> = ({ data, refresh }) => {
   const handleChange: UploadProps["onChange"] = async (info: UploadChangeParam<UploadFile>) => {
     if (info.file.status === "uploading") return;
     try {
-      const res = (await axios.put("/users/update", { avatar: info.file.originFileObj })) as { data: UserType };
+      const res = (await AxiosFormData.put("/users/update", { avatar: info.file.originFileObj })) as {
+        data: UserType;
+      };
       dispatch(updateInfo(res.data));
       setAvatar(res.data.img_url);
       message.success("success update");
-      loadProfile("")
-      // refresh()
+      loadProfile("");
     } catch (error) {
       error instanceof Error && message.error(error.message);
     }
@@ -152,9 +143,9 @@ const Statistics: React.FC<Props> = ({ data, refresh }) => {
               size="large"
               style={{
                 position: "absolute",
-                bottom: "20%",
-                right: "20%",
-                backgroundColor: "rgba(0, 0, 0, 0.4)",
+                bottom: "17%",
+                right: "17%",
+                backgroundColor: "rgba(0, 0, 0, 0.3)",
                 color: "var(--light-color)",
               }}
             />

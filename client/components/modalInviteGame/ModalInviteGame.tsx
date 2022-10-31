@@ -13,7 +13,7 @@ const { Option } = Select;
 const ModalInviteGame: React.FC<PropsType> = (props) => {
   const { user } = props;
   const [openModal, setOpenModal] = useState<boolean>(false);
-  const [gameLevel, setGameLevel] = useState<"EASY" | "NORMAL" | "DIFFICULT">("NORMAL");
+  const [gameLevel, setGameLevel] = useState<'EASY' | 'NORMAL' | 'DIFFICULT'>("NORMAL");
 
   const selectGameLevel = () => {
     return (
@@ -38,6 +38,7 @@ const ModalInviteGame: React.FC<PropsType> = (props) => {
 
   const handleOk = async () => {
     try {
+      console.log(user.intra_id, gameLevel);      
       const res = await axios.post("game/invite", { userId: user.intra_id, gameLevel });
       message.success(res.data.message);
       setOpenModal(false);

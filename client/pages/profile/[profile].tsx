@@ -11,7 +11,7 @@ import authRoute from "@/tools/protectedRoutes";
 import { useRouter } from "next/router";
 import ProfileProvider, { ProfileContext } from "context/profileContext";
 import { UploadChangeParam } from "antd/lib/upload";
-import axios from "@/config/axios";
+import { AxiosFormData } from "@/config/axios";
 
 const MProfile: React.FC = () => {
   const lazyRoot = useRef(null);
@@ -44,10 +44,10 @@ const MProfile: React.FC = () => {
   const handleChange: UploadProps["onChange"] = async (info: UploadChangeParam<UploadFile>) => {
     if (info.file.status === "uploading") return;
     try {
-      const res = (await axios.put("/users/update", { cover: info.file.originFileObj })) as { data: UserType };
+      const res = (await AxiosFormData.put("/users/update", { cover: info.file.originFileObj })) as { data: UserType };
       setCover(res.data.cover);
       message.success("success update");
-      loadingProfile()
+      loadingProfile();
     } catch (error) {
       error instanceof Error && message.error(error.message);
     }

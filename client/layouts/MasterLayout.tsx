@@ -15,7 +15,7 @@ import Spin from "@/components/spin/Spin";
 import socket from "@/config/socket";
 import { RcFile, UploadChangeParam, UploadFile } from "antd/lib/upload";
 import { LoadingOutlined, PlusOutlined } from "@ant-design/icons";
-import axios from "@/config/axios";
+import { AxiosFormData } from "@/config/axios";
 
 const { Footer, Content } = Layout;
 interface Props {
@@ -80,9 +80,9 @@ const MasterLayout: React.FC<Props> = (props) => {
 
   const onFinish = async (values: any) => {
     try {
-      const res = await axios.put("/users/update", updatedData);
+      const res = await AxiosFormData.put("/users/update", updatedData);
       dispatch(updateInfo(res.data));
-      message.success('success update')
+      message.success("success update");
     } catch (error) {
       error instanceof Error && message.error(error.message);
     }
@@ -97,13 +97,7 @@ const MasterLayout: React.FC<Props> = (props) => {
             <Input placeholder="username" size="large" onChange={handleChangeUsername} />
           </Form.Item>
           <Form.Item valuePropName="fileList">
-            <Upload
-              name="avatar"
-              listType="picture-card"
-              accept="image/*"
-              showUploadList={false}
-              onChange={handleChange}
-            >
+            <Upload name="avatar" listType="picture-card" accept="image/*" showUploadList={false} onChange={handleChange}>
               {imageBase64 || img_url ? (
                 <img src={imageBase64 || img_url} alt="avatar" style={{ width: "100%" }} />
               ) : (
