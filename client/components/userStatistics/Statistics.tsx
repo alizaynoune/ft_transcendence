@@ -64,7 +64,7 @@ const actionsList: { [key: string]: { icon: JSX.Element; tooltip: string; action
 
 const Statistics: React.FC<Props> = ({ data, refresh }) => {
   const { lastMatches, isMyProfile, loadProfile } = useContext(ProfileContext) as ProfileContextType;
-  const [matches, setMatches] = useState({ total: 0, winner: 0 });
+  const [matches, setMatches] = useState({ total: 0, winner: 0, loss: 0 });
   const level = 0.3 * Math.sqrt(data.xp) || 0;
   const { intra_id } = useAppSelector(selectAuth);
   const progress = ((level - Math.floor(level)) / 1) * 100;
@@ -111,6 +111,7 @@ const Statistics: React.FC<Props> = ({ data, refresh }) => {
     setMatches({
       total: lastMatches.length,
       winner: lastMatches.filter((m) => m.players[0].score > m.players[1].score).length,
+      loss: lastMatches.filter(m => m.players[0].score < m.players[1].score).length
     });
   }, [lastMatches]);
 
@@ -196,6 +197,12 @@ const Statistics: React.FC<Props> = ({ data, refresh }) => {
             <Badge
               className={style.badge}
               status="default"
+              color={"var(--secondary-color)"}
+              text={<Text type="secondary" italic>{`Total ${matches.total}`}</Text>}
+            />
+            <Badge
+              className={style.badge}
+              status="default"
               color={"var(--success-color)"}
               text={<Text type="success" italic>{`Wins ${matches.winner}`}</Text>}
             />
@@ -204,7 +211,7 @@ const Statistics: React.FC<Props> = ({ data, refresh }) => {
               status="error"
               text={
                 <Text type="danger" italic>
-                  {`Loses ${matches.total - matches.winner}`}
+                  {`Loses ${matches.loss}`}
                 </Text>
               }
               size="default"

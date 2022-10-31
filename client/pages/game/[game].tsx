@@ -44,7 +44,7 @@ const Games: React.FC = () => {
       async onOk() {
         try {
           const res = await axios.put("/game/leaveGame", { gameId: gameData?.id });
-          Socket.emit("leaveGame", { gameId: gameData?.id });
+          // Socket.emit("leaveGame", { gameId: gameData?.id });
           message.success(res.data.message);
           router.push("/game/new");
         } catch (error) {
