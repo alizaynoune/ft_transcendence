@@ -46,14 +46,14 @@ const MProfile: React.FC = () => {
     try {
       const res = (await axios.put("/users/update", { cover: info.file.originFileObj })) as { data: UserType };
       setCover(res.data.cover);
-      message.success('success update')
+      message.success("success update");
+      loadingProfile()
     } catch (error) {
       error instanceof Error && message.error(error.message);
     }
   };
 
   useEffect(() => {
-    console.log("url changed");
     loadingProfile();
   }, [isReady, query.profile]);
 
@@ -81,16 +81,7 @@ const MProfile: React.FC = () => {
           <>
             <Badge.Ribbon text="Ranked 10" placement="start">
               <div className={style.cover} ref={lazyRoot}>
-                <Image
-                  lazyRoot={lazyRoot}
-                  // loader={() => cover || '/images/defaultProfileCover.png' } // ! change it
-                  src={cover || "/images/defaultProfileCover.png"}
-                  layout="fill"
-                  objectFit="cover"
-                  priority
-                  // width={300}
-                  // unoptimized
-                />
+                <Image lazyRoot={lazyRoot} src={cover || "/images/defaultProfileCover.png"} layout="fill" objectFit="cover" priority />
                 {isMyProfile && (
                   <Upload accept="image/*" showUploadList={false} onChange={handleChange}>
                     <Button

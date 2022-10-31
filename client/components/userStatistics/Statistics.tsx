@@ -73,7 +73,7 @@ const actionsList: { [key: string]: { icon: JSX.Element; tooltip: string; action
 };
 
 const Statistics: React.FC<Props> = ({ data, refresh }) => {
-  const { lastMatches, isMyProfile } = useContext(ProfileContext) as ProfileContextType;
+  const { lastMatches, isMyProfile, loadProfile } = useContext(ProfileContext) as ProfileContextType;
   const [matches, setMatches] = useState({ total: 0, winner: 0 });
   const level = 0.3 * Math.sqrt(data.xp) || 0;
   const { intra_id } = useAppSelector(selectAuth);
@@ -109,6 +109,8 @@ const Statistics: React.FC<Props> = ({ data, refresh }) => {
       dispatch(updateInfo(res.data));
       setAvatar(res.data.img_url);
       message.success("success update");
+      loadProfile("")
+      // refresh()
     } catch (error) {
       error instanceof Error && message.error(error.message);
     }
