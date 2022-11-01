@@ -155,9 +155,7 @@ const ProfileProvider: React.FC<PropsType> = ({ children }) => {
         const res = await axios.get("friends/blocked");
         console.log(res.data);
         if (res.data.constructor !== Array) return resolve([]);
-        const data = res.data.map(
-          (i: { users_blocked_blockedidTousers: UserType }) => i.users_blocked_blockedidTousers
-        );
+        const data = res.data.map((i: { users_blocked_blockedidTousers: UserType }) => i.users_blocked_blockedidTousers);
         setBlockedsList(data);
         setLoading(false);
         return resolve(blockedsList);
@@ -181,7 +179,7 @@ const ProfileProvider: React.FC<PropsType> = ({ children }) => {
           return game;
         });
         console.log(data);
-        
+
         setLoading(false);
         setLastMatches(data);
         return resolve(lastMatches);

@@ -7,7 +7,7 @@ import Icon, { EditOutlined, CloseOutlined, CheckOutlined } from "@ant-design/ic
 import { useAppSelector, useAppDispatch } from "@/hooks/reduxHooks";
 import { selectAuth, updateInfo } from "@/store/reducers/auth";
 import { ComponentType, SVGProps, useRef, useContext, useState, useEffect } from "react";
-import { ProfileType, RelationshipType, UserType, FriendActions, ProfileContextType } from "@/types/types";
+import { ProfileType, RelationshipType, UserType, FriendActions, ProfileContextType, ActionsType } from "@/types/types";
 import { ProfileContext } from "context/profileContext";
 import ModalInviteGame from "@/components/modalInviteGame/ModalInviteGame";
 // Achievements Icons
@@ -44,7 +44,7 @@ interface Props {
 }
 const { Text, Title } = Typography;
 
-const actionsList: { [key: string]: { icon: JSX.Element; tooltip: string; action: string }[] } = {
+const actionsList: { [key: string]: { icon: JSX.Element; tooltip: string; action: ActionsType }[] } = {
   friend: [
     { icon: <Icon component={MessageIcon} />, tooltip: "Send message", action: "message" },
     { icon: <Icon component={DeleteUserIcon} />, tooltip: "unfriend", action: "friends/unfriend" },
@@ -111,7 +111,7 @@ const Statistics: React.FC<Props> = ({ data, refresh }) => {
     setMatches({
       total: lastMatches.length,
       winner: lastMatches.filter((m) => m.players[0].score > m.players[1].score).length,
-      loss: lastMatches.filter(m => m.players[0].score < m.players[1].score).length
+      loss: lastMatches.filter((m) => m.players[0].score < m.players[1].score).length,
     });
   }, [lastMatches]);
 

@@ -6,14 +6,14 @@ import { useContext } from "react";
 import { ProfileContext } from "context/profileContext";
 // Icons
 import { DotsVIcon, DeleteUserIcon, BlockUserIcon, MessageIcon, PlayGameIcon, UnblockUserIcon } from "@/icons/index";
-import { UserType, ProfileContextType } from "@/types/types";
+import { UserType, ProfileContextType, ActionsType } from "@/types/types";
 
 interface Props {
   type: "friend" | "request" | "block";
   user: UserType;
 }
 
-const actionsList = {
+const actionsList: { [k: string]: { icon: JSX.Element; action: ActionsType }[] } = {
   friend: [
     { icon: <Icon component={MessageIcon} style={{ fontSize: "120%" }} />, action: "message" },
     { icon: <Icon component={PlayGameIcon} style={{ fontSize: "120%" }} />, action: "game/invite" },
@@ -46,7 +46,7 @@ const UserCard: React.FC<Props> = (props) => {
                         key={key}
                         ghost
                         type="primary"
-                        danger={i.action === "rejectrequest"}
+                        danger={i.action === "friends/rejectrequest"}
                         icon={i.icon}
                         disabled={loading}
                         onClick={async () => {

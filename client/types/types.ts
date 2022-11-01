@@ -6,7 +6,16 @@ declare global {
   }
 }
 type PromiseReturn = Error | { message: string };
-export type FriendActions = (user: UserType, action: string) => Promise<PromiseReturn>;
+export type ActionsType =
+  | "message"
+  | "game/invite"
+  | "friends/blockfriend"
+  | "friends/unfriend"
+  | "friends/unblock"
+  | "friends/rejectrequest"
+  | "friends/acceptrequest"
+  | "friends/sendrequest";
+export type FriendActions = (user: UserType, action: ActionsType) => Promise<PromiseReturn>;
 
 export interface AuthType {
   username: string;
@@ -63,12 +72,7 @@ export interface UserType {
   created_at: string;
   updated_at: string;
 }
-export type updateProfileType = (update: {
-  email: string;
-  first_name: string;
-  last_name: string;
-  username: string;
-}) => Promise<unknown>;
+export type updateProfileType = (update: { email: string; first_name: string; last_name: string; username: string }) => Promise<unknown>;
 export interface ProfileContextType {
   loading: boolean;
   friendsList: UserType[];

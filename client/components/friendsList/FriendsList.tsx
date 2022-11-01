@@ -1,8 +1,8 @@
 import style from "./friendsList.module.css";
 import React, { useEffect, useState, useContext } from "react";
-import { Empty, List, message } from "antd";
+import { Empty, List } from "antd";
 import UserCard from "@/components/userCard/UserCard";
-import { UserType, FriendActions, ProfileContextType } from "@/types/types";
+import { ProfileContextType } from "@/types/types";
 import { ProfileContext } from "context/profileContext";
 import { useAppSelector } from "@/hooks/reduxHooks";
 
