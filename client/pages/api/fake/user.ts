@@ -6,7 +6,6 @@ const achievementsNames = [
   "photogenic",
   "sharpshooter",
   "wildfire",
-  "winner",
 ];
 
 const achievementsTypes = ["silver", "bronze", "gold", "platinum"];

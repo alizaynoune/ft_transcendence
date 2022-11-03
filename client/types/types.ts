@@ -72,7 +72,12 @@ export interface UserType {
   created_at: string;
   updated_at: string;
 }
-export type updateProfileType = (update: { email: string; first_name: string; last_name: string; username: string }) => Promise<unknown>;
+export type updateProfileType = (update: {
+  email: string;
+  first_name: string;
+  last_name: string;
+  username: string;
+}) => Promise<unknown>;
 export interface ProfileContextType {
   loading: boolean;
   friendsList: UserType[];
@@ -108,7 +113,7 @@ export interface RequestFriendType {
 }
 
 export interface AchievementType {
-  name: "winner" | "friendly" | "photogenic" | "wildfire" | "legendary" | "sharpshooter";
+  name: "friendly" | "photogenic" | "wildfire" | "legendary" | "sharpshooter";
   level: "BRONZE" | "SILVER" | "GOLD" | "PLATINUM";
   xp: number;
   description: string;

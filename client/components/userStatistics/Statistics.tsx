@@ -23,7 +23,6 @@ import {
   PhotogenicIcon,
   SharpshooterIcon,
   WildfireIcon,
-  WinnerIcon,
 } from "@/icons/index";
 import { UploadChangeParam, RcFile } from "antd/lib/upload";
 import { loadToken } from "@/tools/localStorage";
@@ -36,7 +35,6 @@ const achievementsIcons: {
   photogenic: PhotogenicIcon,
   sharpshooter: SharpshooterIcon,
   wildfire: WildfireIcon,
-  winner: WinnerIcon,
 };
 interface Props {
   data: ProfileType & UserType & RelationshipType;

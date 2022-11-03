@@ -1,7 +1,7 @@
 import style from "./achievementCard.module.css";
 import { Card, Space, Typography } from "antd";
 import Icon, { LockOutlined } from "@ant-design/icons";
-import { WinnerIcon, FriendlyIcon, PhotogenicIcon, WildfireIcon, LegendaryIcon, SharpshooterIcon } from "@/icons/index";
+import { FriendlyIcon, PhotogenicIcon, WildfireIcon, LegendaryIcon, SharpshooterIcon } from "@/icons/index";
 import { ComponentType, SVGProps } from "react";
 import { AchievementType } from "@/types/types";
 
@@ -10,7 +10,6 @@ interface PropsType {
 }
 
 const AchievementsIcon: { [key: string]: ComponentType<SVGProps<SVGSVGElement>> } = {
-  winner: WinnerIcon,
   friendly: FriendlyIcon,
   photogenic: PhotogenicIcon,
   wildfire: WildfireIcon,
