@@ -6,11 +6,10 @@ import SettingMessenger from "@/containers/settingMessenger/SettingMessenger";
 import { SetStateAction, useEffect, useState } from "react";
 import { Tabs, Typography, Empty } from "antd";
 import { SettingIcon, MessageIcon } from "@/icons/index";
-import { ConversationsType } from "types/types";
+import { ConversationMemberType, ConversationsType, MessageTextType } from "types/types";
 import Icon from "@ant-design/icons";
 import authRoute from "@/tools/protectedRoutes";
 
-const { TabPane } = Tabs;
 const Messanger: React.FC = () => {
   const [currentConversation, setCurrentConversation] = useState<ConversationsType | undefined>(undefined);
   const [currentTab, setCurrentTab] = useState<string>("Conversations");
@@ -27,7 +26,14 @@ const Messanger: React.FC = () => {
       ),
       children: (
         <Conversations
-          setCurrentConversation={function (value: SetStateAction<ConversationsType | undefined>): void {
+          setCurrentConversation={function (
+            value: SetStateAction<
+              | (ConversationsType & {
+                  members: ConversationMemberType[];
+                })
+              | undefined
+            >
+          ): void {
             setCurrentConversation(value);
             setCurrentTab("Message");
           }}
@@ -84,7 +90,14 @@ const Messanger: React.FC = () => {
       <div className={`${style.xxl} ${style.container}`}>
         <div className={style.historyMessenger}>
           <Conversations
-            setCurrentConversation={function (value: SetStateAction<ConversationsType | undefined>): void {
+            setCurrentConversation={function (
+              value: SetStateAction<
+                | (ConversationsType & {
+                    members: ConversationMemberType[];
+                  })
+                | undefined
+              >
+            ): void {
               setCurrentConversation(value);
             }}
             {...setCurrentConversation}

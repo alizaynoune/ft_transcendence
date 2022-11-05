@@ -141,25 +141,33 @@ export interface ProfileType {
   };
 }
 
+export interface ConversationMemberType {
+  id: number;
+  conversationid: number;
+  userid: number;
+  mute: boolean;
+  active: boolean;
+  created_at: Date;
+  updated_at: Date;
+  users: UserType;
+}
+
 export interface ConversationsType {
-  id: string;
-  type: "group" | "direct";
-  name: string | null;
-  adminID: string;
-  members: UserType[];
-  lastMessage: {
-    id: string;
-    date: Date;
-    content: string;
-  };
+  id: number;
+  title: string;
+  type: "GROUP" | "DIRECT";
+  adminid: number;
+  active: boolean;
+  created_at: Date;
+  updated_at: Date;
+  members: ConversationMemberType[]
 }
 
 export interface MessageTextType {
-  id: string;
-  conversationID: string;
-  status: "send" | "read" | "delivered" | "failer" | "waiting" | string;
-  sender: UserType;
-  content: string;
-  date: Date;
-  deleted: boolean;
+  id: number;
+  message: string;
+  senderid: number;
+  conversationid: number;
+  created_at: Date;
+  updated_at: Date;
 }

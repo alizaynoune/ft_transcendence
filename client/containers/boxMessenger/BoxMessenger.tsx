@@ -1,27 +1,15 @@
 import style from "./boxMessenger.module.css";
 import { Input, Button, List, message, Form } from "antd";
 import Icon from "@ant-design/icons";
-
-import { LoremIpsum } from "lorem-ipsum"; //!delete it
 import MessageText from "@/components/messageText/MessageText";
-
-// To Add functionnality to scroll to the end of the list of messages
 import { useState, useEffect, useRef } from "react";
-import { ConversationsType, MessageTextType, UserType } from "types/types";
-
+import axios from "@/config/axios";
+import { ConversationsType, MessageTextType, UserType, ConversationMemberType } from "types/types";
+import { useAppSelector } from "@/hooks/reduxHooks";
+import { selectAuth } from "@/store/reducers/auth";
+import Socket from "@/config/socket";
 //Icons
 import { EmojiSmileIcon, SendIcon } from "@/icons/index";
-
-const lorem = new LoremIpsum({
-  sentencesPerParagraph: {
-    max: 8,
-    min: 4,
-  },
-  wordsPerSentence: {
-    max: 16,
-    min: 4,
-  },
-});
 
 type PropsType = {
   currentConversation: ConversationsType;
@@ -35,47 +23,49 @@ const Picker = dynamic(
   },
   { ssr: false }
 );
-
-const messageStatus = ["send", "read", "delivered", "failer", "waiting"];
-// const {} = Picker
-const fakeMessage = (id: string, sender: UserType): MessageTextType => {
-  return {
-    id: "message id",
-    conversationID: id,
-    content: lorem.generateSentences(1),
-    date: new Date(),
-    sender,
-    deleted: false,
-    status: messageStatus[Math.floor(Math.random() * 5)],
+type DataType = MessageTextType & {
+  members: {
+    users: UserType;
   };
 };
-
 const BoxMessenger: React.FC<PropsType> = ({ currentConversation }) => {
   const bottomRef = useRef<HTMLDivElement>(null);
-  const [messages, setMessages] = useState<MessageTextType[]>([]);
+  const [messages, setMessages] = useState<DataType[]>([]);
   const [value, setValue] = useState<string>("");
   const [showEmoji, setShowEmoji] = useState<boolean>(false);
   const [error, setError] = useState<boolean>(false);
+  const { intra_id } = useAppSelector(selectAuth);
+  const [myInfo, setMyInfo] = useState<ConversationMemberType>();
   useEffect(() => {
     bottomRef.current?.scroll({
       top: bottomRef.current.scrollHeight,
     });
   });
 
-  useEffect(() => {
-    const newMessage: MessageTextType[] = [];
-    const count = Math.floor(Math.random() * 100);
-    for (let i = 0; i < count; i++) {
-      newMessage.push(
-        fakeMessage(
-          currentConversation.id,
-          currentConversation.members[
-            Math.floor(Math.random() * currentConversation.members.length)
-          ]
-        )
-      );
+  const loadMoreData = async () => {
+    try {
+      const res = (await axios.get(`conversation/${currentConversation.id}/messages`)) as { data: DataType[] };
+      setMessages(res.data.reverse());
+    } catch (error) {
+      console.log(error);
+      error instanceof Error && message.error(error.message);
     }
-    setMessages([...newMessage]);
+  };
+
+  useEffect(() => {
+    console.log(currentConversation, "current");
+    setMyInfo(currentConversation.members.find((m) => m.userid === intra_id));
+
+    loadMoreData();
+    Socket.emit("joinChatRom", currentConversation.id);
+    Socket.on("newMessage", (data) => {
+      setMessages((prev) => [...prev, data]);
+    });
+    return () => {
+      console.log("of new message");
+
+      Socket.off("newMessage");
+    };
   }, [currentConversation]);
 
   const onSubmit = () => {
@@ -83,25 +73,21 @@ const BoxMessenger: React.FC<PropsType> = ({ currentConversation }) => {
       setError(true);
       return;
     }
-
-    setMessages((old) => [
-      ...old,
-      {
-        id: "test",
-        conversationID: currentConversation.id,
-        content: value,
-        date: new Date(),
-        sender: currentConversation.members[0],
-        deleted: false,
-        status: messageStatus[Math.floor(Math.random() * 5)],
-      },
-    ]);
+    const body = {
+      message: value,
+      conversationId: currentConversation.id,
+    };
+    Socket.emit("sendMessage", body, (res: any) => {
+      const { data, error } = res;
+      if (error) message.error(error.message);
+      if (data) setMessages((prev) => [...prev, data]);
+    });
     setValue("");
     setShowEmoji(false);
   };
 
   const onEmojiClick = (event: any, emojiObject: any) => {
-    error && setError(false)
+    error && setError(false);
     setValue((old) => old.concat(emojiObject.emoji));
   };
 
@@ -109,13 +95,7 @@ const BoxMessenger: React.FC<PropsType> = ({ currentConversation }) => {
     <div className={style.container}>
       <div ref={bottomRef} className={style.box}>
         {messages.map((m, key) => {
-          return (
-            <MessageText
-              message={m}
-              key={key}
-              number={m.sender.id === currentConversation.members[0].id ? 1 : 0}
-            />
-          );
+          return <MessageText message={m} key={key} IamSender={m.members.users.intra_id === intra_id} />;
         })}
       </div>
       {showEmoji ? (
@@ -132,10 +112,10 @@ const BoxMessenger: React.FC<PropsType> = ({ currentConversation }) => {
           />
         </div>
       ) : null}
-
       <Form name="message" onFinish={onSubmit}>
         <Input.Group compact>
           <Input
+            disabled={!(myInfo?.active && !myInfo?.mute)}
             placeholder="Input your message"
             className={style.Input}
             status={error ? "error" : undefined}
@@ -144,15 +124,9 @@ const BoxMessenger: React.FC<PropsType> = ({ currentConversation }) => {
             value={value}
             onChange={(e) => {
               setValue(e.target.value);
-              error && setError(false)
+              error && setError(false);
             }}
-            prefix={
-              <Icon
-                component={EmojiSmileIcon}
-                style={{ fontSize: 20}}
-                onClick={() => setShowEmoji(!showEmoji)}
-              />
-            }
+            prefix={<Icon component={EmojiSmileIcon} style={{ fontSize: 20 }} onClick={() => setShowEmoji(!showEmoji)} />}
           />
           <Button
             size="large"
@@ -161,12 +135,7 @@ const BoxMessenger: React.FC<PropsType> = ({ currentConversation }) => {
             disabled={value.length === 0}
             type="primary"
             htmlType="submit"
-            icon={
-              <Icon
-                component={SendIcon}
-                style={{ fontSize: 20, color: "var(--primary-color)" }}
-              />
-            }
+            icon={<Icon component={SendIcon} style={{ fontSize: 20, color: "var(--primary-color)" }} />}
           />
         </Input.Group>
       </Form>

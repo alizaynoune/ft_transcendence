@@ -1,61 +1,46 @@
 import style from "./conversations.module.css";
 import React, { useState, useEffect } from "react";
 import NewConversation from "@/components/newConversation/NewConversation";
-import {
-  Input,
-  Button,
-  List,
-  Skeleton,
-  Divider,
-  Avatar,
-  Typography,
-  Popover,
-  Space,
-  Badge,
-} from "antd";
+import { Input, Button, List, Skeleton, Divider, Avatar, Popover } from "antd";
 import InfiniteScroll from "react-infinite-scroll-component";
-import moment from "moment";
+import axios from "@/config/axios";
+import { useAppSelector } from "@/hooks/reduxHooks";
+import { selectAuth } from "@/store/reducers/auth";
 // icons
 import Icon from "@ant-design/icons";
 import { SearchIcon, AddGroupIcon } from "@/icons/index";
 // Types
 import { ConversationsType } from "@/types/types";
 
-const { Paragraph } = Typography;
 type PropsType = {
-  setCurrentConversation: React.Dispatch<
-    React.SetStateAction<ConversationsType | undefined>
-  >;
+  setCurrentConversation: React.Dispatch<React.SetStateAction<ConversationsType | undefined>>;
 };
 
 const HistroyMessenger: React.FC<PropsType> = ({ setCurrentConversation }) => {
   const [loading, setLoading] = useState(false);
   const [initLoading, setInitLoading] = useState(true);
   const [data, setData] = useState<ConversationsType[]>([]);
+  const [hasMore, setHasMore] = useState<boolean>(false);
+  const { intra_id } = useAppSelector(selectAuth);
 
-  const loadMoreData = () => {
-    if (loading) {
-      return;
-    }
+  const loadMoreData = async () => {
+    if (loading) return;
     setLoading(true);
-    fetch("http://localhost:3000/api/fake/conversations")
-      .then((res) => res.json())
-      .then((body) => {
-        setData((old) => [...old, ...body.result]);
-        setLoading(false);
-        setInitLoading(false);
-      })
-      .catch(() => {
-        setLoading(false);
-      });
+    try {
+      const res = await axios.get("conversation");
+      setData(res.data);
+      setLoading(false);
+      setHasMore(res.data === 20);
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   useEffect(() => {
     loadMoreData();
-    //
   }, []);
 
-  const changeConversation = (id: string) => {
+  const changeConversation = (id: number) => {
     const conv = data.find((i) => i.id === id);
     conv && setCurrentConversation(conv);
   };
@@ -67,84 +52,43 @@ const HistroyMessenger: React.FC<PropsType> = ({ setCurrentConversation }) => {
           style={{
             borderRadius: "5px",
           }}
-          suffix={
-            <Icon
-              component={SearchIcon}
-              style={{ fontSize: "120%", color: "var(--primary-color)" }}
-            />
-          }
+          suffix={<Icon component={SearchIcon} style={{ fontSize: "120%", color: "var(--primary-color)" }} />}
           placeholder="find friends"
         />
-        <Popover
-          className={style.popover}
-          trigger="click"
-          content={<NewConversation />}
-          placement="bottomRight"
-        >
-          <Button
-            type="primary"
-            size="large"
-            icon={
-              <Icon component={AddGroupIcon} style={{ fontSize: "120%" }} />
-            }
-          />
+        <Popover className={style.popover} trigger="click" content={<NewConversation />} placement="bottomRight">
+          <Button type="primary" size="large" icon={<Icon component={AddGroupIcon} style={{ fontSize: "120%" }} />} />
         </Popover>
       </div>
       <div id="scrollableDiv" className={style.scrollableDiv}>
         <InfiniteScroll
           dataLength={data.length}
           next={loadMoreData}
-          hasMore={data.length < 50} // ! change to length of result
-          loader={<Skeleton avatar paragraph={{ rows: 2 }} active />}
+          hasMore={hasMore}
+          loader={<Skeleton avatar paragraph={{ rows: 1 }} active />}
           endMessage={<Divider plain>It is all, nothing more 🤐</Divider>}
           scrollableTarget="scrollableDiv"
         >
           <List
             className={style.conversationList}
-            loading={initLoading}
+            loading={loading}
             itemLayout="horizontal"
             dataSource={data}
             renderItem={(item) => (
-              <List.Item
-                style={{ cursor: "pointer" }}
-                onClick={() => changeConversation(item.id)}
-              >
+              <List.Item style={{ cursor: "pointer" }} onClick={() => changeConversation(item.id)}>
                 <List.Item.Meta
                   avatar={
                     item.members.length == 2 ? (
-                      <Avatar
-                        src={item.members[Math.floor(Math.random() * 2)].avatar}
-                        size="large"
-                      />
+                      <Avatar src={item.members[item.members[0].userid === intra_id ? 1 : 0].users.img_url} size="large" />
                     ) : (
                       <Avatar.Group maxCount={2} maxPopoverTrigger="click">
-                        {item.members.map((m, key) => (
-                          <Avatar src={m.avatar} key={key} />
-                        ))}
+                        {item.members.map((m, key) => m.userid !== intra_id && <Avatar src={m.users.img_url} key={key} />)}
                       </Avatar.Group>
                     )
                   }
                   title={
-                    item.type === "group"
-                      ? item.name
-                      : item.members[0].name.username // ! change to reciver name
-                  }
-                  description={
-                    <Paragraph
-                      ellipsis
-                      type="secondary"
-                      style={{ width: "90%" }}
-                    >
-                      {item.lastMessage.content}
-                    </Paragraph>
+                    item.type === "GROUP" ? item.title : item.members[item.members[0].userid === intra_id ? 1 : 0].users.username
                   }
                 />
-                <Space direction="vertical" style={{ alignItems: "flex-end" }}>
-                  <Badge count={3} style={{backgroundColor: 'var(--primary-color)'}} />
-                  <Paragraph type="secondary">
-                    {moment(item.lastMessage.date).fromNow()}
-                  </Paragraph>
-                </Space>
               </List.Item>
             )}
           />

@@ -1,49 +1,63 @@
-import style from './newConversation.module.css'
-import { Select, Spin, Button, Space } from 'antd';
-import type { SelectProps } from 'antd/es/select';
-import debounce from 'lodash/debounce';
-import React, { useEffect, useState } from 'react';
-import {AddGroupIcon} from '@/icons/index'
-import {CheckOutlined} from '@ant-design/icons'
+import style from "./newConversation.module.css";
+import { Select, Spin, Button, Space, message, Avatar, Typography } from "antd";
+import type { SelectProps } from "antd/es/select";
+import debounce from "lodash/debounce";
+import React, { useEffect, useState } from "react";
+import { AddGroupIcon } from "@/icons/index";
+import { CheckOutlined } from "@ant-design/icons";
+import axios from "@/config/axios";
+import { UserType } from "@/types/types";
 
 // Usage of DebounceSelect
 interface UserValue {
-  label: string;
-  value: string;
+  label: JSX.Element;
+  value: number;
 }
+const { Text } = Typography;
 
 async function fetchUserList(username: string): Promise<UserValue[]> {
-  console.log('fetching user', username);
-
-  return fetch('https://randomuser.me/api/?results=20')
-    .then(response => response.json())
-    .then(body =>
-      body.results.map(
-        (user: { name: { first: string; last: string }; login: { username: string } }) => ({
-          label: `${user.name.first} ${user.name.last}`,
-          value: user.login.username,
-        }),
-      ),
-    );
+  return new Promise(async (resolve, reject) => {
+    try {
+      const res = (await axios.get(`/users/all?findBy=${username}`)) as { data: UserType[] };
+      const data: UserValue[] = res.data.map(({ username, img_url, intra_id }) => ({
+        label: (
+          <Space>
+            <Avatar src={img_url} />
+            <Text>{username}</Text>
+          </Space>
+        ),
+        value: intra_id,
+      }));
+      return resolve(data);
+    } catch (error) {
+      return reject(error);
+    }
+  });
 }
 
-const NewConversation: React.FC = () =>{
+const NewConversation: React.FC = () => {
   const [selectedItems, setSelectedItems] = useState<UserValue[]>([]);
-  const [fetching, setFetching] = useState<boolean>(false)
+  const [fetching, setFetching] = useState<boolean>(false);
   const [value, setValue] = useState<UserValue[]>([]);
 
-  const onChange = (v:UserValue[]) => {
-    setSelectedItems(v)
-  }
+  const onChange = (v: UserValue[]) => {
+    setSelectedItems(v);
+  };
 
-  const onFinish = () => {
-    console.log(selectedItems);
-  }
+  const onFinish = async () => {
+    try {
+      const members = selectedItems.map((i) => i.value);
+      const res = await axios.post("conversation/create", { members });
+      console.log(res.data);
+    } catch (error) {
+      error instanceof Error && message.error(error.message);
+    }
+  };
 
-    return (
-      <Space>
+  return (
+    <Space>
       <Select
-      className={style.select}
+        className={style.select}
         labelInValue
         placeholder="Input friends username"
         mode="multiple"
@@ -51,27 +65,22 @@ const NewConversation: React.FC = () =>{
         filterOption={false}
         notFoundContent={fetching ? <Spin size="small" /> : null}
         onChange={onChange}
-        onSearch={v => {
-          setFetching(true)
-          fetchUserList(v).then(res => {
-            setValue(res)
-            setFetching(false)
-          })
-          .catch(e => {
-            setFetching(false)
-            console.log(e, 'error<<<<<<<');
-          })
-          
+        onSearch={(v) => {
+          setFetching(true);
+          fetchUserList(v)
+            .then((res) => {
+              setValue(res);
+              setFetching(false);
+            })
+            .catch((e) => {
+              setFetching(false);
+              e instanceof Error && message.error(e.message);
+            });
         }}
       />
-      <Button
-      type='primary'
-      shape='circle'
-      icon={<CheckOutlined />}
-      onClick={onFinish}
-      />
-      </Space>
-    );
-}
+      <Button type="primary" shape="circle" icon={<CheckOutlined />} onClick={onFinish} />
+    </Space>
+  );
+};
 
-export default NewConversation
+export default NewConversation;
