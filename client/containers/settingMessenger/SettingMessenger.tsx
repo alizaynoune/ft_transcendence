@@ -33,7 +33,7 @@ const SettingMessenger: React.FC<PropsType> = ({ conversation }) => {
             setTimeout(Math.random() > 0.5 ? resolve : reject, 1000);
           });
         } catch {
-          return console.log("Oops errors!");
+          return console.log("Oops errors!3");
         }
       },
       onCancel() {},
@@ -66,7 +66,7 @@ const SettingMessenger: React.FC<PropsType> = ({ conversation }) => {
             setTimeout(Math.random() > 0.5 ? resolve : reject, 1000);
           });
         } catch {
-          return console.log("Oops errors!");
+          return console.log("Oops errors!1");
         }
       },
       onCancel() {},
@@ -89,7 +89,7 @@ const SettingMessenger: React.FC<PropsType> = ({ conversation }) => {
             setTimeout(Math.random() > 0.5 ? resolve : reject, 1000);
           });
         } catch {
-          return console.log("Oops errors!");
+          return console.log("Oops errors!2");
         }
       },
       onCancel() {},
