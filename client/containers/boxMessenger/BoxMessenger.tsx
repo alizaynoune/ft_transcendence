@@ -112,35 +112,37 @@ const BoxMessenger: React.FC<PropsType> = ({ currentConversation }) => {
           />
         </div>
       ) : null}
-      <Form name="message_form" onFinish={onFinish} form={form}>
-        <Input.Group compact>
-          <Form.Item
-            hasFeedback={true}
-            name="new_message"
-            rules={[{ required: true, message: "Please select atlest on member!" }]}
-            style={{
-              width: "calc(100% - 40px)",
-            }}
-          >
-            <Input
-              disabled={!(myInfo?.active && !myInfo?.mute)}
-              placeholder="Input your message"
-              className={style.Input}
-              size="large"
-              prefix={<Icon component={EmojiSmileIcon} style={{ fontSize: 20 }} onClick={() => setShowEmoji(!showEmoji)} />}
-            />
-          </Form.Item>
-          <Form.Item noStyle={true}>
-            <Button
-              size="large"
-              ghost
-              type="primary"
-              htmlType="submit"
-              icon={<Icon component={SendIcon} style={{ fontSize: 20, color: "var(--primary-color)" }} />}
-            />
-          </Form.Item>
-        </Input.Group>
-      </Form>
+      {currentConversation.active && myInfo?.active && !myInfo?.mute && (
+        <Form name="message_form" onFinish={onFinish} form={form}>
+          <Input.Group compact>
+            <Form.Item
+              hasFeedback={true}
+              name="new_message"
+              rules={[{ required: true, message: "Please select atlest on member!" }]}
+              style={{
+                width: "calc(100% - 40px)",
+              }}
+            >
+              <Input
+                // disabled={!(myInfo?.active && !myInfo?.mute)}
+                placeholder="Input your message"
+                className={style.Input}
+                size="large"
+                prefix={<Icon component={EmojiSmileIcon} style={{ fontSize: 20 }} onClick={() => setShowEmoji(!showEmoji)} />}
+              />
+            </Form.Item>
+            <Form.Item noStyle={true}>
+              <Button
+                size="large"
+                ghost
+                type="primary"
+                htmlType="submit"
+                icon={<Icon component={SendIcon} style={{ fontSize: 20, color: "var(--primary-color)" }} />}
+              />
+            </Form.Item>
+          </Input.Group>
+        </Form>
+      )}
     </div>
   );
 };
