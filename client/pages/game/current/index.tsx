@@ -6,8 +6,8 @@ import authRoute from '@/tools/protectedRoutes'
 const Games : React.FC= () => {
     return(
         <div style={{
-            height: '100%',
-            maxHeight: 'calc(100vh - 170px)',
+            // height: '100%',
+            // maxHeight: 'calc(100vh - 170px)',
             // overflow: 'hidden'
         }}>
             <CurrentGame />

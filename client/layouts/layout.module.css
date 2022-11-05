@@ -3,13 +3,6 @@
   min-height: 100vh !important;
 }
 
-
-
-
-
-
-
-
 .layoutContent {
   /* background-color: aqua !important; */
   /* min-height: calc(100vh - 100px); */
@@ -17,14 +10,20 @@
 }
 
 .contentContainer {
-  padding: 10px;
+  /* padding: 10px 10px 5px 10px; */
+  overflow: hidden;
 
   /* min-height: calc(100vh - 140px); */
   /* background-color: black; */
   /* height: fit-content; */
 }
 
-.layoutFooter{
+.content {
+  margin: 5px;
+  height: calc(100vh - 160px);
+}
+
+.layoutFooter {
   margin: 0px 5px 5px 5px;
   border-radius: 8px;
   overflow: hidden;
@@ -71,7 +70,9 @@
     padding: 10px;
   }
 
-  .layoutFooter{margin: 5px;}
+  .layoutFooter {
+    margin: 5px;
+  }
 
   .footer {
     justify-content: space-around;
@@ -83,16 +84,23 @@
   }
 }
 
-@media screen and (max-width: 576px){
-  .contentContainer{padding: 5px;}
+@media screen and (max-width: 576px) {
+  .contentContainer {
+    padding: 5px;
+  }
 }
 
-@media screen and (min-width: 576px){}
+@media screen and (min-width: 576px) {
+}
 
-@media screen and (min-width: 768px){}
+@media screen and (min-width: 768px) {
+}
 
-@media screen and (min-width: 992px){}
+@media screen and (min-width: 992px) {
+}
 
-@media screen and (min-width: 1200px) {}
+@media screen and (min-width: 1200px) {
+}
 
-@media screen and (min-width: 1600px){}
+@media screen and (min-width: 1600px) {
+}

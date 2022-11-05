@@ -76,7 +76,7 @@ const BoxMessenger: React.FC<PropsType> = ({ currentConversation }) => {
   useEffect(() => {
     console.log(currentConversation, "current");
     setMyInfo(currentConversation.members.find((m) => m.userid === intra_id));
-    
+
     loadMoreData();
     Socket.on("newMessage", (data: DataType) => {
       setMessages((prev) => [...prev, data]);
@@ -125,12 +125,7 @@ const BoxMessenger: React.FC<PropsType> = ({ currentConversation }) => {
           <List
             itemLayout="horizontal"
             dataSource={messages}
-            renderItem={(item) => (
-              <>
-                <h3>{item.id}</h3>
-                <MessageText message={item} IamSender={item.members.users.intra_id === intra_id} />
-              </>
-            )}
+            renderItem={(item) => <MessageText message={item} IamSender={item.members.users.intra_id === intra_id} />}
           />
         </InfiniteScroll>
       </div>
