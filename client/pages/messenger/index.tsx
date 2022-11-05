@@ -6,14 +6,20 @@ import SettingMessenger from "@/containers/settingMessenger/SettingMessenger";
 import { SetStateAction, useEffect, useState } from "react";
 import { Tabs, Typography, Empty } from "antd";
 import { SettingIcon, MessageIcon } from "@/icons/index";
-import { ConversationMemberType, ConversationsType, MessageTextType } from "types/types";
+import { ConversationMemberType, ConversationsType, MessageTextType, ConversationsHistory } from "types/types";
 import Icon from "@ant-design/icons";
 import authRoute from "@/tools/protectedRoutes";
+import { useWindowSize } from "@/hooks/useWindowSize";
 
 const Messanger: React.FC = () => {
-  const [currentConversation, setCurrentConversation] = useState<ConversationsType | undefined>(undefined);
+  const [currentConversation, setCurrentConversation] = useState<ConversationsHistory | undefined>(undefined);
   const [currentTab, setCurrentTab] = useState<string>("Conversations");
+  const width = useWindowSize();
   const router = useRouter();
+
+  useEffect(() => {
+    console.log(width, "width change");
+  }, [width]);
   const items = [
     {
       key: "Conversations",
@@ -26,14 +32,7 @@ const Messanger: React.FC = () => {
       ),
       children: (
         <Conversations
-          setCurrentConversation={function (
-            value: SetStateAction<
-              | (ConversationsType & {
-                  members: ConversationMemberType[];
-                })
-              | undefined
-            >
-          ): void {
+          setCurrentConversation={(value: SetStateAction<ConversationsHistory | undefined>): void => {
             setCurrentConversation(value);
             setCurrentTab("Message");
           }}
@@ -72,49 +71,41 @@ const Messanger: React.FC = () => {
     handelUrlHash();
   }, []);
 
-  return (
-    <>
-      <div className={`${style.md} ${style.container}`}>
-        <Tabs
-          items={items}
-          centered
-          size="large"
-          className={style.tabsContainer}
-          activeKey={currentTab}
-          onChange={(key) => {
-            router.push(`#${key}`);
-            setCurrentTab(key);
+  return width < 1200 ? (
+    <div className={`${style.md} ${style.container}`}>
+      <Tabs
+        items={items}
+        centered
+        size="large"
+        className={style.tabsContainer}
+        activeKey={currentTab}
+        onChange={(key) => {
+          router.push(`#${key}`);
+          setCurrentTab(key);
+        }}
+      />
+    </div>
+  ) : (
+    <div className={`${style.xxl} ${style.container}`}>
+      <div className={style.historyMessenger}>
+        <Conversations
+          setCurrentConversation={(value: SetStateAction<ConversationsHistory | undefined>): void => {
+            setCurrentConversation(value);
           }}
+          {...setCurrentConversation}
         />
       </div>
-      <div className={`${style.xxl} ${style.container}`}>
-        <div className={style.historyMessenger}>
-          <Conversations
-            setCurrentConversation={function (
-              value: SetStateAction<
-                | (ConversationsType & {
-                    members: ConversationMemberType[];
-                  })
-                | undefined
-              >
-            ): void {
-              setCurrentConversation(value);
-            }}
-            {...setCurrentConversation}
-          />
-        </div>
-        <div className={style.boxMessenger}>
-          {currentConversation ? (
-            <BoxMessenger currentConversation={currentConversation} />
-          ) : (
-            <Empty description="No Conversation was selected." />
-          )}
-        </div>
-        <div className={style.settingMessenger}>
-          {currentConversation && <SettingMessenger conversation={currentConversation} />}
-        </div>
+      <div className={style.boxMessenger}>
+        {currentConversation ? (
+          <BoxMessenger currentConversation={currentConversation} />
+        ) : (
+          <Empty description="No Conversation was selected." />
+        )}
       </div>
-    </>
+      <div className={style.settingMessenger}>
+        {currentConversation && <SettingMessenger conversation={currentConversation} />}
+      </div>
+    </div>
   );
 };
 

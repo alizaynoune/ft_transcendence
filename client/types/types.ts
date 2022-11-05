@@ -160,7 +160,7 @@ export interface ConversationsType {
   active: boolean;
   created_at: Date;
   updated_at: Date;
-  members: ConversationMemberType[]
+  members: ConversationMemberType[];
 }
 
 export interface MessageTextType {
@@ -170,4 +170,8 @@ export interface MessageTextType {
   conversationid: number;
   created_at: Date;
   updated_at: Date;
+}
+
+export interface ConversationsHistory extends ConversationsType {
+  message: MessageTextType[];
 }

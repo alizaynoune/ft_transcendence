@@ -1,12 +1,9 @@
 import style from "./newConversation.module.css";
-import { Select, Spin, Button, Space, message, Avatar, Typography } from "antd";
-import type { SelectProps } from "antd/es/select";
-import debounce from "lodash/debounce";
-import React, { useEffect, useState } from "react";
-import { AddGroupIcon } from "@/icons/index";
+import { Select, Spin, Button, Space, message, Avatar, Typography, Input, Form } from "antd";
+import React, { useState } from "react";
 import { CheckOutlined } from "@ant-design/icons";
 import axios from "@/config/axios";
-import { UserType } from "@/types/types";
+import { UserType, ConversationsHistory } from "@/types/types";
 
 // Usage of DebounceSelect
 interface UserValue {
@@ -14,6 +11,11 @@ interface UserValue {
   value: number;
 }
 const { Text } = Typography;
+
+const layout = {
+  labelCol: { span: 8 },
+  wrapperCol: { span: 16 },
+};
 
 async function fetchUserList(username: string): Promise<UserValue[]> {
   return new Promise(async (resolve, reject) => {
@@ -35,51 +37,77 @@ async function fetchUserList(username: string): Promise<UserValue[]> {
   });
 }
 
-const NewConversation: React.FC = () => {
-  const [selectedItems, setSelectedItems] = useState<UserValue[]>([]);
+interface PropsType {
+  setConversations: React.Dispatch<React.SetStateAction<ConversationsHistory[]>>;
+  setCurrentConversation: React.Dispatch<React.SetStateAction<ConversationsHistory | undefined>>;
+}
+
+const NewConversation: React.FC<PropsType> = ({ setCurrentConversation, setConversations }) => {
   const [fetching, setFetching] = useState<boolean>(false);
   const [value, setValue] = useState<UserValue[]>([]);
+  const [loading, setLoading] = useState<boolean>(false);
 
-  const onChange = (v: UserValue[]) => {
-    setSelectedItems(v);
-  };
-
-  const onFinish = async () => {
+  const onFinish = async (values: { members: UserValue[]; title: string }) => {
     try {
-      const members = selectedItems.map((i) => i.value);
-      const res = await axios.post("conversation/create", { members });
-      console.log(res.data);
+      const { title } = values;
+      const members = values.members.map((i) => i.value);
+      const res = (await axios.post("conversation/create", { members, title })) as { data: ConversationsHistory };
+      message.success("conversation success created");
+      setConversations((prev) => {
+        const find = prev.find((c) => c.id === res.data.id);
+        if (!find) return [res.data, ...prev];
+        else {
+          const filter = prev.filter((c) => c.id !== res.data.id);
+          return [res.data, ...filter];
+        }
+      });
+      setCurrentConversation(res.data);
     } catch (error) {
       error instanceof Error && message.error(error.message);
     }
   };
 
   return (
-    <Space>
-      <Select
-        className={style.select}
-        labelInValue
-        placeholder="Input friends username"
-        mode="multiple"
-        options={value}
-        filterOption={false}
-        notFoundContent={fetching ? <Spin size="small" /> : null}
-        onChange={onChange}
-        onSearch={(v) => {
-          setFetching(true);
-          fetchUserList(v)
-            .then((res) => {
-              setValue(res);
-              setFetching(false);
-            })
-            .catch((e) => {
-              setFetching(false);
-              e instanceof Error && message.error(e.message);
-            });
-        }}
-      />
-      <Button type="primary" shape="circle" icon={<CheckOutlined />} onClick={onFinish} />
-    </Space>
+    <Form
+      name="create_new_group"
+      onFinish={onFinish}
+      style={{
+        width: 350,
+      }}
+    >
+      <Form.Item name="title" rules={[{ required: true, message: "Please input a title for this conversation!" }]}>
+        <Input placeholder="entry name of conversation" size="large" />
+      </Form.Item>
+      <Form.Item name="members" rules={[{ required: true, message: "Please select atlest on member!" }]}>
+        <Select
+          className={style.select}
+          labelInValue
+          placeholder="Select members"
+          mode="multiple"
+          options={value}
+          filterOption={false}
+          allowClear={true}
+          notFoundContent={fetching ? <Spin size="small" /> : null}
+          onSearch={(v) => {
+            setFetching(true);
+            fetchUserList(v)
+              .then((res) => {
+                setValue(res);
+                setFetching(false);
+              })
+              .catch((e) => {
+                setFetching(false);
+                e instanceof Error && message.error(e.message);
+              });
+          }}
+        />
+      </Form.Item>
+      <Form.Item>
+        <Button type="primary" size="large" htmlType="submit" icon={<CheckOutlined />}>
+          {"create"}
+        </Button>
+      </Form.Item>
+    </Form>
   );
 };
 

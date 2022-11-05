@@ -1,34 +1,38 @@
-.container{
-    overflow: hidden;
-    padding: 0 15px;
-    height: 100%;
-    max-height: 100vh;
-    /* background-color: aqua; */
-    /* min-height: 100%; */
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
+.container {
+  overflow: hidden;
+  padding: 0 15px;
+  height: 100%;
+  max-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  position: relative;
 }
 
-.box{
-    display: flex;
-    flex-direction: column;
-    width: 100%;
-    height: 100%;
-    /* min-height: calc(100% - 10px); */
-    /* min-height: calc(100% - 10px); */
-    overflow-y: scroll;
-    -ms-overflow-style: none;  /* IE and Edge */
+.box {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  height: 100%;
+  overflow-y: scroll;
+  -ms-overflow-style: none;
   scrollbar-width: none;
 }
 
 .box::-webkit-scrollbar {
-    display: none;
+  display: none;
 }
 
-.Input{    
-    border-left: 6px solid #3699FF;
-    border-radius: 6px 0 0 6px !important;
-    width: 100%;
+.Input {
+  border-left: 6px solid #3699ff;
+  border-radius: 6px 0 0 6px !important;
+  width: 100%;
 }
 
+.Picker {
+  position: absolute;
+  bottom: 80px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+}

@@ -1,7 +1,7 @@
 import style from "./conversations.module.css";
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, SetStateAction } from "react";
 import NewConversation from "@/components/newConversation/NewConversation";
-import { Input, Button, List, Skeleton, Divider, Avatar, Popover } from "antd";
+import { Input, Button, List, Skeleton, Divider, Avatar, Popover, Typography } from "antd";
 import InfiniteScroll from "react-infinite-scroll-component";
 import axios from "@/config/axios";
 import { useAppSelector } from "@/hooks/reduxHooks";
@@ -10,16 +10,18 @@ import { selectAuth } from "@/store/reducers/auth";
 import Icon from "@ant-design/icons";
 import { SearchIcon, AddGroupIcon } from "@/icons/index";
 // Types
-import { ConversationsType } from "@/types/types";
+import { ConversationsType, MessageTextType, ConversationsHistory } from "@/types/types";
+import moment from "moment";
+import Socket from "@/config/socket";
 
 type PropsType = {
-  setCurrentConversation: React.Dispatch<React.SetStateAction<ConversationsType | undefined>>;
+  setCurrentConversation: React.Dispatch<React.SetStateAction<ConversationsHistory | undefined>>;
 };
-
+const { Paragraph } = Typography;
 const HistroyMessenger: React.FC<PropsType> = ({ setCurrentConversation }) => {
   const [loading, setLoading] = useState(false);
   const [initLoading, setInitLoading] = useState(true);
-  const [data, setData] = useState<ConversationsType[]>([]);
+  const [data, setData] = useState<ConversationsHistory[]>([]);
   const [hasMore, setHasMore] = useState<boolean>(false);
   const { intra_id } = useAppSelector(selectAuth);
 
@@ -38,6 +40,20 @@ const HistroyMessenger: React.FC<PropsType> = ({ setCurrentConversation }) => {
 
   useEffect(() => {
     loadMoreData();
+    Socket.on("updateConversations", (data: ConversationsHistory) => {
+      setData((prev) => {
+        const find = prev.find((d) => d.id === data.id);
+        if (!find) return [data, ...prev];
+        else {
+          const filter = prev.filter((d) => d.id !== data.id);
+          return [data, ...filter];
+        }
+      });
+    });
+
+    return () => {
+      Socket.off("updateConversations");
+    };
   }, []);
 
   const changeConversation = (id: number) => {
@@ -55,7 +71,21 @@ const HistroyMessenger: React.FC<PropsType> = ({ setCurrentConversation }) => {
           suffix={<Icon component={SearchIcon} style={{ fontSize: "120%", color: "var(--primary-color)" }} />}
           placeholder="find friends"
         />
-        <Popover className={style.popover} trigger="click" content={<NewConversation />} placement="bottomRight">
+        <Popover
+          className={style.popover}
+          trigger="click"
+          content={
+            <NewConversation
+              setConversations={(value: SetStateAction<ConversationsHistory[]>): void => {
+                setData(value);
+              }}
+              setCurrentConversation={(value: SetStateAction<ConversationsHistory | undefined>): void => {
+                setCurrentConversation(value);
+              }}
+            />
+          }
+          placement="bottomRight"
+        >
           <Button type="primary" size="large" icon={<Icon component={AddGroupIcon} style={{ fontSize: "120%" }} />} />
         </Popover>
       </div>
@@ -88,7 +118,13 @@ const HistroyMessenger: React.FC<PropsType> = ({ setCurrentConversation }) => {
                   title={
                     item.type === "GROUP" ? item.title : item.members[item.members[0].userid === intra_id ? 1 : 0].users.username
                   }
+                  description={
+                    <Paragraph ellipsis type="secondary" style={{ width: "90%" }}>
+                      {item.message[0]?.message}
+                    </Paragraph>
+                  }
                 />
+                <Paragraph type="secondary">{moment(item.updated_at).fromNow()}</Paragraph>
               </List.Item>
             )}
           />
