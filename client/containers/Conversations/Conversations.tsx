@@ -1,7 +1,7 @@
 import style from "./conversations.module.css";
 import React, { useState, useEffect, SetStateAction } from "react";
 import NewConversation from "@/components/newConversation/NewConversation";
-import { Input, Button, List, Skeleton, Divider, Avatar, Popover, Typography } from "antd";
+import { Input, Button, List, Skeleton, Divider, Avatar, Popover, Typography, Modal } from "antd";
 import InfiniteScroll from "react-infinite-scroll-component";
 import axios from "@/config/axios";
 import { useAppSelector } from "@/hooks/reduxHooks";
@@ -56,9 +56,23 @@ const HistroyMessenger: React.FC<PropsType> = ({ setCurrentConversation }) => {
     };
   }, []);
 
+  const modalConversation = (conversation: ConversationsType) => {
+    return Modal.info({
+      title: "This is a notification message",
+      content: (
+        <div>
+          <p>some messages...some messages...</p>
+          <p>some messages...some messages...</p>
+        </div>
+      ),
+      onOk() {},
+    });
+  };
+
   const changeConversation = (id: number) => {
     const conv = data.find((i) => i.id === id);
     conv && setCurrentConversation(conv);
+    conv && modalConversation(conv)
   };
 
   return (

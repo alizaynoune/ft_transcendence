@@ -163,7 +163,8 @@ export interface ConversationsType {
   active: boolean;
   created_at: Date;
   updated_at: Date;
-  public: false;
+  public: boolean;
+  protected: boolean;
   members: ConversationMemberType[];
 }
 

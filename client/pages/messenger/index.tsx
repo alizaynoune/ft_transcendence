@@ -4,9 +4,9 @@ import Conversations from "@/containers/Conversations/Conversations";
 import BoxMessenger from "@/containers/boxMessenger/BoxMessenger";
 import SettingMessenger from "@/containers/settingMessenger/SettingMessenger";
 import { SetStateAction, useEffect, useState } from "react";
-import { Tabs, Typography, Empty } from "antd";
+import { Tabs, Typography, Empty, Modal } from "antd";
 import { SettingIcon, MessageIcon } from "@/icons/index";
-import { ConversationMemberType, ConversationsType, MessageTextType, } from "types/types";
+import { ConversationMemberType, ConversationsType, MessageTextType } from "types/types";
 import Icon from "@ant-design/icons";
 import authRoute from "@/tools/protectedRoutes";
 import { useWindowSize } from "@/hooks/useWindowSize";
@@ -16,6 +16,19 @@ const Messanger: React.FC = () => {
   const [currentTab, setCurrentTab] = useState<string>("Conversations");
   const width = useWindowSize();
   const router = useRouter();
+
+  const changeConversation = (conversation: ConversationsType) => {
+    return Modal.info({
+      title: "This is a notification message",
+      content: (
+        <div>
+          <p>some messages...some messages...</p>
+          <p>some messages...some messages...</p>
+        </div>
+      ),
+      onOk() {},
+    });
+  };
 
   useEffect(() => {
     console.log(width, "width change");
@@ -70,11 +83,6 @@ const Messanger: React.FC = () => {
   useEffect(() => {
     handelUrlHash();
   }, []);
-
-  useEffect(() => {
-    console.log('<<<<<<<<<<<<done>>>>>>>>>>>>>>>.');
-    
-  }, [currentConversation])
 
   return width < 1200 ? (
     <div className={`${style.md} ${style.container}`}>
