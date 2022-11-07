@@ -1,11 +1,12 @@
 import style from "./settingMessenger.module.css";
-import { Avatar, Button, Card, Space, Typography, List, Modal, message, Divider } from "antd";
+import { Avatar, Button, Card, Space, Typography, List, Modal, message, Divider, Popover, Form, Input } from "antd";
 import { ConversationMemberType, ConversationsType } from "@/types/types";
 import { useEffect, useState } from "react";
 import Icon from "@ant-design/icons";
 import { useAppSelector } from "@/hooks/reduxHooks";
 import { selectAuth } from "@/store/reducers/auth";
-import { TrashIcon, MuteIcon, OutIcon, SpeakerIcon } from "@/icons/index";
+import { TrashIcon, MuteIcon, OutIcon, SpeakerIcon, Settings2Icon, BlockUserIcon } from "@/icons/index";
+import ConversationFromSettings from "@/components/conversationSettingsForm/ConversationFormSettings";
 import Link from "next/link";
 import axios from "@/config/axios";
 type PropsType = {
@@ -96,6 +97,11 @@ const SettingMessenger: React.FC<PropsType> = ({ conversation }) => {
     });
   };
 
+useEffect(() => {
+  console.log('redering settings message');
+  
+},[])
+
   return (
     <div className={style.container}>
       {conversation.type !== "GROUP" && (
@@ -119,8 +125,6 @@ const SettingMessenger: React.FC<PropsType> = ({ conversation }) => {
         className={style.card}
         title={
           myInfo ? (
-            // <Space direction="vertical" split={<Divider />} style={{ gap: 0 }}>
-
             <Space>
               {conversation.type === "GROUP" && <Avatar src={myInfo.users.img_url} size="large" />}
               <Space direction="vertical" align={conversation.type === "GROUP" ? "start" : "center"}>
@@ -128,7 +132,7 @@ const SettingMessenger: React.FC<PropsType> = ({ conversation }) => {
                   <>
                     <Space>
                       <Typography.Text strong>{myInfo.users.username}</Typography.Text>
-                      {conversation.adminid === intra_id && <Typography.Text type="success">{"admin"}</Typography.Text>}
+                      {myInfo.isadmin && <Typography.Text type="success">{"admin"}</Typography.Text>}
                     </Space>
                     <Typography.Text type="secondary">{myInfo.users.email}</Typography.Text>
                   </>
@@ -147,7 +151,9 @@ const SettingMessenger: React.FC<PropsType> = ({ conversation }) => {
         }
         extra={
           conversation.type === "GROUP" ? (
-            <Icon component={OutIcon} style={{ fontSize: "20px" }} onClick={leaveConversation} />
+            <Popover trigger="click" placement="bottomRight" content={<ConversationFromSettings conversation={conversation} />}>
+              <Button type="primary" shape="circle" icon={<Icon component={Settings2Icon} style={{ fontSize: "15px" }} />} />
+            </Popover>
           ) : null
         }
       >
@@ -159,7 +165,7 @@ const SettingMessenger: React.FC<PropsType> = ({ conversation }) => {
             renderItem={(item) => (
               <List.Item
                 extra={
-                  conversation.adminid === intra_id ? (
+                  myInfo?.isadmin ? (
                     <Space direction="vertical">
                       <Button
                         type="primary"

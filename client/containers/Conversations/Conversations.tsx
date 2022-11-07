@@ -10,18 +10,18 @@ import { selectAuth } from "@/store/reducers/auth";
 import Icon from "@ant-design/icons";
 import { SearchIcon, AddGroupIcon } from "@/icons/index";
 // Types
-import { ConversationsType, MessageTextType, ConversationsHistory } from "@/types/types";
+import { ConversationsType, MessageTextType } from "@/types/types";
 import moment from "moment";
 import Socket from "@/config/socket";
 
 type PropsType = {
-  setCurrentConversation: React.Dispatch<React.SetStateAction<ConversationsHistory | undefined>>;
+  setCurrentConversation: React.Dispatch<React.SetStateAction<ConversationsType | undefined>>;
 };
 const { Paragraph } = Typography;
 const HistroyMessenger: React.FC<PropsType> = ({ setCurrentConversation }) => {
   const [loading, setLoading] = useState(false);
   const [initLoading, setInitLoading] = useState(true);
-  const [data, setData] = useState<ConversationsHistory[]>([]);
+  const [data, setData] = useState<ConversationsType[]>([]);
   const [hasMore, setHasMore] = useState<boolean>(false);
   const { intra_id } = useAppSelector(selectAuth);
 
@@ -40,7 +40,7 @@ const HistroyMessenger: React.FC<PropsType> = ({ setCurrentConversation }) => {
 
   useEffect(() => {
     loadMoreData();
-    Socket.on("updateConversations", (data: ConversationsHistory) => {
+    Socket.on("updateConversations", (data: ConversationsType) => {
       setData((prev) => {
         const find = prev.find((d) => d.id === data.id);
         if (!find) return [data, ...prev];
@@ -76,10 +76,10 @@ const HistroyMessenger: React.FC<PropsType> = ({ setCurrentConversation }) => {
           trigger="click"
           content={
             <NewConversation
-              setConversations={(value: SetStateAction<ConversationsHistory[]>): void => {
+              setConversations={(value: SetStateAction<ConversationsType[]>): void => {
                 setData(value);
               }}
-              setCurrentConversation={(value: SetStateAction<ConversationsHistory | undefined>): void => {
+              setCurrentConversation={(value: SetStateAction<ConversationsType | undefined>): void => {
                 setCurrentConversation(value);
               }}
             />
@@ -118,11 +118,11 @@ const HistroyMessenger: React.FC<PropsType> = ({ setCurrentConversation }) => {
                   title={
                     item.type === "GROUP" ? item.title : item.members[item.members[0].userid === intra_id ? 1 : 0].users.username
                   }
-                  description={
-                    <Paragraph ellipsis type="secondary" style={{ width: "90%" }}>
-                      {item.message[0]?.message}
-                    </Paragraph>
-                  }
+                  // description={
+                  //   <Paragraph ellipsis type="secondary" style={{ width: "90%" }}>
+                  //     {item.message[0]?.message}
+                  //   </Paragraph>
+                  // }
                 />
                 <Paragraph type="secondary">{moment(item.updated_at).fromNow()}</Paragraph>
               </List.Item>

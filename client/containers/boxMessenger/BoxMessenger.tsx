@@ -4,7 +4,7 @@ import Icon, { CloseOutlined, LoadingOutlined } from "@ant-design/icons";
 import MessageText from "@/components/messageText/MessageText";
 import { useState, useEffect, useRef } from "react";
 import axios from "@/config/axios";
-import { MessageTextType, UserType, ConversationMemberType, ConversationsHistory } from "types/types";
+import { MessageTextType, UserType, ConversationMemberType, ConversationsType } from "types/types";
 import { useAppSelector } from "@/hooks/reduxHooks";
 import { selectAuth } from "@/store/reducers/auth";
 import Socket from "@/config/socket";
@@ -13,7 +13,7 @@ import InfiniteScroll from "react-infinite-scroll-component";
 import { EmojiSmileIcon, SendIcon } from "@/icons/index";
 
 type PropsType = {
-  currentConversation: ConversationsHistory;
+  currentConversation: ConversationsType;
 };
 
 import dynamic from "next/dynamic";

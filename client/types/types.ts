@@ -147,6 +147,10 @@ export interface ConversationMemberType {
   userid: number;
   mute: boolean;
   active: boolean;
+  ban: boolean;
+  endmute: Date;
+  endban: Date;
+  isadmin: boolean;
   created_at: Date;
   updated_at: Date;
   users: UserType;
@@ -156,10 +160,10 @@ export interface ConversationsType {
   id: number;
   title: string;
   type: "GROUP" | "DIRECT";
-  adminid: number;
   active: boolean;
   created_at: Date;
   updated_at: Date;
+  public: false;
   members: ConversationMemberType[];
 }
 
@@ -170,8 +174,4 @@ export interface MessageTextType {
   conversationid: number;
   created_at: Date;
   updated_at: Date;
-}
-
-export interface ConversationsHistory extends ConversationsType {
-  message: MessageTextType[];
 }
