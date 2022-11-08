@@ -67,12 +67,11 @@ const HistroyMessenger: React.FC = () => {
 
             // });
             // console.log(form.getFieldValue('password'));
-            
-            const res = await changeCurrentConversation(conversation.id, form.getFieldValue('password'));
-            console.log(res);
-            
-          } catch(error) {
-            error instanceof Error && message.error(error.message)
+
+            const res = await changeCurrentConversation(conversation.id, form.getFieldValue("password"));
+            console.log(res, "error");
+          } catch (error: any) {
+            message.error(error instanceof Error ? error.message : error);
           }
         },
         onCancel() {},
@@ -81,8 +80,8 @@ const HistroyMessenger: React.FC = () => {
       try {
         const res = await changeCurrentConversation(conversation.id);
         console.log("done");
-      } catch (error) {
-        error instanceof Error && message.error(error.message);
+      } catch (error: any) {
+        message.error(error instanceof Error ? error.message : error);
       }
     }
   };

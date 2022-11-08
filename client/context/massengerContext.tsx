@@ -74,17 +74,20 @@ const MessengerProvider: React.FC<PropsType> = ({ children }) => {
       // } catch (error) {
       //   return reject(error);
       // }
-      Socket.emit('getConversation', { password}, (data: any, error: any) => {
-        console.log(data, error, '<<<<<<<<<<<<<<<<<');
+      Socket.emit('getConversation', {id, password}, (data: ConversationsType) => {
+        console.log(data, '<<<<<<<<<<<<<<<<<');
+        Socket.off('exception')
+        setCurrentConversation(data)
         resolve(data)
       })
-      Socket.on('getConversation', data => {
-        console.log(data, '>>>>>>>>>>>>');
-        return resolve(data)
-      })
-      Socket.on('error', data => {
-        console.log(data, '>>>>>>>>>>>>');
-        return resolve(data)
+      // Socket.on('getConversation', data => {
+      //   console.log(data, '>>>>>>>>>>>>');
+      //   return resolve(data)
+      // })
+      Socket.on('exception', error => {
+        console.log(error, '>>>>>>>>>>>>');
+        Socket.off('exception')
+        return reject(error.message)
       })
     });
   };
