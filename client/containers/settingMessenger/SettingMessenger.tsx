@@ -1,7 +1,7 @@
 import style from "./settingMessenger.module.css";
 import { Avatar, Button, Card, Space, Typography, List, Modal, message, Divider, Popover, Form, Input } from "antd";
-import { ConversationMemberType, ConversationsType } from "@/types/types";
-import { useEffect, useState } from "react";
+import { ConversationMemberType, ConversationsType, MessengerContextType } from "@/types/types";
+import { useContext, useEffect, useState } from "react";
 import Icon from "@ant-design/icons";
 import { useAppSelector } from "@/hooks/reduxHooks";
 import { selectAuth } from "@/store/reducers/auth";
@@ -9,20 +9,24 @@ import { TrashIcon, MuteIcon, OutIcon, SpeakerIcon, Settings2Icon, BlockUserIcon
 import ConversationFromSettings from "@/components/conversationSettingsForm/ConversationFormSettings";
 import Link from "next/link";
 import axios from "@/config/axios";
+import { MessengerContext } from "context/massengerContext";
+
 type PropsType = {
   conversation: ConversationsType;
 };
 
-const SettingMessenger: React.FC<PropsType> = ({ conversation }) => {
+const SettingMessenger: React.FC = () => {
   const { intra_id } = useAppSelector(selectAuth);
   const [members, setMembers] = useState<ConversationMemberType[]>([]);
   const [myInfo, setMyInfo] = useState<ConversationMemberType>();
+  const { currentConversation } = useContext(MessengerContext) as MessengerContextType;
 
   useEffect(() => {
-    console.log(conversation);
-    setMembers(conversation.members.filter((m) => m.userid !== intra_id));
-    setMyInfo(conversation.members.find((m) => m.userid === intra_id));
-  }, [conversation]);
+    console.log(currentConversation);
+    if (!currentConversation) return;
+    setMembers(currentConversation.members.filter((m) => m.userid !== intra_id));
+    setMyInfo(currentConversation.members.find((m) => m.userid === intra_id));
+  }, [currentConversation]);
 
   const leaveConversation = () => {
     console.log("leave");
@@ -43,11 +47,12 @@ const SettingMessenger: React.FC<PropsType> = ({ conversation }) => {
 
   const deleteConversation = () => {
     console.log("leave");
+    if (!currentConversation) return;
     Modal.confirm({
       title: "Are you sure to delete this conversation",
       async onOk() {
         try {
-          const res = await axios.put("conversation/leave", { conversationId: conversation.id });
+          const res = await axios.put("conversation/leave", { conversationId: currentConversation.id });
           console.log(res);
           message.success("success leave");
         } catch (error) {
@@ -97,14 +102,13 @@ const SettingMessenger: React.FC<PropsType> = ({ conversation }) => {
     });
   };
 
-useEffect(() => {
-  console.log('redering settings message');
-  
-},[])
+  useEffect(() => {
+    console.log("redering settings message");
+  }, []);
 
-  return (
+  return currentConversation ? (
     <div className={style.container}>
-      {conversation.type !== "GROUP" && (
+      {currentConversation.type !== "GROUP" && (
         <Avatar
           style={{
             marginBottom: "-35px",
@@ -114,10 +118,10 @@ useEffect(() => {
           size={70}
         />
       )}
-      {conversation.title && conversation.type === "GROUP" && (
+      {currentConversation.title && currentConversation.type === "GROUP" && (
         <Divider>
           <Typography.Text strong type="success">
-            {conversation.title}
+            {currentConversation.title}
           </Typography.Text>
         </Divider>
       )}
@@ -126,9 +130,9 @@ useEffect(() => {
         title={
           myInfo ? (
             <Space>
-              {conversation.type === "GROUP" && <Avatar src={myInfo.users.img_url} size="large" />}
-              <Space direction="vertical" align={conversation.type === "GROUP" ? "start" : "center"}>
-                {conversation.type === "GROUP" ? (
+              {currentConversation.type === "GROUP" && <Avatar src={myInfo.users.img_url} size="large" />}
+              <Space direction="vertical" align={currentConversation.type === "GROUP" ? "start" : "center"}>
+                {currentConversation.type === "GROUP" ? (
                   <>
                     <Space>
                       <Typography.Text strong>{myInfo.users.username}</Typography.Text>
@@ -150,14 +154,18 @@ useEffect(() => {
           null
         }
         extra={
-          conversation.type === "GROUP" ? (
-            <Popover trigger="click" placement="bottomRight" content={<ConversationFromSettings conversation={conversation} />}>
+          currentConversation.type === "GROUP" ? (
+            <Popover
+              trigger="click"
+              placement="bottomRight"
+              content={<ConversationFromSettings conversation={currentConversation} />}
+            >
               <Button type="primary" shape="circle" icon={<Icon component={Settings2Icon} style={{ fontSize: "15px" }} />} />
             </Popover>
           ) : null
         }
       >
-        {conversation.type === "GROUP" ? (
+        {currentConversation.type === "GROUP" ? (
           <List
             className={style.FriendsList}
             itemLayout="horizontal"
@@ -204,7 +212,7 @@ useEffect(() => {
         )}
       </Card>
     </div>
-  );
+  ) : null;
 };
 
 export default SettingMessenger;

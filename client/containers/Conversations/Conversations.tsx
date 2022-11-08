@@ -1,78 +1,90 @@
 import style from "./conversations.module.css";
-import React, { useState, useEffect, SetStateAction } from "react";
+import React, { useState, useEffect, SetStateAction, useContext } from "react";
 import NewConversation from "@/components/newConversation/NewConversation";
-import { Input, Button, List, Skeleton, Divider, Avatar, Popover, Typography, Modal } from "antd";
+import { Input, Button, List, Skeleton, Divider, Avatar, Popover, Typography, Modal, message, Form } from "antd";
 import InfiniteScroll from "react-infinite-scroll-component";
-import axios from "@/config/axios";
 import { useAppSelector } from "@/hooks/reduxHooks";
 import { selectAuth } from "@/store/reducers/auth";
 // icons
-import Icon from "@ant-design/icons";
+import Icon, { ExclamationCircleOutlined } from "@ant-design/icons";
 import { SearchIcon, AddGroupIcon } from "@/icons/index";
 // Types
-import { ConversationsType, MessageTextType } from "@/types/types";
+import { ConversationsType, MessengerContextType, PromiseReturn } from "@/types/types";
 import moment from "moment";
-import Socket from "@/config/socket";
+import { MessengerContext } from "context/massengerContext";
 
-type PropsType = {
-  setCurrentConversation: React.Dispatch<React.SetStateAction<ConversationsType | undefined>>;
-};
 const { Paragraph } = Typography;
-const HistroyMessenger: React.FC<PropsType> = ({ setCurrentConversation }) => {
+const HistroyMessenger: React.FC = () => {
   const [loading, setLoading] = useState(false);
-  const [initLoading, setInitLoading] = useState(true);
-  const [data, setData] = useState<ConversationsType[]>([]);
-  const [hasMore, setHasMore] = useState<boolean>(false);
   const { intra_id } = useAppSelector(selectAuth);
+  const [form] = Form.useForm();
+  const { conversations, hasMoreConversations, loadConversations, changeCurrentConversation } = useContext(
+    MessengerContext
+  ) as MessengerContextType;
 
   const loadMoreData = async () => {
-    if (loading) return;
-    setLoading(true);
     try {
-      const res = await axios.get("conversation");
-      setData(res.data);
+      setLoading(true);
+      await loadConversations();
       setLoading(false);
-      setHasMore(res.data === 20);
     } catch (error) {
+      setLoading(false);
       console.log(error);
     }
   };
 
-  useEffect(() => {
-    loadMoreData();
-    Socket.on("updateConversations", (data: ConversationsType) => {
-      setData((prev) => {
-        const find = prev.find((d) => d.id === data.id);
-        if (!find) return [data, ...prev];
-        else {
-          const filter = prev.filter((d) => d.id !== data.id);
-          return [data, ...filter];
-        }
+  // const modalConversation = (id: number) => {
+  //   {
+  //     return Modal.info({
+  //       title: "This is a notification message",
+  //       content: (
+  //         <div>
+  //           <p>some messages...some messages...</p>
+  //           <p>some messages...some messages...</p>
+  //         </div>
+  //       ),
+  //       onOk() {},
+  //     });
+  //   }
+  // };
+
+  const changeConversation = async (conversation: ConversationsType) => {
+    if (conversation.protected) {
+      Modal.info({
+        title: "Do you want to delete these items?",
+        closable: true,
+        content: (
+          <Form form={form}>
+            <Form.Item name="password" rules={[{ required: true, min: 6, max: 20 }]}>
+              <Input />
+            </Form.Item>
+          </Form>
+        ),
+        async onOk() {
+          try {
+            // return await new Promise((resolve, reject) => {
+            //   setTimeout(Math.random() > 0.5 ? resolve : reject, 1000);
+
+            // });
+            // console.log(form.getFieldValue('password'));
+            
+            const res = await changeCurrentConversation(conversation.id, form.getFieldValue('password'));
+            console.log(res);
+            
+          } catch(error) {
+            error instanceof Error && message.error(error.message)
+          }
+        },
+        onCancel() {},
       });
-    });
-
-    return () => {
-      Socket.off("updateConversations");
-    };
-  }, []);
-
-  const modalConversation = (conversation: ConversationsType) => {
-    return Modal.info({
-      title: "This is a notification message",
-      content: (
-        <div>
-          <p>some messages...some messages...</p>
-          <p>some messages...some messages...</p>
-        </div>
-      ),
-      onOk() {},
-    });
-  };
-
-  const changeConversation = (id: number) => {
-    const conv = data.find((i) => i.id === id);
-    conv && setCurrentConversation(conv);
-    conv && modalConversation(conv)
+    } else {
+      try {
+        const res = await changeCurrentConversation(conversation.id);
+        console.log("done");
+      } catch (error) {
+        error instanceof Error && message.error(error.message);
+      }
+    }
   };
 
   return (
@@ -85,29 +97,15 @@ const HistroyMessenger: React.FC<PropsType> = ({ setCurrentConversation }) => {
           suffix={<Icon component={SearchIcon} style={{ fontSize: "120%", color: "var(--primary-color)" }} />}
           placeholder="find friends"
         />
-        <Popover
-          className={style.popover}
-          trigger="click"
-          content={
-            <NewConversation
-              setConversations={(value: SetStateAction<ConversationsType[]>): void => {
-                setData(value);
-              }}
-              setCurrentConversation={(value: SetStateAction<ConversationsType | undefined>): void => {
-                setCurrentConversation(value);
-              }}
-            />
-          }
-          placement="bottomRight"
-        >
+        <Popover className={style.popover} trigger="click" content={<NewConversation />} placement="bottomRight">
           <Button type="primary" size="large" icon={<Icon component={AddGroupIcon} style={{ fontSize: "120%" }} />} />
         </Popover>
       </div>
       <div id="scrollableDiv" className={style.scrollableDiv}>
         <InfiniteScroll
-          dataLength={data.length}
+          dataLength={conversations.length}
           next={loadMoreData}
-          hasMore={hasMore}
+          hasMore={hasMoreConversations}
           loader={<Skeleton avatar paragraph={{ rows: 1 }} active />}
           endMessage={<Divider plain>It is all, nothing more 🤐</Divider>}
           scrollableTarget="scrollableDiv"
@@ -116,9 +114,9 @@ const HistroyMessenger: React.FC<PropsType> = ({ setCurrentConversation }) => {
             className={style.conversationList}
             loading={loading}
             itemLayout="horizontal"
-            dataSource={data}
+            dataSource={conversations}
             renderItem={(item) => (
-              <List.Item style={{ cursor: "pointer" }} onClick={() => changeConversation(item.id)}>
+              <List.Item style={{ cursor: "pointer" }} onClick={() => changeConversation(item)}>
                 <List.Item.Meta
                   avatar={
                     item.members.length == 2 ? (

@@ -5,7 +5,7 @@ declare global {
     status: number;
   }
 }
-type PromiseReturn = Error | { message: string };
+export type PromiseReturn = Error | { message: string };
 export type ActionsType =
   | "message"
   | "game/invite"
@@ -175,4 +175,18 @@ export interface MessageTextType {
   conversationid: number;
   created_at: Date;
   updated_at: Date;
+  members: { users: UserType };
+}
+
+export interface MessengerContextType {
+  conversations: ConversationsType[];
+  currentConversation: ConversationsType | null;
+  conversationPassword: string | null;
+  hasMoreConversations: boolean;
+  messages: MessageTextType[];
+  hasMoreMessages: boolean;
+  loadConversations: () => Promise<unknown>;
+  changeCurrentConversation: (id: number, password?: string) => Promise<unknown>;
+  loadMessages: () => Promise<unknown>;
+  newConversation: (values: { members: number[]; title: string; public: boolean; password: string }) => Promise<unknown>;
 }

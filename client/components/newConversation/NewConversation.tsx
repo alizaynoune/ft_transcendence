@@ -1,9 +1,10 @@
 import style from "./newConversation.module.css";
 import { Select, Spin, Button, Space, message, Avatar, Typography, Input, Form, Checkbox } from "antd";
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import { CheckOutlined } from "@ant-design/icons";
 import axios from "@/config/axios";
-import { UserType, ConversationsType } from "@/types/types";
+import { UserType, ConversationsType, MessengerContextType } from "@/types/types";
+import { MessengerContext } from "context/massengerContext";
 
 // Usage of DebounceSelect
 interface UserValue {
@@ -37,27 +38,18 @@ interface PropsType {
   setCurrentConversation: React.Dispatch<React.SetStateAction<ConversationsType | undefined>>;
 }
 
-const NewConversation: React.FC<PropsType> = ({ setCurrentConversation, setConversations }) => {
+const NewConversation: React.FC = () => {
   const [fetching, setFetching] = useState<boolean>(false);
   const [value, setValue] = useState<UserValue[]>([]);
-  const [loading, setLoading] = useState<boolean>(false);
+  const { newConversation } = useContext(MessengerContext) as MessengerContextType;
 
   const onFinish = async (values: { members: UserValue[]; title: string; public: boolean; password: string }) => {
     try {
       const members = values.members.map((i) => i.value);
-      const data = { members, title: values.title, public: values.public };
-      if (values.password) Object.assign(data, { password: values.password });
-      const res = (await axios.post("conversation/create", data)) as { data: ConversationsType };
-      message.success("conversation success created");
-      setConversations((prev) => {
-        const find = prev.find((c) => c.id === res.data.id);
-        if (!find) return [res.data, ...prev];
-        else {
-          const filter = prev.filter((c) => c.id !== res.data.id);
-          return [res.data, ...filter];
-        }
-      });
-      setCurrentConversation(res.data);
+      const data = { members, title: values.title, public: values.public, password: values.password };
+      Object.assign(data, { members });
+      const res = (await newConversation(data)) as string;
+      message.success(res);
     } catch (error) {
       error instanceof Error && message.error(error.message);
     }

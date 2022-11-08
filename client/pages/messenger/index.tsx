@@ -10,25 +10,26 @@ import { ConversationMemberType, ConversationsType, MessageTextType } from "type
 import Icon from "@ant-design/icons";
 import authRoute from "@/tools/protectedRoutes";
 import { useWindowSize } from "@/hooks/useWindowSize";
+import MessengerProvider, { MessengerContext } from "context/massengerContext";
 
-const Messanger: React.FC = () => {
+const Messenger: React.FC = () => {
   const [currentConversation, setCurrentConversation] = useState<ConversationsType | undefined>(undefined);
   const [currentTab, setCurrentTab] = useState<string>("Conversations");
   const width = useWindowSize();
   const router = useRouter();
 
-  const changeConversation = (conversation: ConversationsType) => {
-    return Modal.info({
-      title: "This is a notification message",
-      content: (
-        <div>
-          <p>some messages...some messages...</p>
-          <p>some messages...some messages...</p>
-        </div>
-      ),
-      onOk() {},
-    });
-  };
+  // const changeConversation = (conversation: ConversationsType) => {
+  //   return Modal.info({
+  //     title: "This is a notification message",
+  //     content: (
+  //       <div>
+  //         <p>some messages...some messages...</p>
+  //         <p>some messages...some messages...</p>
+  //       </div>
+  //     ),
+  //     onOk() {},
+  //   });
+  // };
 
   useEffect(() => {
     console.log(width, "width change");
@@ -43,21 +44,13 @@ const Messanger: React.FC = () => {
           <Icon className={style.tabIcon} component={MessageIcon} />
         </>
       ),
-      children: (
-        <Conversations
-          setCurrentConversation={(value: SetStateAction<ConversationsType | undefined>): void => {
-            setCurrentConversation(value);
-            setCurrentTab("Message");
-          }}
-          {...setCurrentConversation}
-        />
-      ),
+      children: <Conversations />,
     },
     {
       key: "Message",
       className: style.boxMessenger,
       label: null,
-      children: currentConversation ? <BoxMessenger currentConversation={currentConversation} /> : null,
+      children: currentConversation ? <BoxMessenger /> : null,
     },
     {
       key: "Settings",
@@ -68,11 +61,7 @@ const Messanger: React.FC = () => {
           <Icon className={style.tabIcon} component={SettingIcon} />
         </>
       ),
-      children: currentConversation ? (
-        <SettingMessenger conversation={currentConversation} />
-      ) : (
-        <Empty description="No Conversation was selected." />
-      ),
+      children: currentConversation ? <SettingMessenger /> : <Empty description="No Conversation was selected." />,
     },
   ];
   const handelUrlHash = () => {
@@ -84,42 +73,37 @@ const Messanger: React.FC = () => {
     handelUrlHash();
   }, []);
 
-  return width < 1200 ? (
-    <div className={`${style.md} ${style.container}`}>
-      <Tabs
-        items={items}
-        centered
-        size="large"
-        className={style.tabsContainer}
-        activeKey={currentTab}
-        onChange={(key) => {
-          router.push(`#${key}`);
-          setCurrentTab(key);
-        }}
-      />
-    </div>
-  ) : (
-    <div className={`${style.xxl} ${style.container}`}>
-      <div className={style.historyMessenger}>
-        <Conversations
-          setCurrentConversation={(value: SetStateAction<ConversationsType | undefined>): void => {
-            setCurrentConversation(value);
-          }}
-          {...setCurrentConversation}
-        />
-      </div>
-      <div className={style.boxMessenger}>
-        {currentConversation ? (
-          <BoxMessenger currentConversation={currentConversation} />
-        ) : (
-          <Empty description="No Conversation was selected." />
-        )}
-      </div>
-      <div className={style.settingMessenger}>
-        {currentConversation ? <SettingMessenger conversation={currentConversation} /> : null}
-      </div>
-    </div>
+  return (
+    <MessengerProvider>
+      {width < 1200 ? (
+        <div className={`${style.md} ${style.container}`}>
+          <Tabs
+            items={items}
+            centered
+            size="large"
+            className={style.tabsContainer}
+            activeKey={currentTab}
+            onChange={(key) => {
+              router.push(`#${key}`);
+              setCurrentTab(key);
+            }}
+          />
+        </div>
+      ) : (
+        <div className={`${style.xxl} ${style.container}`}>
+          <div className={style.historyMessenger}>
+            <Conversations />
+          </div>
+          <div className={style.boxMessenger}>
+            <BoxMessenger />
+          </div>
+          <div className={style.settingMessenger}>
+            <SettingMessenger />
+          </div>
+        </div>
+      )}
+    </MessengerProvider>
   );
 };
 
-export default authRoute(Messanger);
+export default authRoute(Messenger);

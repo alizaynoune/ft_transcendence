@@ -1,16 +1,17 @@
 import style from "./boxMessenger.module.css";
-import { Input, Button, List, message, Form, InputRef, Divider, Avatar } from "antd";
+import { Input, Button, List, message, Form, InputRef, Divider, Avatar, Empty } from "antd";
 import Icon, { CloseOutlined, LoadingOutlined } from "@ant-design/icons";
 import MessageText from "@/components/messageText/MessageText";
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect, useRef, useContext } from "react";
 import axios from "@/config/axios";
-import { MessageTextType, UserType, ConversationMemberType, ConversationsType } from "types/types";
+import { MessageTextType, UserType, ConversationMemberType, ConversationsType, MessengerContextType } from "types/types";
 import { useAppSelector } from "@/hooks/reduxHooks";
 import { selectAuth } from "@/store/reducers/auth";
 import Socket from "@/config/socket";
 import InfiniteScroll from "react-infinite-scroll-component";
 //Icons
 import { EmojiSmileIcon, SendIcon } from "@/icons/index";
+import { MessengerContext } from "context/massengerContext";
 
 type PropsType = {
   currentConversation: ConversationsType;
@@ -29,15 +30,16 @@ type DataType = MessageTextType & {
     users: UserType;
   };
 };
-const BoxMessenger: React.FC<PropsType> = ({ currentConversation }) => {
+const BoxMessenger: React.FC = () => {
   const bottomRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<InputRef>(null);
-  const [messages, setMessages] = useState<DataType[]>([]);
+  // const [messages, setMessages] = useState<DataType[]>([]);
   const [showEmoji, setShowEmoji] = useState<boolean>(false);
   const { intra_id } = useAppSelector(selectAuth);
   const [myInfo, setMyInfo] = useState<ConversationMemberType>();
   const [form] = Form.useForm();
-  const [hasMore, setHasMore] = useState<boolean>(true);
+  // const [hasMore, setHasMore] = useState<boolean>(true);
+  const { currentConversation, loadMessages, messages, hasMoreMessages } = useContext(MessengerContext) as MessengerContextType;
   // const [firstMessagId, setFirstMessageId] = useState<number>(0)
 
   // useEffect(() => {
@@ -53,20 +55,28 @@ const BoxMessenger: React.FC<PropsType> = ({ currentConversation }) => {
     });
 
     try {
-      const pageSize = 50;
-      const url =
-        messages.length && messages[0].conversationid === currentConversation.id
-          ? `conversation/${currentConversation.id}/messages?cursor=${messages[0].id}&pageSize=${pageSize}`
-          : `conversation/${currentConversation.id}/messages?pageSize=${pageSize}`;
-      const res = (await axios.get(url)) as { data: DataType[] };
-      console.log(res.data, "loading done");
-      const reversData = res.data.reverse();
-      setMessages((prev) => [...reversData, ...prev]);
-      setHasMore(reversData.length === pageSize);
+      console.log('loading message');
+      
+      await loadMessages()
     } catch (error) {
-      console.log(error);
       error instanceof Error && message.error(error.message);
     }
+
+    // try {
+    //   const pageSize = 50;
+    //   const url =
+    //     messages.length && messages[0].conversationid === currentConversation.id
+    //       ? `conversation/${currentConversation.id}/messages?cursor=${messages[0].id}&pageSize=${pageSize}`
+    //       : `conversation/${currentConversation.id}/messages?pageSize=${pageSize}`;
+    //   const res = (await axios.get(url)) as { data: DataType[] };
+    //   console.log(res.data, "loading done");
+    //   const reversData = res.data.reverse();
+    //   setMessages((prev) => [...reversData, ...prev]);
+    //   setHasMore(reversData.length === pageSize);
+    // } catch (error) {
+    //   console.log(error);
+    //   error instanceof Error && message.error(error.message);
+    // }
   };
 
   useEffect(() => {
@@ -75,31 +85,31 @@ const BoxMessenger: React.FC<PropsType> = ({ currentConversation }) => {
 
   useEffect(() => {
     console.log(currentConversation, "current");
-    setMyInfo(currentConversation.members.find((m) => m.userid === intra_id));
+    setMyInfo(currentConversation?.members.find((m) => m.userid === intra_id));
 
     loadMoreData();
-    Socket.on("newMessage", (data: DataType) => {
-      setMessages((prev) => [...prev, data]);
-    });
-    return () => {
-      setMessages([]);
-      Socket.off("newMessage");
-    };
+    // Socket.on("newMessage", (data: DataType) => {
+    //   setMessages((prev) => [...prev, data]);
+    // });
+    // return () => {
+    //   setMessages([]);
+    //   Socket.off("newMessage");
+    // };
   }, [currentConversation]);
 
   const onFinish = (values: { new_message: string }) => {
     const { new_message } = values;
-    if (new_message.length === 0) return;
-    const body = {
-      message: new_message,
-      conversationId: currentConversation.id,
-    };
-    Socket.emit("sendMessage", body, (res: any) => {
-      const { data, error } = res;
-      if (error) message.error(error.message);
-      if (data) setMessages((prev) => [...prev, data]);
-      inputRef.current?.focus();
-    });
+    // if (new_message.length === 0) return;
+    // const body = {
+    //   message: new_message,
+    //   conversationId: currentConversation.id,
+    // };
+    // Socket.emit("sendMessage", body, (res: any) => {
+    //   const { data, error } = res;
+    //   if (error) message.error(error.message);
+    //   if (data) setMessages((prev) => [...prev, data]);
+    //   inputRef.current?.focus();
+    // });
     form.resetFields(["new_message"]);
     setShowEmoji(false);
     console.log(inputRef);
@@ -110,14 +120,13 @@ const BoxMessenger: React.FC<PropsType> = ({ currentConversation }) => {
     form.setFields([{ name: "new_message", value, errors: [] }]);
   };
 
-  return (
+  return currentConversation ? (
     <div className={style.container}>
       <div id="scrollableBoxMessages" style={{ flexDirection: "column-reverse" }} ref={bottomRef} className={style.box}>
-        {/* {!loading && <LoadingOutlined twoToneColor="#eb2f96" style={{ fontSize: 20, color: "var(--primary-color)" }} />} */}
         <InfiniteScroll
           dataLength={messages.length}
           next={loadMoreData}
-          hasMore={hasMore}
+          hasMore={hasMoreMessages}
           loader={""}
           scrollableTarget="scrollableBoxMessages"
           inverse={true}
@@ -182,7 +191,7 @@ const BoxMessenger: React.FC<PropsType> = ({ currentConversation }) => {
         </Form>
       )}
     </div>
-  );
+  ) : <Empty description="No Conversation was selected." />;
 };
 
 export default BoxMessenger;

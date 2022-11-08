@@ -37,30 +37,28 @@ async function fetchUserList(username: string): Promise<UserValue[]> {
 const ConversationFromSettings: React.FC<PropsType> = ({ conversation }) => {
   const [fetching, setFetching] = useState<boolean>(false);
   const [value, setValue] = useState<UserValue[]>([]);
-  const [form] = Form.useForm()
-  console.log(conversation.public, '<<<<<<<<<<<<<<<<<<<<');
+  const [form] = Form.useForm();
+  console.log(conversation.public, "<<<<<<<<<<<<<<<<<<<<");
 
   const onFinish = (values: any) => {
     console.log(values);
   };
 
   useEffect(() => {
-    form.setFields([{name: 'title', value: conversation.title}, {name: 'public', value: conversation.public}])
-    
-  }, [conversation])
+    form.setFields([
+      { name: "title", value: conversation.title },
+      { name: "public", value: conversation.public },
+    ]);
+  }, [conversation]);
 
   return (
-    <Form name="conversationSettings" onFinish={onFinish} style={{ width: 350 }} form={form} >
+    <Form name="conversationSettings" onFinish={onFinish} style={{ width: 350 }} form={form}>
       <Form.Item name="title" initialValue={conversation.title}>
         <Input size="large" placeholder="title" />
-      </Form.Item>
-      <Form.Item name="oldPassword">
-        <Input size="large" placeholder="old password" />
       </Form.Item>
       <Form.Item name="newPassword">
         <Input size="large" placeholder="new password" />
       </Form.Item>
-
       <Form.Item name="members">
         <Select
           labelInValue
@@ -86,8 +84,11 @@ const ConversationFromSettings: React.FC<PropsType> = ({ conversation }) => {
         />
       </Form.Item>
       <Form.Item name="public" valuePropName="checked" initialValue={conversation.public}>
-          <Checkbox>{"Public"}</Checkbox>
-        </Form.Item>
+        <Checkbox>{"Public"}</Checkbox>
+      </Form.Item>
+      <Form.Item name="protected" valuePropName="checked" initialValue={conversation.protected}>
+        <Checkbox>{"protected by password"}</Checkbox>
+      </Form.Item>
       <Form.Item>
         <Button type="primary" htmlType="submit">
           {"update"}
