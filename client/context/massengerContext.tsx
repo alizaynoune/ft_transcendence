@@ -93,9 +93,11 @@ const MessengerProvider: React.FC<PropsType> = ({ children }) => {
   };
 
   const newConversation = async (values: { members: number[]; title: string; public: boolean; password: string }) => {
+    console.log(values);
+
     return new Promise(async (resolve, reject) => {
-      const data = { members: values.members, title: values.title, public: values.public };
-      Socket.emit("createConversation", data, (res: ConversationsType) => {
+      // const data = { members: values.members, title: values.title, public: values.public };
+      Socket.emit("createConversation", values, (res: ConversationsType) => {
         setConversations((prev) => {
           const find = prev.find((c) => c.id === res.id);
           if (!find) return [res, ...prev];
