@@ -155,11 +155,7 @@ const SettingMessenger: React.FC = () => {
         }
         extra={
           currentConversation.type === "GROUP" ? (
-            <Popover
-              trigger="click"
-              placement="bottomRight"
-              content={<ConversationFromSettings conversation={currentConversation} />}
-            >
+            <Popover trigger="click" placement="bottomRight" content={<ConversationFromSettings />}>
               <Button type="primary" shape="circle" icon={<Icon component={Settings2Icon} style={{ fontSize: "15px" }} />} />
             </Popover>
           ) : null

@@ -1,8 +1,9 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import Style from "./conversationFromSettings.module.css";
 import { Form, Input, Button, Avatar, Space, Typography, message, Select, Spin, Checkbox } from "antd";
-import { ConversationsType, UserType } from "@/types/types";
+import { ConversationsType, UserType, MessengerContextType } from "@/types/types";
 import axios from "@/config/axios";
+import { MessengerContext } from "context/massengerContext";
 
 const { Text } = Typography;
 interface PropsType {
@@ -34,67 +35,80 @@ async function fetchUserList(username: string): Promise<UserValue[]> {
   });
 }
 
-const ConversationFromSettings: React.FC<PropsType> = ({ conversation }) => {
+const ConversationFromSettings: React.FC = () => {
   const [fetching, setFetching] = useState<boolean>(false);
   const [value, setValue] = useState<UserValue[]>([]);
   const [form] = Form.useForm();
-  console.log(conversation.public, "<<<<<<<<<<<<<<<<<<<<");
+  const { currentConversation } = useContext(MessengerContext) as MessengerContextType;
+  const [showField, setShowField] = useState<boolean>(false);
 
   const onFinish = (values: any) => {
     console.log(values);
   };
 
   useEffect(() => {
+    if (!currentConversation) return;
     form.setFields([
-      { name: "title", value: conversation.title },
-      { name: "public", value: conversation.public },
+      { name: "title", value: currentConversation.title },
+      { name: "public", value: currentConversation.public },
+      { name: "protected", value: currentConversation.protected },
+      { name: "members", value: undefined },
     ]);
-  }, [conversation]);
+    setShowField(currentConversation.protected);
+  }, [currentConversation]);
 
   return (
-    <Form name="conversationSettings" onFinish={onFinish} style={{ width: 350 }} form={form}>
-      <Form.Item name="title" initialValue={conversation.title}>
-        <Input size="large" placeholder="title" />
-      </Form.Item>
-      <Form.Item name="newPassword">
-        <Input size="large" placeholder="new password" />
-      </Form.Item>
-      <Form.Item name="members">
-        <Select
-          labelInValue
-          placeholder="add members"
-          mode="multiple"
-          options={value}
-          filterOption={false}
-          allowClear={true}
-          notFoundContent={fetching ? <Spin size="small" /> : null}
-          size="large"
-          onSearch={(v) => {
-            setFetching(true);
-            fetchUserList(v)
-              .then((res) => {
-                setValue(res);
-                setFetching(false);
-              })
-              .catch((e) => {
-                setFetching(false);
-                e instanceof Error && message.error(e.message);
-              });
-          }}
-        />
-      </Form.Item>
-      <Form.Item name="public" valuePropName="checked" initialValue={conversation.public}>
-        <Checkbox>{"Public"}</Checkbox>
-      </Form.Item>
-      <Form.Item name="protected" valuePropName="checked" initialValue={conversation.protected}>
-        <Checkbox>{"protected by password"}</Checkbox>
-      </Form.Item>
-      <Form.Item>
-        <Button type="primary" htmlType="submit">
-          {"update"}
-        </Button>
-      </Form.Item>
-    </Form>
+    currentConversation && (
+      <Form name="conversationSettings" onFinish={onFinish} style={{ width: 350 }} form={form}>
+        <Form.Item name="title" rules={[{required: true, min: 2, max: 20}]} >
+          <Input size="large" placeholder="title" />
+        </Form.Item>
+        <Form.Item name="password" hidden={!showField} rules={[{ required: showField }]}>
+          <Input size="large" placeholder={currentConversation.protected ? "update password" : "set password"} />
+        </Form.Item>
+        <Form.Item name="members">
+          <Select
+            labelInValue
+            placeholder="add members"
+            mode="multiple"
+            options={value}
+            filterOption={false}
+            allowClear={true}
+            notFoundContent={fetching ? <Spin size="small" /> : null}
+            size="large"
+            onSearch={(v) => {
+              setFetching(true);
+              fetchUserList(v)
+                .then((res) => {
+                  setValue(res);
+                  setFetching(false);
+                })
+                .catch((e) => {
+                  setFetching(false);
+                  e instanceof Error && message.error(e.message);
+                });
+            }}
+          />
+        </Form.Item>
+        <Form.Item name="public" valuePropName="checked">
+          <Checkbox>{"Public"}</Checkbox>
+        </Form.Item>
+        <Form.Item name="protected" valuePropName="checked">
+          <Checkbox
+            onChange={(e) => {
+              setShowField(e.target.checked);
+            }}
+          >
+            {"protected by password"}
+          </Checkbox>
+        </Form.Item>
+        <Form.Item>
+          <Button type="primary" htmlType="submit">
+            {"update"}
+          </Button>
+        </Form.Item>
+      </Form>
+    )
   );
 };
 
