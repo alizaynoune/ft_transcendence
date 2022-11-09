@@ -6,9 +6,6 @@ import axios from "@/config/axios";
 import { MessengerContext } from "context/massengerContext";
 
 const { Text } = Typography;
-interface PropsType {
-  conversation: ConversationsType;
-}
 
 interface UserValue {
   label: JSX.Element;
@@ -39,11 +36,34 @@ const ConversationFromSettings: React.FC = () => {
   const [fetching, setFetching] = useState<boolean>(false);
   const [value, setValue] = useState<UserValue[]>([]);
   const [form] = Form.useForm();
-  const { currentConversation } = useContext(MessengerContext) as MessengerContextType;
+  const { currentConversation, updateConversation } = useContext(MessengerContext) as MessengerContextType;
   const [showField, setShowField] = useState<boolean>(false);
+  const [passwordRequired, setPasswordRequired] = useState<boolean>(false);
 
-  const onFinish = (values: any) => {
-    console.log(values);
+  const onFinish = async (values: {
+    title: string;
+    public: boolean;
+    protected: boolean;
+    members: UserValue[];
+    password?: string;
+  }) => {
+    const update = { ...values };
+    if (!update.protected || !update.password?.length) delete update.password;
+    if (values.members) Object.assign(update, { members: values.members.map((i) => i.value) });
+    const diff = Object.fromEntries(
+      // @ts-ignore
+      Object.entries(update).filter(([key, value]) => value !== undefined && currentConversation[key] !== value)
+    );
+
+    if (Object.keys(diff).length) {
+      console.log(diff);
+      try {
+        await updateConversation(diff);
+      } catch (error: any) {
+        message.error(error instanceof Error ? error.message : error);
+        console.log(error, "<<<<<<<<<<<<<<<<<<<,");
+      }
+    }
   };
 
   useEffect(() => {
@@ -55,15 +75,16 @@ const ConversationFromSettings: React.FC = () => {
       { name: "members", value: undefined },
     ]);
     setShowField(currentConversation.protected);
+    setPasswordRequired(!currentConversation.protected);
   }, [currentConversation]);
 
   return (
     currentConversation && (
       <Form name="conversationSettings" onFinish={onFinish} style={{ width: 350 }} form={form}>
-        <Form.Item name="title" rules={[{required: true, min: 2, max: 20}]} >
+        <Form.Item name="title" rules={[{ required: true, min: 2, max: 20 }]}>
           <Input size="large" placeholder="title" />
         </Form.Item>
-        <Form.Item name="password" hidden={!showField} rules={[{ required: showField }]}>
+        <Form.Item name="password" hidden={!showField} rules={[{ required: showField && passwordRequired, min: 6, max: 20 }]}>
           <Input size="large" placeholder={currentConversation.protected ? "update password" : "set password"} />
         </Form.Item>
         <Form.Item name="members">
@@ -79,8 +100,11 @@ const ConversationFromSettings: React.FC = () => {
             onSearch={(v) => {
               setFetching(true);
               fetchUserList(v)
-                .then((res) => {
-                  setValue(res);
+                .then((res: UserValue[]) => {
+                  const filtered = res.filter((u) => {
+                    return !currentConversation.members.some((m) => m.userid === u.value);
+                  });
+                  setValue(filtered);
                   setFetching(false);
                 })
                 .catch((e) => {
@@ -96,6 +120,7 @@ const ConversationFromSettings: React.FC = () => {
         <Form.Item name="protected" valuePropName="checked">
           <Checkbox
             onChange={(e) => {
+              form.setFieldValue("password", "");
               setShowField(e.target.checked);
             }}
           >

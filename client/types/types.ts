@@ -189,4 +189,11 @@ export interface MessengerContextType {
   loadMessages: () => Promise<unknown>;
   newConversation: (values: { members: number[]; title: string; public: boolean; password: string }) => Promise<unknown>;
   sendMessage: (message: string) => Promise<unknown>;
+  updateConversation: (values: {
+    members?: number[];
+    title?: string;
+    public?: boolean;
+    password?: string;
+    protected?: boolean;
+  }) => Promise<unknown>;
 }

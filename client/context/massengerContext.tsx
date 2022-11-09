@@ -38,12 +38,40 @@ const MessengerProvider: React.FC<PropsType> = ({ children }) => {
   };
 
   const sendMessage = (message: string) => {
-    // sendMessage
     return new Promise((resolve, reject) => {
       Socket.emit("sendMessage", { id: currentConversation?.id, message }, (res: MessageTextType) => {
         console.log(res);
         console.log(res, "new message");
         setMessages((prev) => [...prev, res]);
+        Socket.off("exception");
+        return resolve(200);
+      });
+      Socket.on("exception", (error) => {
+        Socket.off("exception");
+        return reject(error.message);
+      });
+    });
+  };
+
+  const updateConversation = (update: {
+    title?: string;
+    public?: boolean;
+    protected?: boolean;
+    members?: number[];
+    password?: string;
+  }) => {
+    return new Promise((resolve, reject) => {
+      Socket.emit("updateConversation", { ...update, id: currentConversation?.id }, (res: ConversationsType) => {
+        console.log(res, ">>>>>>done");
+        setConversations((prev) => {
+          const find = prev.find((c) => c.id === res.id);
+          if (!find) return [res, ...prev];
+          else {
+            const filter = prev.filter((c) => c.id !== res.id);
+            return [res, ...filter];
+          }
+        });
+        setCurrentConversation(res);
         Socket.off("exception");
         return resolve(200);
       });
@@ -78,7 +106,6 @@ const MessengerProvider: React.FC<PropsType> = ({ children }) => {
 
   const changeCurrentConversation = (id: number, password?: string) => {
     return new Promise((resolve, reject) => {
-      console.log(id);
       Socket.emit("getConversation", { id, password }, (data: ConversationsType) => {
         setMessages([]);
         Socket.off("exception");
@@ -93,8 +120,6 @@ const MessengerProvider: React.FC<PropsType> = ({ children }) => {
   };
 
   const newConversation = async (values: { members: number[]; title: string; public: boolean; password: string }) => {
-    console.log(values);
-
     return new Promise(async (resolve, reject) => {
       Socket.emit("createConversation", values, (res: ConversationsType) => {
         setConversations((prev) => {
@@ -106,7 +131,6 @@ const MessengerProvider: React.FC<PropsType> = ({ children }) => {
           }
         });
         setCurrentConversation(res);
-        console.log(res);
         Socket.off("exception");
         return resolve("conversation success created");
       });
@@ -120,15 +144,12 @@ const MessengerProvider: React.FC<PropsType> = ({ children }) => {
   useEffect(() => {
     if (!currentConversation) return;
     Socket.on("newMessage", (data: MessageTextType) => {
-      console.log(data, "new message recived", currentConversation?.id, data.conversationid);
-
       if (currentConversation && currentConversation.id === data.conversationid) {
         setMessages((prev) => [...prev, data]);
       }
     });
     return () => {
       console.log("off new message");
-
       Socket.off("newMessage");
     };
   }, [currentConversation]);
@@ -136,8 +157,14 @@ const MessengerProvider: React.FC<PropsType> = ({ children }) => {
   useEffect(() => {
     loadConversations();
     Socket.on("newConversation", (data: ConversationsType) => {
-      console.log("new conversation <<<<<<<<");
-      setConversations((prev) => [data, ...prev]);
+      setConversations((prev) => {
+        const find = prev.find((c) => c.id === data.id);
+        if (!find) return [data, ...prev];
+        else {
+          const filter = prev.filter((c) => c.id !== data.id);
+          return [data, ...filter];
+        }
+      });
     });
     return () => {
       Socket.off("newConversation");
@@ -157,6 +184,7 @@ const MessengerProvider: React.FC<PropsType> = ({ children }) => {
         loadMessages,
         newConversation,
         sendMessage,
+        updateConversation,
       }}
     >
       {[children]}

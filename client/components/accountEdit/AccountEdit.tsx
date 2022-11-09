@@ -33,7 +33,7 @@ const AccountSetting: React.FC = () => {
     }))(values);
     const diff = Object.fromEntries(
       // @ts-ignore
-      Object.entries(update).filter(([key, value]) => profile[key] != value)
+      Object.entries(update).filter(([key, value]) => profile[key] !== value)
     );
     if (Object.keys(diff).length) {
       console.log(diff);

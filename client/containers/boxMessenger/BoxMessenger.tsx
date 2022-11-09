@@ -125,7 +125,7 @@ const BoxMessenger: React.FC = () => {
             <Form.Item
               hasFeedback={true}
               name="new_message"
-              rules={[{ required: true, message: "Please select atlest on member!" }]}
+              rules={[{ required: true, message: "Please input your message" }]}
               style={{
                 width: "calc(100% - 40px)",
               }}

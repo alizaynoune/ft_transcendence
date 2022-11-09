@@ -11,10 +11,6 @@ import Link from "next/link";
 import axios from "@/config/axios";
 import { MessengerContext } from "context/massengerContext";
 
-type PropsType = {
-  conversation: ConversationsType;
-};
-
 const SettingMessenger: React.FC = () => {
   const { intra_id } = useAppSelector(selectAuth);
   const [members, setMembers] = useState<ConversationMemberType[]>([]);
@@ -155,9 +151,18 @@ const SettingMessenger: React.FC = () => {
         }
         extra={
           currentConversation.type === "GROUP" ? (
-            <Popover trigger="click" placement="bottomRight" content={<ConversationFromSettings />}>
-              <Button type="primary" shape="circle" icon={<Icon component={Settings2Icon} style={{ fontSize: "15px" }} />} />
-            </Popover>
+            myInfo?.isadmin ? (
+              <Popover trigger="click" placement="bottomRight" content={<ConversationFromSettings />}>
+                <Button type="primary" shape="circle" icon={<Icon component={Settings2Icon} style={{ fontSize: "15px" }} />} />
+              </Popover>
+            ) : (
+              <Button
+                type="primary"
+                danger
+                icon={<Icon component={OutIcon} style={{ fontSize: "16px" }} />}
+                onClick={deleteUser}
+              ></Button>
+            )
           ) : null
         }
       >
