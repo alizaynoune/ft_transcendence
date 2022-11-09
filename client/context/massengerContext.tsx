@@ -2,7 +2,7 @@ import axios from "@/config/axios";
 import React, { useEffect, useState } from "react";
 import { ConversationsType, MessengerContextType, MessageTextType, PromiseReturn } from "@/types/types";
 import { loadToken } from "@/tools/localStorage";
-import Socket from '@/config/socket'
+import Socket from "@/config/socket";
 
 interface PropsType {
   children: React.ReactNode;
@@ -13,7 +13,7 @@ export const MessengerContext = React.createContext<MessengerContextType | null>
 const MessengerProvider: React.FC<PropsType> = ({ children }) => {
   const [conversations, setConversations] = useState<ConversationsType[]>([]);
   const [currentConversation, setCurrentConversation] = useState<ConversationsType | null>(null);
-  const [password, setPassword] = useState<string | null>(null);
+  // const [password, setPassword] = useState<string | null>(null);
   const [loading, setLoading] = useState<boolean>(false);
   const [hasMoreConversations, setHasMoreConversations] = useState<boolean>(false);
   const [messages, setMessages] = useState<MessageTextType[]>([]);
@@ -37,87 +37,110 @@ const MessengerProvider: React.FC<PropsType> = ({ children }) => {
     });
   };
 
-  const loadMessages = async () => {
-    return new Promise(async (resolve, reject) => {
-      if (!currentConversation) return;
-      try {
-        const pageSize = 50;
-        const url =
-          messages.length && messages[0].conversationid === currentConversation.id
-            ? `conversation/${currentConversation.id}/messages?cursor=${messages[0].id}&pageSize=${pageSize}`
-            : `conversation/${currentConversation.id}/messages?pageSize=${pageSize}`;
-        console.log(url, password);
-        const res = (await axios.post(url, { password })) as { data: MessageTextType[] };
-        console.log(res.data, "loading done");
-        const reversData = res.data.reverse();
-        setMessages((prev) => [...reversData, ...prev]);
-        setHasMoreMessages(reversData.length === pageSize);
-        console.log(res.data);
-
+  const sendMessage = (message: string) => {
+    // sendMessage
+    return new Promise((resolve, reject) => {
+      Socket.emit("sendMessage", { id: currentConversation?.id, message }, (res: MessageTextType) => {
+        console.log(res);
+        console.log(res, "new message");
+        setMessages((prev) => [...prev, res]);
+        Socket.off("exception");
         return resolve(200);
-      } catch (error) {
-        return reject(error);
-      }
+      });
+      Socket.on("exception", (error) => {
+        Socket.off("exception");
+        return reject(error.message);
+      });
     });
   };
 
-  const changeCurrentConversation = async (id: number, password?: string) => {
-    return new Promise(async (resolve, reject) => {
-      // try {
-      //   const access_token = loadToken();
-      //   const res = await axios.post(`conversation/${id}`, { password });
-      //   console.log(res.data);
-      //   setMessages([]);
-      //   if (password) setPassword(password);
-      //   setCurrentConversation(res.data);
-      //   return resolve(res.data);
-      // } catch (error) {
-      //   return reject(error);
-      // }
-      Socket.emit('getConversation', {id, password}, (data: ConversationsType) => {
-        console.log(data, '<<<<<<<<<<<<<<<<<');
-        Socket.off('exception')
-        setCurrentConversation(data)
-        resolve(data)
-      })
-      // Socket.on('getConversation', data => {
-      //   console.log(data, '>>>>>>>>>>>>');
-      //   return resolve(data)
-      // })
-      Socket.on('exception', error => {
-        console.log(error, '>>>>>>>>>>>>');
-        Socket.off('exception')
-        return reject(error.message)
-      })
+  const loadMessages = () => {
+    return new Promise((resolve, reject) => {
+      if (!currentConversation) return;
+      const pageSize = 50;
+      const data = { id: currentConversation.id, pageSize };
+      if (messages.length && messages[0].conversationid === currentConversation.id)
+        Object.assign(data, { cursor: messages[0].id });
+      Socket.emit("getConversationMessages", data, (res: MessageTextType[]) => {
+        Socket.off("exception");
+        const reversData = res.reverse();
+        setMessages((prev) => [...reversData, ...prev]);
+        setHasMoreMessages(reversData.length === pageSize);
+        resolve(200);
+      });
+
+      Socket.on("exception", (error) => {
+        Socket.off("exception");
+        return reject(error.message);
+      });
+    });
+  };
+
+  const changeCurrentConversation = (id: number, password?: string) => {
+    return new Promise((resolve, reject) => {
+      console.log(id);
+      Socket.emit("getConversation", { id, password }, (data: ConversationsType) => {
+        setMessages([]);
+        Socket.off("exception");
+        setCurrentConversation(data);
+        resolve(200);
+      });
+      Socket.on("exception", (error) => {
+        Socket.off("exception");
+        return reject(error.message);
+      });
     });
   };
 
   const newConversation = async (values: { members: number[]; title: string; public: boolean; password: string }) => {
     return new Promise(async (resolve, reject) => {
-      try {
-        const data = { members: values.members, title: values.title, public: values.public };
-        if (values.password) Object.assign(data, { password: values.password });
-        const res = (await axios.post("conversation/create", data)) as { data: ConversationsType };
+      const data = { members: values.members, title: values.title, public: values.public };
+      Socket.emit("createConversation", data, (res: ConversationsType) => {
         setConversations((prev) => {
-          const find = prev.find((c) => c.id === res.data.id);
-          if (!find) return [res.data, ...prev];
+          const find = prev.find((c) => c.id === res.id);
+          if (!find) return [res, ...prev];
           else {
-            const filter = prev.filter((c) => c.id !== res.data.id);
-            return [res.data, ...filter];
+            const filter = prev.filter((c) => c.id !== res.id);
+            return [res, ...filter];
           }
         });
-        setCurrentConversation(res.data);
+        setCurrentConversation(res);
+        console.log(res);
+        Socket.off("exception");
         return resolve("conversation success created");
-      } catch (error) {
-        return reject(error);
-      }
+      });
+      Socket.on("exception", (error) => {
+        Socket.off("exception");
+        return reject(error.message);
+      });
     });
   };
 
   useEffect(() => {
-    console.log("loading conversation <<<<<<<<<<<<<<<<<<<<<<<<>>>>>>>>>>>>>>>>>>.");
+    if (!currentConversation) return;
+    Socket.on("newMessage", (data: MessageTextType) => {
+      console.log(data, "new message recived", currentConversation?.id, data.conversationid);
 
+      if (currentConversation && currentConversation.id === data.conversationid) {
+        setMessages((prev) => [...prev, data]);
+      }
+    });
+    return () => {
+      console.log("off new message");
+
+      Socket.off("newMessage");
+    };
+  }, [currentConversation]);
+
+  useEffect(() => {
     loadConversations();
+    Socket.on("newConversation", (data: ConversationsType) => {
+      console.log("new conversation <<<<<<<<");
+      setConversations((prev) => [data, ...prev]);
+    });
+    return () => {
+      Socket.off("newConversation");
+    };
   }, []);
 
   return (
@@ -125,7 +148,6 @@ const MessengerProvider: React.FC<PropsType> = ({ children }) => {
       value={{
         conversations,
         currentConversation,
-        conversationPassword: password,
         hasMoreConversations,
         messages,
         hasMoreMessages,
@@ -133,6 +155,7 @@ const MessengerProvider: React.FC<PropsType> = ({ children }) => {
         changeCurrentConversation,
         loadMessages,
         newConversation,
+        sendMessage,
       }}
     >
       {[children]}

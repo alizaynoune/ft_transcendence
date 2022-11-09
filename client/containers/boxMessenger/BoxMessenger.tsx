@@ -39,80 +39,41 @@ const BoxMessenger: React.FC = () => {
   const [myInfo, setMyInfo] = useState<ConversationMemberType>();
   const [form] = Form.useForm();
   // const [hasMore, setHasMore] = useState<boolean>(true);
-  const { currentConversation, loadMessages, messages, hasMoreMessages } = useContext(MessengerContext) as MessengerContextType;
-  // const [firstMessagId, setFirstMessageId] = useState<number>(0)
-
-  // useEffect(() => {
-  //   bottomRef.current?.scroll({
-  //     top: bottomRef.current.scrollHeight,
-  //   });
-  // }, [currentConversation]);
+  const { currentConversation, loadMessages, messages, hasMoreMessages, sendMessage } = useContext(
+    MessengerContext
+  ) as MessengerContextType;
 
   const loadMoreData = async () => {
     console.log("loading.....");
     bottomRef.current?.scroll({
       top: bottomRef.current.scrollHeight,
     });
-
     try {
-      console.log('loading message');
-      
-      await loadMessages()
+      await loadMessages();
     } catch (error) {
-      error instanceof Error && message.error(error.message);
+      message.error(error instanceof Error ? error.message : (error as string));
     }
-
-    // try {
-    //   const pageSize = 50;
-    //   const url =
-    //     messages.length && messages[0].conversationid === currentConversation.id
-    //       ? `conversation/${currentConversation.id}/messages?cursor=${messages[0].id}&pageSize=${pageSize}`
-    //       : `conversation/${currentConversation.id}/messages?pageSize=${pageSize}`;
-    //   const res = (await axios.get(url)) as { data: DataType[] };
-    //   console.log(res.data, "loading done");
-    //   const reversData = res.data.reverse();
-    //   setMessages((prev) => [...reversData, ...prev]);
-    //   setHasMore(reversData.length === pageSize);
-    // } catch (error) {
-    //   console.log(error);
-    //   error instanceof Error && message.error(error.message);
-    // }
   };
-
-  useEffect(() => {
-    console.log(messages, "update");
-  }, [messages]);
 
   useEffect(() => {
     console.log(currentConversation, "current");
     setMyInfo(currentConversation?.members.find((m) => m.userid === intra_id));
 
     loadMoreData();
-    // Socket.on("newMessage", (data: DataType) => {
-    //   setMessages((prev) => [...prev, data]);
-    // });
-    // return () => {
-    //   setMessages([]);
-    //   Socket.off("newMessage");
-    // };
   }, [currentConversation]);
 
-  const onFinish = (values: { new_message: string }) => {
+  const onFinish = async (values: { new_message: string }) => {
     const { new_message } = values;
-    // if (new_message.length === 0) return;
-    // const body = {
-    //   message: new_message,
-    //   conversationId: currentConversation.id,
-    // };
-    // Socket.emit("sendMessage", body, (res: any) => {
-    //   const { data, error } = res;
-    //   if (error) message.error(error.message);
-    //   if (data) setMessages((prev) => [...prev, data]);
-    //   inputRef.current?.focus();
-    // });
-    form.resetFields(["new_message"]);
-    setShowEmoji(false);
-    console.log(inputRef);
+    try {
+      await sendMessage(new_message);
+      form.resetFields(["new_message"]);
+      setShowEmoji(false);
+      console.log(inputRef.current);
+      inputRef.current?.focus();
+      console.log(inputRef.current);
+    } catch (error) {
+      message.error(error instanceof Error ? error.message : (error as string));
+    }
   };
 
   const onEmojiClick = (event: any, emojiObject: any) => {
@@ -134,7 +95,7 @@ const BoxMessenger: React.FC = () => {
           <List
             itemLayout="horizontal"
             dataSource={messages}
-            renderItem={(item) => <MessageText message={item} IamSender={item.members.users.intra_id === intra_id} />}
+            renderItem={(item) => <MessageText message={item} IamSender={item.users.intra_id === intra_id} />}
           />
         </InfiniteScroll>
       </div>
@@ -191,7 +152,9 @@ const BoxMessenger: React.FC = () => {
         </Form>
       )}
     </div>
-  ) : <Empty description="No Conversation was selected." />;
+  ) : (
+    <Empty description="No Conversation was selected." />
+  );
 };
 
 export default BoxMessenger;

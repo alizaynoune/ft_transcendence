@@ -5,11 +5,7 @@ import moment from "moment";
 import { MessageTextType, UserType } from "@/types/types";
 
 type PropsType = {
-  message: MessageTextType & {
-    members: {
-      users: UserType;
-    };
-  };
+  message: MessageTextType;
   IamSender: boolean;
 };
 
@@ -18,7 +14,7 @@ const MessageText: React.FC<PropsType> = ({ message, IamSender }) => {
     <div className={style.container}>
       <div className={IamSender ? style.right : style.left}>
         <div className={style.messageContainer}>
-          {!IamSender && <Avatar src={message.members.users.img_url} />}
+          {!IamSender && <Avatar src={message.users.img_url} />}
           <div className={style.messageText}>
             <Typography.Text style={{ fontSize: 16 }}>{message.message}</Typography.Text>
             <Typography.Paragraph style={{ margin: 0 }} type="secondary">

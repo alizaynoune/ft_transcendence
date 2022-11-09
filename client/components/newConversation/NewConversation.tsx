@@ -33,11 +33,6 @@ async function fetchUserList(username: string): Promise<UserValue[]> {
   });
 }
 
-interface PropsType {
-  setConversations: React.Dispatch<React.SetStateAction<ConversationsType[]>>;
-  setCurrentConversation: React.Dispatch<React.SetStateAction<ConversationsType | undefined>>;
-}
-
 const NewConversation: React.FC = () => {
   const [fetching, setFetching] = useState<boolean>(false);
   const [value, setValue] = useState<UserValue[]>([]);
@@ -51,7 +46,7 @@ const NewConversation: React.FC = () => {
       const res = (await newConversation(data)) as string;
       message.success(res);
     } catch (error) {
-      error instanceof Error && message.error(error.message);
+      message.error(error instanceof Error ? error.message : (error as string));
     }
   };
 

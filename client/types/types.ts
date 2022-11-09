@@ -175,13 +175,12 @@ export interface MessageTextType {
   conversationid: number;
   created_at: Date;
   updated_at: Date;
-  members: { users: UserType };
+  users: UserType;
 }
 
 export interface MessengerContextType {
   conversations: ConversationsType[];
   currentConversation: ConversationsType | null;
-  conversationPassword: string | null;
   hasMoreConversations: boolean;
   messages: MessageTextType[];
   hasMoreMessages: boolean;
@@ -189,4 +188,5 @@ export interface MessengerContextType {
   changeCurrentConversation: (id: number, password?: string) => Promise<unknown>;
   loadMessages: () => Promise<unknown>;
   newConversation: (values: { members: number[]; title: string; public: boolean; password: string }) => Promise<unknown>;
+  sendMessage: (message: string) => Promise<unknown>;
 }
