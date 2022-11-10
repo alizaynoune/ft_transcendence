@@ -1,7 +1,7 @@
 import React, { useContext, useEffect, useState } from "react";
 import Style from "./conversationFromSettings.module.css";
 import { Form, Input, Button, Avatar, Space, Typography, message, Select, Spin, Checkbox } from "antd";
-import { ConversationsType, UserType, MessengerContextType } from "@/types/types";
+import { UserType, MessengerContextType } from "@/types/types";
 import axios from "@/config/axios";
 import { MessengerContext } from "context/massengerContext";
 
@@ -61,7 +61,6 @@ const ConversationFromSettings: React.FC = () => {
         await updateConversation(diff);
       } catch (error: any) {
         message.error(error instanceof Error ? error.message : error);
-        console.log(error, "<<<<<<<<<<<<<<<<<<<,");
       }
     }
   };

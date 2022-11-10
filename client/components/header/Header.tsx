@@ -23,7 +23,6 @@ const Header: React.FC<PropsType> = (props) => {
 
   useEffect(() => {
     if (isAuth) {
-      socket.emit("events", { message: "emit from client" });
       socket.on("userChangeStatus", (data) => {
         console.log(data);
       });

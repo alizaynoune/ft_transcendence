@@ -1,32 +1,16 @@
 import style from "./settingMessenger.module.css";
-import { Avatar, Button, Card, Space, Typography, List, Modal, message, Divider, Popover, TimePicker, DatePicker } from "antd";
-import { ConversationMemberType, ConversationsType, MessengerContextType } from "@/types/types";
+import { Avatar, Button, Card, Space, Typography, List, Modal, message, Divider, Popover } from "antd";
+import { ConversationMemberType, MessengerContextType } from "@/types/types";
 import { useContext, useEffect, useState } from "react";
-import Icon, { AudioMutedOutlined, AudioOutlined, LogoutOutlined, StopOutlined } from "@ant-design/icons";
+import Icon, { LogoutOutlined } from "@ant-design/icons";
 import { useAppSelector } from "@/hooks/reduxHooks";
 import { selectAuth } from "@/store/reducers/auth";
-import {
-  TrashIcon,
-  MuteIcon,
-  OutIcon,
-  SpeakerIcon,
-  Settings2Icon,
-  BlockUserIcon,
-  BlockIcon,
-  DotsVIcon,
-  PlayGameIcon,
-} from "@/icons/index";
+import { TrashIcon, Settings2Icon, DotsVIcon } from "@/icons/index";
 import ConversationFromSettings from "@/components/conversationSettingsForm/ConversationFormSettings";
+import ConversationMembersActions from "@/components/ConversationMembersActions/ConversationMembersActions";
 import Link from "next/link";
 import axios from "@/config/axios";
 import { MessengerContext } from "context/massengerContext";
-import { RangePickerProps } from "antd/lib/date-picker";
-import moment from "moment";
-import ModalInviteGame from "@/components/modalInviteGame/ModalInviteGame";
-
-const disabledDate: RangePickerProps["disabledDate"] = (current) => {
-  return current && current < moment().startOf("day");
-};
 
 const SettingMessenger: React.FC = () => {
   const { intra_id } = useAppSelector(selectAuth);
@@ -35,14 +19,12 @@ const SettingMessenger: React.FC = () => {
   const { currentConversation, leaveConversation } = useContext(MessengerContext) as MessengerContextType;
 
   useEffect(() => {
-    console.log(currentConversation);
     if (!currentConversation) return;
     setMembers(currentConversation.members.filter((m) => m.userid !== intra_id));
     setMyInfo(currentConversation.members.find((m) => m.userid === intra_id));
   }, [currentConversation]);
 
   const ConfirmleaveConversation = () => {
-    console.log("leave");
     Modal.confirm({
       title: "Are you sure to leave this conversation",
       async onOk() {
@@ -58,7 +40,7 @@ const SettingMessenger: React.FC = () => {
   };
 
   const deleteConversation = () => {
-    console.log("leave");
+    console.log("delete");
     if (!currentConversation) return;
     Modal.confirm({
       title: "Are you sure to delete this conversation",
@@ -74,60 +56,10 @@ const SettingMessenger: React.FC = () => {
       onCancel() {},
     });
   };
-  const deleteUser = () => {
-    console.log("leave");
-    Modal.confirm({
-      title: "Are you sure to delete this user from conversation",
-      content: <DatePicker disabledDate={disabledDate} showTime defaultValue={moment()} showNow={false} />,
-      async onOk() {
-        try {
-          return await new Promise((resolve, reject) => {
-            setTimeout(Math.random() > 0.5 ? resolve : reject, 1000);
-          });
-        } catch {
-          return console.log("Oops errors!1");
-        }
-      },
-      onCancel() {},
-    });
-  };
-
-  const toggleMuteUser = () => {
-    Modal.confirm({
-      title: "Are you sure to delete this toggle mute user conversation",
-      content: <DatePicker disabledDate={disabledDate} showTime defaultValue={moment()} showNow={false} />,
-      async onOk() {
-        try {
-          // put conversation/togglemute
-          //   {
-          //     "conversationId": 2,
-          //     "memberId": 2,
-          //     "mute": false
-          // }
-          return await new Promise((resolve, reject) => {
-            setTimeout(Math.random() > 0.5 ? resolve : reject, 1000);
-          });
-        } catch {
-          return console.log("Oops errors!2");
-        }
-      },
-      onCancel() {},
-    });
-  };
 
   useEffect(() => {
     console.log("redering settings message");
   }, []);
-
-  const memberActions = (item: ConversationMemberType) => {
-    return (
-      <Space>
-        <Button danger ghost icon={<StopOutlined />} onClick={deleteUser} />
-        <Button type="primary" ghost icon={item.mute ? <AudioOutlined /> : <AudioMutedOutlined />} onClick={toggleMuteUser} />
-        <ModalInviteGame user={item.users} buttonProps={{ type: "primary", ghost: true }} />
-      </Space>
-    );
-  };
 
   return currentConversation ? (
     <div className={style.container}>
@@ -197,7 +129,7 @@ const SettingMessenger: React.FC = () => {
               <List.Item
                 extra={
                   myInfo?.isadmin && item.active && !item.isadmin ? (
-                    <Popover trigger="click" placement="left" content={memberActions(item)}>
+                    <Popover trigger="click" placement="left" content={<ConversationMembersActions member={item} />}>
                       <Button ghost type="primary" icon={<Icon component={DotsVIcon} style={{ fontSize: "16px" }} />} />
                     </Popover>
                   ) : item.isadmin ? (

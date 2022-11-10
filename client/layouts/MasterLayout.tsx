@@ -134,7 +134,6 @@ const MasterLayout: React.FC<Props> = (props) => {
       socket.on("connect_error", (error) => {
         message.error(error?.message);
       });
-
       return () => {
         socket.off("connect_error");
         socket.off("error");
@@ -170,7 +169,7 @@ const MasterLayout: React.FC<Props> = (props) => {
           </Affix>
         )}
         <Layout className={style.contentContainer}>
-          <Content className={style.content} >{children}</Content>
+          <Content className={style.content}>{children}</Content>
           <div className={style.layoutFooter}>
             {router.pathname === "/" && (
               <div className={style.sectionGameInfo}>
