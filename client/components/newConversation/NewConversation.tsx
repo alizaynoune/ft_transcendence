@@ -40,7 +40,7 @@ const NewConversation: React.FC = () => {
 
   const onFinish = async (values: { members: UserValue[]; title: string; public: boolean; password: string }) => {
     try {
-      const members = values.members.map((i) => i.value);
+      const members = values.members?.map((i) => i.value);
       const data = { members, title: values.title, public: values.public, password: values.password };
       Object.assign(data, { members });
       const res = (await newConversation(data)) as string;
@@ -65,7 +65,7 @@ const NewConversation: React.FC = () => {
         <Input placeholder="entre password" size="large" />
       </Form.Item>
 
-      <Form.Item name="members" rules={[{ required: true, message: "Please select atlest on member!" }]}>
+      <Form.Item name="members">
         <Select
           className={style.select}
           labelInValue

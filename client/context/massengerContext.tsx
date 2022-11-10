@@ -1,7 +1,6 @@
 import axios from "@/config/axios";
 import React, { useEffect, useState } from "react";
-import { ConversationsType, MessengerContextType, MessageTextType, PromiseReturn } from "@/types/types";
-import { loadToken } from "@/tools/localStorage";
+import { ConversationsType, MessengerContextType, MessageTextType } from "@/types/types";
 import Socket from "@/config/socket";
 
 interface PropsType {
@@ -13,43 +12,72 @@ export const MessengerContext = React.createContext<MessengerContextType | null>
 const MessengerProvider: React.FC<PropsType> = ({ children }) => {
   const [conversations, setConversations] = useState<ConversationsType[]>([]);
   const [currentConversation, setCurrentConversation] = useState<ConversationsType | null>(null);
-  // const [password, setPassword] = useState<string | null>(null);
   const [loading, setLoading] = useState<boolean>(false);
   const [hasMoreConversations, setHasMoreConversations] = useState<boolean>(false);
   const [messages, setMessages] = useState<MessageTextType[]>([]);
   const [hasMoreMessages, setHasMoreMessages] = useState<boolean>(false);
+
+  ///conversation/3/togglemute
+  // "userId": 1,
+  // "mute": false
+  // endban
+  //endmute
+
+  const muteMembers = async (values: { userId: number; mute: boolean; endmute?: Date }) => {
+    return new Promise(async (resolve, reject) => {
+      try {
+        const update = await axios.put(`conversation/${currentConversation?.id}/togglemute`, values);
+        console.log(update);
+        return resolve(200);
+      } catch (error) {
+        return reject(error);
+      }
+    });
+  };
+
+  const banMembers = async (values: { userId: number; ban: boolean; endban?: Date }) => {
+    return new Promise(async (resolve, reject) => {
+      try {
+        const update = await axios.put(`conversation/${currentConversation?.id}/togglemute`, values);
+        console.log(update);
+        return resolve(200);
+      } catch (error) {
+        return reject(error);
+      }
+    });
+  };
 
   const loadConversations = async () => {
     if (loading) return;
     setLoading(true);
     return new Promise(async (resolve, reject) => {
       try {
-        // set pagenation
-        const res = await axios.get("conversation");
+        const pageSize = 50;
+        const url = conversations.length
+          ? `conversation/?cursor=${conversations.at(-1)?.id}&pageSize=${pageSize}`
+          : `conversation/?pageSize=${pageSize}`;
+        const res = await axios.get(url);
         setConversations(res.data);
         setLoading(false);
         setHasMoreConversations(res.data === 20);
         return resolve(200);
       } catch (error) {
-        console.log(error);
         return reject(error);
       }
     });
   };
 
   const sendMessage = (message: string) => {
-    return new Promise((resolve, reject) => {
-      Socket.emit("sendMessage", { id: currentConversation?.id, message }, (res: MessageTextType) => {
-        console.log(res);
-        console.log(res, "new message");
-        setMessages((prev) => [...prev, res]);
-        Socket.off("exception");
+    return new Promise(async (resolve, reject) => {
+      try {
+        const res = (await axios.post(`/conversation/${currentConversation?.id}/message`, { message })) as {
+          data: MessageTextType;
+        };
+        setMessages((prev) => [...prev, res.data]);
         return resolve(200);
-      });
-      Socket.on("exception", (error) => {
-        Socket.off("exception");
-        return reject(error.message);
-      });
+      } catch (error) {
+        return reject(error);
+      }
     });
   };
 
@@ -60,99 +88,85 @@ const MessengerProvider: React.FC<PropsType> = ({ children }) => {
     members?: number[];
     password?: string;
   }) => {
-    return new Promise((resolve, reject) => {
-      Socket.emit("updateConversation", { ...update, id: currentConversation?.id }, (res: ConversationsType) => {
-        console.log(res, ">>>>>>done");
+    return new Promise(async (resolve, reject) => {
+      try {
+        const res = (await axios.put(`/conversation/${currentConversation?.id}/update`, update)) as { data: ConversationsType };
         setConversations((prev) => {
           return prev.map((c) => {
-            if (c.id === res.id) return res;
+            if (c.id === res.data.id) return res.data;
             return c;
           });
         });
-        setCurrentConversation(res);
-        Socket.off("exception");
+        setCurrentConversation(res.data);
         return resolve(200);
-      });
-      Socket.on("exception", (error) => {
-        Socket.off("exception");
-        return reject(error.message);
-      });
+      } catch (error) {
+        return reject(error);
+      }
     });
   };
 
   const leaveConversation = () => {
-    return new Promise((resolve, reject) => {
-      Socket.emit("leaveConversation", { id: currentConversation?.id }, (res: string) => {
-        Socket.off("exception");
+    return new Promise(async (resolve, reject) => {
+      try {
+        const res = await axios.put(`conversation/${currentConversation?.id}/leave/`);
         setConversations((prev) => {
           return prev.filter((c) => c.id !== currentConversation?.id);
         });
         setCurrentConversation(null);
-        return resolve(res);
-      });
-      Socket.on("exception", (error) => {
-        Socket.off("exception");
-        return reject(error.message);
-      });
+        return resolve(res.data);
+      } catch (error) {
+        return reject(error);
+      }
     });
   };
 
   const loadMessages = () => {
-    return new Promise((resolve, reject) => {
+    return new Promise(async (resolve, reject) => {
       if (!currentConversation) return;
-      const pageSize = 50;
-      const data = { id: currentConversation.id, pageSize };
-      if (messages.length && messages[0].conversationid === currentConversation.id)
-        Object.assign(data, { cursor: messages[0].id });
-      Socket.emit("getConversationMessages", data, (res: MessageTextType[]) => {
-        Socket.off("exception");
-        const reversData = res.reverse();
+      try {
+        const pageSize = 50;
+        const url =
+          messages.length && messages[0].conversationid === currentConversation.id
+            ? `conversation/${currentConversation.id}/messages?cursor=${messages[0].id}&pageSize=${pageSize}`
+            : `conversation/${currentConversation.id}/messages?pageSize=${pageSize}`;
+        const res = (await axios.get(url)) as { data: MessageTextType[] };
+        const reversData = res.data.reverse();
         setMessages((prev) => [...reversData, ...prev]);
         setHasMoreMessages(reversData.length === pageSize);
-        resolve(200);
-      });
-
-      Socket.on("exception", (error) => {
-        Socket.off("exception");
-        return reject(error.message);
-      });
+        return resolve(200);
+      } catch (error) {
+        return reject(error);
+      }
     });
   };
 
   const changeCurrentConversation = (id: number, password?: string) => {
-    return new Promise((resolve, reject) => {
-      Socket.emit("getConversation", { id, password }, (data: ConversationsType) => {
-        setMessages([]);
-        Socket.off("exception");
-        setCurrentConversation(data);
+    return new Promise(async (resolve, reject) => {
+      try {
+        const res = await axios.post(`/conversation/${id}`, password);
+        setCurrentConversation(res.data);
         resolve(200);
-      });
-      Socket.on("exception", (error) => {
-        Socket.off("exception");
-        return reject(error.message);
-      });
+      } catch (error) {
+        reject(error);
+      }
     });
   };
 
   const newConversation = async (values: { members: number[]; title: string; public: boolean; password: string }) => {
     return new Promise(async (resolve, reject) => {
-      Socket.emit("createConversation", values, (res: ConversationsType) => {
+      try {
+        const res = (await axios.post(`/conversation/create`, values)) as { data: ConversationsType };
         setConversations((prev) => {
-          const find = prev.find((c) => c.id === res.id);
-          if (!find) return [res, ...prev];
+          const find = prev.find((c) => c.id === res.data.id);
+          if (!find) return [res.data, ...prev];
           else {
-            const filter = prev.filter((c) => c.id !== res.id);
-            return [res, ...filter];
+            const filter = prev.filter((c) => c.id !== res.data.id);
+            return [res.data, ...filter];
           }
         });
-        setCurrentConversation(res);
-        Socket.off("exception");
-        return resolve("conversation success created");
-      });
-      Socket.on("exception", (error) => {
-        Socket.off("exception");
-        return reject(error.message);
-      });
+      } catch (error) {
+        return reject(error);
+      }
     });
   };
 
@@ -164,7 +178,6 @@ const MessengerProvider: React.FC<PropsType> = ({ children }) => {
       }
     });
     return () => {
-      console.log("off new message");
       Socket.off("newMessage");
     };
   }, [currentConversation]);
@@ -203,6 +216,8 @@ const MessengerProvider: React.FC<PropsType> = ({ children }) => {
         sendMessage,
         updateConversation,
         leaveConversation,
+        banMembers,
+        muteMembers,
       }}
     >
       {[children]}

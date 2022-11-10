@@ -1,10 +1,11 @@
-import { ConversationMemberType } from "@/types/types";
 import { StopOutlined, AudioOutlined, AudioMutedOutlined } from "@ant-design/icons";
-import { Space, Button, Modal, Checkbox } from "antd";
+import { Space, Button, Modal, Checkbox, message } from "antd";
 import DatePicker, { RangePickerProps } from "antd/lib/date-picker";
 import moment from "moment";
-import { useState } from "react";
+import { useContext, useState } from "react";
 import ModalInviteGame from "../modalInviteGame/ModalInviteGame";
+import { MessengerContext } from "context/massengerContext";
+import { ConversationMemberType, MessengerContextType } from "@/types/types";
 
 interface ProfileType {
   member: ConversationMemberType;
@@ -16,10 +17,36 @@ const disabledDate: RangePickerProps["disabledDate"] = (current) => {
 const ConversationMembersActions: React.FC<ProfileType> = ({ member }) => {
   const [showModalMute, setShowModalMute] = useState<boolean>(false);
   const [showModalBan, setShowModalBan] = useState<boolean>(false);
-  const [banMember, setBanMember] = useState<boolean>(member.ban);
-  const [muteMember, setMuteMember] = useState<boolean>(member.mute);
-  const [endBan, setEndBan] = useState<Date>();
-  const [endMute, setEndMute] = useState<Date>();
+  const [ban, setBanMember] = useState<boolean>(member.ban);
+  const [mute, setMuteMember] = useState<boolean>(member.mute);
+  const [endban, setEndban] = useState<Date>();
+  const [endmute, setEndmute] = useState<Date>();
+  const { muteMembers, banMembers } = useContext(MessengerContext) as MessengerContextType;
+
+  // "userId": 1,
+  // "mute": false
+  // endban
+  //endmute
+
+  const handleMuteMember = async () => {
+    try {
+      await muteMembers({ userId: member.id, mute, endmute });
+      setShowModalMute(false);
+    } catch (error) {
+      setShowModalMute(false);
+      error instanceof Error && message.error(error.message);
+    }
+  };
+
+  const handleBanMember = async () => {
+    try {
+      await banMembers({ userId: member.id, ban, endban });
+      setShowModalBan(false);
+    } catch (error) {
+      setShowModalBan(false);
+      error instanceof Error && message.error(error.message);
+    }
+  };
 
   return (
     <>
@@ -36,18 +63,19 @@ const ConversationMembersActions: React.FC<ProfileType> = ({ member }) => {
       <Modal
         open={showModalMute}
         onCancel={() => setShowModalMute(false)}
-        title={`Are you sure to ban ${member.users.username} from this conversation`}
+        onOk={handleMuteMember}
+        title={`Are you sure to mute ${member.users.username} from this conversation`}
       >
         <Space direction="vertical">
           <DatePicker
-            disabled={muteMember}
+            disabled={mute}
             disabledDate={disabledDate}
             showTime
-            placeholder="select end ban date"
+            placeholder="select end mute date"
             showNow={false}
-            onChange={(d) => setEndBan(d?.toDate())}
+            onChange={(d) => setEndmute(d?.toDate())}
           />
-          <Checkbox defaultChecked={muteMember} onChange={(v) => setMuteMember(v.target.checked)}>
+          <Checkbox defaultChecked={mute} onChange={(v) => setMuteMember(v.target.checked)}>
             {"mute forever"}
           </Checkbox>
         </Space>
@@ -55,20 +83,21 @@ const ConversationMembersActions: React.FC<ProfileType> = ({ member }) => {
       <Modal
         open={showModalBan}
         onCancel={() => setShowModalBan(false)}
+        onOk={handleBanMember}
         title={`Are you sure to ban ${member.users.username} from this conversation`}
       >
         <Space direction="vertical">
           <DatePicker
-            disabled={banMember}
+            disabled={ban}
             disabledDate={disabledDate}
             showTime
             placeholder="select end ban date"
             showNow={false}
             onChange={(d) => {
-              setEndMute(d?.toDate());
+              setEndban(d?.toDate());
             }}
           />
-          <Checkbox defaultChecked={banMember} onChange={(v) => setBanMember(v.target.checked)}>
+          <Checkbox defaultChecked={ban} onChange={(v) => setBanMember(v.target.checked)}>
             {"ban forever"}
           </Checkbox>
         </Space>

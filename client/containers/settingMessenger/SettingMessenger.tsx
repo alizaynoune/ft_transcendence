@@ -29,8 +29,8 @@ const SettingMessenger: React.FC = () => {
       title: "Are you sure to leave this conversation",
       async onOk() {
         try {
-          const res = (await leaveConversation()) as string;
-          message.success(res);
+          const res = (await leaveConversation()) as { message: string };
+          message.success(res.message);
         } catch (error: any) {
           message.error(error instanceof Error ? error.message : error);
         }
