@@ -15,7 +15,7 @@ const SettingMessenger: React.FC = () => {
   const { intra_id } = useAppSelector(selectAuth);
   const [members, setMembers] = useState<ConversationMemberType[]>([]);
   const [myInfo, setMyInfo] = useState<ConversationMemberType>();
-  const { currentConversation } = useContext(MessengerContext) as MessengerContextType;
+  const { currentConversation, leaveConversation } = useContext(MessengerContext) as MessengerContextType;
 
   useEffect(() => {
     console.log(currentConversation);
@@ -24,17 +24,16 @@ const SettingMessenger: React.FC = () => {
     setMyInfo(currentConversation.members.find((m) => m.userid === intra_id));
   }, [currentConversation]);
 
-  const leaveConversation = () => {
+  const ConfirmleaveConversation = () => {
     console.log("leave");
     Modal.confirm({
       title: "Are you sure to leave this conversation",
       async onOk() {
         try {
-          return await new Promise((resolve, reject) => {
-            setTimeout(Math.random() > 0.5 ? resolve : reject, 1000);
-          });
-        } catch {
-          return console.log("Oops errors!3");
+          const res = (await leaveConversation()) as string;
+          message.success(res);
+        } catch (error: any) {
+          message.error(error instanceof Error ? error.message : error);
         }
       },
       onCancel() {},
@@ -160,7 +159,7 @@ const SettingMessenger: React.FC = () => {
                 type="primary"
                 danger
                 icon={<Icon component={OutIcon} style={{ fontSize: "16px" }} />}
-                onClick={deleteUser}
+                onClick={ConfirmleaveConversation}
               ></Button>
             )
           ) : null

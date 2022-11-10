@@ -196,4 +196,5 @@ export interface MessengerContextType {
     password?: string;
     protected?: boolean;
   }) => Promise<unknown>;
+  leaveConversation: () => Promise<unknown>;
 }

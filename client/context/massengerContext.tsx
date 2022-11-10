@@ -64,16 +64,31 @@ const MessengerProvider: React.FC<PropsType> = ({ children }) => {
       Socket.emit("updateConversation", { ...update, id: currentConversation?.id }, (res: ConversationsType) => {
         console.log(res, ">>>>>>done");
         setConversations((prev) => {
-          const find = prev.find((c) => c.id === res.id);
-          if (!find) return [res, ...prev];
-          else {
-            const filter = prev.filter((c) => c.id !== res.id);
-            return [res, ...filter];
-          }
+          return prev.map((c) => {
+            if (c.id === res.id) return res;
+            return c;
+          });
         });
         setCurrentConversation(res);
         Socket.off("exception");
         return resolve(200);
+      });
+      Socket.on("exception", (error) => {
+        Socket.off("exception");
+        return reject(error.message);
+      });
+    });
+  };
+
+  const leaveConversation = () => {
+    return new Promise((resolve, reject) => {
+      Socket.emit("leaveConversation", { id: currentConversation?.id }, (res: string) => {
+        Socket.off("exception");
+        setConversations((prev) => {
+          return prev.filter((c) => c.id !== currentConversation?.id);
+        });
+        setCurrentConversation(null);
+        return resolve(res);
       });
       Socket.on("exception", (error) => {
         Socket.off("exception");
@@ -161,8 +176,10 @@ const MessengerProvider: React.FC<PropsType> = ({ children }) => {
         const find = prev.find((c) => c.id === data.id);
         if (!find) return [data, ...prev];
         else {
-          const filter = prev.filter((c) => c.id !== data.id);
-          return [data, ...filter];
+          return prev.map((c) => {
+            if (c.id === data.id) return data;
+            return c;
+          });
         }
       });
     });
@@ -185,6 +202,7 @@ const MessengerProvider: React.FC<PropsType> = ({ children }) => {
         newConversation,
         sendMessage,
         updateConversation,
+        leaveConversation,
       }}
     >
       {[children]}
