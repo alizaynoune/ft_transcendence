@@ -83,7 +83,7 @@ const NGameInvitFriends: React.FC = () => {
             itemLayout="horizontal"
             dataSource={data}
             renderItem={(item) => (
-              <List.Item extra={<ModalInviteGame user={item} />}>
+              <List.Item extra={<ModalInviteGame user={item} buttonProps={{type: 'primary', ghost: true}} />}>
                 <List.Item.Meta
                   avatar={
                     <Link href={`/profile/${item.username}`}>

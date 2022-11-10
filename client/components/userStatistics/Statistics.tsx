@@ -218,7 +218,7 @@ const Statistics: React.FC<Props> = ({ data, refresh }) => {
         ) : (
           <Space direction="vertical">
             <Space>
-              <ModalInviteGame user={data} />
+              <ModalInviteGame user={data} buttonProps={{type: 'primary', size: 'large'}} />
               {actionsList[actionIndex].map((i, key) => (
                 <Tooltip key={key} title={i.tooltip}>
                   <Button
