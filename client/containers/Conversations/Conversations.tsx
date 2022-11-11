@@ -33,21 +33,6 @@ const HistroyMessenger: React.FC = () => {
     }
   };
 
-  // const modalConversation = (id: number) => {
-  //   {
-  //     return Modal.info({
-  //       title: "This is a notification message",
-  //       content: (
-  //         <div>
-  //           <p>some messages...some messages...</p>
-  //           <p>some messages...some messages...</p>
-  //         </div>
-  //       ),
-  //       onOk() {},
-  //     });
-  //   }
-  // };
-
   const changeConversation = async (conversation: ConversationsType) => {
     if (conversation.protected) {
       Modal.info({
@@ -62,12 +47,6 @@ const HistroyMessenger: React.FC = () => {
         ),
         async onOk() {
           try {
-            // return await new Promise((resolve, reject) => {
-            //   setTimeout(Math.random() > 0.5 ? resolve : reject, 1000);
-
-            // });
-            // console.log(form.getFieldValue('password'));
-
             const res = await changeCurrentConversation(conversation.id, form.getFieldValue("password"));
             console.log(res, "error");
           } catch (error: any) {
@@ -118,8 +97,11 @@ const HistroyMessenger: React.FC = () => {
               <List.Item style={{ cursor: "pointer" }} onClick={() => changeConversation(item)}>
                 <List.Item.Meta
                   avatar={
-                    item.members.length == 2 ? (
-                      <Avatar src={item.members[item.members[0].userid === intra_id ? 1 : 0].users.img_url} size="large" />
+                    item.type === "DIRECT" || item.members.length === 1 ? (
+                      <Avatar
+                        src={item.members[item.type === "DIRECT" && item.members[0].userid === intra_id ? 1 : 0].users.img_url}
+                        size="large"
+                      />
                     ) : (
                       <Avatar.Group maxCount={2} maxPopoverTrigger="click">
                         {item.members.map((m, key) => m.userid !== intra_id && <Avatar src={m.users.img_url} key={key} />)}

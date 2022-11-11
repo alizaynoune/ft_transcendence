@@ -17,17 +17,12 @@ const MessengerProvider: React.FC<PropsType> = ({ children }) => {
   const [messages, setMessages] = useState<MessageTextType[]>([]);
   const [hasMoreMessages, setHasMoreMessages] = useState<boolean>(false);
 
-  ///conversation/3/togglemute
-  // "userId": 1,
-  // "mute": false
-  // endban
-  //endmute
-
   const muteMembers = async (values: { userId: number; mute: boolean; endmute?: Date }) => {
     return new Promise(async (resolve, reject) => {
       try {
         const update = await axios.put(`conversation/${currentConversation?.id}/togglemute`, values);
-        console.log(update);
+        console.log(update.data);
+        setCurrentConversation(update.data);
         return resolve(200);
       } catch (error) {
         return reject(error);
@@ -38,8 +33,9 @@ const MessengerProvider: React.FC<PropsType> = ({ children }) => {
   const banMembers = async (values: { userId: number; ban: boolean; endban?: Date }) => {
     return new Promise(async (resolve, reject) => {
       try {
-        const update = await axios.put(`conversation/${currentConversation?.id}/togglemute`, values);
-        console.log(update);
+        const update = await axios.put(`conversation/${currentConversation?.id}/toggleban`, values);
+        console.log(update.data);
+        setCurrentConversation(update.data);
         return resolve(200);
       } catch (error) {
         return reject(error);
