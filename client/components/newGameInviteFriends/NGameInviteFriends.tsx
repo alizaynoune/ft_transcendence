@@ -61,10 +61,8 @@ const NGameInvitFriends: React.FC = () => {
           size="large"
           placeholder="Enter name or email"
           onChange={(e) => {
-            if (e.target.value.length > 3) {
-              setData([]);
-              setFilter(e.target.value);
-            }
+            setData([]);
+            setFilter(e.target.value);
           }}
           suffix={<Icon component={SearchIcon} style={{ fontSize: "135%", color: "var(--light-color)" }} />}
         />
@@ -83,16 +81,14 @@ const NGameInvitFriends: React.FC = () => {
             itemLayout="horizontal"
             dataSource={data}
             renderItem={(item) => (
-              <List.Item extra={<ModalInviteGame user={item} buttonProps={{type: 'primary', ghost: true}} />}>
+              <List.Item extra={<ModalInviteGame user={item} buttonProps={{ type: "primary", ghost: true }} />}>
                 <List.Item.Meta
                   avatar={
                     <Link href={`/profile/${item.username}`}>
                       <a>
                         <Badge
                           dot
-                          status={
-                            item.status === "ONLINE" ? "success" : item.status === "PLAYING" ? "warning" : "error"
-                          }
+                          status={item.status === "ONLINE" ? "success" : item.status === "PLAYING" ? "warning" : "error"}
                         >
                           <Avatar src={item.img_url} size="large" />
                         </Badge>

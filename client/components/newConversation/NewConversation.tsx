@@ -41,7 +41,12 @@ const NewConversation: React.FC = () => {
   const onFinish = async (values: { members: UserValue[]; title: string; public: boolean; password: string }) => {
     try {
       const members = values.members?.map((i) => i.value);
-      const data = { members, title: values.title, public: values.public, password: values.password };
+      const data = {
+        members,
+        title: values.title,
+        public: values.public,
+        password: values.password?.length ? values.password : undefined,
+      };
       Object.assign(data, { members });
       const res = (await newConversation(data)) as string;
       message.success(res);

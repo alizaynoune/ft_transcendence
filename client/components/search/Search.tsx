@@ -73,15 +73,6 @@ const Search: React.FC = () => {
     if (visible) loadMoreData();
   }, [visible, filter]);
 
-  const sendInvite = async (user: UserType) => {
-    try {
-      const res = await axios.post("game/invite", { userId: user.intra_id });
-      message.success(res.data.message);
-    } catch (error) {
-      error instanceof Error && message.error(error.message);
-    }
-  };
-
   return (
     <div className={style.container} ref={Ref}>
       <Input

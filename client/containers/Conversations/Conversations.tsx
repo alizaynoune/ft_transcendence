@@ -1,7 +1,22 @@
 import style from "./conversations.module.css";
 import React, { useState, useEffect, SetStateAction, useContext } from "react";
 import NewConversation from "@/components/newConversation/NewConversation";
-import { Input, Button, List, Skeleton, Divider, Avatar, Popover, Typography, Modal, message, Form } from "antd";
+import {
+  Input,
+  Button,
+  List,
+  Skeleton,
+  Divider,
+  Avatar,
+  Popover,
+  Typography,
+  Modal,
+  message,
+  Form,
+  Select,
+  Space,
+  TypographyProps,
+} from "antd";
 import InfiniteScroll from "react-infinite-scroll-component";
 import { useAppSelector } from "@/hooks/reduxHooks";
 import { selectAuth } from "@/store/reducers/auth";
@@ -9,15 +24,27 @@ import { selectAuth } from "@/store/reducers/auth";
 import Icon, { ExclamationCircleOutlined } from "@ant-design/icons";
 import { SearchIcon, AddGroupIcon } from "@/icons/index";
 // Types
-import { ConversationsType, MessengerContextType, PromiseReturn } from "@/types/types";
+import { ConversationMemberType, ConversationsType, MessengerContextType, PromiseReturn } from "@/types/types";
 import moment from "moment";
 import { MessengerContext } from "context/massengerContext";
+import axios from "@/config/axios";
+import type { SelectProps } from "antd";
 
+const labelConversations = (members: ConversationMemberType[]) => {
+  return members.map((m, key) => {
+    return <Avatar key={key} src={m.users.img_url} />;
+  });
+};
+const { Text } = Typography;
 const { Paragraph } = Typography;
 const HistroyMessenger: React.FC = () => {
   const [loading, setLoading] = useState(false);
   const { intra_id } = useAppSelector(selectAuth);
   const [form] = Form.useForm();
+  const [search, setSearch] = useState<SelectProps["options"]>([]);
+  const [isSearching, setIsSearching] = useState<boolean>(false);
+  const [hasMore, setHasMore] = useState<boolean>(false);
+  const [filter, setFilter] = useState<string>("");
   const { conversations, hasMoreConversations, loadConversations, changeCurrentConversation } = useContext(
     MessengerContext
   ) as MessengerContextType;
@@ -30,6 +57,30 @@ const HistroyMessenger: React.FC = () => {
     } catch (error) {
       setLoading(false);
       console.log(error);
+    }
+  };
+
+  const searchConversations = async (value: string) => {
+    try {
+      const url = `conversation/search?title=${value}&pageSize=${40}&cursor=${search?.at(-1)?.value || 1}`;
+      const res = (await axios.get(url)) as { data: ConversationsType[] };
+      console.log(res.data);
+
+      const data = res.data.map((item: ConversationsType) => ({
+        value: item.id,
+        label: (
+          <Space style={{ justifyContent: "space-between", width: "100%" }}>
+            <Avatar.Group maxCount={2} maxPopoverTrigger="click">
+              {labelConversations(item.members)}
+            </Avatar.Group>
+            <Text>{item.title}</Text>
+            <Button type="primary">Join</Button>
+          </Space>
+        ),
+      })) as SelectProps["options"];
+      setSearch(data);
+    } catch (error) {
+      error instanceof Error && message.error(error.message);
     }
   };
 
@@ -68,12 +119,18 @@ const HistroyMessenger: React.FC = () => {
   return (
     <div className={style.container}>
       <div className={style.header}>
-        <Input
-          style={{
-            borderRadius: "5px",
-          }}
-          suffix={<Icon component={SearchIcon} style={{ fontSize: "120%", color: "var(--primary-color)" }} />}
-          placeholder="find friends"
+        <Select
+          showSearch
+          size="large"
+          style={{ width: "100%", borderRadius: "5px" }}
+          placeholder="find public conversations"
+          defaultActiveFirstOption={false}
+          showArrow={false}
+          value={null}
+          filterOption={false}
+          onSearch={searchConversations}
+          notFoundContent={null}
+          options={search}
         />
         <Popover className={style.popover} trigger="click" content={<NewConversation />} placement="bottomRight">
           <Button type="primary" size="large" icon={<Icon component={AddGroupIcon} style={{ fontSize: "120%" }} />} />

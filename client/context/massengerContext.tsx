@@ -160,7 +160,7 @@ const MessengerProvider: React.FC<PropsType> = ({ children }) => {
     });
   };
 
-  const newConversation = async (values: { members: number[]; title: string; public: boolean; password: string }) => {
+  const newConversation = async (values: { members: number[]; title: string; public: boolean; password?: string }) => {
     return new Promise(async (resolve, reject) => {
       try {
         const res = (await axios.post(`/conversation/create`, values)) as { data: ConversationsType };
