@@ -45,7 +45,8 @@ const HistroyMessenger: React.FC = () => {
   const [isSearching, setIsSearching] = useState<boolean>(false);
   const [hasMore, setHasMore] = useState<boolean>(false);
   const [filter, setFilter] = useState<string>("");
-  const { conversations, hasMoreConversations, loadConversations, changeCurrentConversation } = useContext(
+  const [joinPassword, setJoinPassword] = useState<string>();
+  const { conversations, hasMoreConversations, loadConversations, changeCurrentConversation, joinConversation } = useContext(
     MessengerContext
   ) as MessengerContextType;
 
@@ -58,6 +59,28 @@ const HistroyMessenger: React.FC = () => {
       setLoading(false);
       console.log(error);
     }
+  };
+
+  const handleJoinConversation = (conv: ConversationsType) => {
+    Modal.confirm({
+      title: `Are you sure to join this conversation ${conv.title}`,
+      content: conv.protected ? (
+        <Form form={form}>
+          <Form.Item name={"password"}>
+            <Input />
+          </Form.Item>
+        </Form>
+      ) : null,
+      async onOk() {
+        try {
+          const res = (await joinConversation(conv.id, form.getFieldValue("password"))) as string;
+          message.success(res);
+        } catch (error) {
+          error instanceof Error && message.error(error.message);
+        }
+      },
+      onCancel() {},
+    });
   };
 
   const searchConversations = async (value: string) => {
@@ -74,7 +97,9 @@ const HistroyMessenger: React.FC = () => {
               {labelConversations(item.members)}
             </Avatar.Group>
             <Text>{item.title}</Text>
-            <Button type="primary">Join</Button>
+            <Button type="primary" onClick={() => handleJoinConversation(item)}>
+              Join
+            </Button>
           </Space>
         ),
       })) as SelectProps["options"];

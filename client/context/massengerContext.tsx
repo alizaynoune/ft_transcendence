@@ -172,6 +172,27 @@ const MessengerProvider: React.FC<PropsType> = ({ children }) => {
             return [res.data, ...filter];
           }
         });
+        setCurrentConversation(res.data);
+      } catch (error) {
+        return reject(error);
+      }
+    });
+  };
+
+  const joinConversation = async (id: number, password?: string) => {
+    return new Promise(async (resolve, reject) => {
+      try {
+        const res = (await axios.post(`/conversation/${id}/join`, { password })) as { data: ConversationsType };
+        setConversations((prev) => {
+          const find = prev.find((c) => c.id === res.data.id);
+          if (!find) return [res.data, ...prev];
+          else {
+            const filter = prev.filter((c) => c.id !== res.data.id);
+            return [res.data, ...filter];
+          }
+        });
+        setCurrentConversation(res.data);
+        return resolve('success join')
       } catch (error) {
         return reject(error);
       }
@@ -227,6 +248,7 @@ const MessengerProvider: React.FC<PropsType> = ({ children }) => {
         banMembers,
         muteMembers,
         deleteConversation,
+        joinConversation,
       }}
     >
       {[children]}

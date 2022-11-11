@@ -200,4 +200,5 @@ export interface MessengerContextType {
   banMembers: (values: { userId: number; ban: boolean; endban?: Date }) => Promise<unknown>;
   muteMembers: (values: { userId: number; mute: boolean; endmute?: Date }) => Promise<unknown>;
   deleteConversation: () => Promise<unknown>;
+  joinConversation: (id: number, password?: string) => Promise<unknown>;
 }
