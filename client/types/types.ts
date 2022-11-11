@@ -201,4 +201,5 @@ export interface MessengerContextType {
   muteMembers: (values: { userId: number; mute: boolean; endmute?: Date }) => Promise<unknown>;
   deleteConversation: () => Promise<unknown>;
   joinConversation: (id: number, password?: string) => Promise<unknown>;
+  toggleadmin: (values: { userId: number; setAs: boolean }) => Promise<unknown>;
 }

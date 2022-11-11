@@ -1,4 +1,4 @@
-import { StopOutlined, AudioOutlined, AudioMutedOutlined } from "@ant-design/icons";
+import { StopOutlined, AudioOutlined, AudioMutedOutlined, UserSwitchOutlined } from "@ant-design/icons";
 import { Space, Button, Modal, Checkbox, message } from "antd";
 import DatePicker, { RangePickerProps } from "antd/lib/date-picker";
 import moment from "moment";
@@ -23,13 +23,7 @@ const ConversationMembersActions: React.FC<ProfileType> = ({ member }) => {
   const [endmute, setEndmute] = useState<Date | undefined>(member.endmute);
   const [unmute, setUnmute] = useState<boolean>(false);
   const [unban, setUnban] = useState<boolean>(false);
-  const { muteMembers, banMembers } = useContext(MessengerContext) as MessengerContextType;
-
-  // "userId": 1,
-  // "mute": false
-  // endban
-  //endmute
-  console.log(new Date(member.endmute).getTime() > new Date().getTime());
+  const { muteMembers, banMembers, toggleadmin } = useContext(MessengerContext) as MessengerContextType;
 
   const handleMuteMember = async () => {
     try {
@@ -59,6 +53,22 @@ const ConversationMembersActions: React.FC<ProfileType> = ({ member }) => {
     }
   };
 
+  const switchUser = () => {
+    Modal.confirm({
+      title: member.isadmin
+        ? `Are you sure to delete admin Permission for ${member.users.username}`
+        : `Are you sure to set ${member.users.username} as admin`,
+      onOk: async () => {
+        try {
+          const res = (await toggleadmin({ userId: member.userid, setAs: !member.isadmin })) as string;
+          message.success(res);
+        } catch (error) {
+          error instanceof Error && message.error(error.message);
+        }
+      },
+    });
+  };
+
   useEffect(() => {
     setBanMember(member.ban);
     setMuteMember(member.mute);
@@ -71,11 +81,12 @@ const ConversationMembersActions: React.FC<ProfileType> = ({ member }) => {
   return (
     <>
       <Space>
+        <Button ghost type="primary" icon={<UserSwitchOutlined />} onClick={switchUser} />
         <Button danger ghost icon={<StopOutlined />} onClick={() => setShowModalBan(true)} />
         <Button
           type="primary"
           ghost
-          disabled={(new Date(member.endban).getTime() > new Date().getTime() || member.ban)}
+          disabled={new Date(member.endban).getTime() > new Date().getTime() || member.ban}
           icon={member.mute ? <AudioOutlined /> : <AudioMutedOutlined />}
           onClick={() => setShowModalMute(true)}
         />

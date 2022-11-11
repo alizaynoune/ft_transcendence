@@ -192,7 +192,21 @@ const MessengerProvider: React.FC<PropsType> = ({ children }) => {
           }
         });
         setCurrentConversation(res.data);
-        return resolve('success join')
+        return resolve("success join");
+      } catch (error) {
+        return reject(error);
+      }
+    });
+  };
+
+  const toggleadmin = async (values: { userId: number; setAs: boolean }) => {
+    return new Promise(async (resolve, reject) => {
+      try {
+        const res = (await axios.put(`conversation/${currentConversation?.id}/toggleadmin`, values)) as {
+          data: ConversationsType;
+        };
+        setCurrentConversation(res.data);
+        return resolve("success update");
       } catch (error) {
         return reject(error);
       }
@@ -249,6 +263,7 @@ const MessengerProvider: React.FC<PropsType> = ({ children }) => {
         muteMembers,
         deleteConversation,
         joinConversation,
+        toggleadmin,
       }}
     >
       {[children]}
