@@ -199,4 +199,5 @@ export interface MessengerContextType {
   leaveConversation: () => Promise<unknown>;
   banMembers: (values: { userId: number; ban: boolean; endban?: Date }) => Promise<unknown>;
   muteMembers: (values: { userId: number; mute: boolean; endmute?: Date }) => Promise<unknown>;
+  deleteConversation: () => Promise<unknown>;
 }

@@ -1,6 +1,6 @@
 import React, { useContext, useEffect, useState } from "react";
 import Style from "./conversationFromSettings.module.css";
-import { Form, Input, Button, Avatar, Space, Typography, message, Select, Spin, Checkbox } from "antd";
+import { Form, Input, Button, Avatar, Space, Typography, message, Select, Spin, Checkbox, Modal } from "antd";
 import { UserType, MessengerContextType } from "@/types/types";
 import axios from "@/config/axios";
 import { MessengerContext } from "context/massengerContext";
@@ -36,7 +36,7 @@ const ConversationFromSettings: React.FC = () => {
   const [fetching, setFetching] = useState<boolean>(false);
   const [value, setValue] = useState<UserValue[]>([]);
   const [form] = Form.useForm();
-  const { currentConversation, updateConversation } = useContext(MessengerContext) as MessengerContextType;
+  const { currentConversation, updateConversation, deleteConversation } = useContext(MessengerContext) as MessengerContextType;
   const [showField, setShowField] = useState<boolean>(false);
   const [passwordRequired, setPasswordRequired] = useState<boolean>(false);
 
@@ -65,6 +65,21 @@ const ConversationFromSettings: React.FC = () => {
     }
   };
 
+  const confirmDeleteConversation = () => {
+    Modal.confirm({
+      title: `Are you sure to delete this conversation "${currentConversation?.title}"`,
+      async onOk() {
+        try {
+          const res = (await deleteConversation()) as { message: string };
+          message.success(res.message);
+        } catch (error) {
+          error instanceof Error && message.error(error.message);
+        }
+      },
+      onCancel() {},
+    });
+  };
+
   useEffect(() => {
     if (!currentConversation) return;
     form.setFields([
@@ -79,59 +94,66 @@ const ConversationFromSettings: React.FC = () => {
 
   return (
     currentConversation && (
-      <Form name="conversationSettings" onFinish={onFinish} style={{ width: 350 }} form={form}>
-        <Form.Item name="title" rules={[{ required: true, min: 2, max: 20 }]}>
-          <Input size="large" placeholder="title" />
-        </Form.Item>
-        <Form.Item name="password" hidden={!showField} rules={[{ required: showField && passwordRequired, min: 6, max: 20 }]}>
-          <Input size="large" placeholder={currentConversation.protected ? "update password" : "set password"} />
-        </Form.Item>
-        <Form.Item name="members">
-          <Select
-            labelInValue
-            placeholder="add members"
-            mode="multiple"
-            options={value}
-            filterOption={false}
-            allowClear={true}
-            notFoundContent={fetching ? <Spin size="small" /> : null}
-            size="large"
-            onSearch={(v) => {
-              setFetching(true);
-              fetchUserList(v)
-                .then((res: UserValue[]) => {
-                  const filtered = res.filter((u) => {
-                    return !currentConversation.members.some((m) => m.userid === u.value);
+      <>
+        <Form name="conversationSettings" onFinish={onFinish} style={{ width: 350 }} form={form}>
+          <Form.Item name="title" rules={[{ required: true, min: 2, max: 20 }]}>
+            <Input size="large" placeholder="title" />
+          </Form.Item>
+          <Form.Item name="password" hidden={!showField} rules={[{ required: showField && passwordRequired, min: 6, max: 20 }]}>
+            <Input size="large" placeholder={currentConversation.protected ? "update password" : "set password"} />
+          </Form.Item>
+          <Form.Item name="members">
+            <Select
+              labelInValue
+              placeholder="add members"
+              mode="multiple"
+              options={value}
+              filterOption={false}
+              allowClear={true}
+              notFoundContent={fetching ? <Spin size="small" /> : null}
+              size="large"
+              onSearch={(v) => {
+                setFetching(true);
+                fetchUserList(v)
+                  .then((res: UserValue[]) => {
+                    const filtered = res.filter((u) => {
+                      return !currentConversation.members.some((m) => m.userid === u.value);
+                    });
+                    setValue(filtered);
+                    setFetching(false);
+                  })
+                  .catch((e) => {
+                    setFetching(false);
+                    e instanceof Error && message.error(e.message);
                   });
-                  setValue(filtered);
-                  setFetching(false);
-                })
-                .catch((e) => {
-                  setFetching(false);
-                  e instanceof Error && message.error(e.message);
-                });
-            }}
-          />
-        </Form.Item>
-        <Form.Item name="public" valuePropName="checked">
-          <Checkbox>{"Public"}</Checkbox>
-        </Form.Item>
-        <Form.Item name="protected" valuePropName="checked">
-          <Checkbox
-            onChange={(e) => {
-              form.setFieldValue("password", "");
-              setShowField(e.target.checked);
-            }}
-          >
-            {"protected by password"}
-          </Checkbox>
-        </Form.Item>
-        <Form.Item>
-          <Button type="primary" htmlType="submit">
-            {"update"}
-          </Button>
-        </Form.Item>
-      </Form>
+              }}
+            />
+          </Form.Item>
+          <Form.Item name="public" valuePropName="checked">
+            <Checkbox>{"Public"}</Checkbox>
+          </Form.Item>
+          <Form.Item name="protected" valuePropName="checked">
+            <Checkbox
+              onChange={(e) => {
+                form.setFieldValue("password", "");
+                setShowField(e.target.checked);
+              }}
+            >
+              {"protected by password"}
+            </Checkbox>
+          </Form.Item>
+          <Form.Item>
+            <Space style={{ width: "100%", justifyContent: "space-between" }}>
+              <Button type="primary" htmlType="submit">
+                {"update"}
+              </Button>
+              <Button danger type="primary" onClick={confirmDeleteConversation}>
+                {"delete"}
+              </Button>
+            </Space>
+          </Form.Item>
+        </Form>
+      </>
     )
   );
 };

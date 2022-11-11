@@ -63,6 +63,18 @@ const MessengerProvider: React.FC<PropsType> = ({ children }) => {
     });
   };
 
+  const deleteConversation = async () => {
+    return new Promise(async (resolve, reject) => {
+      try {
+        const res = await axios.delete(`/conversation/${currentConversation?.id}/delete`);
+        console.log(res.data);
+        return resolve(res.data);
+      } catch (error) {
+        return reject(error);
+      }
+    });
+  };
+
   const sendMessage = (message: string) => {
     return new Promise(async (resolve, reject) => {
       try {
@@ -139,7 +151,7 @@ const MessengerProvider: React.FC<PropsType> = ({ children }) => {
   const changeCurrentConversation = (id: number, password?: string) => {
     return new Promise(async (resolve, reject) => {
       try {
-        const res = await axios.post(`/conversation/${id}`, password);
+        const res = await axios.post(`/conversation/${id}`, { password });
         setCurrentConversation(res.data);
         resolve(200);
       } catch (error) {
@@ -214,6 +226,7 @@ const MessengerProvider: React.FC<PropsType> = ({ children }) => {
         leaveConversation,
         banMembers,
         muteMembers,
+        deleteConversation,
       }}
     >
       {[children]}
