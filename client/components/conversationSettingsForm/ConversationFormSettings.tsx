@@ -101,7 +101,7 @@ const ConversationFromSettings: React.FC = () => {
             <Input size="large" placeholder="title" />
           </Form.Item>
           <Form.Item name="password" hidden={!showField} rules={[{ required: showField && passwordRequired, min: 6, max: 20 }]}>
-            <Input size="large" placeholder={currentConversation.protected ? "update password" : "set password"} />
+            <Input.Password size="large" placeholder={currentConversation.protected ? "update password" : "set password"} />
           </Form.Item>
           <Form.Item name="members">
             <Select

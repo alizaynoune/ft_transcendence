@@ -11,6 +11,7 @@ import ConversationMembersActions from "@/components/ConversationMembersActions/
 import Link from "next/link";
 import axios from "@/config/axios";
 import { MessengerContext } from "context/massengerContext";
+import ModalInviteGame from "@/components/modalInviteGame/ModalInviteGame";
 
 const SettingMessenger: React.FC = () => {
   const { intra_id } = useAppSelector(selectAuth);
@@ -57,11 +58,7 @@ const SettingMessenger: React.FC = () => {
     });
   };
 
-  useEffect(() => {
-    console.log("redering settings message");
-  }, []);
-
-  return currentConversation ? (
+  return currentConversation && myInfo ? (
     <div className={style.container}>
       {currentConversation.type !== "GROUP" && (
         <Avatar
@@ -111,7 +108,7 @@ const SettingMessenger: React.FC = () => {
           currentConversation.type === "GROUP" ? (
             <Space direction="vertical">
               <Button type="primary" danger ghost icon={<LogoutOutlined />} onClick={ConfirmleaveConversation}></Button>
-              {myInfo?.isadmin && (
+              {myInfo.isadmin && (
                 <Popover trigger="click" placement="bottomRight" content={<ConversationFromSettings />}>
                   <Button type="primary" ghost icon={<Icon component={Settings2Icon} style={{ fontSize: "15px" }} />} />
                 </Popover>
@@ -129,11 +126,12 @@ const SettingMessenger: React.FC = () => {
               <List.Item
                 actions={[item.isadmin && <Typography.Text type="success">{"Admin"}</Typography.Text>]}
                 extra={
-                  myInfo?.isadmin &&
-                  item.active && (
+                  myInfo?.isadmin && item.active ? (
                     <Popover trigger="click" placement="left" content={<ConversationMembersActions member={item} />}>
                       <Button ghost type="primary" icon={<Icon component={DotsVIcon} style={{ fontSize: "16px" }} />} />
                     </Popover>
+                  ) : (
+                    <ModalInviteGame user={item.users} buttonProps={{ type: "primary", ghost: true }} />
                   )
                 }
               >
@@ -142,7 +140,6 @@ const SettingMessenger: React.FC = () => {
                   title={<Link href={`/profile/${item.users.username}`}>{item.users.username}</Link>}
                   description={item.users.email}
                 />
-                {/* <div>content</div> */}
               </List.Item>
             )}
           />

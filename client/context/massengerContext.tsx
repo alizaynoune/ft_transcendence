@@ -52,10 +52,30 @@ const MessengerProvider: React.FC<PropsType> = ({ children }) => {
         const url = conversations.length
           ? `conversation/?cursor=${conversations.at(-1)?.id}&pageSize=${pageSize}`
           : `conversation/?pageSize=${pageSize}`;
-        const res = await axios.get(url);
+        const res = (await axios.get(url)) as { data: ConversationsType[] };
         setConversations(res.data);
         setLoading(false);
-        setHasMoreConversations(res.data === 20);
+        setHasMoreConversations(res.data.length === pageSize);
+        return resolve(200);
+      } catch (error) {
+        return reject(error);
+      }
+    });
+  };
+
+  const loadMessages = () => {
+    return new Promise(async (resolve, reject) => {
+      if (!currentConversation) return;
+      try {
+        const pageSize = 50;
+        const url =
+          messages.length && messages[0].conversationid === currentConversation.id
+            ? `conversation/${currentConversation.id}/messages?cursor=${messages[0].id}&pageSize=${pageSize}`
+            : `conversation/${currentConversation.id}/messages?pageSize=${pageSize}`;
+        const res = (await axios.get(url)) as { data: MessageTextType[] };
+        const reversData = res.data.reverse();
+        setMessages((prev) => [...reversData, ...prev]);
+        setHasMoreMessages(reversData.length === pageSize);
         return resolve(200);
       } catch (error) {
         return reject(error);
@@ -120,28 +140,8 @@ const MessengerProvider: React.FC<PropsType> = ({ children }) => {
         setConversations((prev) => {
           return prev.filter((c) => c.id !== currentConversation?.id);
         });
-        setCurrentConversation(null);
+        // setCurrentConversation(null);
         return resolve(res.data);
-      } catch (error) {
-        return reject(error);
-      }
-    });
-  };
-
-  const loadMessages = () => {
-    return new Promise(async (resolve, reject) => {
-      if (!currentConversation) return;
-      try {
-        const pageSize = 50;
-        const url =
-          messages.length && messages[0].conversationid === currentConversation.id
-            ? `conversation/${currentConversation.id}/messages?cursor=${messages[0].id}&pageSize=${pageSize}`
-            : `conversation/${currentConversation.id}/messages?pageSize=${pageSize}`;
-        const res = (await axios.get(url)) as { data: MessageTextType[] };
-        const reversData = res.data.reverse();
-        setMessages((prev) => [...reversData, ...prev]);
-        setHasMoreMessages(reversData.length === pageSize);
-        return resolve(200);
       } catch (error) {
         return reject(error);
       }
@@ -222,11 +222,24 @@ const MessengerProvider: React.FC<PropsType> = ({ children }) => {
 
   useEffect(() => {
     if (!currentConversation) return;
+    // setMessages([]);
     Socket.on("newMessage", (data: MessageTextType) => {
       if (currentConversation && currentConversation.id === data.conversationid) {
         setMessages((prev) => [...prev, data]);
       }
     });
+
+    Socket.on("updateConversation", (update: ConversationsType) => {
+      if (currentConversation.id === update.id) {
+        console.log(currentConversation, update, "<<<<<<<<<<<<<<>>>>>>>>>>>>>>>");
+        setMessages([]);
+        setCurrentConversation((prev) => {
+          if (!prev?.protected && update.protected) return null;
+          else return update;
+        });
+      }
+    });
+
     return () => {
       Socket.off("newMessage");
     };
@@ -246,8 +259,23 @@ const MessengerProvider: React.FC<PropsType> = ({ children }) => {
         }
       });
     });
+
+    Socket.on("updateConversation", (update: ConversationsType) => {
+      setConversations((prev) => {
+        const find = prev.find((c) => c.id === update.id);
+        if (!find) return [update, ...prev];
+        else {
+          return prev.map((c) => {
+            if (c.id === update.id) return update;
+            return c;
+          });
+        }
+      });
+    });
+
     return () => {
       Socket.off("newConversation");
+      Socket.off("updateConversation");
     };
   }, []);
 

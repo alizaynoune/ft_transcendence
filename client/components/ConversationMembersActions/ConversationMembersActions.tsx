@@ -81,15 +81,19 @@ const ConversationMembersActions: React.FC<ProfileType> = ({ member }) => {
   return (
     <>
       <Space>
-        <Button ghost type="primary" icon={<UserSwitchOutlined />} onClick={switchUser} />
-        <Button danger ghost icon={<StopOutlined />} onClick={() => setShowModalBan(true)} />
-        <Button
-          type="primary"
-          ghost
-          disabled={new Date(member.endban).getTime() > new Date().getTime() || member.ban}
-          icon={member.mute ? <AudioOutlined /> : <AudioMutedOutlined />}
-          onClick={() => setShowModalMute(true)}
-        />
+        <Button ghost type="primary" danger={member.isadmin} icon={<UserSwitchOutlined />} onClick={switchUser} />
+        {!member.isadmin && (
+          <>
+            <Button danger ghost icon={<StopOutlined />} onClick={() => setShowModalBan(true)} />
+            <Button
+              type="primary"
+              ghost
+              disabled={new Date(member.endban).getTime() > new Date().getTime() || member.ban}
+              icon={member.mute ? <AudioOutlined /> : <AudioMutedOutlined />}
+              onClick={() => setShowModalMute(true)}
+            />
+          </>
+        )}
         <ModalInviteGame user={member.users} buttonProps={{ type: "primary", ghost: true }} />
       </Space>
       <Modal

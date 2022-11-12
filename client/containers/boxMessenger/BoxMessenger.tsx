@@ -25,11 +25,7 @@ const Picker = dynamic(
   },
   { ssr: false }
 );
-type DataType = MessageTextType & {
-  members: {
-    users: UserType;
-  };
-};
+
 const BoxMessenger: React.FC = () => {
   const bottomRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<InputRef>(null);
@@ -56,10 +52,9 @@ const BoxMessenger: React.FC = () => {
   };
 
   useEffect(() => {
-    console.log(currentConversation, "current");
-    setMyInfo(currentConversation?.members.find((m) => m.userid === intra_id));
-
-    loadMoreData();
+    if (!currentConversation) return;
+    setMyInfo(currentConversation.members.find((m) => m.userid === intra_id));
+    if (!messages.length) loadMoreData();
   }, [currentConversation]);
 
   const onFinish = async (values: { new_message: string }) => {

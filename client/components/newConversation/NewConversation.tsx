@@ -67,7 +67,7 @@ const NewConversation: React.FC = () => {
         <Input placeholder="entry name of conversation" size="large" />
       </Form.Item>
       <Form.Item name="password" rules={[{ required: false, min: 6, max: 20 }]}>
-        <Input placeholder="entre password" size="large" />
+        <Input.Password placeholder="entre password" size="large" />
       </Form.Item>
 
       <Form.Item name="members">

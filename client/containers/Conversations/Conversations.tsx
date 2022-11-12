@@ -69,7 +69,7 @@ const HistroyMessenger: React.FC = () => {
       ) : null,
       async onOk() {
         try {
-          const res = (await joinConversation(conv.id, form.getFieldValue("password"))) as string;
+          const res = (await joinConversation(conv.id, conv.protected ? form.getFieldValue("password") : undefined)) as string;
           message.success(res);
         } catch (error) {
           error instanceof Error && message.error(error.message);
@@ -94,7 +94,7 @@ const HistroyMessenger: React.FC = () => {
             </Avatar.Group>
             <Text>{item.title}</Text>
             <Button type="primary" onClick={() => handleJoinConversation(item)}>
-              Join
+              {"Join"}
             </Button>
           </Space>
         ),
@@ -113,7 +113,7 @@ const HistroyMessenger: React.FC = () => {
         content: (
           <Form form={form}>
             <Form.Item name="password" rules={[{ required: true, min: 6, max: 20 }]}>
-              <Input />
+              <Input.Password placeholder="Entre Password" />
             </Form.Item>
           </Form>
         ),
@@ -145,10 +145,10 @@ const HistroyMessenger: React.FC = () => {
           style={{ width: "100%", borderRadius: "5px" }}
           placeholder="find public conversations"
           defaultActiveFirstOption={false}
-          showArrow={false}
           value={null}
           filterOption={false}
           onSearch={searchConversations}
+          suffixIcon={<Icon component={SearchIcon} style={{ fontSize: 18, color: "var(--primary-color)" }} />}
           notFoundContent={null}
           options={search}
           onFocus={() => searchConversations("")}
