@@ -51,7 +51,7 @@ const NewConversation: React.FC<PropsType> = ({ setOpenPopover }) => {
         password: values.password?.length ? values.password : undefined,
       };
       Object.assign(data, { members });
-      const res = (await newConversation(data)) as string;
+      const res = (await newConversation({ ...data, type: "GROUP" })) as string;
       setOpenPopover(false);
       message.success(res);
     } catch (error) {
@@ -115,7 +115,9 @@ const NewConversation: React.FC<PropsType> = ({ setOpenPopover }) => {
             {"Submit"}
           </Button>
         </Form.Item>
-        <Button danger onClick={() => setOpenPopover(false)}>{"cancel"}</Button>
+        <Button danger onClick={() => setOpenPopover(false)}>
+          {"cancel"}
+        </Button>
       </div>
     </Form>
   );

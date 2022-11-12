@@ -159,7 +159,7 @@ const SettingMessenger: React.FC = () => {
               </List.Item>
             )}
           />
-        ) : (
+        ) : currentConversation.id ? (
           <Space direction="vertical">
             <Button
               type="primary"
@@ -170,7 +170,7 @@ const SettingMessenger: React.FC = () => {
               {"delete conversation"}
             </Button>
           </Space>
-        )}
+        ) : null}
       </Card>
     </div>
   ) : null;

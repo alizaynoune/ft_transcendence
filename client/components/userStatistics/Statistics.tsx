@@ -26,6 +26,7 @@ import {
 } from "@/icons/index";
 import { UploadChangeParam, RcFile } from "antd/lib/upload";
 import { loadToken } from "@/tools/localStorage";
+import Link from "next/link";
 
 const achievementsIcons: {
   [key: string]: ComponentType<SVGProps<SVGSVGElement>>;
@@ -44,7 +45,6 @@ const { Text, Title } = Typography;
 
 const actionsList: { [key: string]: { icon: JSX.Element; tooltip: string; action: ActionsType }[] } = {
   friend: [
-    { icon: <Icon component={MessageIcon} />, tooltip: "Send message", action: "message" },
     { icon: <Icon component={DeleteUserIcon} />, tooltip: "unfriend", action: "friends/unfriend" },
     { icon: <Icon component={BlockUserIcon} />, tooltip: "Block", action: "friends/blockfriend" },
   ],
@@ -218,7 +218,7 @@ const Statistics: React.FC<Props> = ({ data, refresh }) => {
         ) : (
           <Space direction="vertical">
             <Space>
-              <ModalInviteGame user={data} buttonProps={{type: 'primary', size: 'large'}} />
+              <ModalInviteGame user={data} buttonProps={{ type: "primary", size: "large" }} />
               {actionsList[actionIndex].map((i, key) => (
                 <Tooltip key={key} title={i.tooltip}>
                   <Button
@@ -237,6 +237,11 @@ const Statistics: React.FC<Props> = ({ data, refresh }) => {
                   />
                 </Tooltip>
               ))}
+              <Link href={`/messenger/direct/${data.username}`}>
+                <Tooltip title="Send message">
+                  <Button type="primary" size="large" icon={<Icon component={MessageIcon} />} />
+                </Tooltip>
+              </Link>
             </Space>
             <Text strong italic>
               <Icon component={UserIcon} style={{ fontSize: 17 }} /> {` ${data.username}`}

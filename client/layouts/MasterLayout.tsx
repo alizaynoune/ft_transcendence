@@ -129,7 +129,7 @@ const MasterLayout: React.FC<Props> = (props) => {
       }
       socket.connect();
       socket.on("exception", (error) => {
-        message.error(error.message);
+        message.error(`Socket ${error.message}`);
       });
       socket.on("error", (error) => {
         message.error(`Socket ${error.message}`);

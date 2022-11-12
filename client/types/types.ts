@@ -184,10 +184,18 @@ export interface MessengerContextType {
   hasMoreConversations: boolean;
   messages: MessageTextType[];
   hasMoreMessages: boolean;
+  loading: boolean;
   loadConversations: () => Promise<unknown>;
   changeCurrentConversation: (id: number, password?: string) => Promise<unknown>;
   loadMessages: () => Promise<unknown>;
-  newConversation: (values: { members?: number[]; title: string; public: boolean; password?: string }) => Promise<unknown>;
+  newConversation: (values: {
+    members?: number[];
+    title?: string;
+    public: boolean;
+    password?: string;
+    type: "DIRECT" | "GROUP";
+    message?: string;
+  }) => Promise<unknown>;
   sendMessage: (message: string) => Promise<unknown>;
   updateConversation: (values: {
     members?: number[];
@@ -202,4 +210,5 @@ export interface MessengerContextType {
   deleteConversation: () => Promise<unknown>;
   joinConversation: (id: number, password?: string) => Promise<unknown>;
   toggleadmin: (values: { userId: number; setAs: boolean }) => Promise<unknown>;
+  setCurrentConversation: React.Dispatch<React.SetStateAction<ConversationsType | null>>;
 }

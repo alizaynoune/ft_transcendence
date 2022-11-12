@@ -26,7 +26,7 @@
       "@/actions/*": ["store/actionsTunk/*"],
       "@/config/*": ["config/*"],
       "@/hooks/*": ["hooks/*"],
-      "@/tools/*": ["tools/*"],
+      "@/tools/*": ["tools/*"]
     }
   },
   "exclude": ["node_modules"],

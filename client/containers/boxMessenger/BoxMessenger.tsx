@@ -13,10 +13,6 @@ import InfiniteScroll from "react-infinite-scroll-component";
 import { EmojiSmileIcon, SendIcon } from "@/icons/index";
 import { MessengerContext } from "context/massengerContext";
 
-type PropsType = {
-  currentConversation: ConversationsType;
-};
-
 import dynamic from "next/dynamic";
 
 const Picker = dynamic(
@@ -29,13 +25,11 @@ const Picker = dynamic(
 const BoxMessenger: React.FC = () => {
   const bottomRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<InputRef>(null);
-  // const [messages, setMessages] = useState<DataType[]>([]);
   const [showEmoji, setShowEmoji] = useState<boolean>(false);
   const { intra_id } = useAppSelector(selectAuth);
   const [myInfo, setMyInfo] = useState<ConversationMemberType>();
   const [form] = Form.useForm();
-  // const [hasMore, setHasMore] = useState<boolean>(true);
-  const { currentConversation, loadMessages, messages, hasMoreMessages, sendMessage } = useContext(
+  const { currentConversation, loadMessages, messages, hasMoreMessages, sendMessage, newConversation } = useContext(
     MessengerContext
   ) as MessengerContextType;
 
@@ -60,7 +54,17 @@ const BoxMessenger: React.FC = () => {
   const onFinish = async (values: { new_message: string }) => {
     const { new_message } = values;
     try {
-      await sendMessage(new_message);
+      if (!currentConversation) return;
+      if (!currentConversation.id) {
+        const members = currentConversation.members.find((m) => m.userid !== intra_id);
+        if (!members) return;
+        await newConversation({
+          members: [members.userid],
+          public: false,
+          type: "DIRECT",
+          message: new_message,
+        });
+      } else await sendMessage(new_message);
       form.resetFields(["new_message"]);
       setShowEmoji(false);
       console.log(inputRef.current);

@@ -15,7 +15,6 @@ interface Props {
 
 const actionsList: { [k: string]: { icon: JSX.Element; action: ActionsType }[] } = {
   friend: [
-    { icon: <Icon component={MessageIcon} style={{ fontSize: "120%" }} />, action: "message" },
     { icon: <Icon component={PlayGameIcon} style={{ fontSize: "120%" }} />, action: "game/invite" },
     { icon: <Icon component={BlockUserIcon} style={{ fontSize: "120%" }} />, action: "friends/blockfriend" },
     { icon: <Icon component={DeleteUserIcon} style={{ fontSize: "120%" }} />, action: "friends/unfriend" },
@@ -58,6 +57,11 @@ const UserCard: React.FC<Props> = (props) => {
                         }}
                       />
                     ))}
+                    {type === "friend" ? (
+                      <Link href={`/messenger/direct/${user.username}`}>
+                        <Button type="primary" ghost icon={<Icon component={MessageIcon} style={{ fontSize: "120%" }} />} />
+                      </Link>
+                    ) : null}
                   </div>
                 }
                 trigger={["click"]}

@@ -58,6 +58,7 @@ const MessengerProvider: React.FC<PropsType> = ({ children }) => {
         setHasMoreConversations(res.data.length === pageSize);
         return resolve(200);
       } catch (error) {
+        setLoading(false);
         return reject(error);
       }
     });
@@ -65,7 +66,7 @@ const MessengerProvider: React.FC<PropsType> = ({ children }) => {
 
   const loadMessages = () => {
     return new Promise(async (resolve, reject) => {
-      if (!currentConversation) return;
+      if (!currentConversation || !currentConversation.id) return;
       try {
         const pageSize = 50;
         const url =
@@ -151,7 +152,7 @@ const MessengerProvider: React.FC<PropsType> = ({ children }) => {
   const changeCurrentConversation = (id: number, password?: string) => {
     return new Promise(async (resolve, reject) => {
       try {
-        if (currentConversation) Socket.emit("leaveChatRoom", { id: currentConversation.id });
+        if (currentConversation && currentConversation.id) Socket.emit("leaveChatRoom", { id: currentConversation.id });
         const res = await axios.post(`/conversation/${id}`, { password });
         setMessages([]);
         setCurrentConversation(res.data);
@@ -162,10 +163,17 @@ const MessengerProvider: React.FC<PropsType> = ({ children }) => {
     });
   };
 
-  const newConversation = async (values: { members?: number[]; title: string; public: boolean; password?: string }) => {
+  const newConversation = async (values: {
+    members?: number[];
+    title?: string;
+    public: boolean;
+    password?: string;
+    type: "DIRECT" | "GROUP";
+    message?: string;
+  }) => {
     return new Promise(async (resolve, reject) => {
       try {
-        if (currentConversation) Socket.emit("leaveChatRoom", { id: currentConversation.id });
+        if (currentConversation && currentConversation.id) Socket.emit("leaveChatRoom", { id: currentConversation.id });
         const res = (await axios.post(`/conversation/create`, values)) as { data: ConversationsType };
         setMessages([]);
         setConversations((prev) => {
@@ -187,7 +195,7 @@ const MessengerProvider: React.FC<PropsType> = ({ children }) => {
   const joinConversation = async (id: number, password?: string) => {
     return new Promise(async (resolve, reject) => {
       try {
-        if (currentConversation) Socket.emit("leaveChatRoom", { id: currentConversation.id });
+        if (currentConversation && currentConversation.id) Socket.emit("leaveChatRoom", { id: currentConversation.id });
         const res = (await axios.post(`/conversation/${id}/join`, { password })) as { data: ConversationsType };
         setMessages([]);
         setConversations((prev) => {
@@ -221,8 +229,7 @@ const MessengerProvider: React.FC<PropsType> = ({ children }) => {
   };
 
   useEffect(() => {
-    if (!currentConversation) return;
-    // setMessages([]);
+    if (!currentConversation || !currentConversation.id) return;
     Socket.on("newMessage", (data: MessageTextType) => {
       if (currentConversation && currentConversation.id === data.conversationid) {
         setMessages((prev) => [...prev, data]);
@@ -287,6 +294,7 @@ const MessengerProvider: React.FC<PropsType> = ({ children }) => {
         hasMoreConversations,
         messages,
         hasMoreMessages,
+        loading,
         loadConversations,
         changeCurrentConversation,
         loadMessages,
@@ -299,6 +307,7 @@ const MessengerProvider: React.FC<PropsType> = ({ children }) => {
         deleteConversation,
         joinConversation,
         toggleadmin,
+        setCurrentConversation,
       }}
     >
       {[children]}
