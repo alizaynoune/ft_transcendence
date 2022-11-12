@@ -106,7 +106,7 @@ const MessengerProvider: React.FC<PropsType> = ({ children }) => {
           });
         });
         setCurrentConversation(res.data);
-        return resolve(200);
+        return resolve("success update");
       } catch (error) {
         return reject(error);
       }
@@ -151,9 +151,11 @@ const MessengerProvider: React.FC<PropsType> = ({ children }) => {
   const changeCurrentConversation = (id: number, password?: string) => {
     return new Promise(async (resolve, reject) => {
       try {
+        if (currentConversation) Socket.emit("leaveChatRoom", { id: currentConversation.id });
         const res = await axios.post(`/conversation/${id}`, { password });
+        setMessages([]);
         setCurrentConversation(res.data);
-        resolve(200);
+        return resolve(200);
       } catch (error) {
         reject(error);
       }
@@ -163,7 +165,9 @@ const MessengerProvider: React.FC<PropsType> = ({ children }) => {
   const newConversation = async (values: { members: number[]; title: string; public: boolean; password?: string }) => {
     return new Promise(async (resolve, reject) => {
       try {
+        if (currentConversation) Socket.emit("leaveChatRoom", { id: currentConversation.id });
         const res = (await axios.post(`/conversation/create`, values)) as { data: ConversationsType };
+        setMessages([]);
         setConversations((prev) => {
           const find = prev.find((c) => c.id === res.data.id);
           if (!find) return [res.data, ...prev];
@@ -173,6 +177,7 @@ const MessengerProvider: React.FC<PropsType> = ({ children }) => {
           }
         });
         setCurrentConversation(res.data);
+        return resolve("seccess create");
       } catch (error) {
         return reject(error);
       }
@@ -182,7 +187,9 @@ const MessengerProvider: React.FC<PropsType> = ({ children }) => {
   const joinConversation = async (id: number, password?: string) => {
     return new Promise(async (resolve, reject) => {
       try {
+        if (currentConversation) Socket.emit("leaveChatRoom", { id: currentConversation.id });
         const res = (await axios.post(`/conversation/${id}/join`, { password })) as { data: ConversationsType };
+        setMessages([]);
         setConversations((prev) => {
           const find = prev.find((c) => c.id === res.data.id);
           if (!find) return [res.data, ...prev];

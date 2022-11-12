@@ -42,10 +42,6 @@ const HistroyMessenger: React.FC = () => {
   const { intra_id } = useAppSelector(selectAuth);
   const [form] = Form.useForm();
   const [search, setSearch] = useState<SelectProps["options"]>([]);
-  const [isSearching, setIsSearching] = useState<boolean>(false);
-  const [hasMore, setHasMore] = useState<boolean>(false);
-  const [filter, setFilter] = useState<string>("");
-  const [joinPassword, setJoinPassword] = useState<string>();
   const { conversations, hasMoreConversations, loadConversations, changeCurrentConversation, joinConversation } = useContext(
     MessengerContext
   ) as MessengerContextType;
@@ -133,8 +129,7 @@ const HistroyMessenger: React.FC = () => {
       });
     } else {
       try {
-        const res = await changeCurrentConversation(conversation.id);
-        console.log("done");
+        await changeCurrentConversation(conversation.id);
       } catch (error: any) {
         message.error(error instanceof Error ? error.message : error);
       }
@@ -156,6 +151,7 @@ const HistroyMessenger: React.FC = () => {
           onSearch={searchConversations}
           notFoundContent={null}
           options={search}
+          onFocus={() => searchConversations("")}
         />
         <Popover className={style.popover} trigger="click" content={<NewConversation />} placement="bottomRight">
           <Button type="primary" size="large" icon={<Icon component={AddGroupIcon} style={{ fontSize: "120%" }} />} />
@@ -193,11 +189,6 @@ const HistroyMessenger: React.FC = () => {
                   title={
                     item.type === "GROUP" ? item.title : item.members[item.members[0].userid === intra_id ? 1 : 0].users.username
                   }
-                  // description={
-                  //   <Paragraph ellipsis type="secondary" style={{ width: "90%" }}>
-                  //     {item.message[0]?.message}
-                  //   </Paragraph>
-                  // }
                 />
                 <Paragraph type="secondary">{moment(item.updated_at).fromNow()}</Paragraph>
               </List.Item>

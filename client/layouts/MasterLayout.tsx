@@ -128,6 +128,9 @@ const MasterLayout: React.FC<Props> = (props) => {
         setOpenModal(true);
       }
       socket.connect();
+      socket.on("exception", (error) => {
+        message.error(error.message);
+      });
       socket.on("error", (error) => {
         message.error(`Socket ${error.message}`);
       });
@@ -137,6 +140,7 @@ const MasterLayout: React.FC<Props> = (props) => {
       return () => {
         socket.off("connect_error");
         socket.off("error");
+        socket.off("exception");
       };
     }
   }, [isAuth]);

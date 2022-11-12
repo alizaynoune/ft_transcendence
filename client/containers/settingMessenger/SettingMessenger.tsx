@@ -91,7 +91,7 @@ const SettingMessenger: React.FC = () => {
                   <>
                     <Space>
                       <Typography.Text strong>{myInfo.users.username}</Typography.Text>
-                      {myInfo.isadmin && <Typography.Text type="success">{"admin"}</Typography.Text>}
+                      {myInfo.isadmin && <Typography.Text type="success">{"Admin"}</Typography.Text>}
                     </Space>
                     <Typography.Text type="secondary">{myInfo.users.email}</Typography.Text>
                   </>
@@ -127,14 +127,14 @@ const SettingMessenger: React.FC = () => {
             dataSource={members}
             renderItem={(item) => (
               <List.Item
+                actions={[item.isadmin && <Typography.Text type="success">{"Admin"}</Typography.Text>]}
                 extra={
-                  myInfo?.isadmin && item.active && !item.isadmin ? (
+                  myInfo?.isadmin &&
+                  item.active && (
                     <Popover trigger="click" placement="left" content={<ConversationMembersActions member={item} />}>
                       <Button ghost type="primary" icon={<Icon component={DotsVIcon} style={{ fontSize: "16px" }} />} />
                     </Popover>
-                  ) : item.isadmin ? (
-                    <Typography.Text type="success">{"admin"}</Typography.Text>
-                  ) : null
+                  )
                 }
               >
                 <List.Item.Meta
@@ -142,6 +142,7 @@ const SettingMessenger: React.FC = () => {
                   title={<Link href={`/profile/${item.users.username}`}>{item.users.username}</Link>}
                   description={item.users.email}
                 />
+                {/* <div>content</div> */}
               </List.Item>
             )}
           />

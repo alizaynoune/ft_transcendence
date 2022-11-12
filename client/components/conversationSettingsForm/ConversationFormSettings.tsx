@@ -58,7 +58,8 @@ const ConversationFromSettings: React.FC = () => {
     if (Object.keys(diff).length) {
       console.log(diff);
       try {
-        await updateConversation(diff);
+        const res = (await updateConversation(diff)) as string;
+        message.success(res);
       } catch (error: any) {
         message.error(error instanceof Error ? error.message : error);
       }
