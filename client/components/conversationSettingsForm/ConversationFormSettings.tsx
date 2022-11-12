@@ -32,7 +32,11 @@ async function fetchUserList(username: string): Promise<UserValue[]> {
   });
 }
 
-const ConversationFromSettings: React.FC = () => {
+interface PropsType {
+  setOpenPopover: React.Dispatch<React.SetStateAction<boolean>>;
+}
+
+const ConversationFromSettings: React.FC<PropsType> = ({ setOpenPopover }) => {
   const [fetching, setFetching] = useState<boolean>(false);
   const [value, setValue] = useState<UserValue[]>([]);
   const [form] = Form.useForm();
@@ -59,8 +63,10 @@ const ConversationFromSettings: React.FC = () => {
       console.log(diff);
       try {
         const res = (await updateConversation(diff)) as string;
+        setOpenPopover(false);
         message.success(res);
       } catch (error: any) {
+        setOpenPopover(false);
         message.error(error instanceof Error ? error.message : error);
       }
     }

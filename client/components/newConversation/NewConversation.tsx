@@ -32,8 +32,11 @@ async function fetchUserList(username: string): Promise<UserValue[]> {
     }
   });
 }
+interface PropsType {
+  setOpenPopover: React.Dispatch<React.SetStateAction<boolean>>;
+}
 
-const NewConversation: React.FC = () => {
+const NewConversation: React.FC<PropsType> = ({ setOpenPopover }) => {
   const [fetching, setFetching] = useState<boolean>(false);
   const [value, setValue] = useState<UserValue[]>([]);
   const { newConversation } = useContext(MessengerContext) as MessengerContextType;
@@ -42,15 +45,17 @@ const NewConversation: React.FC = () => {
     try {
       const members = values.members?.map((i) => i.value);
       const data = {
-        members,
+        members: members && members.length ? members : undefined,
         title: values.title,
         public: values.public,
         password: values.password?.length ? values.password : undefined,
       };
       Object.assign(data, { members });
       const res = (await newConversation(data)) as string;
+      setOpenPopover(false);
       message.success(res);
     } catch (error) {
+      setOpenPopover(false);
       message.error(error instanceof Error ? error.message : (error as string));
     }
   };
@@ -95,11 +100,14 @@ const NewConversation: React.FC = () => {
           }}
         />
       </Form.Item>
+      <Form.Item name="public" valuePropName="checked" initialValue={false}>
+        <Checkbox>{"Public"}</Checkbox>
+      </Form.Item>
       <div
         style={{
           display: "flex",
           justifyContent: "space-between",
-          alignItems: "center",
+          // flexDirection: "column",
         }}
       >
         <Form.Item noStyle>
@@ -107,9 +115,7 @@ const NewConversation: React.FC = () => {
             {"Submit"}
           </Button>
         </Form.Item>
-        <Form.Item name="public" valuePropName="checked" initialValue={false}>
-          <Checkbox>{"Public"}</Checkbox>
-        </Form.Item>
+        <Button danger onClick={() => setOpenPopover(false)}>{"cancel"}</Button>
       </div>
     </Form>
   );

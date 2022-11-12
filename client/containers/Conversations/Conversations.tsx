@@ -42,6 +42,7 @@ const HistroyMessenger: React.FC = () => {
   const { intra_id } = useAppSelector(selectAuth);
   const [form] = Form.useForm();
   const [search, setSearch] = useState<SelectProps["options"]>([]);
+  const [openPopover, setOpenPopover] = useState<boolean>(false);
   const { conversations, hasMoreConversations, loadConversations, changeCurrentConversation, joinConversation } = useContext(
     MessengerContext
   ) as MessengerContextType;
@@ -136,6 +137,7 @@ const HistroyMessenger: React.FC = () => {
     }
   };
 
+
   return (
     <div className={style.container}>
       <div className={style.header}>
@@ -153,8 +155,24 @@ const HistroyMessenger: React.FC = () => {
           options={search}
           onFocus={() => searchConversations("")}
         />
-        <Popover className={style.popover} trigger="click" content={<NewConversation />} placement="bottomRight">
-          <Button type="primary" size="large" icon={<Icon component={AddGroupIcon} style={{ fontSize: "120%" }} />} />
+        <Popover
+          className={style.popover}
+          open={openPopover}
+          content={
+            <NewConversation
+              setOpenPopover={(value: React.SetStateAction<boolean>) => {
+                setOpenPopover(value);
+              }}
+            />
+          }
+          placement="bottomRight"
+        >
+          <Button
+            type="primary"
+            size="large"
+            icon={<Icon component={AddGroupIcon} style={{ fontSize: "120%" }} />}
+            onClick={() => setOpenPopover(!openPopover)}
+          />
         </Popover>
       </div>
       <div id="scrollableDiv" className={style.scrollableDiv}>
@@ -181,7 +199,7 @@ const HistroyMessenger: React.FC = () => {
                         size="large"
                       />
                     ) : (
-                      <Avatar.Group maxCount={2} maxPopoverTrigger="click">
+                      <Avatar.Group maxCount={2} maxPopoverTrigger="focus">
                         {item.members.map((m, key) => m.userid !== intra_id && <Avatar src={m.users.img_url} key={key} />)}
                       </Avatar.Group>
                     )

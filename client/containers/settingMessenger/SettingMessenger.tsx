@@ -1,7 +1,7 @@
 import style from "./settingMessenger.module.css";
 import { Avatar, Button, Card, Space, Typography, List, Modal, message, Divider, Popover } from "antd";
 import { ConversationMemberType, MessengerContextType } from "@/types/types";
-import { useContext, useEffect, useState } from "react";
+import { SetStateAction, useContext, useEffect, useState } from "react";
 import Icon, { LogoutOutlined } from "@ant-design/icons";
 import { useAppSelector } from "@/hooks/reduxHooks";
 import { selectAuth } from "@/store/reducers/auth";
@@ -17,6 +17,7 @@ const SettingMessenger: React.FC = () => {
   const { intra_id } = useAppSelector(selectAuth);
   const [members, setMembers] = useState<ConversationMemberType[]>([]);
   const [myInfo, setMyInfo] = useState<ConversationMemberType>();
+  const [openPopover, setOpenPopover] = useState<boolean>(false);
   const { currentConversation, leaveConversation } = useContext(MessengerContext) as MessengerContextType;
 
   useEffect(() => {
@@ -109,8 +110,23 @@ const SettingMessenger: React.FC = () => {
             <Space direction="vertical">
               <Button type="primary" danger ghost icon={<LogoutOutlined />} onClick={ConfirmleaveConversation}></Button>
               {myInfo.isadmin && (
-                <Popover trigger="click" placement="bottomRight" content={<ConversationFromSettings />}>
-                  <Button type="primary" ghost icon={<Icon component={Settings2Icon} style={{ fontSize: "15px" }} />} />
+                <Popover
+                  open={openPopover}
+                  placement="bottomRight"
+                  content={
+                    <ConversationFromSettings
+                      setOpenPopover={(value: SetStateAction<boolean>): void => {
+                        setOpenPopover(value);
+                      }}
+                    />
+                  }
+                >
+                  <Button
+                    type="primary"
+                    ghost
+                    icon={<Icon component={Settings2Icon} style={{ fontSize: "15px" }} />}
+                    onClick={() => setOpenPopover(!openPopover)}
+                  />
                 </Popover>
               )}
             </Space>
