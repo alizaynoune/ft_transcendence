@@ -68,6 +68,7 @@ export interface UserType {
   img_url: string;
   status: "ONLINE" | "OFFLINE" | "PLAYING";
   xp: number;
+  two_factor: boolean;
   cover: string;
   created_at: string;
   updated_at: string;
@@ -77,6 +78,7 @@ export type updateProfileType = (update: {
   first_name: string;
   last_name: string;
   username: string;
+  two_factor: boolean;
 }) => Promise<unknown>;
 export interface ProfileContextType {
   loading: boolean;

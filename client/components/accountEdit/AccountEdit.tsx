@@ -1,16 +1,12 @@
 import style from "./accountEdit.module.css";
-import { Form, Input, Button, Col, Row, DatePicker, Select } from "antd";
+import { Form, Input, Button, Col, Row, Select, Checkbox } from "antd";
 import Icon from "@ant-design/icons";
-import axios from "@/config/axios";
-import { useAppDispatch, useAppSelector } from "@/hooks/reduxHooks";
 import _ from "lodash";
-// Icons
-import { UserIcon, EmailIcon, PhoneIcon, LocationIcon, CalenderEditIcon } from "@/icons/index";
+import { UserIcon, EmailIcon } from "@/icons/index";
 import { useContext, useEffect, useState } from "react";
-import { UserType, ProfileContextType } from "@/types/types";
+import { ProfileContextType } from "@/types/types";
 import { ProfileContext } from "context/profileContext";
 
-const { Option } = Select;
 const AccountSetting: React.FC = () => {
   const { profile, updateProfile } = useContext(ProfileContext) as ProfileContextType;
   const [form] = Form.useForm();
@@ -20,16 +16,18 @@ const AccountSetting: React.FC = () => {
       last_name: profile?.last_name,
       email: profile?.email,
       username: profile?.username,
+      two_factor: profile?.two_factor,
     });
   }, [profile]);
 
   const onFinish = async (values: any) => {
     console.log(values);
-    const update = (({ email, first_name, last_name, username }) => ({
+    const update = (({ email, first_name, last_name, username, two_factor }) => ({
       email,
       first_name,
       last_name,
       username,
+      two_factor,
     }))(values);
     const diff = Object.fromEntries(
       // @ts-ignore
@@ -39,7 +37,7 @@ const AccountSetting: React.FC = () => {
       console.log(diff);
       try {
         const d = await updateProfile(
-          diff as { email: string; first_name: string; last_name: string; username: string }
+          diff as { email: string; first_name: string; last_name: string; username: string; two_factor: boolean }
         );
         console.log(d);
       } catch (error) {
@@ -47,7 +45,6 @@ const AccountSetting: React.FC = () => {
       }
     }
   };
-
   return (
     <Form className={style.form} name="accountSettings" form={form} onFinish={onFinish}>
       <Row gutter={24} justify="space-around" align="middle">
@@ -71,39 +68,10 @@ const AccountSetting: React.FC = () => {
             <Input size="large" placeholder="Email" prefix={<Icon component={EmailIcon} />} />
           </Form.Item>
         </Col>
-        <Col xs={{ span: 24, offset: 1 }} lg={{ span: 10, offset: 1 }}>
-          <Form.Item name="phone">
-            <Input size="large" placeholder="Phone" prefix={<Icon component={PhoneIcon} />} />
+        <Col xs={{ span: 24, offset: 1 }} lg={{ span: 24, offset: 3 }}>
+          <Form.Item name="two_factor">
+            <Checkbox>{"two-factor by email"}</Checkbox>
           </Form.Item>
-        </Col>
-        <Col xs={{ span: 24, offset: 1 }} lg={{ span: 10, offset: 1 }}>
-          <Form.Item name="birthday">
-            <DatePicker
-              size="large"
-              placeholder="Birthday"
-              suffixIcon={<Icon component={CalenderEditIcon} style={{ fontSize: "140%" }} />}
-            />
-          </Form.Item>
-        </Col>
-        <Col xs={{ span: 24, offset: 1 }} lg={{ span: 10, offset: 1 }}>
-          <Form.Item name="address">
-            <Input size="large" placeholder="Address" prefix={<Icon component={LocationIcon} />} />
-          </Form.Item>
-        </Col>
-        <Col xs={{ span: 24, offset: 1 }} lg={{ span: 10, offset: 1 }}>
-          <Select
-            // showSearch
-            placeholder="Grender"
-            optionFilterProp="children"
-            // onChange={onChange}
-            // onSearch={onSearch}
-            filterOption={(input, option) =>
-              (option!.children as unknown as string).toLowerCase().includes(input.toLowerCase())
-            }
-          >
-            <Option value="Male">Male</Option>
-            <Option value="Female">Female</Option>
-          </Select>
         </Col>
         <Col xs={{ span: 24, offset: 1 }} lg={{ span: 10, offset: 1 }}>
           <Form.Item>

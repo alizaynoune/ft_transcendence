@@ -55,9 +55,7 @@ const items: MenuItem[] = [
   getItem(
     <Link href="/messenger">{"Messenger"}</Link>,
     "messenger",
-    <Badge dot offset={[-2, 4]}>
-      <Icon component={MessageIcon} style={{ fontSize: 25, color: "var(--light-color)" }} />
-    </Badge>
+    <Icon component={MessageIcon} style={{ fontSize: 25, color: "var(--light-color)" }} />
   ),
   getItem(
     <Link href="/achievements">{"Achievements"}</Link>,
@@ -84,19 +82,12 @@ const SiderLayout: React.FC<PropsType> = (props) => {
   const route = useRouter();
 
   useEffect(() => {
-    setCurrentPage(route.asPath.split("/")[1]);
+    const split = route.asPath.split("/");
+    // setCurrentPage(route.asPath.split("/")[1]);
+    // console.log(split);
+    if (split[1] === "game" && split[2] === "new") setCurrentPage("gameNew");
+    else setCurrentPage(split[1]);
   }, [route]);
-
-  // useEffect(() => {
-  //   Socket.on("disconnect", () => {
-  //     // dispatch(logout());
-  //     Socket.close()
-  //   });
-
-  //   // return () => {
-  //   //   Socket.off("disconnect");
-  //   // };
-  // }, []);
 
   return (
     <div className={`${style.container} ${!collapsed ? style.open : ""}`}>

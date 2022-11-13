@@ -2,11 +2,12 @@ import style from "./userData.module.css";
 import { useEffect, useState, useContext } from "react";
 import { Tabs, Typography } from "antd";
 import { useRouter } from "next/router";
-import AccountSetting from "@/containers/accountSettingTab/AccountSettingTab";
+// import AccountSetting from "@/containers/accountSettingTab/AccountSettingTab";
+import AccountSetting from "@/components/accountEdit/AccountEdit";
 import FriendsTabs from "@/containers/friendsTab/FriendsTabs";
 import BlockedsList from "@/components/blockedsList/BlockedsList";
 import LastMatches from "@/components/lastMatches/LastMatches";
-import Icon from "@ant-design/icons";
+import Icon, { HistoryOutlined } from "@ant-design/icons";
 import { BlockUserIcon, SettingIcon, FriendsIcon } from "@/icons/index";
 import { ProfileContext } from "context/profileContext";
 import { ProfileContextType } from "@/types/types";
@@ -37,7 +38,8 @@ const items = [
     label: (
       <>
         <Typography.Text className={style.tabText}>{"Last Matches"}</Typography.Text>
-        <Icon className={style.tabIcon} component={SettingIcon} />
+        {/* <Icon className={style.tabIcon} component={SettingIcon} /> */}
+        <HistoryOutlined  className={style.tabIcon} />
       </>
     ),
     children: <LastMatches />,

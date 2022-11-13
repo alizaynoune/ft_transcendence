@@ -34,7 +34,6 @@ const HistroyMessenger: React.FC = () => {
     hasMoreConversations,
     currentConversation,
     loadConversations,
-    changeCurrentConversation,
     joinConversation,
     setConversations,
     setCurrentConversation,
@@ -124,12 +123,8 @@ const HistroyMessenger: React.FC = () => {
     });
 
     Socket.on("passwordChanged", (id) => {
-      console.log("passwordChanged", currentConversation, id);
-
-      // if (currentConversation && currentConversation.id === id) {
       setCurrentConversation(null);
       router.push("/messenger");
-      // }
     });
 
     return () => {
