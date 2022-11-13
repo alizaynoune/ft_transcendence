@@ -211,4 +211,5 @@ export interface MessengerContextType {
   joinConversation: (id: number, password?: string) => Promise<unknown>;
   toggleadmin: (values: { userId: number; setAs: boolean }) => Promise<unknown>;
   setCurrentConversation: React.Dispatch<React.SetStateAction<ConversationsType | null>>;
+  setConversations: React.Dispatch<React.SetStateAction<ConversationsType[]>>;
 }

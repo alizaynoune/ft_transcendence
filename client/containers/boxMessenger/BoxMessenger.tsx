@@ -1,13 +1,11 @@
 import style from "./boxMessenger.module.css";
-import { Input, Button, List, message, Form, InputRef, Divider, Avatar, Empty } from "antd";
-import Icon, { CloseOutlined, LoadingOutlined } from "@ant-design/icons";
+import { Input, Button, List, message, Form, InputRef, Empty } from "antd";
+import Icon, { CloseOutlined } from "@ant-design/icons";
 import MessageText from "@/components/messageText/MessageText";
 import { useState, useEffect, useRef, useContext } from "react";
-import axios from "@/config/axios";
-import { MessageTextType, UserType, ConversationMemberType, ConversationsType, MessengerContextType } from "types/types";
+import { ConversationMemberType, MessengerContextType } from "types/types";
 import { useAppSelector } from "@/hooks/reduxHooks";
 import { selectAuth } from "@/store/reducers/auth";
-import Socket from "@/config/socket";
 import InfiniteScroll from "react-infinite-scroll-component";
 //Icons
 import { EmojiSmileIcon, SendIcon } from "@/icons/index";
@@ -67,9 +65,7 @@ const BoxMessenger: React.FC = () => {
       } else await sendMessage(new_message);
       form.resetFields(["new_message"]);
       setShowEmoji(false);
-      console.log(inputRef.current);
       inputRef.current?.focus();
-      console.log(inputRef.current);
     } catch (error) {
       message.error(error instanceof Error ? error.message : (error as string));
     }
@@ -79,6 +75,11 @@ const BoxMessenger: React.FC = () => {
     const value = (form.getFieldValue("new_message") || "").concat(emojiObject.emoji);
     form.setFields([{ name: "new_message", value, errors: [] }]);
   };
+
+  useEffect(() => {
+    console.log("rendering");
+    inputRef.current?.focus();
+  });
 
   return currentConversation ? (
     <div className={style.container}>

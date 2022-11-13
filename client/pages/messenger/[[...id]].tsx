@@ -3,10 +3,10 @@ import { useRouter } from "next/router";
 import Conversations from "@/containers/Conversations/Conversations";
 import BoxMessenger from "@/containers/boxMessenger/BoxMessenger";
 import SettingMessenger from "@/containers/settingMessenger/SettingMessenger";
-import { SetStateAction, useContext, useEffect, useState } from "react";
-import { Tabs, Typography, Empty, Modal, Form, Input, message } from "antd";
+import { useContext, useEffect, useState } from "react";
+import { Tabs, Typography, Modal, Form, Input, message } from "antd";
 import { SettingIcon, MessageIcon, Messager1Icon } from "@/icons/index";
-import { ConversationMemberType, ConversationsType, MessageTextType, MessengerContextType, UserType } from "types/types";
+import { ConversationsType, MessengerContextType, UserType } from "types/types";
 import Icon from "@ant-design/icons";
 import authRoute from "@/tools/protectedRoutes";
 import { useWindowSize } from "@/hooks/useWindowSize";
@@ -40,8 +40,7 @@ const Messenger: React.FC = () => {
         ),
         async onOk() {
           try {
-            const res = await changeCurrentConversation(conversation.id, form.getFieldValue("password"));
-            console.log(res, "error");
+            await changeCurrentConversation(conversation.id, form.getFieldValue("password"));
           } catch (error: any) {
             message.error(error instanceof Error ? error.message : error);
           }
@@ -90,40 +89,39 @@ const Messenger: React.FC = () => {
         ],
       };
       setCurrentConversation(fackConversation);
+      console.log(fackConversation);
     } catch (error) {
       error instanceof Error && message.error(error.message);
+    }
+  };
+
+  const parsQuery = async (query: string[] | string) => {
+    try {
+      if (query[0] === "group" && /^(\d)+$/.test(query[1])) {
+        const id = Number(query[1]);
+        const conv = conversations.find((c) => c.type === "GROUP" && c.id === id);
+        if (!conv || conv.id === currentConversation?.id) return;
+        await changeConversation(conv);
+      } else {
+        const username = query[1];
+        if (username === user.username) return;
+        const conv = conversations.find(
+          (c) => c.type === "DIRECT" && (c.members[0].users.username === username || c.members[1].users.username === username)
+        );
+        if (conv && currentConversation && conv.id === currentConversation.id) return;
+        if (conv) await changeConversation(conv);
+        else await newDirectConversation(username);
+      }
+    } catch (error) {
+      console.log(error);
     }
   };
 
   useEffect(() => {
     if (!query.id || !query.id[0] || !query.id[1] || loading) return;
     if (query.id[0] !== "group" && query.id[0] !== "direct") return;
-    if (query.id[0] === "group" && /^(\d)+$/.test(query.id[1])) {
-      const id = Number(query.id[1]);
-      const conv = conversations.find((c) => c.type === "GROUP" && c.id === id);
-      if (conv?.id === currentConversation?.id) return
-      if (conv) changeConversation(conv);
-    } else {
-      const username = query.id[1];
-      if (username === user.username) return;
-      const conv = conversations.find(
-        (c) => c.type === "DIRECT" && (c.members[0].users.username === username || c.members[1].users.username === username)
-      );
-      if (conv?.id === currentConversation?.id) return
-      if (conv) changeConversation(conv);
-      else newDirectConversation(username);
-    }
+    parsQuery(query.id);
   }, [isReady, query.id, loading]);
-
-  useEffect(() => {
-    if (!currentConversation || !currentConversation.id) return;
-    if (currentConversation.type === "GROUP") router.push(`/messenger/group/${currentConversation.id}`);
-    else {
-      const id = currentConversation.members[0].userid === user.intra_id ? 1 : 0;
-      const url = `/messenger/direct/${currentConversation.members[id].users.username}`;
-      router.push(url);
-    }
-  }, [currentConversation]);
 
   const items = [
     {

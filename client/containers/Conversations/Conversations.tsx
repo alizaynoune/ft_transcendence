@@ -1,34 +1,19 @@
 import style from "./conversations.module.css";
-import React, { useState, useEffect, SetStateAction, useContext } from "react";
+import React, { useState, useContext, useEffect } from "react";
 import NewConversation from "@/components/newConversation/NewConversation";
-import {
-  Input,
-  Button,
-  List,
-  Skeleton,
-  Divider,
-  Avatar,
-  Popover,
-  Typography,
-  Modal,
-  message,
-  Form,
-  Select,
-  Space,
-  TypographyProps,
-} from "antd";
+import { Input, Button, List, Skeleton, Divider, Avatar, Popover, Typography, Modal, message, Form, Select, Space } from "antd";
 import InfiniteScroll from "react-infinite-scroll-component";
 import { useAppSelector } from "@/hooks/reduxHooks";
 import { selectAuth } from "@/store/reducers/auth";
-// icons
-import Icon, { ExclamationCircleOutlined } from "@ant-design/icons";
+import Icon from "@ant-design/icons";
 import { SearchIcon, AddGroupIcon } from "@/icons/index";
-// Types
-import { ConversationMemberType, ConversationsType, MessengerContextType, PromiseReturn } from "@/types/types";
+import { ConversationMemberType, ConversationsType, MessengerContextType } from "@/types/types";
 import moment from "moment";
 import { MessengerContext } from "context/massengerContext";
 import axios from "@/config/axios";
 import type { SelectProps } from "antd";
+import { useRouter } from "next/router";
+import Socket from "@/config/socket";
 
 const labelConversations = (members: ConversationMemberType[]) => {
   return members.map((m, key) => {
@@ -43,9 +28,17 @@ const HistroyMessenger: React.FC = () => {
   const [form] = Form.useForm();
   const [search, setSearch] = useState<SelectProps["options"]>([]);
   const [openPopover, setOpenPopover] = useState<boolean>(false);
-  const { conversations, hasMoreConversations, loadConversations, changeCurrentConversation, joinConversation } = useContext(
-    MessengerContext
-  ) as MessengerContextType;
+  const router = useRouter();
+  const {
+    conversations,
+    hasMoreConversations,
+    currentConversation,
+    loadConversations,
+    changeCurrentConversation,
+    joinConversation,
+    setConversations,
+    setCurrentConversation,
+  } = useContext(MessengerContext) as MessengerContextType;
 
   const loadMoreData = async () => {
     try {
@@ -106,37 +99,53 @@ const HistroyMessenger: React.FC = () => {
     }
   };
 
-  const changeConversation = async (conversation: ConversationsType) => {
-    if (conversation.protected) {
-      Modal.info({
-        title: "Do you want to delete these items?",
-        closable: true,
-        content: (
-          <Form form={form}>
-            <Form.Item name="password" rules={[{ required: true, min: 6, max: 20 }]}>
-              <Input.Password placeholder="Entre Password" />
-            </Form.Item>
-          </Form>
-        ),
-        async onOk() {
-          try {
-            const res = await changeCurrentConversation(conversation.id, form.getFieldValue("password"));
-            console.log(res, "error");
-          } catch (error: any) {
-            message.error(error instanceof Error ? error.message : error);
+  useEffect(() => {
+    Socket.on("updateConversation", (update: ConversationsType) => {
+      const user = update.members.find((m) => m.userid === intra_id);
+      if (!user || user.ban || new Date(user.endban).getTime() > new Date().getTime()) {
+        setCurrentConversation(null);
+        router.push("/messenger");
+        setConversations((prev) => prev.filter((c) => c.id !== update.id));
+      } else {
+        setConversations((prev) => {
+          const find = prev.find((c) => c.id === update.id);
+          if (!find) return [update, ...prev];
+          else {
+            return prev.map((c) => {
+              if (c.id === update.id) return update;
+              return c;
+            });
           }
-        },
-        onCancel() {},
-      });
-    } else {
-      try {
-        await changeCurrentConversation(conversation.id);
-      } catch (error: any) {
-        message.error(error instanceof Error ? error.message : error);
+        });
+        if (currentConversation && currentConversation.id === update.id) {
+          changeConversation(update);
+        }
       }
+    });
+
+    Socket.on("passwordChanged", (id) => {
+      console.log("passwordChanged", currentConversation, id);
+
+      // if (currentConversation && currentConversation.id === id) {
+      setCurrentConversation(null);
+      router.push("/messenger");
+      // }
+    });
+
+    return () => {
+      Socket.off("updateConversation");
+      Socket.off("passwordChanged");
+    };
+  }, []);
+
+  const changeConversation = async (conversation: ConversationsType) => {
+    if (conversation.type === "GROUP") router.push(`/messenger/group/${conversation.id}`);
+    else {
+      const id = conversation.members[0].userid === intra_id ? 1 : 0;
+      const url = `/messenger/direct/${conversation.members[id].users.username}`;
+      router.push(url);
     }
   };
-
 
   return (
     <div className={style.container}>

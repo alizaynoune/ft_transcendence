@@ -9,17 +9,17 @@ import { TrashIcon, Settings2Icon, DotsVIcon } from "@/icons/index";
 import ConversationFromSettings from "@/components/conversationSettingsForm/ConversationFormSettings";
 import ConversationMembersActions from "@/components/ConversationMembersActions/ConversationMembersActions";
 import Link from "next/link";
-import axios from "@/config/axios";
 import { MessengerContext } from "context/massengerContext";
 import ModalInviteGame from "@/components/modalInviteGame/ModalInviteGame";
+import { useRouter } from "next/router";
 
 const SettingMessenger: React.FC = () => {
   const { intra_id } = useAppSelector(selectAuth);
   const [members, setMembers] = useState<ConversationMemberType[]>([]);
   const [myInfo, setMyInfo] = useState<ConversationMemberType>();
   const [openPopover, setOpenPopover] = useState<boolean>(false);
-  const { currentConversation, leaveConversation } = useContext(MessengerContext) as MessengerContextType;
-
+  const { currentConversation, leaveConversation, deleteConversation } = useContext(MessengerContext) as MessengerContextType;
+  const router = useRouter();
   useEffect(() => {
     if (!currentConversation) return;
     setMembers(currentConversation.members.filter((m) => m.userid !== intra_id));
@@ -33,6 +33,7 @@ const SettingMessenger: React.FC = () => {
         try {
           const res = (await leaveConversation()) as { message: string };
           message.success(res.message);
+          router.push("/messenger/");
         } catch (error: any) {
           message.error(error instanceof Error ? error.message : error);
         }
@@ -41,16 +42,15 @@ const SettingMessenger: React.FC = () => {
     });
   };
 
-  const deleteConversation = () => {
-    console.log("delete");
+  const ConfirmDeleteConversation = () => {
     if (!currentConversation) return;
     Modal.confirm({
-      title: "Are you sure to delete this conversation",
+      title: `Are you sure to delete this conversation "${currentConversation?.title}"`,
       async onOk() {
         try {
-          const res = await axios.put("conversation/leave", { conversationId: currentConversation.id });
-          console.log(res);
-          message.success("success leave");
+          const res = (await deleteConversation()) as { message: string };
+          message.success(res.message);
+          router.push("/messenger/");
         } catch (error) {
           error instanceof Error && message.error(error.message);
         }
@@ -160,12 +160,12 @@ const SettingMessenger: React.FC = () => {
             )}
           />
         ) : currentConversation.id ? (
-          <Space direction="vertical">
+          <Space direction="vertical" align="center" style={{ width: "100%" }}>
             <Button
               type="primary"
               danger
               icon={<Icon component={TrashIcon} style={{ fontSize: "130%" }} />}
-              onClick={deleteConversation}
+              onClick={ConfirmDeleteConversation}
             >
               {"delete conversation"}
             </Button>
