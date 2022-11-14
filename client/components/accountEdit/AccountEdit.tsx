@@ -16,18 +16,17 @@ const AccountSetting: React.FC = () => {
       last_name: profile?.last_name,
       email: profile?.email,
       username: profile?.username,
-      two_factor: profile?.two_factor,
     });
   }, [profile]);
 
   const onFinish = async (values: any) => {
     console.log(values);
-    const update = (({ email, first_name, last_name, username, two_factor }) => ({
+    const update = (({ email, first_name, last_name, username, two_factor_activate }) => ({
       email,
       first_name,
       last_name,
       username,
-      two_factor,
+      two_factor_activate,
     }))(values);
     const diff = Object.fromEntries(
       // @ts-ignore
@@ -37,7 +36,7 @@ const AccountSetting: React.FC = () => {
       console.log(diff);
       try {
         const d = await updateProfile(
-          diff as { email: string; first_name: string; last_name: string; username: string; two_factor: boolean }
+          diff as { email: string; first_name: string; last_name: string; username: string; two_factor_activate: boolean }
         );
         console.log(d);
       } catch (error) {
@@ -69,8 +68,8 @@ const AccountSetting: React.FC = () => {
           </Form.Item>
         </Col>
         <Col xs={{ span: 24, offset: 1 }} lg={{ span: 24, offset: 3 }}>
-          <Form.Item name="two_factor">
-            <Checkbox>{"two-factor by email"}</Checkbox>
+          <Form.Item name="two_factor_activate">
+            <Checkbox defaultChecked={profile?.two_factor_activate}>{"two_factor_activate"}</Checkbox>
           </Form.Item>
         </Col>
         <Col xs={{ span: 24, offset: 1 }} lg={{ span: 10, offset: 1 }}>

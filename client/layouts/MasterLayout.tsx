@@ -15,7 +15,7 @@ import Spin from "@/components/spin/Spin";
 import socket from "@/config/socket";
 import { RcFile, UploadChangeParam, UploadFile } from "antd/lib/upload";
 import { LoadingOutlined, PlusOutlined } from "@ant-design/icons";
-import { AxiosFormData } from "@/config/axios";
+import axios from "@/config/axios";
 
 const { Footer, Content } = Layout;
 interface Props {
@@ -80,7 +80,7 @@ const MasterLayout: React.FC<Props> = (props) => {
 
   const onFinish = async (values: any) => {
     try {
-      const res = await AxiosFormData.put("/users/update", updatedData);
+      const res = await axios.put("/users/update", updatedData, { headers: { "Content-Type": "multipart/form-data" } });
       dispatch(updateInfo(res.data));
       message.success("success update");
     } catch (error) {

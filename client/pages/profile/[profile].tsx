@@ -11,7 +11,7 @@ import authRoute from "@/tools/protectedRoutes";
 import { useRouter } from "next/router";
 import ProfileProvider, { ProfileContext } from "context/profileContext";
 import { UploadChangeParam } from "antd/lib/upload";
-import { AxiosFormData } from "@/config/axios";
+import axios from "@/config/axios";
 
 const MProfile: React.FC = () => {
   const lazyRoot = useRef(null);
@@ -44,7 +44,11 @@ const MProfile: React.FC = () => {
   const handleChange: UploadProps["onChange"] = async (info: UploadChangeParam<UploadFile>) => {
     if (info.file.status === "uploading") return;
     try {
-      const res = (await AxiosFormData.put("/users/update", { cover: info.file.originFileObj })) as { data: UserType };
+      const res = (await axios.put(
+        "/users/update",
+        { cover: info.file.originFileObj },
+        { headers: { "Content-Type": "multipart/form-data" } }
+      )) as { data: UserType };
       setCover(res.data.cover);
       message.success("success update");
       loadingProfile();
@@ -81,7 +85,13 @@ const MProfile: React.FC = () => {
           <>
             <Badge.Ribbon text="Ranked 10" placement="start">
               <div className={style.cover} ref={lazyRoot}>
-                <Image lazyRoot={lazyRoot} src={cover || "/images/defaultProfileCover.png"} layout="fill" objectFit="cover" priority />
+                <Image
+                  lazyRoot={lazyRoot}
+                  src={cover || "/images/defaultProfileCover.png"}
+                  layout="fill"
+                  objectFit="cover"
+                  priority
+                />
                 {isMyProfile && (
                   <Upload accept="image/*" showUploadList={false} onChange={handleChange}>
                     <Button

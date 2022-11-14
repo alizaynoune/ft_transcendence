@@ -1,25 +1,31 @@
-.select{
+.select {
   width: 400px;
 }
 
 
-
-
-
-@media screen and (max-width: 576px){
-  .select{width: 200px;}
+@media screen and (max-width: 576px) {
+  .select {
+    width: 200px;
+  }
 }
 
-@media screen and (min-width: 576px){
-  .select{width: 300px;}
+@media screen and (min-width: 576px) {
+  .select {
+    width: 300px;
+  }
 }
 
-@media screen and (min-width: 768px){
-  .select{width: 400px;}
+@media screen and (min-width: 768px) {
+  .select {
+    width: 400px;
+  }
 }
 
-@media screen and (min-width: 992px){}
+@media screen and (min-width: 992px) {
+}
 
-@media screen and (min-width: 1200px) {}
+@media screen and (min-width: 1200px) {
+}
 
-@media screen and (min-width: 1600px){}
+@media screen and (min-width: 1600px) {
+}

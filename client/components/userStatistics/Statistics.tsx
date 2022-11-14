@@ -1,7 +1,6 @@
 import style from "./statistics.module.css";
 import Image from "next/image";
-import axios, { AxiosFormData } from "@/config/axios";
-import OriginAxios from "axios";
+import axios from "@/config/axios";
 import { Progress, Avatar, Badge, Typography, Upload, Button, Space, Tooltip, message, UploadProps, UploadFile } from "antd";
 import Icon, { EditOutlined, CloseOutlined, CheckOutlined } from "@ant-design/icons";
 import { useAppSelector, useAppDispatch } from "@/hooks/reduxHooks";
@@ -25,7 +24,6 @@ import {
   WildfireIcon,
 } from "@/icons/index";
 import { UploadChangeParam, RcFile } from "antd/lib/upload";
-import { loadToken } from "@/tools/localStorage";
 import Link from "next/link";
 
 const achievementsIcons: {
@@ -93,7 +91,11 @@ const Statistics: React.FC<Props> = ({ data, refresh }) => {
   const handleChange: UploadProps["onChange"] = async (info: UploadChangeParam<UploadFile>) => {
     if (info.file.status === "uploading") return;
     try {
-      const res = (await AxiosFormData.put("/users/update", { avatar: info.file.originFileObj })) as {
+      const res = (await axios.put(
+        "/users/update",
+        { avatar: info.file.originFileObj },
+        { headers: { "Content-Type": "multipart/form-data" } }
+      )) as {
         data: UserType;
       };
       dispatch(updateInfo(res.data));

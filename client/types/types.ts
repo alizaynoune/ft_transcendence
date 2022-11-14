@@ -17,15 +17,7 @@ export type ActionsType =
   | "friends/sendrequest";
 export type FriendActions = (user: UserType, action: ActionsType) => Promise<PromiseReturn>;
 
-export interface AuthType {
-  username: string;
-  first_name: string;
-  last_name: string;
-  img_url: string;
-  email: string;
-  intra_id: number;
-  updated_at: Date | null;
-  created_at: Date | null;
+export interface AuthType extends UserType {
   notifications: NotificationType[];
 }
 
@@ -68,7 +60,7 @@ export interface UserType {
   img_url: string;
   status: "ONLINE" | "OFFLINE" | "PLAYING";
   xp: number;
-  two_factor: boolean;
+  two_factor_activate: boolean;
   cover: string;
   created_at: string;
   updated_at: string;
@@ -78,7 +70,7 @@ export type updateProfileType = (update: {
   first_name: string;
   last_name: string;
   username: string;
-  two_factor: boolean;
+  two_factor_activate: boolean;
 }) => Promise<unknown>;
 export interface ProfileContextType {
   loading: boolean;

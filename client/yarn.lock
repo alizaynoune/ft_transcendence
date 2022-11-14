@@ -1127,9 +1127,14 @@
   "resolved" "https://registry.npmjs.org/@next/env/-/env-12.1.6.tgz"
   "version" "12.1.6"
 
-"@next/swc-darwin-x64@12.1.6":
-  "integrity" "sha512-9FptMnbgHJK3dRDzfTpexs9S2hGpzOQxSQbe8omz6Pcl7rnEp9x4uSEKY51ho85JCjL4d0tDLBcXEJZKKLzxNg=="
-  "resolved" "https://registry.npmjs.org/@next/swc-darwin-x64/-/swc-darwin-x64-12.1.6.tgz"
+"@next/swc-linux-x64-gnu@12.1.6":
+  "integrity" "sha512-AC7jE4Fxpn0s3ujngClIDTiEM/CQiB2N2vkcyWWn6734AmGT03Duq6RYtPMymFobDdAtZGFZd5nR95WjPzbZAQ=="
+  "resolved" "https://registry.npmjs.org/@next/swc-linux-x64-gnu/-/swc-linux-x64-gnu-12.1.6.tgz"
+  "version" "12.1.6"
+
+"@next/swc-linux-x64-musl@12.1.6":
+  "integrity" "sha512-c9Vjmi0EVk0Kou2qbrynskVarnFwfYIi+wKufR9Ad7/IKKuP6aEhOdZiIIdKsYWRtK2IWRF3h3YmdnEa2WLUag=="
+  "resolved" "https://registry.npmjs.org/@next/swc-linux-x64-musl/-/swc-linux-x64-musl-12.1.6.tgz"
   "version" "12.1.6"
 
 "@react-spring/animated@~9.5.5":
@@ -2646,9 +2651,9 @@
   "version" "4.2.0"
 
 "postcss@^8.1.0":
-  "integrity" "sha512-Wi8mWhncLJm11GATDaQKobXSNEYGUHeQLiQqDFG1qQ5UTDPTEvKw0Xt5NsTpktGTwLps3ByrWsBrG0rB8YQ9oA=="
-  "resolved" "https://registry.npmjs.org/postcss/-/postcss-8.4.18.tgz"
-  "version" "8.4.18"
+  "integrity" "sha512-h+pbPsyhlYj6N2ozBmHhHrs9DzGmbaarbLvWipMRO7RLS+v4onj26MPFXA5OBYFxyqYhUJK456SwDcY9H2/zsA=="
+  "resolved" "https://registry.npmjs.org/postcss/-/postcss-8.4.19.tgz"
+  "version" "8.4.19"
   dependencies:
     "nanoid" "^3.3.4"
     "picocolors" "^1.0.0"
@@ -3091,7 +3096,7 @@
   dependencies:
     "prop-types" "^15.6.0"
 
-"react-dom@*", "react-dom@^15.5.4 || ^16.0.0 || ^17.0.0 || ^18.0.0", "react-dom@^16.8 || ^17.0 || ^18.0", "react-dom@^17.0.2 || ^18.0.0-0", "react-dom@>=16.0.0", "react-dom@>=16.11.0", "react-dom@>=16.13", "react-dom@>=16.9.0", "react-dom@>=18.0", "react-dom@18.1.0":
+"react-dom@*", "react-dom@^15.5.4 || ^16.0.0 || ^17.0.0 || ^18.0.0", "react-dom@^16.8 || ^17.0 || ^18.0", "react-dom@^17.0.2 || ^18.0.0-0", "react-dom@>=16.0.0", "react-dom@>=16.11.0", "react-dom@>=16.13", "react-dom@>=16.9.0", "react-dom@>=18.0", "react-dom@16.8.0 - 18.x.x", "react-dom@18.1.0":
   "integrity" "sha512-fU1Txz7Budmvamp7bshe4Zi32d0ll7ect+ccxNu9FlObT605GOEB8BfO4tmRJ39R5Zj831VCpvQ05QPBW5yb+w=="
   "resolved" "https://registry.npmjs.org/react-dom/-/react-dom-18.1.0.tgz"
   "version" "18.1.0"
@@ -3166,7 +3171,12 @@
   dependencies:
     "debounce" "^1.2.1"
 
-"react@*", "react@^15.0.0 || ^16.0.0 || ^17.0.0 || ^18.0.0", "react@^15.5.4 || ^16.0.0 || ^17.0.0 || ^18.0.0", "react@^16.8 || ^17.0 || ^18.0", "react@^16.8.0 || ^17.0.0 || ^18.0.0", "react@^16.9.0 || ^17.0.0 || ^18", "react@^17.0.2 || ^18.0.0-0", "react@^18.0.0", "react@^18.1.0", "react@>= 16.8.0", "react@>= 16.8.0 || 17.x.x || ^18.0.0-0", "react@>=16.0.0", "react@>=16.11.0", "react@>=16.13", "react@>=16.8", "react@>=16.9.0", "react@>=17.0", "react@>=18.0", "react@18.1.0":
+"react-verification-input@^3.1.1":
+  "integrity" "sha512-uFCstwy6fM4VyWjIQjE70JzS4eg1rgogAbH6h8ujuJNB807VGDp7ycajjY8/ZatzOu7iwoZ27JVuLLAP7U8UOQ=="
+  "resolved" "https://registry.npmjs.org/react-verification-input/-/react-verification-input-3.1.1.tgz"
+  "version" "3.1.1"
+
+"react@*", "react@^15.0.0 || ^16.0.0 || ^17.0.0 || ^18.0.0", "react@^15.5.4 || ^16.0.0 || ^17.0.0 || ^18.0.0", "react@^16.8 || ^17.0 || ^18.0", "react@^16.8.0 || ^17.0.0 || ^18.0.0", "react@^16.9.0 || ^17.0.0 || ^18", "react@^17.0.2 || ^18.0.0-0", "react@^18.0.0", "react@^18.1.0", "react@>= 16.8.0", "react@>= 16.8.0 || 17.x.x || ^18.0.0-0", "react@>=16.0.0", "react@>=16.11.0", "react@>=16.13", "react@>=16.8", "react@>=16.9.0", "react@>=17.0", "react@>=18.0", "react@16.8.0 - 18.x.x", "react@18.1.0":
   "integrity" "sha512-4oL8ivCz5ZEPyclFQXaNksK3adutVS8l2xzZU0cqEFrE9Sb7fC0EFK5uEk74wIreL1DERyjvsU915j1pcT2uEQ=="
   "resolved" "https://registry.npmjs.org/react/-/react-18.1.0.tgz"
   "version" "18.1.0"
