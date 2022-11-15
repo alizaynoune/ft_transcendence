@@ -70,7 +70,6 @@ export type updateProfileType = (update: {
   first_name: string;
   last_name: string;
   username: string;
-  two_factor_activate: boolean;
 }) => Promise<unknown>;
 export interface ProfileContextType {
   loading: boolean;

@@ -38,7 +38,6 @@ const Home: React.FC = () => {
       dispatch(saveToken(res.data.token));
       setOpenModal(false);
     } catch (error) {
-      //@ts-ignore
       error instanceof Error && message.error(error.message);
       // form.resetFields(["code"]);
     }
@@ -52,7 +51,7 @@ const Home: React.FC = () => {
     setToken(access_token as string);
     route.push("/");
     if (_2FAT) setOpenModal(true);
-    // dispatch(saveToken(access_token));
+    else dispatch(saveToken(access_token));
   }, [route]);
   return (
     <>
@@ -73,6 +72,7 @@ const Home: React.FC = () => {
             style={{ display: "flex", justifyContent: "center", margin: "20px 20px 20px 0" }}
           >
             <InputCode
+              autoFocus={true}
               classNames={{
                 container: "container_input_code",
                 character: "character_input_code",
