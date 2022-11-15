@@ -20,7 +20,7 @@
 .scrollableDiv {
   height: calc(100% - 60px);
   padding: 10px;
-  overflow-y: scroll;
+  overflow-y: auto;
   overflow-x: hidden;
   -ms-overflow-style: none;  /* IE and Edge */
   scrollbar-width: none;

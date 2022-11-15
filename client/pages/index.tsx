@@ -88,7 +88,6 @@ const Home: React.FC = () => {
           </Form.Item>
         </Form>
       </Modal>
-
       <HeroSection />
       <OurTeam />
     </>

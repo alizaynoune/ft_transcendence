@@ -4,7 +4,7 @@
     flex-direction: column;
     height: 100%;
     overflow-x: hidden;
-    overflow-y: scroll;
+    /* overflow-y: auto; */
     /* background-color: black; */
     padding-bottom: 10px;
 }

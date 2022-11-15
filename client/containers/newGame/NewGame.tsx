@@ -1,4 +1,4 @@
-import { Button } from "antd";
+import { Button, Space } from "antd";
 import style from "./newGame.module.css";
 import ListFriends from "@/components/newGameInviteFriends/NGameInviteFriends";
 import { Menu, Dropdown, Select, Modal, Popconfirm, message } from "antd";
@@ -92,10 +92,7 @@ const NewGame: React.FC = () => {
               }
             },
           });
-        else if (
-          error.message ===
-          "you are already in a game please leave it befor register in other"
-        )
+        else if (error.message === "you are already in a game please leave it befor register in other")
           Modal.confirm({
             title: error.message,
             // content: "do you wante to leave game",
@@ -128,18 +125,23 @@ const NewGame: React.FC = () => {
 
   return (
     <div className={style.container}>
-      <Select
-        className={style.selectLevel}
-        showSearch={false}
-        placeholder="Select level of game"
-        onChange={handleGameLevel}
-        size="large"
-        value={gameLevel}
-      >
-        <Option value={"EASY"}>{" Easir "}</Option>
-        <Option value={"NORMAL"}>{"Normal"}</Option>
-        <Option value={"DIFFICULT"}>{"Difficult"}</Option>
-      </Select>
+      <Space style={{ width: "100%", justifyContent: "space-between", flexDirection: "row-reverse" }}>
+        <Select
+          className={style.selectLevel}
+          showSearch={false}
+          placeholder="Select level of game"
+          onChange={handleGameLevel}
+          size="large"
+          value={gameLevel}
+        >
+          <Option value={"EASY"}>{" Easir "}</Option>
+          <Option value={"NORMAL"}>{"Normal"}</Option>
+          <Option value={"DIFFICULT"}>{"Difficult"}</Option>
+        </Select>
+        <Button className={style.TopButton} type="primary" size="large" loading={loading} onClick={handleRegister}>
+          {"Random player"}
+        </Button>
+      </Space>
       <div className={style.stageContainer}>
         <ListFriends />
         {/* racquet */}
@@ -150,7 +152,7 @@ const NewGame: React.FC = () => {
           {/* racquet */}
           <div className={style.racquet}></div>
         </div>
-        <Button type="primary" size="large" loading={loading} onClick={handleRegister}>
+        <Button className={style.CenterButton} type="primary" size="large" loading={loading} onClick={handleRegister}>
           {"Play with random user"}
         </Button>
       </div>

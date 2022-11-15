@@ -21,7 +21,7 @@
   box-shadow: 0px 0px 8px rgba(154, 154, 154, 0.5);
   padding-top: 15px;
   max-height: 90%;
-  overflow-y: scroll;
+  overflow-y: auto;
   overflow-x: hidden;
 }
 

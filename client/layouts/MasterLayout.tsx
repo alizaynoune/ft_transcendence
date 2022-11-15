@@ -173,7 +173,7 @@ const MasterLayout: React.FC<Props> = (props) => {
           </Affix>
         )}
         <Layout className={style.contentContainer}>
-          <Content className={style.content}>{children}</Content>
+          <Content className={style.content} style={{height: router.pathname === "/"? "fit-content" : "calc(100vh - 150px)", flex:'none'}}>{children}</Content>
           <div className={style.layoutFooter}>
             {router.pathname === "/" && (
               <div className={style.sectionGameInfo}>

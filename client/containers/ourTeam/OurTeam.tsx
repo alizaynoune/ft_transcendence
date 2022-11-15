@@ -30,22 +30,6 @@ const OurTeam: React.FC = () => {
         email="https://www.gmail.com"
         github="https://www.github.com"
       />
-      {/* <TeamCard
-        name="Ilyass Moumni"
-        job="WebDev"
-        image="/images/team.png"
-        linkedin="https://linkedin.com"
-        email="https://www.gmail.com"
-        github="https://www.github.com"
-      /> */}
-      {/* <TeamCard
-        name="Anouar Essaid"
-        job="WebDev"
-        image="/images/team.png"
-        linkedin="https://linkedin.com"
-        email="https://www.gmail.com"
-        github="https://www.github.com"
-      /> */}
     </div>
   );
 };

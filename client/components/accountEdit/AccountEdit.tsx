@@ -54,7 +54,7 @@ const AccountSetting: React.FC = () => {
       setQr(res.data);
       setTwoFat(!TwoFat);
       setModalTitle("please scan the QR code by Google Authenticator");
-      message.success('success enabled 2fat')
+      message.success("success enabled 2fat");
     } catch (error) {
       error instanceof Error && message.error(error.message);
     }
@@ -69,7 +69,7 @@ const AccountSetting: React.FC = () => {
           setModalTitle("Are you sure to enable 2FAT");
           const res = await axios.post("/auth/2fa/disable");
           console.log(res.data);
-          message.success(res.data.message)
+          message.success(res.data.message);
           setTwoFat(!TwoFat);
         } catch (error) {
           error instanceof Error && message.error(error.message);
@@ -91,7 +91,7 @@ const AccountSetting: React.FC = () => {
         {qr ? <Image src={qr} /> : null}
       </Modal>
       <Form className={style.form} name="accountSettings" form={form} onFinish={onFinish}>
-        <Row gutter={24} justify="space-around" align="middle">
+        <Row gutter={24} justify="space-around" align="middle" style={{ width: "100%" }}>
           <Col xs={{ span: 24, offset: 1 }} lg={{ span: 10, offset: 1 }}>
             <Form.Item name="first_name">
               <Input size="large" placeholder="First Name" value={"kdfksjkj"} prefix={<Icon component={UserIcon} />} />
@@ -114,6 +114,7 @@ const AccountSetting: React.FC = () => {
           </Col>
           <Col xs={{ span: 24, offset: 1 }} lg={{ span: 10, offset: 1 }}>
             <Button
+              style={{ marginTop: 10 }}
               danger={TwoFat}
               type="primary"
               size="large"
@@ -128,6 +129,7 @@ const AccountSetting: React.FC = () => {
                 size="large"
                 style={{
                   width: "100%",
+                  marginTop: 10
                 }}
               >
                 {"Update"}
