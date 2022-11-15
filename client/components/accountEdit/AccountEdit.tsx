@@ -25,7 +25,6 @@ const AccountSetting: React.FC = () => {
   }, [profile]);
 
   const onFinish = async (values: any) => {
-    console.log(values);
     const update = (({ email, first_name, last_name, username }) => ({
       email,
       first_name,
@@ -37,13 +36,9 @@ const AccountSetting: React.FC = () => {
       Object.entries(update).filter(([key, value]) => profile[key] !== value)
     );
     if (Object.keys(diff).length) {
-      console.log(diff);
       try {
         const d = await updateProfile(diff as { email: string; first_name: string; last_name: string; username: string });
-        console.log(d);
-      } catch (error) {
-        console.log(error);
-      }
+      } catch (error) {}
     }
   };
 
@@ -68,7 +63,7 @@ const AccountSetting: React.FC = () => {
           setQr(undefined);
           setModalTitle("Are you sure to enable 2FAT");
           const res = await axios.post("/auth/2fa/disable");
-          console.log(res.data);
+
           message.success(res.data.message);
           setTwoFat(!TwoFat);
         } catch (error) {
@@ -129,7 +124,7 @@ const AccountSetting: React.FC = () => {
                 size="large"
                 style={{
                   width: "100%",
-                  marginTop: 10
+                  marginTop: 10,
                 }}
               >
                 {"Update"}

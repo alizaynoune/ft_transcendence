@@ -1,11 +1,11 @@
 import style from "./notifications.module.css";
 import moment from "moment";
 import { Dropdown, Menu, Space, Typography, Avatar, Badge, Modal, message, notification } from "antd";
-import Icon, { BellFilled } from "@ant-design/icons";
+import { BellFilled } from "@ant-design/icons";
 import type { MenuProps } from "antd";
 import { useAppSelector, useAppDispatch } from "@/hooks/reduxHooks";
 import { selectAuth, pushNotification, readNotification, setNotifications } from "@/reducers/auth";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { NotificationType } from "@/types/types";
 import { useRouter } from "next/router";
 import axios from "@/config/axios";
@@ -36,7 +36,6 @@ const Notifications: React.FC = () => {
   };
 
   const handelGameRequest = (request: NotificationType) => {
-    console.log(request);
     Modal.confirm({
       title: `${request.users_notification_fromidTousers.username} ${request.content}`,
       okText: "Accepte",

@@ -1,4 +1,3 @@
-import { NextComponentType } from "next";
 import TeamCard from "@/components/ourTeamCard/OurTeamCard";
 
 import style from "./ourTeam.module.css";

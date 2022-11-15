@@ -1,22 +1,18 @@
 import style from "./search.module.css";
-import { Avatar, Badge, Input, List, Divider, Skeleton, Button, message } from "antd";
+import { Avatar, Badge, Input, List, Divider, Skeleton, message } from "antd";
 import Icon from "@ant-design/icons";
 import { SearchIcon } from "@/icons/index";
 import { useEffect, useRef, useState, RefObject } from "react";
 import { UserType } from "@/types/types";
 import axios from "@/config/axios";
 import InfiniteScroll from "react-infinite-scroll-component";
-import { PlayGameIcon } from "@/icons/index";
 import Link from "next/link";
 import { useAppSelector } from "@/hooks/reduxHooks";
 import { selectAuth } from "@/store/reducers/auth";
 
 type Event = MouseEvent | TouchEvent;
 
-const useOnClickOutside = <T extends HTMLElement = HTMLElement>(
-  ref: RefObject<T>,
-  handler: (event: Event) => void
-) => {
+const useOnClickOutside = <T extends HTMLElement = HTMLElement>(ref: RefObject<T>, handler: (event: Event) => void) => {
   useEffect(() => {
     const listener = (event: Event) => {
       const el = ref?.current;
@@ -54,14 +50,9 @@ const Search: React.FC = () => {
     setLoading(true);
     try {
       const cursor = data.at(-1)?.id || 1;
-      const res = await axios.get(
-        `/users/all?findBy=${filter}&cursor=${cursor}`
-      );
+      const res = await axios.get(`/users/all?findBy=${filter}&cursor=${cursor}`);
       setHasMore(res.data.length === 20);
-      setData((prev) => [
-        ...prev,
-        ...res.data.filter((d: UserType) => d.intra_id !== intra_id),
-      ]);
+      setData((prev) => [...prev, ...res.data.filter((d: UserType) => d.intra_id !== intra_id)]);
       setLoading(false);
     } catch (error) {
       setLoading(false);
@@ -79,12 +70,7 @@ const Search: React.FC = () => {
         className={style.search}
         size="large"
         placeholder="Search"
-        suffix={
-          <Icon
-            component={SearchIcon}
-            style={{ fontSize: "135%", color: "var(--light-color)" }}
-          />
-        }
+        suffix={<Icon component={SearchIcon} style={{ fontSize: "135%", color: "var(--light-color)" }} />}
         onFocus={() => setVisible(true)}
         onChange={(e) => {
           setData([]);
@@ -106,21 +92,21 @@ const Search: React.FC = () => {
               dataSource={data}
               loading={loading}
               renderItem={(item) => (
-                <List.Item
-                >
+                <List.Item>
                   <List.Item.Meta
                     avatar={
                       <Link href={`/profile/${item.username}`}>
                         <a>
-                          <Badge dot status={item.status === 'ONLINE' ? "success" : item.status === 'PLAYING' ? "warning" : "error"}>
+                          <Badge
+                            dot
+                            status={item.status === "ONLINE" ? "success" : item.status === "PLAYING" ? "warning" : "error"}
+                          >
                             <Avatar src={item.img_url} size="large" />
                           </Badge>
                         </a>
                       </Link>
                     }
-                    title={
-                      <Link href={`/profile/${item.username}`}>{item.username}</Link>
-                    }
+                    title={<Link href={`/profile/${item.username}`}>{item.username}</Link>}
                     description={item.email}
                   />
                 </List.Item>

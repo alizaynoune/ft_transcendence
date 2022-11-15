@@ -1,8 +1,7 @@
 import { Button, Space } from "antd";
 import style from "./newGame.module.css";
 import ListFriends from "@/components/newGameInviteFriends/NGameInviteFriends";
-import { Menu, Dropdown, Select, Modal, Popconfirm, message } from "antd";
-import type { ModalProps } from "antd";
+import { Select, Modal, message } from "antd";
 import { useState } from "react";
 import axios from "@/config/axios";
 import { useRouter } from "next/router";
@@ -75,7 +74,6 @@ const NewGame: React.FC = () => {
           },
         });
     } catch (error) {
-      console.log(error);
       if (error instanceof Error)
         if (error.message === "your already register in a queue")
           Modal.error({

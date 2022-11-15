@@ -7,7 +7,7 @@ import Scene from "@/containers/scene/Scene";
 import { useInterval } from "@/hooks/useInterval";
 import { GameType } from "@/types/types";
 import Socket from "@/config/socket";
-import { Button, Space, Popover, Slider } from "antd";
+import { Button, Space, Popover } from "antd";
 import { useRaquets } from "@/hooks/racquetHooks";
 import { HexColorPicker } from "react-colorful";
 import { useWindowSize } from "@/hooks/useWindowSize";
@@ -36,12 +36,8 @@ const MyCanvas = forwardRef<RefType, PropsType>((props, ref) => {
   const [planColor, setPlanColor] = useState<string>("#464E5F");
   const [wallColor, setWallColor] = useState<string>("#ffffff");
   const width = useWindowSize();
-  // const [zoom, setZoom] = useState<number>(0)
 
-  // 1440 768 375
-  useEffect(() => {
-    console.log(width, "whdth changed");
-  }, [width]);
+  useEffect(() => {}, [width]);
 
   const gameSpeed: { [k: string]: number } = {
     EASY: 0.252,
@@ -51,7 +47,6 @@ const MyCanvas = forwardRef<RefType, PropsType>((props, ref) => {
 
   useInterval(() => setCount((count) => count - 1), timer);
   useEffect(() => {
-    console.log(count, game);
     if (IamPlayer && count < 0 && game.status === "PLAYING" && !game.started) {
       Socket.emit("startGame", { gameId: game.id });
     }
@@ -113,43 +108,43 @@ const MyCanvas = forwardRef<RefType, PropsType>((props, ref) => {
 
   // 390 0.5,
 
-  return game.status === "PLAYING" ? (
+  return game.status !== "PLAYING" ? (
     <div className={style.container}>
       <span className={style.text}>{game.status}</span>
     </div>
   ) : (
     <>
       {count >= 0 && IamPlayer && !game.started && <span className={style.text}>{count ? count : "GO"}</span>}
-      {/* {game.status === "PLAYING" && ( */}
-      <Canvas
-        className={style.container}
-        // frameloop="demand"
-        ref={IamPlayer ? canvasRef : undefined}
-        onKeyDown={IamPlayer ? handleKeyboardEvent : undefined}
-        id="canvas"
-        tabIndex={0}
-        camera={{ fov: 75, near: 0.1, far: 1000, position: [0, 5, playerIndex ? 20 : -20], zoom: width <= 700 ? 0.5 : 1 }}
-        gl={{ toneMapping: NoToneMapping }}
-        onCreated={({ gl }) => {
-          gl.setClearColor(skyColor);
-        }}
-      >
-        <color attach="background" args={[skyColor]} />
-        <OrbitControls />
-        <ambientLight color={"#ffffff"} intensity={0.5} />
-        <Suspense fallback={null}>
-          <Stars radius={80} depth={40} count={9000} factor={4} saturation={0} fade speed={1} />
-          <Scene
-            refs={{ playerX, playerY }}
-            gameId={game.id}
-            gameSpeed={gameSpeed[game.level]}
-            playerIndex={playerIndex}
-            start={game.started}
-            colors={{ raquetXColor, raquetYColor, ballColor, planColor, wallColor }}
-          />
-        </Suspense>
-      </Canvas>
-      {/* )} */}
+      {game.status === "PLAYING" && (
+        <Canvas
+          className={style.container}
+          // frameloop="demand"
+          ref={IamPlayer ? canvasRef : undefined}
+          onKeyDown={IamPlayer ? handleKeyboardEvent : undefined}
+          id="canvas"
+          tabIndex={0}
+          camera={{ fov: 75, near: 0.1, far: 1000, position: [0, 5, playerIndex ? 20 : -20], zoom: width <= 700 ? 0.5 : 1 }}
+          gl={{ toneMapping: NoToneMapping }}
+          onCreated={({ gl }) => {
+            gl.setClearColor(skyColor);
+          }}
+        >
+          <color attach="background" args={[skyColor]} />
+          <OrbitControls />
+          <ambientLight color={"#ffffff"} intensity={0.5} />
+          <Suspense fallback={null}>
+            <Stars radius={80} depth={40} count={9000} factor={4} saturation={0} fade speed={1} />
+            <Scene
+              refs={{ playerX, playerY }}
+              gameId={game.id}
+              gameSpeed={gameSpeed[game.level]}
+              playerIndex={playerIndex}
+              start={game.started}
+              colors={{ raquetXColor, raquetYColor, ballColor, planColor, wallColor }}
+            />
+          </Suspense>
+        </Canvas>
+      )}
       <Popover
         trigger={["click"]}
         placement="topRight"
@@ -183,7 +178,6 @@ const MyCanvas = forwardRef<RefType, PropsType>((props, ref) => {
           {"customize colors"}
         </Button>
       </Popover>
-      {/* <Slider value={zoom} min={0} max={100} onChange={(v) => setZoom(v)} /> */}
     </>
   );
 });

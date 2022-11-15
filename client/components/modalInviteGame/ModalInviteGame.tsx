@@ -39,12 +39,10 @@ const ModalInviteGame: React.FC<PropsType> = (props) => {
 
   const handleOk = async () => {
     try {
-      console.log(user.intra_id, gameLevel);
       const res = await axios.post("game/invite", { userId: user.intra_id, gameLevel });
       message.success(res.data.message);
       setOpenModal(false);
     } catch (error) {
-      console.log(error);
       setOpenModal(false);
       error instanceof Error && message.error(error.message);
     }

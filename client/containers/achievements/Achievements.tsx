@@ -1,6 +1,5 @@
 import style from "./achievements.module.css";
 import AchievementsCard from "@/components/achievementCard/AchievementCard";
-import { Space } from "antd";
 
 import { AchievementType } from "@/types/types";
 

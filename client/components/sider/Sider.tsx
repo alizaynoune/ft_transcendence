@@ -1,6 +1,6 @@
 import style from "./sider.module.css";
-import React, { useState, useRef, useEffect } from "react";
-import { Layout, Menu, MenuProps, Badge, message } from "antd";
+import React, { useState, useEffect } from "react";
+import { Layout, Menu, MenuProps, message } from "antd";
 import Icon, { HomeFilled } from "@ant-design/icons";
 import Link from "next/link";
 import { useAppDispatch } from "@/hooks/reduxHooks";
@@ -83,8 +83,6 @@ const SiderLayout: React.FC<PropsType> = (props) => {
 
   useEffect(() => {
     const split = route.asPath.split("/");
-    // setCurrentPage(route.asPath.split("/")[1]);
-    // console.log(split);
     if (split[1] === "game" && split[2] === "new") setCurrentPage("gameNew");
     else setCurrentPage(split[1]);
   }, [route]);

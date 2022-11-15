@@ -30,7 +30,6 @@ const NGameInvitFriends: React.FC = () => {
     } catch (error) {
       setLoading(false);
       error instanceof Error && message.error(error.message);
-      console.log(error);
     }
   };
 

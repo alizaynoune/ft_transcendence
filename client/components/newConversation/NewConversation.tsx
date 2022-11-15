@@ -1,9 +1,8 @@
 import style from "./newConversation.module.css";
 import { Select, Spin, Button, Space, message, Avatar, Typography, Input, Form, Checkbox } from "antd";
 import React, { useContext, useState } from "react";
-import { CheckOutlined } from "@ant-design/icons";
 import axios from "@/config/axios";
-import { UserType, ConversationsType, MessengerContextType } from "@/types/types";
+import { UserType, MessengerContextType } from "@/types/types";
 import { MessengerContext } from "context/massengerContext";
 
 // Usage of DebounceSelect
@@ -107,7 +106,6 @@ const NewConversation: React.FC<PropsType> = ({ setOpenPopover }) => {
         style={{
           display: "flex",
           justifyContent: "space-between",
-          // flexDirection: "column",
         }}
       >
         <Form.Item noStyle>

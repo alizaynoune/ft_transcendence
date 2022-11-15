@@ -32,7 +32,6 @@ const BoxMessenger: React.FC = () => {
   ) as MessengerContextType;
 
   const loadMoreData = async () => {
-    console.log("loading.....");
     bottomRef.current?.scroll({
       top: bottomRef.current.scrollHeight,
     });
@@ -77,7 +76,6 @@ const BoxMessenger: React.FC = () => {
   };
 
   useEffect(() => {
-    console.log("rendering");
     inputRef.current?.focus();
   });
 

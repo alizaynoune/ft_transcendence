@@ -82,7 +82,7 @@ const ProfileProvider: React.FC<PropsType> = ({ children }) => {
     return new Promise(async (resolve, reject) => {
       try {
         const body = action.split("/")[0] === "game" ? { userId: user.intra_id } : { id: user.intra_id.toString() };
-        console.log(body, action.split("/"), action);
+        
         const res = await axios.post(action, body);
         setLoading(false);
         const fnIndex = action.split("/")[1];
@@ -153,7 +153,7 @@ const ProfileProvider: React.FC<PropsType> = ({ children }) => {
     return new Promise(async (resolve, reject) => {
       try {
         const res = await axios.get("friends/blocked");
-        console.log(res.data);
+        
         if (res.data.constructor !== Array) return resolve([]);
         const data = res.data.map((i: { users_blocked_blockedidTousers: UserType }) => i.users_blocked_blockedidTousers);
         setBlockedsList(data);
@@ -178,7 +178,7 @@ const ProfileProvider: React.FC<PropsType> = ({ children }) => {
           }
           return game;
         });
-        console.log(data);
+        
 
         setLoading(false);
         setLastMatches(data);

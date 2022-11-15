@@ -1,10 +1,8 @@
-import style from "./scene.module.css";
 import { Box, Ball, Wall } from "@/components/r3jObjects/R3jObjects";
 import React from "react";
 import { useGame } from "@/hooks/gameHooks";
 import { planeSize, racquetSize } from "@/tools/globalVariable";
 import { Mesh, BufferGeometry, Material } from "three";
-import { invalidate, useFrame } from "@react-three/fiber";
 
 interface PropsType {
   gameSpeed: number;

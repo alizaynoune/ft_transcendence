@@ -2,8 +2,6 @@ import axios from "@/config/axios";
 import React, { useEffect, useState } from "react";
 import { ConversationsType, MessengerContextType, MessageTextType } from "@/types/types";
 import Socket from "@/config/socket";
-import { useAppSelector } from "@/hooks/reduxHooks";
-import { selectAuth } from "@/reducers/auth";
 
 interface PropsType {
   children: React.ReactNode;
@@ -18,13 +16,12 @@ const MessengerProvider: React.FC<PropsType> = ({ children }) => {
   const [hasMoreConversations, setHasMoreConversations] = useState<boolean>(false);
   const [messages, setMessages] = useState<MessageTextType[]>([]);
   const [hasMoreMessages, setHasMoreMessages] = useState<boolean>(false);
-  const { intra_id } = useAppSelector(selectAuth);
 
   const muteMembers = async (values: { userId: number; mute: boolean; endmute?: Date }) => {
     return new Promise(async (resolve, reject) => {
       try {
         const update = await axios.put(`conversation/${currentConversation?.id}/togglemute`, values);
-        console.log(update.data);
+
         setCurrentConversation(update.data);
         return resolve(200);
       } catch (error) {
@@ -37,7 +34,7 @@ const MessengerProvider: React.FC<PropsType> = ({ children }) => {
     return new Promise(async (resolve, reject) => {
       try {
         const update = await axios.put(`conversation/${currentConversation?.id}/toggleban`, values);
-        console.log(update.data);
+
         setCurrentConversation(update.data);
         return resolve(200);
       } catch (error) {
@@ -242,21 +239,6 @@ const MessengerProvider: React.FC<PropsType> = ({ children }) => {
       }
     });
 
-    // Socket.on("updateConversation", (update: ConversationsType) => {
-    //   if (currentConversation.id === update.id) {
-    //     setMessages([]);
-    //     const user = update.members.find((m) => m.userid === intra_id);
-    //     if (!user || user.ban || new Date(user.endban).getTime() > new Date().getTime()) {
-    //       setCurrentConversation(null);
-    //     } else {
-    //       setCurrentConversation((prev) => {
-    //         if (!prev?.protected && update.protected) return null;
-    //         else return update;
-    //       });
-    //     }
-    //   }
-    // });
-
     return () => {
       Socket.off("newMessage");
     };
@@ -277,27 +259,8 @@ const MessengerProvider: React.FC<PropsType> = ({ children }) => {
       });
     });
 
-    // Socket.on("updateConversation", (update: ConversationsType) => {
-    //   const user = update.members.find((m) => m.userid === intra_id);
-    //   if (!user || user.ban || new Date(user.endban).getTime() > new Date().getTime()) {
-    //     setConversations((prev) => prev.filter((c) => c.id !== update.id));
-    //   } else {
-    //     setConversations((prev) => {
-    //       const find = prev.find((c) => c.id === update.id);
-    //       if (!find) return [update, ...prev];
-    //       else {
-    //         return prev.map((c) => {
-    //           if (c.id === update.id) return update;
-    //           return c;
-    //         });
-    //       }
-    //     });
-    //   }
-    // });
-
     return () => {
       Socket.off("newConversation");
-      // Socket.off("updateConversation");
     };
   }, []);
 

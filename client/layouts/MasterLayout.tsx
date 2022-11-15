@@ -54,7 +54,7 @@ const MasterLayout: React.FC<Props> = (props) => {
   };
 
   const handleChange: UploadProps["onChange"] = (info: UploadChangeParam<UploadFile>) => {
-    console.log(info);
+    
 
     if (info.file.status === "uploading") {
       setLoadingImg(true);
@@ -72,7 +72,7 @@ const MasterLayout: React.FC<Props> = (props) => {
   };
 
   const handleChangeUsername = (value: any) => {
-    console.log(value.target.value);
+    
     setupdatedData((prev) => {
       return { ...prev, username: value.target.value };
     });

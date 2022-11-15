@@ -34,7 +34,7 @@ instance.interceptors.response.use(
       const err = new Error(error.response?.data?.message || error.message);
       err.name = error.name;
       err.status = error.response?.status;
-      console.log(err);
+
       return Promise.reject(err);
     }
 

@@ -1,5 +1,3 @@
-// import { AxiosError } from "axios";
-
 declare global {
   interface Error {
     status: number;

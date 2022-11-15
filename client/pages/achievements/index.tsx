@@ -4,8 +4,8 @@ import { AchievementType } from "@/types/types";
 import authRoute from "@/tools/protectedRoutes";
 import axios from "@/config/axios";
 import { useEffect, useState } from "react";
-import { useAppDispatch, useAppSelector } from "@/hooks/reduxHooks";
-import { changeLoading, selectLoading } from "@/store/reducers/globalLoading";
+import { useAppDispatch } from "@/hooks/reduxHooks";
+import { changeLoading } from "@/store/reducers/globalLoading";
 import _ from "lodash";
 
 const Achievements: React.FC = () => {
@@ -25,7 +25,6 @@ const Achievements: React.FC = () => {
 
       dispatch(changeLoading(false));
     } catch (error) {
-      console.log(error);
       dispatch(changeLoading(false));
     }
   };

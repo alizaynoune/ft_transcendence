@@ -16,7 +16,6 @@ export const saveToken = (token: any) => {
     localStorage.setItem(KEY, serializedState);
   } catch (e) {
     //* Ignore error
-    console.log(e);
   }
 };
 

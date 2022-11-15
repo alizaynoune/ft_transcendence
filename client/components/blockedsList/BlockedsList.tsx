@@ -1,9 +1,8 @@
 import style from "./blockedsList.module.css";
-import React, { useContext, useEffect, useState } from "react";
+import React, { useContext, useEffect } from "react";
 import { List } from "antd";
 import UserCard from "@/components/userCard/UserCard";
-import { BlockedListType, ProfileContextType } from "@/types/types";
-import axios from "@/config/axios";
+import { ProfileContextType } from "@/types/types";
 import { ProfileContext } from "context/profileContext";
 
 const BlockedsList: React.FC = () => {
@@ -13,9 +12,7 @@ const BlockedsList: React.FC = () => {
     loadBlockeds();
   }, []);
 
-  useEffect(() => {
-    console.log(blockedsList);
-  }, [blockedsList]);
+  useEffect(() => {}, [blockedsList]);
 
   return (
     <div className={style.container}>
@@ -35,7 +32,7 @@ const BlockedsList: React.FC = () => {
           blockedsList.length < 17
             ? false
             : {
-                onChange: (page) => {},
+                onChange: () => {},
                 total: BlockedsList.length,
                 pageSize: 16,
               }

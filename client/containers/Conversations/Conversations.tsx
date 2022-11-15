@@ -46,7 +46,6 @@ const HistroyMessenger: React.FC = () => {
       setLoading(false);
     } catch (error) {
       setLoading(false);
-      console.log(error);
     }
   };
 
@@ -76,7 +75,6 @@ const HistroyMessenger: React.FC = () => {
     try {
       const url = `conversation/search?title=${value}&pageSize=${40}&cursor=${search?.at(-1)?.value || 1}`;
       const res = (await axios.get(url)) as { data: ConversationsType[] };
-      console.log(res.data);
 
       const data = res.data.map((item: ConversationsType) => ({
         value: item.id,

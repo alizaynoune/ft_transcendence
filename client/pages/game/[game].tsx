@@ -5,7 +5,7 @@ import Icon, { EyeFilled, LeftOutlined, RightOutlined } from "@ant-design/icons"
 import Canvas from "@/containers/canvas/Canvas";
 import { OutIcon } from "@/icons/index";
 import authRoute from "@/tools/protectedRoutes";
-import { Router, useRouter } from "next/router";
+import { useRouter } from "next/router";
 import { GameType } from "@/types/types";
 import axios from "@/config/axios";
 import { useAppSelector } from "@/hooks/reduxHooks";
@@ -51,7 +51,6 @@ const Games: React.FC = () => {
           message.success(res.data.message);
           router.push("/game/new");
         } catch (error) {
-          console.log(error);
           error instanceof Error && message.error(error.message);
         }
       },
@@ -61,10 +60,8 @@ const Games: React.FC = () => {
   useEffect(() => {
     Socket.on("updateGame", (data) => {
       setGameData(data);
-      console.log(data, "game update");
     });
     Socket.on("updateScore", (data: any) => {
-      console.log(data, "score update");
       setGameData((prev) => {
         if (prev) return { ...prev, players: data };
       });
@@ -95,27 +92,6 @@ const Games: React.FC = () => {
       Socket.off("countWatchers");
     };
   }, []);
-
-  // const handleKeyboardEvent = (e: KeyboardEvent<HTMLImageElement>) => {
-  //   if (!IamPlayer || game.status !== "PLAYING") return;
-  //   const { code } = e;
-  //   let action: "RIGHT" | "LEFT" | "" = "";
-  //   switch (code) {
-  //     case "ArrowRight":
-  //     case "ArrowUp":
-  //     case "KeyL":
-  //       action = "RIGHT";
-  //       break;
-  //     case "ArrowLeft":
-  //     case "ArrowDown":
-  //     case "KeyJ":
-  //       action = "LEFT";
-  //       break;
-  //     default:
-  //       action = "";
-  //   }
-  //   moveRaquet(action);
-  // };
 
   return (
     <Spin spinning={loading} delay={500}>

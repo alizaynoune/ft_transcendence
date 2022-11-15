@@ -1,19 +1,13 @@
-import type { NextPage } from "next";
-import Style from "../styles/Home.module.css";
 import HeroSection from "@/components/heroSection/HeroSection";
 import OurTeam from "@/containers/ourTeam/OurTeam";
-import { useEffect, useState, useRef } from "react";
+import { useEffect, useState } from "react";
 import { useRouter } from "next/router";
-import { useAppDispatch, useAppSelector } from "@/hooks/reduxHooks";
-import { AuthTunk } from "@/store/actions/auth";
+import { useAppDispatch } from "@/hooks/reduxHooks";
 import { saveToken } from "@/store/reducers/auth";
-import { selectAuth } from "@/store/reducers/auth";
-import { message, Modal, Input, InputNumber, Form, Button, Typography } from "antd";
-// import axios from "axios";
+import { message, Modal, Form, Button, Typography } from "antd";
 import axios from "@/config/axios";
 import InputCode from "react-verification-input";
 
-const baseURL = process.env.API_URL || "http://localhost:5000/";
 const { Text } = Typography;
 const Home: React.FC = () => {
   const route = useRouter();
@@ -23,7 +17,6 @@ const Home: React.FC = () => {
   const [token, setToken] = useState<string>("");
 
   const onFinish = async (values: any) => {
-    console.log(values);
     try {
       const { code } = values;
       const res = await axios.post(
@@ -39,7 +32,7 @@ const Home: React.FC = () => {
       setOpenModal(false);
     } catch (error) {
       error instanceof Error && message.error(error.message);
-      // form.resetFields(["code"]);
+      form.resetFields(["code"]);
     }
   };
 

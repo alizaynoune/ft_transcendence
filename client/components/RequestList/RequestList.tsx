@@ -1,18 +1,15 @@
 import style from "./RequestList.module.css";
-import React, { useEffect, useState, useContext } from "react";
+import React, { useEffect, useContext } from "react";
 import { Empty, List } from "antd";
 import UserCard from "@/components/userCard/UserCard";
-import axios from "@/config/axios";
-import { message } from "antd";
-import { UserType, RequestFriendType, ProfileContextType } from "@/types/types";
+import { ProfileContextType } from "@/types/types";
 import { ProfileContext } from "context/profileContext";
 
-
-const FriendRequestList: React.FC= () => {
-  const {invitesList, loadInvites, loading, actions} = useContext(ProfileContext) as ProfileContextType
+const FriendRequestList: React.FC = () => {
+  const { invitesList, loadInvites, loading, actions } = useContext(ProfileContext) as ProfileContextType;
 
   useEffect(() => {
-    loadInvites()
+    loadInvites();
   }, []);
 
   return (
@@ -34,8 +31,7 @@ const FriendRequestList: React.FC= () => {
           invitesList.length < 17
             ? false
             : {
-                onChange: (page) => {
-                },
+                onChange: (page) => {},
                 total: invitesList.length,
                 pageSize: 16,
               }

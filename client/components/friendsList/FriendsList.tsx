@@ -1,16 +1,15 @@
 import style from "./friendsList.module.css";
-import React, { useEffect, useState, useContext } from "react";
+import React, { useEffect, useContext } from "react";
 import { Empty, List } from "antd";
 import UserCard from "@/components/userCard/UserCard";
 import { ProfileContextType } from "@/types/types";
 import { ProfileContext } from "context/profileContext";
-import { useAppSelector } from "@/hooks/reduxHooks";
 
 const FriendsCard: React.FC = () => {
   const { friendsList, loading, isMyProfile, loadFriends, actions } = useContext(ProfileContext) as ProfileContextType;
 
   useEffect(() => {
-    loadFriends()
+    loadFriends();
   }, []);
 
   return (
@@ -38,7 +37,7 @@ const FriendsCard: React.FC = () => {
                 pageSize: 16,
               }
         }
-        renderItem={(item) => <UserCard type="friend" user={item}/>}
+        renderItem={(item) => <UserCard type="friend" user={item} />}
       />
     </div>
   );

@@ -1,5 +1,4 @@
 import React, { useContext, useEffect, useState } from "react";
-import Style from "./conversationFromSettings.module.css";
 import { Form, Input, Button, Avatar, Space, Typography, message, Select, Spin, Checkbox, Modal } from "antd";
 import { UserType, MessengerContextType } from "@/types/types";
 import axios from "@/config/axios";
@@ -60,7 +59,6 @@ const ConversationFromSettings: React.FC<PropsType> = ({ setOpenPopover }) => {
     );
 
     if (Object.keys(diff).length) {
-      console.log(diff);
       try {
         const res = (await updateConversation(diff)) as string;
         setOpenPopover(false);

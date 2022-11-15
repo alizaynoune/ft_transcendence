@@ -89,7 +89,7 @@ const Messenger: React.FC = () => {
         ],
       };
       setCurrentConversation(fackConversation);
-      console.log(fackConversation);
+      
     } catch (error) {
       error instanceof Error && message.error(error.message);
     }
@@ -113,7 +113,7 @@ const Messenger: React.FC = () => {
         else await newDirectConversation(username);
       }
     } catch (error) {
-      console.log(error);
+      
     }
   };
 

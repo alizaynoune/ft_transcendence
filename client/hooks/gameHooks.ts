@@ -1,9 +1,8 @@
 import { invalidate, useFrame } from "@react-three/fiber";
-import React, { Ref, RefObject, useEffect, useRef, useState } from "react";
+import React, { useEffect, useRef } from "react";
 import { planeSize } from "@/tools/globalVariable";
 import Socket from "@/config/socket";
 import { Mesh, BufferGeometry, Material } from "three";
-import { useInterval } from "./useInterval";
 
 interface PropsType {
   racquet: React.MutableRefObject<Mesh<BufferGeometry, Material | Material[]>>;
@@ -60,7 +59,7 @@ export const useGame = (props: PropsType) => {
           pause.current = true; // for test
           if (playerPosition > 0 && ball.current.position.z + step.current.z >= planeHalfL - 0.4) {
             ball.current.position.z = (planeHalfL - 0.4) * playerPosition;
-            console.log("check ball position user1", ball.current.position);
+
             Socket.emit("gameCalculation", {
               ballPosition: { x: ball.current.position.x, y: ball.current.position.z },
               racquetPosition: { x: racquet.current.position.x, y: racquet.current.position.z },
@@ -68,7 +67,7 @@ export const useGame = (props: PropsType) => {
             });
           } else if (playerPosition < 0 && (ball.current.position.z + step.current.z) * -1 >= planeHalfL - 0.4) {
             ball.current.position.z = (planeHalfL - 0.4) * playerPosition;
-            console.log("check ball position user2", ball.current.position);
+
             Socket.emit("gameCalculation", {
               ballPosition: { x: ball.current.position.x, y: ball.current.position.z },
               racquetPosition: { x: racquet.current.position.x, y: racquet.current.position.z },

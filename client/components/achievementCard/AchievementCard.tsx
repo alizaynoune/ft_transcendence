@@ -1,12 +1,12 @@
 import style from "./achievementCard.module.css";
-import { Card, Space, Typography } from "antd";
+import { Space, Typography } from "antd";
 import Icon, { LockOutlined } from "@ant-design/icons";
 import { FriendlyIcon, PhotogenicIcon, WildfireIcon, LegendaryIcon, SharpshooterIcon } from "@/icons/index";
 import { ComponentType, SVGProps } from "react";
 import { AchievementType } from "@/types/types";
 
 interface PropsType {
-  achiv: AchievementType
+  achiv: AchievementType;
 }
 
 const AchievementsIcon: { [key: string]: ComponentType<SVGProps<SVGSVGElement>> } = {
@@ -17,8 +17,8 @@ const AchievementsIcon: { [key: string]: ComponentType<SVGProps<SVGSVGElement>> 
   sharpshooter: SharpshooterIcon,
 };
 
-const AchievementsCard: React.FC<PropsType> = ({achiv}) => {
-  const {name, level, xp, description, wind} = achiv
+const AchievementsCard: React.FC<PropsType> = ({ achiv }) => {
+  const { name, level, xp, description, wind } = achiv;
   return (
     <div className={style.container}>
       {!wind && <LockOutlined className={style.locked} />}

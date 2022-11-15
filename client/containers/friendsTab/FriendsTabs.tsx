@@ -1,5 +1,5 @@
 import style from "./friendsTabs.module.css";
-import { Tabs, message, Typography } from "antd";
+import { Tabs, Typography } from "antd";
 import Icon, { EditFilled } from "@ant-design/icons";
 import FriendsList from "@/components/friendsList/FriendsList";
 import Request from "@/components/RequestList/RequestList";

@@ -2,7 +2,6 @@ import style from "./userData.module.css";
 import { useEffect, useState, useContext } from "react";
 import { Tabs, Typography } from "antd";
 import { useRouter } from "next/router";
-// import AccountSetting from "@/containers/accountSettingTab/AccountSettingTab";
 import AccountSetting from "@/components/accountEdit/AccountEdit";
 import FriendsTabs from "@/containers/friendsTab/FriendsTabs";
 import BlockedsList from "@/components/blockedsList/BlockedsList";
@@ -39,7 +38,7 @@ const items = [
       <>
         <Typography.Text className={style.tabText}>{"Last Matches"}</Typography.Text>
         {/* <Icon className={style.tabIcon} component={SettingIcon} /> */}
-        <HistoryOutlined  className={style.tabIcon} />
+        <HistoryOutlined className={style.tabIcon} />
       </>
     ),
     children: <LastMatches />,

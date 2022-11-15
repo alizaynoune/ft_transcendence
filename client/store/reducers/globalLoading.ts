@@ -1,7 +1,6 @@
 import { createSlice } from "@reduxjs/toolkit";
 import { RootState } from "@/store/store";
 import { AuthTunk } from "@/store/actions/auth";
-import { setTimeout } from "timers/promises";
 
 interface SliceType {
   Loading: boolean;

@@ -65,12 +65,12 @@ const MProfile: React.FC = () => {
     try {
       await loadLastMatches();
     } catch (error) {
-      console.log(error);
+      
     }
   };
 
   useEffect(() => {
-    console.log(isMyProfile);
+    
     setCover(profile?.cover);
     if (isMyProfile) LastMatches();
   }, [isMyProfile, profile]);

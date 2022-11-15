@@ -1,8 +1,8 @@
-import React, { useEffect } from "react";
+import React from "react";
 import style from "./messageText.module.css";
 import { Avatar, Typography } from "antd";
 import moment from "moment";
-import { MessageTextType, UserType } from "@/types/types";
+import { MessageTextType } from "@/types/types";
 
 type PropsType = {
   message: MessageTextType;

@@ -1,11 +1,7 @@
-import { Spin } from "antd"
-import { LoadingOutlined } from '@ant-design/icons';
-import style from './spin.module.css'
+import style from "./spin.module.css";
 
-const MySpin : React.FC = () => {
-    return (
-            <span className={style.loader} />
-    )
-}
+const MySpin: React.FC = () => {
+  return <span className={style.loader} />;
+};
 
-export default MySpin
+export default MySpin;

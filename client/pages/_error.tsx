@@ -6,11 +6,15 @@ function Error({ statusCode }) {
   return (
     <Result
       status={statusCode === 403 || statusCode === 404 || statusCode === 500 ? statusCode : 404}
-      title={statusCode}
+      title={statusCode || 404}
       subTitle="Sorry, the page you visited does not exist."
-      extra={<Link href={'/'}><Button type="primary">{"Back Home"}</Button></Link>}
+      extra={
+        <Link href={"/"}>
+          <Button type="primary">{"Back Home"}</Button>
+        </Link>
+      }
     />
-  )
+  );
 }
 //@ts-ignore
 Error.getInitialProps = ({ res, err }) => {

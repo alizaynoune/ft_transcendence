@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useRef } from "react";
+import { useEffect, useRef } from "react";
 import Socket from "@/config/socket";
 import { racquetSize, planeSize } from "@/tools/globalVariable";
 import { GameType } from "types/types";
@@ -16,7 +16,6 @@ export const useRaquets = (props: PropsType) => {
 
   useEffect(() => {
     Socket.on("raquetMove", (data) => {
-      console.log(data);
       if (!data.playerIndex) {
         playerX.current.position.x = data.racquet;
       } else playerY.current.position.x = data.racquet;

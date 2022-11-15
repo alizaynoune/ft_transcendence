@@ -1,4 +1,4 @@
-import { MenuOpenIcon, MenuCloseIcon, SearchIcon } from "@/icons/index";
+import { MenuOpenIcon, MenuCloseIcon } from "@/icons/index";
 import Icon from "@ant-design/icons";
 import Image from "next/image";
 import Link from "next/link";
@@ -23,9 +23,7 @@ const Header: React.FC<PropsType> = (props) => {
 
   useEffect(() => {
     if (isAuth) {
-      socket.on("userChangeStatus", (data) => {
-        console.log(data);
-      });
+      socket.on("userChangeStatus", (data) => {});
       return () => {
         socket.off("userChangeStatus");
       };
@@ -65,7 +63,7 @@ const Header: React.FC<PropsType> = (props) => {
       ) : (
         <div className={style.rightDiv}>
           <Notifications />
-          <Text strong >{username}</Text>
+          <Text strong>{username}</Text>
           <Link href={"/profile/me"}>
             <a>
               <Avatar src={img_url} size={55} />

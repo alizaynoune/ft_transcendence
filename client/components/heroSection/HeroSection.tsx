@@ -1,4 +1,3 @@
-import { NextComponentType } from "next";
 import { Typography } from "antd";
 import Image from "next/image";
 import React from "react";
@@ -10,15 +9,17 @@ const HeroSection: React.FC = () => {
   return (
     <div className={heroStyle.container}>
       <div className={heroStyle.heroSection}>
-        <Image  src="/images/hero.png" layout="fill" priority objectFit="fill" />
+        <Image src="/images/hero.png" layout="fill" priority objectFit="fill" />
       </div>
       <div className={heroStyle.heroTextContainer}>
         <div className={heroStyle.heroText}>
-          <Text >
-            {"this web is an project in 1337 named `ft_transcendence` is a onepage\
+          <Text>
+            {
+              "this web is an project in 1337 named `ft_transcendence` is a onepage\
             fullstack website where you can play pong with players among other\
             things such a group chat, private messages, friends list, profiles,\
-            a match-making system, achievements."}
+            a match-making system, achievements."
+            }
           </Text>
           <Paragraph>
             <ul>

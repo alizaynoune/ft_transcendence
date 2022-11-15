@@ -1,5 +1,5 @@
 import style from "./currentGame.module.css";
-import { Skeleton, List, Divider, Typography } from "antd";
+import { Skeleton, List, Divider } from "antd";
 import axios from "@/config/axios";
 import CurrentGameCard from "@/components/currentGameCard/CurrentGameCard";
 import { useEffect, useState } from "react";
@@ -15,13 +15,11 @@ const CurrentGame: React.FC = () => {
     const cursor = data.at(-1)?.id || 1;
     try {
       const res = await axios.get(`/game/current?cursor=${cursor}`);
-      console.log(res.data);
+
       setHasMore(res.data.length === 40);
       setLoading(false);
       setData((prev) => [...prev, ...res.data]);
-    } catch (error) {
-      console.log(error);
-    }
+    } catch (error) {}
   };
 
   useEffect(() => {
