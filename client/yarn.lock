@@ -3084,6 +3084,11 @@
     "rc-resize-observer" "^1.0.0"
     "rc-util" "^5.15.0"
 
+"react-colorful@^5.6.1":
+  "integrity" "sha512-1exovf0uGTGyq5mXQT0zgQ80uvj2PCwvF8zY1RN9/vbJVSjSo3fsB/4L3ObbF7u70NduSiK4xu4Y6q1MHoUGEw=="
+  "resolved" "https://registry.npmjs.org/react-colorful/-/react-colorful-5.6.1.tgz"
+  "version" "5.6.1"
+
 "react-composer@^5.0.3":
   "integrity" "sha512-1uWd07EME6XZvMfapwZmc7NgCZqDemcvicRi3wMJzXsQLvZ3L7fTHVyPy1bZdnWXM4iPjYuNE+uJ41MLKeTtnA=="
   "resolved" "https://registry.npmjs.org/react-composer/-/react-composer-5.0.3.tgz"
@@ -3091,7 +3096,7 @@
   dependencies:
     "prop-types" "^15.6.0"
 
-"react-dom@*", "react-dom@^15.5.4 || ^16.0.0 || ^17.0.0 || ^18.0.0", "react-dom@^16.8 || ^17.0 || ^18.0", "react-dom@^17.0.2 || ^18.0.0-0", "react-dom@>=16.0.0", "react-dom@>=16.11.0", "react-dom@>=16.13", "react-dom@>=16.9.0", "react-dom@>=18.0", "react-dom@16.8.0 - 18.x.x", "react-dom@18.1.0":
+"react-dom@*", "react-dom@^15.5.4 || ^16.0.0 || ^17.0.0 || ^18.0.0", "react-dom@^16.8 || ^17.0 || ^18.0", "react-dom@^17.0.2 || ^18.0.0-0", "react-dom@>=16.0.0", "react-dom@>=16.11.0", "react-dom@>=16.13", "react-dom@>=16.8.0", "react-dom@>=16.9.0", "react-dom@>=18.0", "react-dom@16.8.0 - 18.x.x", "react-dom@18.1.0":
   "integrity" "sha512-fU1Txz7Budmvamp7bshe4Zi32d0ll7ect+ccxNu9FlObT605GOEB8BfO4tmRJ39R5Zj831VCpvQ05QPBW5yb+w=="
   "resolved" "https://registry.npmjs.org/react-dom/-/react-dom-18.1.0.tgz"
   "version" "18.1.0"
@@ -3171,7 +3176,7 @@
   "resolved" "https://registry.npmjs.org/react-verification-input/-/react-verification-input-3.1.1.tgz"
   "version" "3.1.1"
 
-"react@*", "react@^15.0.0 || ^16.0.0 || ^17.0.0 || ^18.0.0", "react@^15.5.4 || ^16.0.0 || ^17.0.0 || ^18.0.0", "react@^16.8 || ^17.0 || ^18.0", "react@^16.8.0 || ^17.0.0 || ^18.0.0", "react@^16.9.0 || ^17.0.0 || ^18", "react@^17.0.2 || ^18.0.0-0", "react@^18.0.0", "react@^18.1.0", "react@>= 16.8.0", "react@>= 16.8.0 || 17.x.x || ^18.0.0-0", "react@>=16.0.0", "react@>=16.11.0", "react@>=16.13", "react@>=16.8", "react@>=16.9.0", "react@>=17.0", "react@>=18.0", "react@16.8.0 - 18.x.x", "react@18.1.0":
+"react@*", "react@^15.0.0 || ^16.0.0 || ^17.0.0 || ^18.0.0", "react@^15.5.4 || ^16.0.0 || ^17.0.0 || ^18.0.0", "react@^16.8 || ^17.0 || ^18.0", "react@^16.8.0 || ^17.0.0 || ^18.0.0", "react@^16.9.0 || ^17.0.0 || ^18", "react@^17.0.2 || ^18.0.0-0", "react@^18.0.0", "react@^18.1.0", "react@>= 16.8.0", "react@>= 16.8.0 || 17.x.x || ^18.0.0-0", "react@>=16.0.0", "react@>=16.11.0", "react@>=16.13", "react@>=16.8", "react@>=16.8.0", "react@>=16.9.0", "react@>=17.0", "react@>=18.0", "react@16.8.0 - 18.x.x", "react@18.1.0":
   "integrity" "sha512-4oL8ivCz5ZEPyclFQXaNksK3adutVS8l2xzZU0cqEFrE9Sb7fC0EFK5uEk74wIreL1DERyjvsU915j1pcT2uEQ=="
   "resolved" "https://registry.npmjs.org/react/-/react-18.1.0.tgz"
   "version" "18.1.0"

@@ -1,15 +1,5 @@
 import style from "./canvas.module.css";
-import React, {
-  Suspense,
-  useRef,
-  KeyboardEvent,
-  useEffect,
-  useState,
-  SetStateAction,
-  forwardRef,
-  useImperativeHandle,
-  ForwardRefRenderFunction,
-} from "react";
+import React, { Suspense, useRef, KeyboardEvent, useEffect, useState, forwardRef, useImperativeHandle } from "react";
 import { Canvas } from "@react-three/fiber";
 import { OrbitControls, Stars } from "@react-three/drei";
 import { NoToneMapping } from "three";
@@ -17,8 +7,10 @@ import Scene from "@/containers/scene/Scene";
 import { useInterval } from "@/hooks/useInterval";
 import { GameType } from "@/types/types";
 import Socket from "@/config/socket";
-import { Button, Typography } from "antd";
+import { Button, Space, Popover } from "antd";
 import { useRaquets } from "@/hooks/racquetHooks";
+import { HexColorPicker } from "react-colorful";
+import { DoubleRightOutlined } from "@ant-design/icons";
 
 interface PropsType {
   game: GameType;
@@ -37,6 +29,11 @@ const MyCanvas = forwardRef<RefType, PropsType>((props, ref) => {
   const [timer, setTimer] = useState(0);
   const [playerIndex, setPlayerIndex] = useState<number>(-1);
   const [playerX, playerY, moveRaquet] = useRaquets({ playerIndex, game });
+  const [raquetColor, setRaquetColor] = useState<string>("");
+  const [skyColor, setSkyColor] = useState<string>("#464E5F");
+  const [ballColor, setBallColor] = useState<string>("#d52424");
+  const [planColor, setPlanColor] = useState<string>("#464E5F");
+  const [wallColor, setWallColor] = useState<string>("#ffffff");
 
   const gameSpeed: { [k: string]: number } = {
     EASY: 0.252,
@@ -84,6 +81,7 @@ const MyCanvas = forwardRef<RefType, PropsType>((props, ref) => {
     if (!IamPlayer || game.status === "END") return;
     let player = game.players[0].users.intra_id === intraId ? 0 : 1;
     setPlayerIndex(player);
+    setRaquetColor(player ? "#50cd89" : "#3699ff");
     Socket.emit("playerReady", { gameId: game.id });
     if (game.status !== "PLAYING") return;
     setCount(5);
@@ -96,6 +94,18 @@ const MyCanvas = forwardRef<RefType, PropsType>((props, ref) => {
     canvasRef.current.focus();
     document.getElementById("canvas")?.focus();
   }, [game.started]);
+
+  const popoverColors = [
+    { lable: "ball", value: ballColor, action: setBallColor },
+    { lable: "sky", value: skyColor, action: setSkyColor },
+    { lable: "raquet", value: raquetColor, action: setRaquetColor },
+    { lable: "plan", value: planColor, action: setPlanColor },
+    { lable: "wall", value: wallColor, action: setWallColor },
+  ];
+
+  useEffect(() => {
+    console.log(raquetColor, "<<<<<<<<<<");
+  }, [raquetColor]);
 
   return game.status === "PLAYING" ? (
     <div className={style.container}>
@@ -115,10 +125,10 @@ const MyCanvas = forwardRef<RefType, PropsType>((props, ref) => {
         camera={{ fov: 75, near: 0.1, far: 1000, position: [0, 5, playerIndex ? 20 : -20] }}
         gl={{ toneMapping: NoToneMapping }}
         onCreated={({ gl }) => {
-          gl.setClearColor("#464E5F");
+          gl.setClearColor(skyColor);
         }}
       >
-        <color attach="background" args={["#464E5F"]} />
+        <color attach="background" args={[skyColor]} />
         <OrbitControls />
         <ambientLight color={"#ffffff"} intensity={0.5} />
         <Suspense fallback={null}>
@@ -129,10 +139,43 @@ const MyCanvas = forwardRef<RefType, PropsType>((props, ref) => {
             gameSpeed={gameSpeed[game.level]}
             playerIndex={playerIndex}
             start={game.started}
+            colors={{ raquetColor, ballColor, planColor, wallColor }}
           />
         </Suspense>
       </Canvas>
       {/* )} */}
+      <Popover
+        trigger={["click"]}
+        placement="topRight"
+        content={
+          <Space>
+            {popoverColors.map((i, key) => {
+              return (
+                <Popover
+                  key={key}
+                  trigger={["click"]}
+                  color={i.value}
+                  
+                  content={
+                    <HexColorPicker
+                      onChange={(e) => {
+                        console.log(e);
+                        i.action(e);
+                      }}
+                    />
+                  }
+                >
+                  <Button>{i.lable}</Button>
+                </Popover>
+              );
+            })}
+          </Space>
+        }
+      >
+        <Button type="primary" ghost>
+          {"customize colors"}
+        </Button>
+      </Popover>
     </>
   );
 });

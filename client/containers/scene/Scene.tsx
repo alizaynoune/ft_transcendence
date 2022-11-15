@@ -11,6 +11,7 @@ interface PropsType {
   start: boolean;
   playerIndex: number;
   gameId: number;
+  colors: { raquetColor: string; ballColor: string; planColor: string; wallColor: string };
   refs: refType;
 }
 
@@ -20,7 +21,7 @@ interface refType {
 }
 
 const Scene = React.forwardRef((props: PropsType, ref) => {
-  const { gameSpeed, start, playerIndex, refs, gameId } = props;
+  const { gameSpeed, start, playerIndex, refs, gameId, colors } = props;
   const { playerX, playerY } = refs;
   const [ball] = useGame({ racquet: !playerIndex ? playerX : playerY, gameSpeed, start, playerIndex, gameId });
 
@@ -33,15 +34,15 @@ const Scene = React.forwardRef((props: PropsType, ref) => {
         ref={playerX}
         mesh={{ position: [0, 0.15, (planeSize[1] / 2 - 0.2) * -1] }}
         box={{ args: racquetSize }}
-        meshMaterial={{ color: "#50cd89" }}
+        meshMaterial={{ color: !playerIndex ? colors.raquetColor : "#50cd89" }}
       />
-      <Ball position={[0, 0.2, 0]} ref={ball} />
+      <Ball position={[0, 0.2, 0]} ref={ball} meshMaterial={{ color: colors.ballColor }} />
       {/* Raquet playerY */}
       <Box
         ref={playerY}
         mesh={{ position: [0, 0.15, planeSize[1] / 2 - 0.2] }}
         box={{ args: racquetSize }}
-        meshMaterial={{ color: "#3699ff" }}
+        meshMaterial={{ color: playerIndex ? colors.raquetColor : "#3699ff" }}
       />
       {/* Floor*/}
       <Wall
@@ -50,7 +51,7 @@ const Scene = React.forwardRef((props: PropsType, ref) => {
           rotation: [1.5 * Math.PI, 0, 0],
           position: [0, 0, 0],
         }}
-        meshMaterial={{ color: "#464E5F", flatShading: true }}
+        meshMaterial={{ color: colors.planColor, flatShading: true }}
       />
       <Wall
         plane={{
@@ -69,7 +70,7 @@ const Scene = React.forwardRef((props: PropsType, ref) => {
           rotation: [0, Math.PI / 2, 0],
           position: [planeSize[0] / 2, 0.5, 0],
         }}
-        meshMaterial={{ color: "#ffffff", wireframe: true }}
+        meshMaterial={{ color: colors.wallColor, wireframe: true }}
       />
       {/* Left Wall */}
       <Wall
@@ -78,7 +79,7 @@ const Scene = React.forwardRef((props: PropsType, ref) => {
           rotation: [0, Math.PI / 2, 0],
           position: [(planeSize[0] / 2) * -1, 0.5, 0],
         }}
-        meshMaterial={{ color: "#ffffff", wireframe: true }}
+        meshMaterial={{ color: colors.wallColor, wireframe: true }}
       />
     </>
   );

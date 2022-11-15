@@ -14,7 +14,7 @@ export const Ball = React.forwardRef((props: any, ref) => {
   return (
     <mesh ref={ref} {...props} dispose={null}>
       <sphereGeometry attach="geometry" args={[0.15, 20, 20]} />
-      <meshBasicMaterial attach="material" color="red" />
+      <meshBasicMaterial attach="material" {...props.meshMaterial} />
     </mesh>
   );
 });
