@@ -71,7 +71,6 @@ a {
 }
 
 .container_input_code {
- 
 }
 .container_input_code * {
   border-radius: 5px;
@@ -83,7 +82,6 @@ a {
 }
 
 .character__inactive_input_code {
- 
 }
 
 .character__inactive_input_code {
@@ -92,7 +90,6 @@ a {
 
 .character__selected_input_code {
   border-color: var(--primary-color);
- 
 }
 
 @media screen and (max-width: 576px) {

@@ -185,7 +185,7 @@ const Games: React.FC = () => {
           </>
         )}
       </div>
-      <Space style={{ width: "100%", justifyContent: "space-around", padding: "20px 0" }}>
+      <Space className={style.buttons} style={{ width: "100%", justifyContent: "space-around", padding: "20px 0" }}>
         <Button size="large" type="primary" icon={<LeftOutlined />} onClick={() => canvasRef.current.parentMoveRaquet("LEFT")} />
         <Button
           size="large"

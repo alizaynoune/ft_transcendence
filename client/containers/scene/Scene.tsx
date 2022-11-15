@@ -11,7 +11,7 @@ interface PropsType {
   start: boolean;
   playerIndex: number;
   gameId: number;
-  colors: { raquetColor: string; ballColor: string; planColor: string; wallColor: string };
+  colors: { raquetXColor: string; raquetYColor: string; ballColor: string; planColor: string; wallColor: string };
   refs: refType;
 }
 
@@ -34,7 +34,7 @@ const Scene = React.forwardRef((props: PropsType, ref) => {
         ref={playerX}
         mesh={{ position: [0, 0.15, (planeSize[1] / 2 - 0.2) * -1] }}
         box={{ args: racquetSize }}
-        meshMaterial={{ color: !playerIndex ? colors.raquetColor : "#50cd89" }}
+        meshMaterial={{ color: colors.raquetXColor }}
       />
       <Ball position={[0, 0.2, 0]} ref={ball} meshMaterial={{ color: colors.ballColor }} />
       {/* Raquet playerY */}
@@ -42,7 +42,7 @@ const Scene = React.forwardRef((props: PropsType, ref) => {
         ref={playerY}
         mesh={{ position: [0, 0.15, planeSize[1] / 2 - 0.2] }}
         box={{ args: racquetSize }}
-        meshMaterial={{ color: playerIndex ? colors.raquetColor : "#3699ff" }}
+        meshMaterial={{ color: colors.raquetYColor }}
       />
       {/* Floor*/}
       <Wall

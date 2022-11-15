@@ -7,10 +7,10 @@ import Scene from "@/containers/scene/Scene";
 import { useInterval } from "@/hooks/useInterval";
 import { GameType } from "@/types/types";
 import Socket from "@/config/socket";
-import { Button, Space, Popover } from "antd";
+import { Button, Space, Popover, Slider } from "antd";
 import { useRaquets } from "@/hooks/racquetHooks";
 import { HexColorPicker } from "react-colorful";
-import { DoubleRightOutlined } from "@ant-design/icons";
+import { useWindowSize } from "@/hooks/useWindowSize";
 
 interface PropsType {
   game: GameType;
@@ -29,11 +29,19 @@ const MyCanvas = forwardRef<RefType, PropsType>((props, ref) => {
   const [timer, setTimer] = useState(0);
   const [playerIndex, setPlayerIndex] = useState<number>(-1);
   const [playerX, playerY, moveRaquet] = useRaquets({ playerIndex, game });
-  const [raquetColor, setRaquetColor] = useState<string>("");
+  const [raquetXColor, setRaquetXColor] = useState<string>("#50cd89");
+  const [raquetYColor, setRaquetYColor] = useState<string>("#3699ff");
   const [skyColor, setSkyColor] = useState<string>("#464E5F");
   const [ballColor, setBallColor] = useState<string>("#d52424");
   const [planColor, setPlanColor] = useState<string>("#464E5F");
   const [wallColor, setWallColor] = useState<string>("#ffffff");
+  const width = useWindowSize();
+  // const [zoom, setZoom] = useState<number>(0)
+
+  // 1440 768 375
+  useEffect(() => {
+    console.log(width, "whdth changed");
+  }, [width]);
 
   const gameSpeed: { [k: string]: number } = {
     EASY: 0.252,
@@ -81,7 +89,6 @@ const MyCanvas = forwardRef<RefType, PropsType>((props, ref) => {
     if (!IamPlayer || game.status === "END") return;
     let player = game.players[0].users.intra_id === intraId ? 0 : 1;
     setPlayerIndex(player);
-    setRaquetColor(player ? "#50cd89" : "#3699ff");
     Socket.emit("playerReady", { gameId: game.id });
     if (game.status !== "PLAYING") return;
     setCount(5);
@@ -98,14 +105,13 @@ const MyCanvas = forwardRef<RefType, PropsType>((props, ref) => {
   const popoverColors = [
     { lable: "ball", value: ballColor, action: setBallColor },
     { lable: "sky", value: skyColor, action: setSkyColor },
-    { lable: "raquet", value: raquetColor, action: setRaquetColor },
+    { lable: "raquet1", value: raquetXColor, action: setRaquetXColor },
+    { lable: "raquet2", value: raquetYColor, action: setRaquetYColor },
     { lable: "plan", value: planColor, action: setPlanColor },
     { lable: "wall", value: wallColor, action: setWallColor },
   ];
 
-  useEffect(() => {
-    console.log(raquetColor, "<<<<<<<<<<");
-  }, [raquetColor]);
+  // 390 0.5,
 
   return game.status === "PLAYING" ? (
     <div className={style.container}>
@@ -122,7 +128,7 @@ const MyCanvas = forwardRef<RefType, PropsType>((props, ref) => {
         onKeyDown={IamPlayer ? handleKeyboardEvent : undefined}
         id="canvas"
         tabIndex={0}
-        camera={{ fov: 75, near: 0.1, far: 1000, position: [0, 5, playerIndex ? 20 : -20] }}
+        camera={{ fov: 75, near: 0.1, far: 1000, position: [0, 5, playerIndex ? 20 : -20], zoom: width <= 700 ? 0.5 : 1 }}
         gl={{ toneMapping: NoToneMapping }}
         onCreated={({ gl }) => {
           gl.setClearColor(skyColor);
@@ -139,7 +145,7 @@ const MyCanvas = forwardRef<RefType, PropsType>((props, ref) => {
             gameSpeed={gameSpeed[game.level]}
             playerIndex={playerIndex}
             start={game.started}
-            colors={{ raquetColor, ballColor, planColor, wallColor }}
+            colors={{ raquetXColor, raquetYColor, ballColor, planColor, wallColor }}
           />
         </Suspense>
       </Canvas>
@@ -147,25 +153,26 @@ const MyCanvas = forwardRef<RefType, PropsType>((props, ref) => {
       <Popover
         trigger={["click"]}
         placement="topRight"
+        style={{ background: "none" }}
         content={
-          <Space>
+          <Space direction="vertical" style={{ background: "none", alignItems: "flex-end" }}>
             {popoverColors.map((i, key) => {
               return (
                 <Popover
+                  style={{ background: "none" }}
                   key={key}
+                  placement="left"
                   trigger={["click"]}
                   color={i.value}
-                  
                   content={
                     <HexColorPicker
                       onChange={(e) => {
-                        console.log(e);
                         i.action(e);
                       }}
                     />
                   }
                 >
-                  <Button>{i.lable}</Button>
+                  <Button style={{ backgroundColor: i.value }}>{i.lable}</Button>
                 </Popover>
               );
             })}
@@ -176,6 +183,7 @@ const MyCanvas = forwardRef<RefType, PropsType>((props, ref) => {
           {"customize colors"}
         </Button>
       </Popover>
+      {/* <Slider value={zoom} min={0} max={100} onChange={(v) => setZoom(v)} /> */}
     </>
   );
 });
