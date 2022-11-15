@@ -3,10 +3,12 @@
   overflow-x: hidden;
   overflow-y: auto;
   border-radius: 6px;
-  padding: 5px !important;
+  -webkit-border-radius: 6px;
+  -moz-border-radius: 6px;
+  -ms-border-radius: 6px;
+  -o-border-radius: 6px;
 }
 
-.notifList li:not(:last-child){
-  /* background-color: aqua !important; */
-  border-bottom: 1px solid rgba(0,0,0,.06)
+.notifList li:not(:last-child) {
+  border-bottom: 1px solid rgba(0, 0, 0, 0.06);
 }

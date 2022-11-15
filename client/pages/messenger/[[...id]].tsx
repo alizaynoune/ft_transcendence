@@ -4,7 +4,7 @@ import Conversations from "@/containers/Conversations/Conversations";
 import BoxMessenger from "@/containers/boxMessenger/BoxMessenger";
 import SettingMessenger from "@/containers/settingMessenger/SettingMessenger";
 import { useContext, useEffect, useState } from "react";
-import { Tabs, Typography, Modal, Form, Input, message } from "antd";
+import { Tabs, Typography, Modal, Form, Input, message, Button } from "antd";
 import { SettingIcon, MessageIcon, Messager1Icon } from "@/icons/index";
 import { ConversationsType, MessengerContextType, UserType } from "types/types";
 import Icon from "@ant-design/icons";
@@ -26,25 +26,32 @@ const Messenger: React.FC = () => {
   const [form] = Form.useForm();
   const user = useAppSelector(selectAuth);
 
+  const onFinish = async (values: any, conversation: ConversationsType) => {
+    console.log(values);
+    try {
+      await changeCurrentConversation(conversation.id, values.password);
+      Modal.destroyAll();
+    } catch (error: any) {
+      message.error(error instanceof Error ? error.message : error);
+    }
+  };
+
   const changeConversation = async (conversation: ConversationsType) => {
     if (conversation.protected) {
       Modal.info({
         title: "Do you want to delete these items?",
         closable: true,
         content: (
-          <Form form={form}>
+          <Form form={form} onFinish={(v) => onFinish(v, conversation)}>
             <Form.Item name="password" rules={[{ required: true, min: 6, max: 20 }]}>
               <Input.Password placeholder="Entre Password" />
             </Form.Item>
+            <Form.Item>
+              <Button type="primary" htmlType="submit">{"OK"}</Button>
+            </Form.Item>
           </Form>
         ),
-        async onOk() {
-          try {
-            await changeCurrentConversation(conversation.id, form.getFieldValue("password"));
-          } catch (error: any) {
-            message.error(error instanceof Error ? error.message : error);
-          }
-        },
+        okButtonProps: { hidden: true },
         onCancel() {},
       });
     } else {
@@ -89,7 +96,6 @@ const Messenger: React.FC = () => {
         ],
       };
       setCurrentConversation(fackConversation);
-      
     } catch (error) {
       error instanceof Error && message.error(error.message);
     }
@@ -112,9 +118,7 @@ const Messenger: React.FC = () => {
         if (conv) await changeConversation(conv);
         else await newDirectConversation(username);
       }
-    } catch (error) {
-      
-    }
+    } catch (error) {}
   };
 
   useEffect(() => {

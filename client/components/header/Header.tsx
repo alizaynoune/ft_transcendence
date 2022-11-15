@@ -1,16 +1,21 @@
-import { MenuOpenIcon, MenuCloseIcon } from "@/icons/index";
-import Icon from "@ant-design/icons";
+import { MenuOpenIcon, MenuCloseIcon, OutIcon } from "@/icons/index";
+import Icon, { DownOutlined, SmileOutlined } from "@ant-design/icons";
 import Image from "next/image";
 import Link from "next/link";
+import { useRouter } from "next/router";
 import style from "./header.module.css";
-import { Layout, Button, Avatar, message, Typography } from "antd";
+import { Layout, Button, Avatar, message, Typography, Dropdown, Space, Menu } from "antd";
 import { useAppSelector } from "@/hooks/reduxHooks";
 import { selectAuth } from "@/reducers/auth";
 import { _42Icon } from "@/icons/index";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import Notifications from "@/components/notifications/Notifications";
 import socket from "@/config/socket";
 import Search from "../search/Search";
+import type { MenuProps } from "antd";
+import { useAppDispatch } from "@/hooks/reduxHooks";
+import { logout } from "@/reducers/auth";
+import Socket from "@/config/socket";
 
 const { Text } = Typography;
 interface PropsType {
@@ -20,6 +25,15 @@ interface PropsType {
 const Header: React.FC<PropsType> = (props) => {
   const { collapsed, setCollapsed } = props;
   const { isAuth, img_url, error, username } = useAppSelector(selectAuth);
+  const dispatch = useAppDispatch();
+  const route = useRouter();
+
+  const handleLogOut: MenuProps["onClick"] = (e) => {
+    dispatch(logout());
+    Socket.disconnect();
+    route.push("/");
+    message.warning("success logout");
+  };
 
   useEffect(() => {
     if (isAuth) {
@@ -29,6 +43,24 @@ const Header: React.FC<PropsType> = (props) => {
       };
     }
   }, [isAuth]);
+
+  const items: MenuProps["items"] = [
+    {
+      label: <Link href="/profile/me">{"Profile"}</Link>,
+      key: "1",
+    },
+
+    {
+      label: (
+        <Text>
+          <Icon component={OutIcon} style={{ fontSize: 15 }} />
+          {" Logout"}
+        </Text>
+      ),
+      key: "2",
+      onClick: handleLogOut,
+    },
+  ];
 
   useEffect(() => {
     error && message.error(error.message);
@@ -63,12 +95,16 @@ const Header: React.FC<PropsType> = (props) => {
       ) : (
         <div className={style.rightDiv}>
           <Notifications />
-          <Text strong>{username}</Text>
           <Link href={"/profile/me"}>
             <a>
-              <Avatar src={img_url} size={55} />
+              <Text strong>{username}</Text>
             </a>
           </Link>
+          <Dropdown menu={{ items }} trigger={["click"]} placement="bottomLeft">
+            <a onClick={(e) => e.preventDefault()}>
+              <Avatar src={img_url} size={55} />
+            </a>
+          </Dropdown>
         </div>
       )}
     </Layout.Header>

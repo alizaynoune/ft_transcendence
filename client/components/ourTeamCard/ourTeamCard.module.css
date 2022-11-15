@@ -1,55 +1,54 @@
 .container {
-    /* width: 350px; */
-    /* width: 100%; */
-    width: 350px;
-    /* min-width: 300px; */
-    height: 370px;
-    position: relative;
+  min-width: 350px;
+  height: 370px;
+  position: relative;
 }
 
-
-
 .cardImage {
-    height: 250px;
-    width: 90%;
-    /* object-fit: cover; */
-    position: absolute;
-    background-color: var(--light-color);
-    top: 0;
-    left: 5%;
-    border-radius: 6px;
-    overflow: hidden;
-    box-shadow: 0 0 8px 1px var(--shadwo-color);
+  height: 250px;
+  width: 90%;
+  position: absolute;
+  background-color: var(--light-color);
+  top: 0;
+  left: 5%;
+  border-radius: 6px;
+  overflow: hidden;
+  box-shadow: 0 0 8px 1px var(--shadwo-color);
 }
 
 .cardInfo {
+  width: 100%;
+  margin: auto;
+  position: absolute;
+  bottom: 0;
+  box-shadow: 0 0 8px 1px var(--shadwo-color);
+  border-radius: 6px;
+}
+
+.cardMemberInfo {
+  background-color: aqua;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+@media screen and (max-width: 576px) {
+  .container {
     width: 100%;
-    margin: auto;
-    position: absolute;
-    bottom: 0;
-    box-shadow: 0 0 8px 1px var(--shadwo-color);
-    border-radius: 6px;
+  }
 }
 
-.cardMemberInfo{
-    /* width: 100%; */
-    background-color: aqua;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
+@media screen and (min-width: 576px) {
 }
 
-@media screen and (max-width: 576px){
-    /* .container{width: 100%;} */
+@media screen and (min-width: 768px) {
 }
 
-@media screen and (min-width: 576px){
+@media screen and (min-width: 992px) {
 }
 
-@media screen and (min-width: 768px){}
+@media screen and (min-width: 1200px) {
+}
 
-@media screen and (min-width: 992px){}
-
-@media screen and (min-width: 1200px) {}
-
-@media screen and (min-width: 1600px){}
+@media screen and (min-width: 1600px) {
+}

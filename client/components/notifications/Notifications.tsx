@@ -1,6 +1,6 @@
 import style from "./notifications.module.css";
 import moment from "moment";
-import { Dropdown, Menu, Space, Typography, Avatar, Badge, Modal, message, notification } from "antd";
+import { Dropdown, Space, Typography, Avatar, Badge, Modal, message, notification } from "antd";
 import { BellFilled } from "@ant-design/icons";
 import type { MenuProps } from "antd";
 import { useAppSelector, useAppDispatch } from "@/hooks/reduxHooks";
@@ -127,19 +127,22 @@ const Notifications: React.FC = () => {
       </Badge>
     )
   );
-  const menu = (
-    <Menu
-      className={style.notifList}
-      items={items}
-      onClick={(e) => {
-        const n = notificationsList.find((n) => n.id === Number(e.key));
-        if (n) openNotification(n);
-      }}
-    />
-  );
+
+  const notifOnClick: MenuProps["onClick"] = (e) => {
+    const n = notificationsList.find((n) => n.id === Number(e.key));
+    if (n) openNotification(n);
+  };
 
   return (
-    <Dropdown overlay={menu} trigger={["click"]} disabled={notificationsList.length ? false : true}>
+    <Dropdown
+      overlayClassName={style.notifList}
+      menu={{
+        items,
+        onClick: notifOnClick,
+      }}
+      trigger={["click"]}
+      disabled={notificationsList.length ? false : true}
+    >
       <Badge count={notificationsList.filter((n) => !n.read).length}>
         <BellFilled
           style={{
