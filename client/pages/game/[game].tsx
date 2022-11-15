@@ -1,7 +1,7 @@
 import style from "./game.module.css";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { Avatar, Button, Space, Spin, Typography, Tag, message, Modal } from "antd";
-import Icon, { EyeFilled } from "@ant-design/icons";
+import Icon, { EyeFilled, LeftOutlined, RightOutlined } from "@ant-design/icons";
 import Canvas from "@/containers/canvas/Canvas";
 import { OutIcon } from "@/icons/index";
 import authRoute from "@/tools/protectedRoutes";
@@ -12,6 +12,9 @@ import { useAppSelector } from "@/hooks/reduxHooks";
 import { selectAuth } from "@/store/reducers/auth";
 import Socket from "@/config/socket";
 
+interface RefType {
+  parentMoveRaquet: (action: "RIGHT" | "LEFT") => void;
+}
 const { Text, Title } = Typography;
 const Games: React.FC = () => {
   const [gameData, setGameData] = useState<GameType>();
@@ -21,13 +24,13 @@ const Games: React.FC = () => {
   const { intra_id } = useAppSelector(selectAuth);
   const [IamPlayer, setIamPlayer] = useState<boolean>(false);
   const [watchers, setWatchers] = useState<number>(0);
+  const canvasRef = useRef<RefType>(null!);
 
   const loadGame = async () => {
     try {
       const res = await axios.get<GameType>(`/game/?gameId=${query.game}`);
       const { data } = res;
-      if (data.players[0].users.intra_id === intra_id || data.players[1].users.intra_id === intra_id)
-        setIamPlayer(true);
+      if (data.players[0].users.intra_id === intra_id || data.players[1].users.intra_id === intra_id) setIamPlayer(true);
       setGameData(data);
       setLoading(false);
     } catch (error) {
@@ -93,33 +96,26 @@ const Games: React.FC = () => {
     };
   }, []);
 
-  // useEffect(() => {
-  //   console.log(query.game);
-
-  //   if (query.game) {
-  //     const confirmationMessage = "You will leave this game are you sure";
-  //     const beforeUnloadHandler = (e: BeforeUnloadEvent) => {
-  //       (e || window.event).returnValue = confirmationMessage;
-  //       return confirmationMessage; // Gecko + Webkit, Safari, Chrome etc.
-  //     };
-  //     const beforeRouteHandler = (url: string) => {
-  //       console.log(url, router, "<<<<<<<<<<<<<<");
-
-  //       if (router.asPath !== url && !confirm(confirmationMessage)) {
-  //         // to inform NProgress or something ...
-  //         router.events.emit("routeChangeError");
-  //         console.log(router);
-  //         throw 'Abort';
-  //       }
-  //     };
-  //     window.addEventListener("beforeunload", beforeUnloadHandler);
-  //     router.events.on("routeChangeStart", beforeRouteHandler);
-  //     return () => {
-  //       window.removeEventListener("beforeunload", beforeUnloadHandler);
-  //       router.events.off("routeChangeStart", beforeRouteHandler);
-  //     };
+  // const handleKeyboardEvent = (e: KeyboardEvent<HTMLImageElement>) => {
+  //   if (!IamPlayer || game.status !== "PLAYING") return;
+  //   const { code } = e;
+  //   let action: "RIGHT" | "LEFT" | "" = "";
+  //   switch (code) {
+  //     case "ArrowRight":
+  //     case "ArrowUp":
+  //     case "KeyL":
+  //       action = "RIGHT";
+  //       break;
+  //     case "ArrowLeft":
+  //     case "ArrowDown":
+  //     case "KeyJ":
+  //       action = "LEFT";
+  //       break;
+  //     default:
+  //       action = "";
   //   }
-  // }, [isReady, query.game]);
+  //   moveRaquet(action);
+  // };
 
   return (
     <Spin spinning={loading} delay={500}>
@@ -166,7 +162,7 @@ const Games: React.FC = () => {
                 </Space>
               </Space>
             </Space>
-            <Canvas game={gameData} IamPlayer={IamPlayer} intraId={intra_id} />
+            <Canvas game={gameData} IamPlayer={IamPlayer} intraId={intra_id} ref={canvasRef} />
             {gameData.status !== "END" && (
               <div
                 style={{
@@ -178,7 +174,6 @@ const Games: React.FC = () => {
               >
                 <Tag icon={<EyeFilled />} color="var(--primary-color)" style={{ padding: "6px 8px" }}>
                   {watchers}
-                  {/* {gameData?.watching} */}
                 </Tag>
                 {IamPlayer && (
                   <Button type="primary" danger icon={<Icon component={OutIcon} />} onClick={() => leaveGame()}>
@@ -190,6 +185,15 @@ const Games: React.FC = () => {
           </>
         )}
       </div>
+      <Space style={{ width: "100%", justifyContent: "space-around", padding: "20px 0" }}>
+        <Button size="large" type="primary" icon={<LeftOutlined />} onClick={() => canvasRef.current.parentMoveRaquet("LEFT")} />
+        <Button
+          size="large"
+          type="primary"
+          icon={<RightOutlined />}
+          onClick={() => canvasRef.current.parentMoveRaquet("RIGHT")}
+        />
+      </Space>
     </Spin>
   );
 };

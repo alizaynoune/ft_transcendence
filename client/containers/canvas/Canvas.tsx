@@ -1,5 +1,15 @@
 import style from "./canvas.module.css";
-import React, { Suspense, useRef, KeyboardEvent, useEffect, useState, SetStateAction } from "react";
+import React, {
+  Suspense,
+  useRef,
+  KeyboardEvent,
+  useEffect,
+  useState,
+  SetStateAction,
+  forwardRef,
+  useImperativeHandle,
+  ForwardRefRenderFunction,
+} from "react";
 import { Canvas } from "@react-three/fiber";
 import { OrbitControls, Stars } from "@react-three/drei";
 import { NoToneMapping } from "three";
@@ -7,7 +17,7 @@ import Scene from "@/containers/scene/Scene";
 import { useInterval } from "@/hooks/useInterval";
 import { GameType } from "@/types/types";
 import Socket from "@/config/socket";
-import { Typography } from "antd";
+import { Button, Typography } from "antd";
 import { useRaquets } from "@/hooks/racquetHooks";
 
 interface PropsType {
@@ -15,7 +25,13 @@ interface PropsType {
   IamPlayer: boolean;
   intraId: number;
 }
-const MyCanvas: React.FC<PropsType> = ({ game, IamPlayer, intraId }) => {
+
+interface RefType {
+  parentMoveRaquet: (action: "RIGHT" | "LEFT") => void;
+}
+
+const MyCanvas = forwardRef<RefType, PropsType>((props, ref) => {
+  const { game, IamPlayer, intraId } = props;
   const canvasRef = useRef<HTMLCanvasElement>(null!);
   const [count, setCount] = useState<number>(-1);
   const [timer, setTimer] = useState(0);
@@ -57,6 +73,13 @@ const MyCanvas: React.FC<PropsType> = ({ game, IamPlayer, intraId }) => {
     moveRaquet(action);
   };
 
+  useImperativeHandle(ref, () => ({
+    parentMoveRaquet(action: "RIGHT" | "LEFT") {
+      if (!IamPlayer || game.status !== "PLAYING") return;
+      moveRaquet(action);
+    },
+  }));
+
   useEffect(() => {
     if (!IamPlayer || game.status === "END") return;
     let player = game.players[0].users.intra_id === intraId ? 0 : 1;
@@ -74,44 +97,44 @@ const MyCanvas: React.FC<PropsType> = ({ game, IamPlayer, intraId }) => {
     document.getElementById("canvas")?.focus();
   }, [game.started]);
 
-  return game.status !== "PLAYING" ? (
+  return game.status === "PLAYING" ? (
     <div className={style.container}>
       <span className={style.text}>{game.status}</span>
     </div>
   ) : (
     <>
       {count >= 0 && IamPlayer && !game.started && <span className={style.text}>{count ? count : "GO"}</span>}
-      {game.status === "PLAYING" && (
-        <Canvas
-          className={style.container}
-          // frameloop="demand"
-          ref={IamPlayer ? canvasRef : undefined}
-          onKeyDown={IamPlayer ? handleKeyboardEvent : undefined}
-          id="canvas"
-          tabIndex={0}
-          camera={{ fov: 75, near: 0.1, far: 1000, position: [0, 5, playerIndex ? 20 : -20] }}
-          gl={{ toneMapping: NoToneMapping }}
-          onCreated={({ gl }) => {
-            gl.setClearColor("#464E5F");
-          }}
-        >
-          <color attach="background" args={["#464E5F"]} />
-          <OrbitControls />
-          <ambientLight color={"#ffffff"} intensity={0.5} />
-          <Suspense fallback={null}>
-            <Stars radius={80} depth={40} count={9000} factor={4} saturation={0} fade speed={1} />
-            <Scene
-              refs={{ playerX, playerY }}
-              gameId={game.id}
-              gameSpeed={gameSpeed[game.level]}
-              playerIndex={playerIndex}
-              start={game.started}
-            />
-          </Suspense>
-        </Canvas>
-      )}
+      {/* {game.status === "PLAYING" && ( */}
+      <Canvas
+        className={style.container}
+        // frameloop="demand"
+        ref={IamPlayer ? canvasRef : undefined}
+        onKeyDown={IamPlayer ? handleKeyboardEvent : undefined}
+        id="canvas"
+        tabIndex={0}
+        camera={{ fov: 75, near: 0.1, far: 1000, position: [0, 5, playerIndex ? 20 : -20] }}
+        gl={{ toneMapping: NoToneMapping }}
+        onCreated={({ gl }) => {
+          gl.setClearColor("#464E5F");
+        }}
+      >
+        <color attach="background" args={["#464E5F"]} />
+        <OrbitControls />
+        <ambientLight color={"#ffffff"} intensity={0.5} />
+        <Suspense fallback={null}>
+          <Stars radius={80} depth={40} count={9000} factor={4} saturation={0} fade speed={1} />
+          <Scene
+            refs={{ playerX, playerY }}
+            gameId={game.id}
+            gameSpeed={gameSpeed[game.level]}
+            playerIndex={playerIndex}
+            start={game.started}
+          />
+        </Suspense>
+      </Canvas>
+      {/* )} */}
     </>
   );
-};
+});
 
 export default MyCanvas;

@@ -1,20 +1,16 @@
 .layout {
   background-color: var(--background-color) !important;
   min-height: 100vh !important;
-  /* overflow: hidden !important; */
 }
 
-.layoutContent {
-  /* overflow: hidden !important; */
+/* .layoutContent {
 }
 
 .contentContainer {
-}
+} */
 
 .content {
   margin: 5px;
-  /* width: 100%; */
-  /* height: calc(100vh - 160px); */
 }
 
 .layoutFooter {
