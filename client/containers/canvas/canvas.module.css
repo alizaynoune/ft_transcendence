@@ -3,6 +3,10 @@
   height: 100%;
 }
 
+.container:focus {
+  outline: none;
+}
+
 .text {
   position: absolute;
   z-index: 2;
@@ -21,9 +25,11 @@
     1px 6px 1px #919191, 1px 7px 1px #919191, 1px 8px 1px #919191, 1px 9px 1px #919191, 1px 10px 1px #919191,
     1px 18px 6px rgba(16, 16, 16, 0.4), 1px 22px 10px rgba(16, 16, 16, 0.2), 1px 25px 35px rgba(16, 16, 16, 0.2),
     1px 30px 60px rgba(16, 16, 16, 0.4);
+  -webkit-transform: translate(50%, -50%);
+  -moz-transform: translate(50%, -50%);
+  -ms-transform: translate(50%, -50%);
+  -o-transform: translate(50%, -50%);
 }
-
-
 
 @media screen and (max-width: 576px) {
   /* .container{width: 100px; height: 200px;} */

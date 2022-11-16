@@ -131,9 +131,9 @@ const MyCanvas = forwardRef<RefType, PropsType>((props, ref) => {
         >
           <color attach="background" args={[skyColor]} />
           <OrbitControls />
-          <ambientLight color={"#ffffff"} intensity={0.5} />
           <Suspense fallback={null}>
             <Stars radius={80} depth={40} count={9000} factor={4} saturation={0} fade speed={1} />
+            <ambientLight position={[0, 0, 0]} intensity={0.2} />
             <Scene
               refs={{ playerX, playerY }}
               gameId={game.id}
