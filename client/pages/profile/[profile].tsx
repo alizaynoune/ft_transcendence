@@ -14,13 +14,11 @@ import { UploadChangeParam } from "antd/lib/upload";
 import axios from "@/config/axios";
 
 const MProfile: React.FC = () => {
-  const lazyRoot = useRef(null);
   const router = useRouter();
   const { query, isReady } = router;
   const [error, setError] = useState<number>(200);
   const [loading, setLoading] = useState<boolean>(false);
   const [cover, setCover] = useState<string>();
-
   const { profile, isMyProfile, loadProfile, loadLastMatches } = useContext(ProfileContext) as ProfileContextType;
 
   const loadingProfile = async () => {
@@ -64,13 +62,10 @@ const MProfile: React.FC = () => {
   const LastMatches = async () => {
     try {
       await loadLastMatches();
-    } catch (error) {
-      
-    }
+    } catch (error) {}
   };
 
   useEffect(() => {
-    
     setCover(profile?.cover);
     if (isMyProfile) LastMatches();
   }, [isMyProfile, profile]);
@@ -83,15 +78,9 @@ const MProfile: React.FC = () => {
         !loading &&
         profile && (
           <>
-            <Badge.Ribbon text="Ranked 10" placement="start">
-              <div className={style.cover} ref={lazyRoot}>
-                <Image
-                  lazyRoot={lazyRoot}
-                  src={cover || "/images/defaultProfileCover.png"}
-                  layout="fill"
-                  objectFit="cover"
-                  priority
-                />
+            <div className={style.coverContainer}>
+              <div className={style.cover}>
+                <Image src={cover || "/images/defaultProfileCover.png"} layout="fill" objectFit="cover" priority />
                 {isMyProfile && (
                   <Upload accept="image/*" showUploadList={false} onChange={handleChange}>
                     <Button
@@ -109,11 +98,30 @@ const MProfile: React.FC = () => {
                   </Upload>
                 )}
               </div>
-            </Badge.Ribbon>
+            </div>
             <div className={style.statisticsData}>
-              <div className={style.statistics}>
-                <Statistics data={profile} refresh={loadingProfile} />
-              </div>
+              {isMyProfile ? (
+                <div className={style.statistics}>
+                  <Statistics data={profile} refresh={loadingProfile} />
+                </div>
+              ) : (
+                <Badge.Ribbon
+                  text={profile.status}
+                  placement="start"
+                  color={
+                    profile.status === "ONLINE"
+                      ? "var(--success-color)"
+                      : profile.status === "PLAYING"
+                      ? "var(--bronze-color)"
+                      : "var(--error-color)"
+                  }
+                >
+                  <div className={style.statistics}>
+                    <Statistics data={profile} refresh={loadingProfile} />
+                  </div>
+                </Badge.Ribbon>
+              )}
+
               <div className={style.data}>
                 <UserData />
               </div>

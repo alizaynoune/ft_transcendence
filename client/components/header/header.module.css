@@ -31,9 +31,11 @@
   gap: 30px;
   /* justify-items: end; */
   justify-content: right;
-  
 }
 
+.username {
+  display: inline-block;
+}
 
 .logo {
   height: 100%;
@@ -49,6 +51,9 @@
   }
   .trigger {
     display: block;
+  }
+  .username {
+    display: none;
   }
 }
 

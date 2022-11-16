@@ -161,15 +161,22 @@ const Games: React.FC = () => {
           </>
         )}
       </div>
-      <Space className={style.buttons} style={{ width: "100%", justifyContent: "space-around", padding: "20px 0" }}>
-        <Button size="large" type="primary" icon={<LeftOutlined />} onClick={() => canvasRef.current.parentMoveRaquet("LEFT")} />
-        <Button
-          size="large"
-          type="primary"
-          icon={<RightOutlined />}
-          onClick={() => canvasRef.current.parentMoveRaquet("RIGHT")}
-        />
-      </Space>
+      {IamPlayer && (
+        <Space className={style.buttons} style={{ width: "100%", justifyContent: "space-around", padding: "20px 0" }}>
+          <Button
+            size="large"
+            type="primary"
+            icon={<LeftOutlined />}
+            onClick={() => canvasRef.current.parentMoveRaquet("LEFT")}
+          />
+          <Button
+            size="large"
+            type="primary"
+            icon={<RightOutlined />}
+            onClick={() => canvasRef.current.parentMoveRaquet("RIGHT")}
+          />
+        </Space>
+      )}
     </Spin>
   );
 };

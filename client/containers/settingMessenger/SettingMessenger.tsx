@@ -5,7 +5,7 @@ import { SetStateAction, useContext, useEffect, useState } from "react";
 import Icon, { LogoutOutlined } from "@ant-design/icons";
 import { useAppSelector } from "@/hooks/reduxHooks";
 import { selectAuth } from "@/store/reducers/auth";
-import { TrashIcon, Settings2Icon, DotsVIcon } from "@/icons/index";
+import { TrashIcon, Settings2Icon, DotsVIcon, MessageIcon } from "@/icons/index";
 import ConversationFromSettings from "@/components/conversationSettingsForm/ConversationFormSettings";
 import ConversationMembersActions from "@/components/ConversationMembersActions/ConversationMembersActions";
 import Link from "next/link";
@@ -147,7 +147,20 @@ const SettingMessenger: React.FC = () => {
                       <Button ghost type="primary" icon={<Icon component={DotsVIcon} style={{ fontSize: "16px" }} />} />
                     </Popover>
                   ) : (
-                    <ModalInviteGame user={item.users} buttonProps={{ type: "primary", ghost: true }} />
+                    <Popover
+                      trigger="click"
+                      placement="left"
+                      content={
+                        <Space>
+                          <ModalInviteGame user={item.users} buttonProps={{ type: "primary", ghost: true }} />
+                          <Link href={`/messenger/direct/${item.users.username}`}>
+                            <Button type="primary" ghost icon={<Icon component={MessageIcon} />} />
+                          </Link>
+                        </Space>
+                      }
+                    >
+                      <Button ghost type="primary" icon={<Icon component={DotsVIcon} style={{ fontSize: "16px" }} />} />
+                    </Popover>
                   )
                 }
               >

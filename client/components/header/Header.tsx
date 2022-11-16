@@ -95,11 +95,13 @@ const Header: React.FC<PropsType> = (props) => {
       ) : (
         <div className={style.rightDiv}>
           <Notifications />
-          <Link href={"/profile/me"}>
-            <a>
-              <Text strong>{username}</Text>
-            </a>
-          </Link>
+          <div className={style.username}>
+            <Link href={"/profile/me"}>
+              <a>
+                <Text strong>{username}</Text>
+              </a>
+            </Link>
+          </div>
           <Dropdown menu={{ items }} trigger={["click"]} placement="bottomLeft">
             <a onClick={(e) => e.preventDefault()}>
               <Avatar src={img_url} size={55} />

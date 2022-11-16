@@ -8,8 +8,6 @@
   border-radius: 10px;
   overflow: hidden;
   height: fit-content;
-  /* margin: 10px; */
-  /* background-color: aqua; */
 }
 
 .card {
@@ -27,12 +25,28 @@
 .card:hover:not(:last-child) {
   transform: translateY(-10px);
   transition: 0.4s ease-out;
+  -webkit-transform: translateY(-10px);
+  -moz-transform: translateY(-10px);
+  -ms-transform: translateY(-10px);
+  -o-transform: translateY(-10px);
+  -webkit-transition: 0.4s ease-out;
+  -moz-transition: 0.4s ease-out;
+  -ms-transition: 0.4s ease-out;
+  -o-transition: 0.4s ease-out;
 }
 
 .card:hover ~ .card {
   position: relative;
   transform: translateY(70px);
   transition: 0.4s ease-out;
+  -webkit-transform: translateY(70px);
+  -moz-transform: translateY(70px);
+  -ms-transform: translateY(70px);
+  -o-transform: translateY(70px);
+  -webkit-transition: 0.4s ease-out;
+  -moz-transition: 0.4s ease-out;
+  -ms-transition: 0.4s ease-out;
+  -o-transition: 0.4s ease-out;
 }
 
 .container:hover > .card:not(:hover)::before {
@@ -43,27 +57,43 @@
   background-color: var(--background-color);
   border-radius: 10px;
   opacity: 0.5;
+  -webkit-border-radius: 10px;
+  -moz-border-radius: 10px;
+  -ms-border-radius: 10px;
+  -o-border-radius: 10px;
 }
 
-@media screen and (max-width: 576px){
+@media screen and (max-width: 425px) {
   .container {
     width: 100%;
-    padding: 15px 10px;
-  }
-  .card:not(:first-child) {
-    margin-top: -50px;
-  }
-  .card:hover ~ .card {
-    transform: translateY(50px);
+    padding: 15px 0px;
   }
 }
 
-@media screen and (min-width: 576px){}
+@media screen and (min-width: 425px) {
+  .container {
+    width: 400px;
+    padding: 15px;
+  }
+}
 
-@media screen and (min-width: 768px){}
+@media screen and (min-width: 576px) {
+  .container {
+    width: 400px;
+  }
+}
 
-@media screen and (min-width: 992px){}
+@media screen and (min-width: 768px) {
+  .container {
+    width: 500px;
+  }
+}
 
-@media screen and (min-width: 1200px) {}
+@media screen and (min-width: 992px) {
+}
 
-@media screen and (min-width: 1600px){}
+@media screen and (min-width: 1200px) {
+}
+
+@media screen and (min-width: 1600px) {
+}

@@ -2,7 +2,7 @@
  width: 100%;
  overflow-x: hidden;
  height: 100%;
- max-height: calc(100vh - 300);
+ max-height: calc(100vh - 160px);
 }
 
 .list {

@@ -65,13 +65,13 @@
     padding: 10px;
   }
 
-  .layoutFooter {
+  /* .layoutFooter {
     margin: 5px;
-  }
+  } */
 
   .footer {
     justify-content: space-around;
-    padding: 10px;
+    /* padding: 10px; */
   }
 
   .footer span:first-of-type {

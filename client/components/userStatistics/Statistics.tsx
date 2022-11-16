@@ -23,7 +23,7 @@ import {
   SharpshooterIcon,
   WildfireIcon,
 } from "@/icons/index";
-import { UploadChangeParam, RcFile } from "antd/lib/upload";
+import { UploadChangeParam } from "antd/lib/upload";
 import Link from "next/link";
 
 const achievementsIcons: {
@@ -65,7 +65,6 @@ const Statistics: React.FC<Props> = ({ data, refresh }) => {
   const { intra_id } = useAppSelector(selectAuth);
   const progress = ((level - Math.floor(level)) / 1) * 100;
   const WinRatio = Number(((matches.winner / matches.total) * 100).toFixed(2)) || 0;
-  const lazyRoot = useRef(null);
   const [avatar, setAvatar] = useState<string>(data.img_url);
   const dispatch = useAppDispatch();
 
@@ -117,10 +116,9 @@ const Statistics: React.FC<Props> = ({ data, refresh }) => {
 
   return (
     <div className={style.container}>
-      <div className={style.progressContainer} ref={lazyRoot}>
+      <div className={style.progressContainer}>
         <Image
           className={style.progressImage}
-          lazyRoot={lazyRoot}
           src={avatar || "/images/defaultProfileAvatar.jpg"}
           objectFit="cover"
           layout="fill"

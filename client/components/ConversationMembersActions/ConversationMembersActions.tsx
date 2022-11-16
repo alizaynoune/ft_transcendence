@@ -6,6 +6,9 @@ import { useContext, useEffect, useState } from "react";
 import ModalInviteGame from "../modalInviteGame/ModalInviteGame";
 import { MessengerContext } from "context/massengerContext";
 import { ConversationMemberType, MessengerContextType } from "@/types/types";
+import Link from "next/link";
+import { MessageIcon } from "@/icons/index";
+import Icon from "@ant-design/icons";
 
 interface ProfileType {
   member: ConversationMemberType;
@@ -82,6 +85,7 @@ const ConversationMembersActions: React.FC<ProfileType> = ({ member }) => {
     <>
       <Space>
         <Button ghost type="primary" danger={member.isadmin} icon={<UserSwitchOutlined />} onClick={switchUser} />
+
         {!member.isadmin && (
           <>
             <Button danger ghost icon={<StopOutlined />} onClick={() => setShowModalBan(true)} />
@@ -94,6 +98,9 @@ const ConversationMembersActions: React.FC<ProfileType> = ({ member }) => {
             />
           </>
         )}
+        <Link href={`/messenger/direct/${member.users.username}`}>
+          <Button type="primary" ghost icon={<Icon component={MessageIcon} />} />
+        </Link>
         <ModalInviteGame user={member.users} buttonProps={{ type: "primary", ghost: true }} />
       </Space>
       <Modal
