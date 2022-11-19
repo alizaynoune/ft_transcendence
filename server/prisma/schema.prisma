@@ -1,0 +1,160 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model blocked {
+  id                             Int      @id @default(autoincrement())
+  userid                         Int      @default(autoincrement())
+  blockedid                      Int      @default(autoincrement())
+  created_at                     DateTime @default(now()) @db.Timestamp(6)
+  users_blocked_blockedidTousers users    @relation("blocked_blockedidTousers", fields: [blockedid], references: [intra_id], onDelete: NoAction, onUpdate: NoAction)
+  users_blocked_useridTousers    users    @relation("blocked_useridTousers", fields: [userid], references: [intra_id], onDelete: NoAction, onUpdate: NoAction)
+}
+
+model conversation {
+  id           Int                @id @default(autoincrement())
+  name         String?            @db.VarChar(255)
+  type         conversation_type? @default(DIRECT)
+  group_member group_member[]
+  message      message[]
+}
+
+model friends {
+  id                            Int      @id @default(autoincrement())
+  userid                        Int      @default(autoincrement())
+  friendid                      Int      @default(autoincrement())
+  created_at                    DateTime @default(now()) @db.Timestamp(6)
+  users_friends_friendidTousers users    @relation("friends_friendidTousers", fields: [friendid], references: [intra_id], onDelete: NoAction, onUpdate: NoAction)
+  users_friends_useridTousers   users    @relation("friends_useridTousers", fields: [userid], references: [intra_id], onDelete: NoAction, onUpdate: NoAction)
+}
+
+model game {
+  id     Int        @id @default(autoincrement())
+  player Int[]
+  level  game_diff? @default(NORMAL)
+  scores Int[]
+}
+
+model group_member {
+  id              Int          @id @default(autoincrement())
+  user_id         Int          @default(autoincrement())
+  conversation_id Int          @default(autoincrement())
+  joint_date      DateTime?    @default(now()) @db.Timestamp(6)
+  left_date       DateTime?    @db.Timestamp(6)
+  conversation    conversation @relation(fields: [conversation_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  users           users        @relation(fields: [user_id], references: [intra_id], onDelete: NoAction, onUpdate: NoAction)
+}
+
+model invites {
+  id                              Int      @id @default(autoincrement())
+  senderid                        Int      @default(autoincrement())
+  receiverid                      Int      @default(autoincrement())
+  created_at                      DateTime @default(now()) @db.Timestamp(6)
+  accepted                        Boolean? @default(false)
+  users_invites_receiveridTousers users    @relation("invites_receiveridTousers", fields: [receiverid], references: [intra_id], onDelete: NoAction, onUpdate: NoAction)
+  users_invites_senderidTousers   users    @relation("invites_senderidTousers", fields: [senderid], references: [intra_id], onDelete: NoAction, onUpdate: NoAction)
+}
+
+model message {
+  id              Int          @id @default(autoincrement())
+  sender_id       Int          @default(autoincrement())
+  content         String
+  conversation_id Int          @default(autoincrement())
+  created_at      DateTime     @default(now()) @db.Timestamp(6)
+  updated_at      DateTime     @default(now()) @db.Timestamp(6)
+  read_by         Int[]
+  delivered_to    Int[]
+  conversation    conversation @relation(fields: [conversation_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  users           users        @relation(fields: [sender_id], references: [intra_id], onDelete: NoAction, onUpdate: NoAction)
+}
+
+model notification {
+  id                               Int            @id @default(autoincrement())
+  type                             notification_t @default(OTHER)
+  userid                           Int            @default(autoincrement())
+  fromid                           Int            @default(autoincrement())
+  targetid                         Int            @default(autoincrement())
+  content                          String?
+  createdat                        DateTime       @default(now()) @db.Timestamp(6)
+  updatedat                        DateTime       @db.Timestamp(6)
+  users_notification_fromidTousers users          @relation("notification_fromidTousers", fields: [fromid], references: [intra_id], onDelete: NoAction, onUpdate: NoAction)
+  users_notification_useridTousers users          @relation("notification_useridTousers", fields: [userid], references: [intra_id], onDelete: NoAction, onUpdate: NoAction)
+}
+
+model users {
+  id                                      Int                  @id @default(autoincrement())
+  intra_id                                Int                  @unique
+  username                                String               @unique @db.VarChar(255)
+  email                                   String               @unique @db.VarChar(255)
+  first_name                              String               @db.VarChar(255)
+  last_name                               String               @db.VarChar(255)
+  img_url                                 String?              @db.VarChar(255)
+  cover                                   String?              @db.VarChar(255)
+  status                                  status_t?            @default(OFFLINE)
+  created_at                              DateTime?            @default(now()) @db.Timestamp(6)
+  updated_at                              DateTime?            @default(now()) @db.Timestamp(6)
+  blocked_blocked_blockedidTousers        blocked[]            @relation("blocked_blockedidTousers")
+  blocked_blocked_useridTousers           blocked[]            @relation("blocked_useridTousers")
+  friends_friends_friendidTousers         friends[]            @relation("friends_friendidTousers")
+  friends_friends_useridTousers           friends[]            @relation("friends_useridTousers")
+  group_member                            group_member[]
+  invites_invites_receiveridTousers       invites[]            @relation("invites_receiveridTousers")
+  invites_invites_senderidTousers         invites[]            @relation("invites_senderidTousers")
+  message                                 message[]
+  notification_notification_fromidTousers notification[]       @relation("notification_fromidTousers")
+  notification_notification_useridTousers notification[]       @relation("notification_useridTousers")
+  users_achievements                      users_achievements[]
+}
+
+model achievements {
+  id                 Int                  @id @default(autoincrement())
+  name               String               @db.VarChar(25)
+  level              level_type?          @default(BRONZE)
+  xp                 Int
+  description        String?
+  users_achievements users_achievements[]
+}
+
+model users_achievements {
+  id            Int          @id @default(autoincrement())
+  userid        Int
+  achievementid Int
+  createdat     DateTime     @default(now()) @db.Timestamp(6)
+  achievements  achievements @relation(fields: [achievementid], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  users         users        @relation(fields: [userid], references: [intra_id], onDelete: NoAction, onUpdate: NoAction)
+}
+
+enum conversation_type {
+  DIRECT
+  GROUP
+}
+
+enum game_diff {
+  EASY
+  NORMAL
+  DIFFICULT
+}
+
+enum level_type {
+  BRONZE
+  SILVER
+  GOLD
+  PLATINUM
+}
+
+enum notification_t {
+  FRIEND_REQUEST
+  GAME_INVITE
+  OTHER
+}
+
+enum status_t {
+  ONLINE
+  OFFLINE
+  PLAYING
+}
