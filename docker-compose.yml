@@ -1,0 +1,51 @@
+version: '3.3'
+
+services:
+  db:
+    image: postgres
+    container_name: db
+    restart: always
+    volumes:
+      - ./database/:/docker-entrypoint-initdb.d
+      - db:/var/lib/postgresql/data
+    ports:
+      - 5432:5432
+    env_file:
+      - server/.env
+
+  adminer:
+    depends_on:
+      - db
+    image: adminer
+    container_name: adminer
+    restart: always
+    ports:
+      - 8080:8080
+
+  client:
+    depends_on:
+      - server
+    image: client
+    build: ./client
+    container_name: client
+    restart: always
+    ports:
+      - 3000:3000
+      
+  server:
+    depends_on:
+      - db
+    build: ./server
+    image: server
+    container_name: server
+    restart: always
+    ports:
+      - 5000:5000
+      
+volumes:
+  db:
+    driver: local
+    driver_opts:
+      type: 'none' 
+      o: bind
+      device: $PWD/database/data

@@ -13,7 +13,6 @@
     "@react-three/drei": "^9.31.1",
     "@react-three/fiber": "^8.7.4",
     "@reduxjs/toolkit": "^1.8.3",
-    "@types/socket.io-client": "^3.0.0",
     "antd": "^4.21.2",
     "axios": "^0.27.2",
     "emoji-picker-react": "^3.6.2",
@@ -27,6 +26,7 @@
     "react-infinite-scroll-component": "^6.1.0",
     "react-redux": "^8.0.2",
     "react-verification-input": "^3.1.1",
+    "sharp": "^0.31.2",
     "socket.io-client": "^4.5.3",
     "three": "^0.144.0"
   },
