@@ -118,6 +118,8 @@ const Statistics: React.FC<Props> = ({ data, refresh }) => {
             <div className={style.progressContainer}>
                 <Image
                     className={style.progressImage}
+                    //@ts-ignore
+                    loader={({ src }) => src}
                     src={avatar || "/images/defaultProfileAvatar.jpg"}
                     objectFit="cover"
                     layout="fill"

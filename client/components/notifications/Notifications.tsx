@@ -67,7 +67,6 @@ const Notifications: React.FC = () => {
   };
 
   const openNotification = (notif: NotificationType) => {
-    console.log(notif);
     
     if (notif.type === "FRIEND_REQUEST") {
       socket.emit("readNotification", { id: notif.id });

@@ -27,7 +27,6 @@ const Messenger: React.FC = () => {
   const user = useAppSelector(selectAuth);
 
   const onFinish = async (values: any, conversation: ConversationsType) => {
-    console.log(values);
     try {
       await changeCurrentConversation(conversation.id, values.password);
       Modal.destroyAll();

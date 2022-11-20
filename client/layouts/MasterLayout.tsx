@@ -123,7 +123,7 @@ const MasterLayout: React.FC<Props> = (props) => {
 
     useEffect(() => {
         if (isAuth) {
-            if (updated_at && updated_at !== created_at) {
+            if (updated_at && updated_at === created_at) {
                 setupdatedData({ username, avatar: undefined });
                 form.setFieldsValue({
                     username,

@@ -26,7 +26,6 @@ const MProfile: React.FC = () => {
         setError(200);
         if (isReady) {
             try {
-                console.log(query.profile);
 
                 if (query.profile && query.profile[0] !== "me") await loadProfile(query.profile[0]);
                 else await loadProfile("");
@@ -82,6 +81,8 @@ const MProfile: React.FC = () => {
                         <div className={style.coverContainer}>
                             <div className={style.cover}>
                                 <Image
+                                    //@ts-ignore
+                                    loader={({ src }) => src}
                                     src={cover || "/images/defaultProfileCover.png"}
                                     layout="fill"
                                     objectFit="cover"

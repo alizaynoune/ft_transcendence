@@ -98,10 +98,10 @@ export class GameService {
    */
   async createGame(req: Request, res: Response, dto: CreateGameBody) {
     if (dto.userId === req.user.sub) return res.status(400).json({ message: "you can't play with yourself" });
-    try {
+    try {      
       const user = await this.prisma.users.findUnique({
-        where: { id: dto.userId },
-      });
+        where: { intra_id: dto.userId },
+      });      
       const error = !user
         ? "user not found"
         : user.status === "PLAYING"
@@ -128,6 +128,18 @@ export class GameService {
         },
       });
       this.gameGateway.userStartGame(req.user.sub, dto.userId);
+      const notif = await this.prisma.notification.create({
+        data: {
+          userid: dto.userId,
+          type: "GAME_ACCEPTE",
+          fromid: req.user.sub,
+          targetid: newGame.id,
+          content: "Waitting you in game",
+          created_at: new Date(),
+        },
+        include: { users_notification_fromidTousers: true },
+      });
+      this.notificationsGateway.notificationsToUser(dto.userId, notif);
       return res.status(200).json({ game: newGame });
     } catch (error) {
       return res.status(500).json({ message: "server error" });

@@ -216,6 +216,10 @@ export class GameGateway implements OnGatewayDisconnect {
                             players: { include: { users: true }, orderBy: { id: "asc" } },
                         },
                     });
+                    await this.prismaService.users.updateMany({
+                        where: { OR: [{ intra_id: endGame.players[0].userid }, { intra_id: endGame.players[1].userid }] },
+                        data: { status: "ONLINE" },
+                    });
                     await this.achievements.gameAchievemets(endGame.players[0].userid);
                     await this.achievements.gameAchievemets(endGame.players[1].userid);
                     // emit end game
