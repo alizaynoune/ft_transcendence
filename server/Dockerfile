@@ -18,4 +18,6 @@ RUN echo "prisma db pull && prisma generate && yarn && yarn start:dev" > /start.
 
 WORKDIR /app
 
+RUN mkdir -p data
+
 CMD ["sh", "/start.sh"]
