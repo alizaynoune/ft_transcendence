@@ -6,7 +6,7 @@ services:
     container_name: db
     restart: always
     volumes:
-      - ./database/:/docker-entrypoint-initdb.d
+      - initdb:/docker-entrypoint-initdb.d
       - db:/var/lib/postgresql/data
     ports:
       - 5432:5432
@@ -45,4 +45,10 @@ services:
       - 5000:5000
       
 volumes:
+  initdb:
+    driver: local
+    driver_opts:
+      type: 'none' 
+      o: bind
+      device: $PWD/database/
   db:
