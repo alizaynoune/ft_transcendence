@@ -18,14 +18,6 @@ const nextConfig = {
       'random.imagecdn.app',
       'joeschmoe.io']
   },
-  async rewrites() {
-    return [
-      {
-        source: '/profile',
-        destination: '/profile/me',
-      },
-    ]
-  },
   env: {
     API_URL: 'http://localhost:5000'
   }

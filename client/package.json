@@ -26,7 +26,6 @@
     "react-infinite-scroll-component": "^6.1.0",
     "react-redux": "^8.0.2",
     "react-verification-input": "^3.1.1",
-    "sharp": "^0.31.2",
     "socket.io-client": "^4.5.3",
     "three": "^0.144.0"
   },
