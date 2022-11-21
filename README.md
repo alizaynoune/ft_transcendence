@@ -8,9 +8,9 @@ computer science. Now look where you are standing. Time to shine
 
 > _Contributors:<br>_
 >
-> -   _<a href="https://github.com/alizaynoune" target="_black">Ali Zaynoune</a> (<a href="https://profile.intra.42.fr/users/alzaynou" target="_black">alzaynou</a>).<br>_
-> -   _<a href="https://github.com/Ysrbolles" target="_black">Yassir Bolles</a> (<a href="https://profile.intra.42.fr/users/ybolles" target="_black">ybolles</a>)._
-> -   _<a href="https://github.com/83wid" target="_black">Nawfal Abouzaher</a> (<a href="https://profile.intra.42.fr/users/nabouzah" target="_black">nabouzah</a>).<br>_
+> -   _<a href="https://github.com/alizaynoune" target="_blank">Ali Zaynoune</a> (<a href="https://profile.intra.42.fr/users/alzaynou" target="_blank">alzaynou</a>).<br>_
+> -   _<a href="https://github.com/Ysrbolles" target="_blank">Yassir Bolles</a> (<a href="https://profile.intra.42.fr/users/ybolles" target="_blank">ybolles</a>)._
+> -   _<a href="https://github.com/83wid" target="_blank">Nawfal Abouzaher</a> (<a href="https://profile.intra.42.fr/users/nabouzah" target="_blank">nabouzah</a>).<br>_
 
 <!-- <p align="center">
   <img alt="war" src="https://user-images.githubusercontent.com/45235527/139450481-561e3ae8-f843-4d52-8d32-f36f4afca31e.gif" />
