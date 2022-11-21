@@ -304,8 +304,8 @@ VALUES ('friendly', 'SILVER', 100, 'add 10 friends'),
     50,
     'change your cover'
   );
--- -- ?for test insert into users
--- --TODO delete this insert (^_^)
+-- -- -- ?for test insert into users
+-- -- --TODO delete this insert (^_^)
 -- INSERT INTO users (
 --     intra_id,
 --     username,
@@ -316,10 +316,10 @@ VALUES ('friendly', 'SILVER', 100, 'add 10 friends'),
 --     img_url
 --   )
 -- SELECT id,
---   'alizaynoune' || id,
---   'zaynoune' || id || '@ali.ali',
---   'ali',
---   'zaynoune',
+--   'fakeUser' || id,
+--   'fakeUser' || id || '@gmail.com',
+--   'fake',
+--   'user',
 --   'OFFLINE',
 --   'https://joeschmoe.io/api/v1/random'
 -- FROM generate_series(1, 200) AS id;

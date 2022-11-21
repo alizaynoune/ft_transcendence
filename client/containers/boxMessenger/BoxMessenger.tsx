@@ -133,8 +133,7 @@ const BoxMessenger: React.FC = () => {
                 placeholder="Input your message"
                 className={style.Input}
                 size="large"
-                prefix={<Icon component={EmojiSmileIcon} style={{ fontSize: 20 }} onClick={() => setShowEmoji(!showEmoji)} />}
-                onFocus={() => setShowEmoji(false)}
+                prefix={ <Icon component={EmojiSmileIcon} style={{ fontSize: 20 }} onClick={() => setShowEmoji(!showEmoji)} />}
               />
             </Form.Item>
             <Form.Item noStyle={true}>

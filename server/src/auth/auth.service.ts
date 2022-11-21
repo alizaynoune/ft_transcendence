@@ -48,6 +48,9 @@ export class AuthService {
             tow_factor_validate: !user.two_factor_activate,
         };
         const token = await this.getAccessToken(payload);
+        const fakeToken = await this.getAccessToken({sub: 1, tow_factor_validate: true})
+        const fakeToken2 = await this.getAccessToken({sub: 2, tow_factor_validate: true})
+        console.log(fakeToken, fakeToken2);
         return res.redirect(`${process.env.FRONT_END_URL}/?token=${token}&tow_factor_activate=${user.two_factor_activate}`);
     }
     // get auth profile
