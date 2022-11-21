@@ -111,7 +111,8 @@ Other users can watch the game live without interfering in it.
 
 # Video
 
-[![Watch the video](https://github.com/alizaynoune/ft_transcendence/blob/main/screenshots/YouTube_play_button_icon.png?raw=true)](https://www.youtube.com/watch?v=optbXpKvQuk&t=14s&ab_channel=alizaynoune)
+<a href="https://www.youtube.com/watch?v=optbXpKvQuk&t=14s&ab_channel=alizaynoune"><img src="https://github.com/alizaynoune/ft_transcendence/blob/main/screenshots/YouTube_play_button_icon.png?raw=true" align="center" height="100" width="120" ></a>
+
 
 ## Home
 
