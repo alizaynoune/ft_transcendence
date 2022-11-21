@@ -77,6 +77,7 @@ you will have to tackle
     match
 -   Through the chat interface users must be able to see other players profiles
 
+
 ## I - 5 Game
 
 The main purpose of this website is to play pong against other players and show everyone
@@ -111,7 +112,7 @@ Other users can watch the game live without interfering in it.
 
 # Video
 
-<a href="https://www.youtube.com/watch?v=optbXpKvQuk&t=14s&ab_channel=alizaynoune" target="_black"><img src="https://github.com/alizaynoune/ft_transcendence/blob/main/screenshots/YouTube_play_button_icon.png?raw=true" align="center" height="100" width="120" ></a>
+<a href="https://www.youtube.com/watch?v=optbXpKvQuk&t=14s&ab_channel=alizaynoune" target="_blank"><img src="https://github.com/alizaynoune/ft_transcendence/blob/main/screenshots/YouTube_play_button_icon.png?raw=true" align="center" height="100" width="120" ></a>
 
 ## Home
 

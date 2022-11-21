@@ -38,9 +38,9 @@ const OurTeamCard: React.FC<Props> = (props) => {
           padding: "150px 10px 0 10px",
         }}
         actions={[
-          <Button type="primary" shape="circle" icon={<LinkedinOutlined />} size="large" href={linkedin} target="_black" />,
+          <Button type="primary" shape="circle" icon={<LinkedinOutlined />} size="large" href={linkedin} target="_blank" />,
           <Button type="primary" shape="circle" icon={<Icon component={EmailIcon} />} size="large" href={`mailto: ${email}`} />,
-          <Button type="primary" shape="circle" icon={<GithubOutlined />} size="large" href={github} target="_black" />,
+          <Button type="primary" shape="circle" icon={<GithubOutlined />} size="large" href={github} target="_blank" />,
         ]}
       />
       <div className={style.cardImage}>
